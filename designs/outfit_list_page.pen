@@ -1,0 +1,410 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "XQwbc",
+      "x": -300,
+      "y": -406,
+      "name": "Frame",
+      "clip": true,
+      "width": 800,
+      "height": 600,
+      "fill": "#FFFFFF",
+      "layout": "none"
+    },
+    {
+      "type": "frame",
+      "id": "L2wkK",
+      "x": -300,
+      "y": -406,
+      "name": "Outfit List - 列表状态",
+      "width": 375,
+      "height": 812,
+      "fill": "#FFFFFF",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "MA4kx",
+          "name": "header",
+          "width": "fill_container",
+          "height": 64,
+          "fill": "#FFFFFF",
+          "padding": [
+            16,
+            20
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "olHBE",
+              "name": "title",
+              "fill": "#000000",
+              "content": "今日穿什麼",
+              "fontFamily": "system-ui",
+              "fontSize": 20,
+              "fontWeight": "600"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "kHBVW",
+          "name": "content",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 16,
+          "padding": [
+            0,
+            20
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "Nuzbd",
+              "name": "item1",
+              "width": "fill_container",
+              "stroke": {
+                "align": "inside",
+                "thickness": {
+                  "bottom": 1
+                },
+                "fill": "#E5E5E5"
+              },
+              "layout": "vertical",
+              "gap": 8,
+              "padding": [
+                16,
+                0
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "eFTli",
+                  "name": "date1",
+                  "fill": "#666666",
+                  "content": "2026 / 01 / 26",
+                  "fontFamily": "system-ui",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "n7osu",
+                  "name": "desc1",
+                  "fill": "#000000",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "白色毛衣 + 牛仔裤 + 运动鞋",
+                  "lineHeight": 1.5,
+                  "fontFamily": "system-ui",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "on0g6",
+                  "name": "tags1",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "tSCjV",
+                      "name": "tag1",
+                      "fill": "#999999",
+                      "content": "日常",
+                      "fontFamily": "system-ui",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "4lvBF",
+              "name": "item2",
+              "width": "fill_container",
+              "stroke": {
+                "align": "inside",
+                "thickness": {
+                  "bottom": 1
+                },
+                "fill": "#E5E5E5"
+              },
+              "layout": "vertical",
+              "gap": 8,
+              "padding": [
+                16,
+                0
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "RL8Q9",
+                  "name": "date2",
+                  "fill": "#666666",
+                  "content": "2026 / 01 / 25",
+                  "fontFamily": "system-ui",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "nPlaA",
+                  "name": "desc2",
+                  "fill": "#000000",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "黑色连衣裙 + 短靴",
+                  "lineHeight": 1.5,
+                  "fontFamily": "system-ui",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "3ZtQg",
+                  "name": "tags2",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "P2vzZ",
+                      "name": "tag2",
+                      "fill": "#999999",
+                      "content": "约会",
+                      "fontFamily": "system-ui",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "NEkXI",
+              "name": "item3",
+              "width": "fill_container",
+              "stroke": {
+                "align": "inside",
+                "thickness": {
+                  "bottom": 1
+                },
+                "fill": "#E5E5E5"
+              },
+              "layout": "vertical",
+              "gap": 8,
+              "padding": [
+                16,
+                0
+              ],
+              "children": [
+                {
+                  "type": "text",
+                  "id": "zuaDM",
+                  "name": "date3",
+                  "fill": "#666666",
+                  "content": "2026 / 01 / 24",
+                  "fontFamily": "system-ui",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "text",
+                  "id": "KgJ6C",
+                  "name": "desc3",
+                  "fill": "#000000",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "灰色卫衣 + 黑色长裤 + 帆布鞋",
+                  "lineHeight": 1.5,
+                  "fontFamily": "system-ui",
+                  "fontSize": 16,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "oUncT",
+                  "name": "tags3",
+                  "width": "fit_content(0)",
+                  "height": "fit_content(0)",
+                  "gap": 8
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "O1Ngh",
+          "name": "addButton",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "#FFFFFF",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "top": 1
+            },
+            "fill": "#E5E5E5"
+          },
+          "padding": [
+            0,
+            20
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "wOKQQ",
+              "name": "buttonText",
+              "fill": "#000000",
+              "content": "新增穿搭",
+              "fontFamily": "system-ui",
+              "fontSize": 16,
+              "fontWeight": "500"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "Ftsvy",
+      "x": 100,
+      "y": -406,
+      "name": "Outfit List - 空状态",
+      "width": 375,
+      "height": 812,
+      "fill": "#FFFFFF",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "C2ZB9",
+          "name": "emptyHeader",
+          "width": "fill_container",
+          "height": 64,
+          "fill": "#FFFFFF",
+          "padding": [
+            16,
+            20
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "Bp6nP",
+              "name": "emptyTitle",
+              "fill": "#000000",
+              "content": "今日穿什麼",
+              "fontFamily": "system-ui",
+              "fontSize": 20,
+              "fontWeight": "600"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "POnJj",
+          "name": "emptyContent",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "padding": [
+            120,
+            40
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "pyBDb",
+              "name": "emptyText",
+              "fill": "#666666",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "今天還沒有穿搭紀錄",
+              "lineHeight": 1.5,
+              "textAlign": "center",
+              "fontFamily": "system-ui",
+              "fontSize": 16,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "fVJJr",
+              "name": "emptyButton",
+              "fill": "#F5F5F5",
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E5E5E5"
+              },
+              "padding": [
+                12,
+                24
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "4gzVb",
+                  "name": "emptyButtonText",
+                  "fill": "#000000",
+                  "content": "新增穿搭",
+                  "fontFamily": "system-ui",
+                  "fontSize": 16,
+                  "fontWeight": "500"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "nDTGd",
+          "name": "emptyBottomButton",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "#FFFFFF",
+          "stroke": {
+            "align": "inside",
+            "thickness": {
+              "top": 1
+            },
+            "fill": "#E5E5E5"
+          },
+          "padding": [
+            0,
+            20
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "SLTHw",
+              "name": "emptyBottomButtonText",
+              "fill": "#000000",
+              "content": "新增穿搭",
+              "fontFamily": "system-ui",
+              "fontSize": 16,
+              "fontWeight": "500"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
