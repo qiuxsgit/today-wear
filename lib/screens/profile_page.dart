@@ -5,6 +5,7 @@ import '../theme/app_colors.dart';
 import '../theme/app_text_style.dart';
 import '../theme/app_spacing.dart';
 import '../services/locale_service.dart';
+import 'language_selection_page.dart';
 
 /// 个人/设置页面
 /// 
@@ -49,9 +50,33 @@ class ProfilePage extends StatelessWidget {
   Widget _buildSettingsCard(
     BuildContext context,
     AppLocalizations l10n,
-    LocaleService? localeService,
     Locale? currentLocale,
   ) {
+    // 获取当前语言名称
+    String currentLanguageName;
+    if (currentLocale != null) {
+      switch (currentLocale.languageCode) {
+        case 'zh':
+          currentLanguageName = currentLocale.countryCode == 'CN'
+              ? l10n.simplifiedChinese
+              : l10n.traditionalChinese;
+          break;
+        case 'en':
+          currentLanguageName = l10n.english;
+          break;
+        case 'ja':
+          currentLanguageName = l10n.japanese;
+          break;
+        case 'ko':
+          currentLanguageName = l10n.korean;
+          break;
+        default:
+          currentLanguageName = currentLocale.languageCode;
+      }
+    } else {
+      currentLanguageName = l10n.english;
+    }
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(AppSpacing.md),
@@ -70,66 +95,53 @@ class ProfilePage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSpacing.sm),
-          // 语言标签
-          Text(
-            l10n.language,
-            style: AppTextStyle.body.copyWith(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+          // 语言选择项
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
             ),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          // 语言选择列表
-          ...LocaleService.supportedLocales.map((locale) {
-            final isSelected = currentLocale?.languageCode == locale.languageCode &&
-                currentLocale?.countryCode == locale.countryCode;
-            
-            String languageName;
-            switch (locale.languageCode) {
-              case 'zh':
-                languageName = locale.countryCode == 'CN'
-                    ? l10n.simplifiedChinese
-                    : l10n.traditionalChinese;
-                break;
-              case 'en':
-                languageName = l10n.english;
-                break;
-              case 'ja':
-                languageName = l10n.japanese;
-                break;
-              case 'ko':
-                languageName = l10n.korean;
-                break;
-              default:
-                languageName = locale.languageCode;
-            }
-            
-            return Container(
-              margin: const EdgeInsets.only(bottom: AppSpacing.xs),
-              decoration: BoxDecoration(
-                color: Colors.white,
+            child: ListTile(
+              title: Text(
+                l10n.language,
+                style: AppTextStyle.body.copyWith(
+                  fontSize: 16,
+                ),
+              ),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    currentLanguageName,
+                    style: AppTextStyle.body.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  const Icon(
+                    Icons.chevron_right,
+                    color: AppColors.textSecondary,
+                    size: 20,
+                  ),
+                ],
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LanguageSelectionPage(),
+                  ),
+                );
+              },
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.md,
+              ),
+              dense: true,
+              shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: RadioListTile<Locale>(
-                title: Text(
-                  languageName,
-                  style: AppTextStyle.body,
-                ),
-                value: locale,
-                groupValue: currentLocale,
-                onChanged: (value) {
-                  if (value != null && localeService != null) {
-                    localeService.setLocale(value);
-                  }
-                },
-                selected: isSelected,
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.md,
-                ),
-                dense: true,
-              ),
-            );
-          }),
+            ),
+          ),
         ],
       ),
     );
@@ -280,7 +292,7 @@ class ProfilePage extends StatelessWidget {
               _buildProfileCard(context, l10n),
               const SizedBox(height: AppSpacing.lg),
               // 设置卡片
-              _buildSettingsCard(context, l10n, localeService, currentLocale),
+              _buildSettingsCard(context, l10n, currentLocale),
               const SizedBox(height: AppSpacing.lg),
               // 关于应用卡片
               _buildAboutCard(context, l10n, version),

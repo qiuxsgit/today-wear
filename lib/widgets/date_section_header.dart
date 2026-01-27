@@ -43,17 +43,33 @@ class DateSectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dateText = _formatDate(context, date);
-    final isToday = _isToday(date);
-    
+
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12, top: 8),
-      child: Text(
-        dateText,
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: isToday ? FontWeight.w600 : FontWeight.w500,
-          color: isToday ? AppColors.primary : AppColors.textSecondary,
-        ),
+      padding: const EdgeInsets.only(bottom: 8, top: 4),
+      child: Row(
+        children: [
+          // 左侧小圆点装饰
+          Container(
+            width: 4,
+            height: 4,
+            margin: const EdgeInsets.only(right: 6, top: 6),
+            decoration: BoxDecoration(
+              color: AppColors.textPlaceholder,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              dateText,
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+                color: AppColors.textPrimary,
+                height: 1.4,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -34,21 +34,33 @@ class Outfit {
     
     final outfits = <Outfit>[];
     
-    // 今天
+    // 今天（两条记录）
     outfits.add(Outfit(
-      id: 'outfit_${today.millisecondsSinceEpoch}',
+      id: 'outfit_${today.millisecondsSinceEpoch}_1',
       date: today,
       description: '白色毛衣 + 牛仔裤 + 运动鞋',
       tags: ['晴天', '日常'],
     ));
+    outfits.add(Outfit(
+      id: 'outfit_${today.millisecondsSinceEpoch}_2',
+      date: today,
+      description: '米色风衣 + 黑色内搭 + 长靴',
+      tags: ['晴天', '工作'],
+    ));
     
-    // 昨天
+    // 昨天（两条记录）
     final yesterday = today.subtract(const Duration(days: 1));
     outfits.add(Outfit(
-      id: 'outfit_${yesterday.millisecondsSinceEpoch}',
+      id: 'outfit_${yesterday.millisecondsSinceEpoch}_1',
       date: yesterday,
       description: '黑色大衣 + 灰色长裤',
       tags: ['阴天', '工作'],
+    ));
+    outfits.add(Outfit(
+      id: 'outfit_${yesterday.millisecondsSinceEpoch}_2',
+      date: yesterday,
+      description: '粉色卫衣 + 黑色短裙 + 小白鞋',
+      tags: ['阴天', '日常'],
     ));
     
     // 2天前
@@ -60,13 +72,19 @@ class Outfit {
       tags: ['晴天', '日常'],
     ));
     
-    // 3天前
+    // 3天前（两条记录）
     final threeDaysAgo = today.subtract(const Duration(days: 3));
     outfits.add(Outfit(
-      id: 'outfit_${threeDaysAgo.millisecondsSinceEpoch}',
+      id: 'outfit_${threeDaysAgo.millisecondsSinceEpoch}_1',
       date: threeDaysAgo,
       description: '蓝色衬衫 + 卡其色长裤',
       tags: ['雨天', '工作'],
+    ));
+    outfits.add(Outfit(
+      id: 'outfit_${threeDaysAgo.millisecondsSinceEpoch}_2',
+      date: threeDaysAgo,
+      description: '灰色针织开衫 + 白色T恤 + 牛仔裤',
+      tags: ['雨天', '日常'],
     ));
     
     // 4天前
