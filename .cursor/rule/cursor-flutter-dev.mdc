@@ -1,0 +1,141 @@
+---
+alwaysApply: true
+---
+
+# RULE: Flutter Development Standards
+# PROJECT: 今日穿什麼 (Today Outfit)
+# STACK: Flutter (Mobile First)
+# TARGET: iOS / Android
+# OWNER: Personal Indie Developer
+# GOAL: Clean / Predictable / Maintainable Code
+
+## GLOBAL PRINCIPLES
+- 禁止为“省事”写一次性代码
+- 禁止未经说明的魔法写法
+- 优先可读性 > 性能 > 简洁
+- 允许代码稍微啰嗦，但必须清晰
+- 所有代码必须适合长期维护
+
+---
+
+## PROJECT STRUCTURE RULES
+
+### REQUIRED DIRECTORY STRUCTURE
+lib/
+- main.dart
+- app/
+  - app.dart
+  - router.dart
+  - theme.dart
+- features/
+  - outfit/
+    - pages/
+    - widgets/
+    - models/
+    - services/
+- shared/
+  - widgets/
+  - styles/
+  - utils/
+
+- l10n/
+- assets/
+
+禁止：
+- 所有页面放在一个文件夹
+- features 之间互相直接 import
+
+---
+
+## FILE RULES
+- 单文件不超过 300 行
+- 一个 Widget 文件只负责一个 UI 单元
+- StatefulWidget 必须有明确状态职责
+- 超过 3 个参数的 Widget 必须使用命名参数
+
+---
+
+## NAMING CONVENTIONS
+- 文件名：snake_case
+- Widget / Class：PascalCase
+- 变量 / 方法：camelCase
+- 常量：lowerCamelCase（禁止 ALL_CAPS）
+
+---
+
+## STATE MANAGEMENT
+- MVP 阶段默认使用：
+  - StatefulWidget
+  - ValueNotifier / ChangeNotifier
+- 禁止在 MVP 阶段引入：
+  - Riverpod
+  - Bloc
+  - Redux
+- 状态逻辑不得写在 build() 中
+
+---
+
+## UI & WIDGET RULES
+- 所有页面必须使用 Scaffold
+- 禁止在 Widget 中硬编码颜色、字体、间距
+- 所有颜色必须来自 app/theme.dart
+- 所有 padding / margin 必须使用统一 spacing 常量
+- 禁止使用 magic numbers（如 EdgeInsets.all(13)）
+
+---
+
+## THEME & STYLE
+- Theme 定义统一放在 app/theme.dart
+- 颜色、字体、圆角、阴影全部语义化
+- 不允许直接使用 Colors.red / Colors.blue
+- Icon 统一使用 Material Icons
+
+---
+
+## NAVIGATION
+- 所有路由集中在 app/router.dart
+- 禁止在 Widget 内直接 Navigator.pushNamed 字符串
+- 路由名必须定义为常量
+
+---
+
+## ASSETS RULES
+- 图片必须放在 assets/images
+- 图标必须为 SVG 或 2x PNG
+- 禁止直接使用网络图片作为 UI 结构
+
+---
+
+## NULL SAFETY
+- 禁止使用 ! 强制解包，除非有注释说明
+- 必须优先使用 late / required
+
+---
+
+## LOGGING & DEBUG
+- 禁止使用 print()
+- 调试日志统一使用 debugPrint
+- 所有临时代码必须标注 TODO
+
+---
+
+## COMMENT RULES
+- 不注释“做了什么”
+- 只注释“为什么这么做”
+- 复杂逻辑必须有注释
+
+---
+
+## AI BEHAVIOR CONSTRAINTS
+- 不允许 Cursor 自动引入新第三方库
+- 引入新 package 前必须说明原因
+- 不允许一次提交大规模无关重构
+- 每次修改必须说明改动范围
+
+---
+
+## DEFAULT FALLBACK
+如果规则冲突：
+1. 可维护性优先
+2. 规则优先于个人偏好
+3. 明确 > 简洁

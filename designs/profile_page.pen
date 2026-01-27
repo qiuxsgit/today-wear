@@ -1,0 +1,412 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "profilePage",
+      "x": 0,
+      "y": 0,
+      "name": "Profile Page",
+      "width": 375,
+      "height": 812,
+      "fill": "#FAFAFA",
+      "layout": "vertical",
+      "clip": true,
+      "children": [
+        {
+          "type": "frame",
+          "id": "statusBar",
+          "name": "Status Bar",
+          "width": "fill_container",
+          "height": 44,
+          "fill": "#FAFAFA"
+        },
+        {
+          "type": "frame",
+          "id": "header",
+          "name": "Header",
+          "width": "fill_container",
+          "height": 60,
+          "fill": "#FAFAFA",
+          "layout": "horizontal",
+          "padding": [0, 20],
+          "alignItems": "center",
+          "gap": 16,
+          "children": [
+            {
+              "type": "text",
+              "id": "headerTitle",
+              "name": "headerTitle",
+              "fill": "#2F2F2F",
+              "content": "个人",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "600",
+              "textGrowth": "auto"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "content",
+          "name": "Content Area",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "padding": [0, 16, 16, 16],
+          "children": [
+            {
+              "type": "frame",
+              "id": "profileCard",
+              "name": "Profile Card",
+              "width": "fill_container",
+              "height": "fit_content(120)",
+              "fill": "#F5F5F5",
+              "cornerRadius": 12,
+              "layout": "vertical",
+              "padding": 20,
+              "gap": 16,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "ellipse",
+                  "id": "avatar",
+                  "name": "Avatar",
+                  "width": 64,
+                  "height": 64,
+                  "fill": "#E8E8E8"
+                },
+                {
+                  "type": "text",
+                  "id": "nickname",
+                  "name": "Nickname",
+                  "fill": "#2F2F2F",
+                  "content": "用户",
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "600",
+                  "textGrowth": "auto"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "settingsCard",
+              "name": "Settings Card",
+              "width": "fill_container",
+              "height": "fit_content(200)",
+              "fill": "#F5F5F5",
+              "cornerRadius": 12,
+              "layout": "vertical",
+              "padding": 16,
+              "gap": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "settingsTitle",
+                  "name": "Settings Title",
+                  "fill": "#2F2F2F",
+                  "content": "设置",
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "600",
+                  "textGrowth": "auto"
+                },
+                {
+                  "type": "text",
+                  "id": "languageLabel",
+                  "name": "Language Label",
+                  "fill": "#2F2F2F",
+                  "content": "语言",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500",
+                  "textGrowth": "auto"
+                },
+                {
+                  "type": "frame",
+                  "id": "languageOptions",
+                  "name": "Language Options",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "langOption1",
+                      "name": "Language Option",
+                      "width": "fill_container",
+                      "height": 48,
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 8,
+                      "layout": "horizontal",
+                      "padding": [0, 16],
+                      "alignItems": "center",
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "langText1",
+                          "name": "Language Text",
+                          "fill": "#2F2F2F",
+                          "content": "简体中文",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal",
+                          "textGrowth": "auto"
+                        },
+                        {
+                          "type": "icon_font",
+                          "id": "langCheck1",
+                          "name": "Check Icon",
+                          "width": 20,
+                          "height": 20,
+                          "iconFontName": "check",
+                          "iconFontFamily": "Material Symbols Outlined",
+                          "fill": "#1A1A1A"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "langOption2",
+                      "name": "Language Option",
+                      "width": "fill_container",
+                      "height": 48,
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 8,
+                      "layout": "horizontal",
+                      "padding": [0, 16],
+                      "alignItems": "center",
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "langText2",
+                          "name": "Language Text",
+                          "fill": "#7A7A7A",
+                          "content": "English",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal",
+                          "textGrowth": "auto"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "aboutCard",
+              "name": "About Card",
+              "width": "fill_container",
+              "height": "fit_content(300)",
+              "fill": "#F5F5F5",
+              "cornerRadius": 12,
+              "layout": "vertical",
+              "padding": 16,
+              "gap": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "aboutTitle",
+                  "name": "About Title",
+                  "fill": "#2F2F2F",
+                  "content": "关于应用",
+                  "fontFamily": "Inter",
+                  "fontSize": 18,
+                  "fontWeight": "600",
+                  "textGrowth": "auto"
+                },
+                {
+                  "type": "frame",
+                  "id": "versionItem",
+                  "name": "Version Item",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 8,
+                  "layout": "horizontal",
+                  "padding": [0, 16],
+                  "alignItems": "center",
+                  "justifyContent": "space_between",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "versionLabel",
+                      "name": "Version Label",
+                      "fill": "#2F2F2F",
+                      "content": "版本",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal",
+                      "textGrowth": "auto"
+                    },
+                    {
+                      "type": "text",
+                      "id": "versionValue",
+                      "name": "Version Value",
+                      "fill": "#7A7A7A",
+                      "content": "1.0.0",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal",
+                      "textGrowth": "auto"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "privacyItem",
+                  "name": "Privacy Item",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 8,
+                  "layout": "horizontal",
+                  "padding": [0, 16],
+                  "alignItems": "center",
+                  "justifyContent": "space_between",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "privacyLabel",
+                      "name": "Privacy Label",
+                      "fill": "#2F2F2F",
+                      "content": "隐私政策",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal",
+                      "textGrowth": "auto"
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "privacyArrow",
+                      "name": "Arrow Icon",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "chevron_right",
+                      "iconFontFamily": "Material Symbols Outlined",
+                      "fill": "#7A7A7A"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "termsItem",
+                  "name": "Terms Item",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 8,
+                  "layout": "horizontal",
+                  "padding": [0, 16],
+                  "alignItems": "center",
+                  "justifyContent": "space_between",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "termsLabel",
+                      "name": "Terms Label",
+                      "fill": "#2F2F2F",
+                      "content": "使用条款",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal",
+                      "textGrowth": "auto"
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "termsArrow",
+                      "name": "Arrow Icon",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "chevron_right",
+                      "iconFontFamily": "Material Symbols Outlined",
+                      "fill": "#7A7A7A"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "licenseItem",
+                  "name": "License Item",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 8,
+                  "layout": "horizontal",
+                  "padding": [0, 16],
+                  "alignItems": "center",
+                  "justifyContent": "space_between",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "licenseLabel",
+                      "name": "License Label",
+                      "fill": "#2F2F2F",
+                      "content": "开源许可",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal",
+                      "textGrowth": "auto"
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "licenseArrow",
+                      "name": "Arrow Icon",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "chevron_right",
+                      "iconFontFamily": "Material Symbols Outlined",
+                      "fill": "#7A7A7A"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "contactItem",
+                  "name": "Contact Item",
+                  "width": "fill_container",
+                  "height": 48,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 8,
+                  "layout": "horizontal",
+                  "padding": [0, 16],
+                  "alignItems": "center",
+                  "justifyContent": "space_between",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "contactLabel",
+                      "name": "Contact Label",
+                      "fill": "#2F2F2F",
+                      "content": "联系方式",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal",
+                      "textGrowth": "auto"
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "contactArrow",
+                      "name": "Arrow Icon",
+                      "width": 20,
+                      "height": 20,
+                      "iconFontName": "chevron_right",
+                      "iconFontFamily": "Material Symbols Outlined",
+                      "fill": "#7A7A7A"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

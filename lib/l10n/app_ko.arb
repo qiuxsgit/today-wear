@@ -1,0 +1,39 @@
+{
+  "@@locale": "ko",
+  "appTitle": "오늘의 코디",
+  "home": "홈",
+  "add": "추가",
+  "profile": "프로필",
+  "addOutfit": "코디 추가",
+  "addOutfitPage": "코디 추가 페이지\n(준비 중)",
+  "profilePage": "프로필 페이지\n(준비 중)",
+  "settings": "설정",
+  "language": "언어",
+  "today": "오늘",
+  "yesterday": "어제",
+  "dayBeforeYesterday": "그저께",
+  "dateFormat": "{month}월 {day}일",
+  "@dateFormat": {
+    "placeholders": {
+      "month": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "simplifiedChinese": "간체 중국어",
+  "traditionalChinese": "번체 중국어",
+  "english": "영어",
+  "japanese": "일본어",
+  "korean": "한국어",
+  "nickname": "사용자",
+  "version": "버전",
+  "appVersion": "1.0.0",
+  "privacyPolicy": "개인정보 보호정책",
+  "termsOfService": "이용약관",
+  "openSourceLicense": "오픈소스 라이선스",
+  "contact": "연락처",
+  "about": "앱 정보"
+}

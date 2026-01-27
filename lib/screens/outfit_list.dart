@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:today_wear/l10n/app_localizations.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_text_style.dart';
@@ -8,11 +9,13 @@ class OutfitListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.bgPrimary,
       appBar: AppBar(
-        title: const Text('今日穿什麼', style: AppTextStyle.title),
-        backgroundColor: AppColors.background,
+        title: Text(l10n.appTitle, style: AppTextStyle.title),
+        backgroundColor: AppColors.bgPrimary,
         elevation: 0,
       ),
       body: Padding(

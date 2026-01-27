@@ -1,0 +1,39 @@
+{
+  "@@locale": "en",
+  "appTitle": "Today Wear",
+  "home": "Home",
+  "add": "Add",
+  "profile": "Profile",
+  "addOutfit": "Add Outfit",
+  "addOutfitPage": "Add Outfit Page\n(Coming Soon)",
+  "profilePage": "Profile Page\n(Coming Soon)",
+  "settings": "Settings",
+  "language": "Language",
+  "today": "Today",
+  "yesterday": "Yesterday",
+  "dayBeforeYesterday": "Day Before Yesterday",
+  "dateFormat": "{month}/{day}",
+  "@dateFormat": {
+    "placeholders": {
+      "month": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "simplifiedChinese": "Simplified Chinese",
+  "traditionalChinese": "Traditional Chinese",
+  "english": "English",
+  "japanese": "Japanese",
+  "korean": "Korean",
+  "nickname": "User",
+  "version": "Version",
+  "appVersion": "1.0.0",
+  "privacyPolicy": "Privacy Policy",
+  "termsOfService": "Terms of Service",
+  "openSourceLicense": "Open Source License",
+  "contact": "Contact",
+  "about": "About"
+}

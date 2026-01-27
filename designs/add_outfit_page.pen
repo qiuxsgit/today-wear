@@ -1,0 +1,502 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "EMVLz",
+      "x": -400,
+      "y": -422,
+      "name": "Frame",
+      "clip": true,
+      "width": 800,
+      "height": 600,
+      "fill": "#FFFFFF",
+      "layout": "none"
+    },
+    {
+      "type": "frame",
+      "id": "MaDOF",
+      "x": -400,
+      "y": -422,
+      "name": "新增穿搭记录",
+      "width": 390,
+      "height": 844,
+      "fill": "#FAFAFA",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "pSGwi",
+          "name": "Status Bar",
+          "width": "fill_container",
+          "height": 44,
+          "fill": "#FAFAFA"
+        },
+        {
+          "type": "frame",
+          "id": "NsvO5",
+          "name": "Header",
+          "width": "fill_container",
+          "height": 60,
+          "fill": "#FAFAFA",
+          "gap": 16,
+          "padding": [
+            0,
+            20
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "X9MH3",
+              "name": "backButton",
+              "width": 40,
+              "height": 40,
+              "fill": "#F5F5F5",
+              "cornerRadius": 20,
+              "layout": "vertical",
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon_font",
+                  "id": "a2mih",
+                  "name": "backIcon",
+                  "width": 24,
+                  "height": 24,
+                  "iconFontName": "arrow_back",
+                  "iconFontFamily": "Material Symbols Outlined",
+                  "fill": "#2F2F2F"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "jvTmo",
+              "name": "headerTitle",
+              "fill": "#2F2F2F",
+              "content": "新增穿搭记录",
+              "fontFamily": "Inter",
+              "fontSize": 20,
+              "fontWeight": "600"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "BGe3D",
+          "name": "Content Area",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "padding": [
+            20,
+            20,
+            100,
+            20
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "QgqYi",
+              "name": "Date Section",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "sdkGj",
+                  "name": "dateLabel",
+                  "fill": "#2F2F2F",
+                  "content": "日期",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "frame",
+                  "id": "FewyC",
+                  "name": "datePicker",
+                  "width": "fill_container",
+                  "height": 56,
+                  "fill": "#F5F5F5",
+                  "cornerRadius": 12,
+                  "gap": 12,
+                  "padding": [
+                    0,
+                    16
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon_font",
+                      "id": "XeIX6",
+                      "name": "dateIcon",
+                      "width": 24,
+                      "height": 24,
+                      "iconFontName": "calendar_today",
+                      "iconFontFamily": "Material Symbols Outlined",
+                      "fill": "#1A1A1A"
+                    },
+                    {
+                      "type": "text",
+                      "id": "YCfYi",
+                      "name": "dateText",
+                      "fill": "#2F2F2F",
+                      "content": "2026年1月26日",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "icon_font",
+                      "id": "TDzT1",
+                      "name": "dateArrow",
+                      "width": 24,
+                      "height": 24,
+                      "iconFontName": "chevron_right",
+                      "iconFontFamily": "Material Symbols Outlined",
+                      "fill": "#7A7A7A"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Lmu4T",
+              "name": "Photo Section",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "YOmDT",
+                  "name": "photoLabel",
+                  "fill": "#2F2F2F",
+                  "content": "照片",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "frame",
+                  "id": "IJFtM",
+                  "name": "photoGrid",
+                  "width": "fill_container",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "kVLhI",
+                      "name": "photoPlaceholder1",
+                      "width": 108,
+                      "height": 108,
+                      "fill": "#F5F5F5",
+                      "cornerRadius": 12,
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "2tS6T",
+                          "name": "addPhotoIcon",
+                          "width": 32,
+                          "height": 32,
+                          "iconFontName": "add_photo_alternate",
+                          "iconFontFamily": "Material Symbols Outlined",
+                          "fill": "#7A7A7A"
+                        },
+                        {
+                          "type": "text",
+                          "id": "NtjsI",
+                          "name": "addPhotoText",
+                          "fill": "#7A7A7A",
+                          "content": "添加照片",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "2JnxC",
+                      "name": "photoPlaceholder2",
+                      "width": 108,
+                      "height": 108,
+                      "fill": "#F5F5F5",
+                      "cornerRadius": 12,
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "kCL3w",
+                          "name": "addPhotoIcon2",
+                          "width": 32,
+                          "height": 32,
+                          "iconFontName": "add_photo_alternate",
+                          "iconFontFamily": "Material Symbols Outlined",
+                          "fill": "#7A7A7A"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "1dKxS",
+                      "name": "photoPlaceholder3",
+                      "width": 108,
+                      "height": 108,
+                      "fill": "#F5F5F5",
+                      "cornerRadius": 12,
+                      "layout": "vertical",
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "kFSVz",
+                          "name": "addPhotoIcon3",
+                          "width": 32,
+                          "height": 32,
+                          "iconFontName": "add_photo_alternate",
+                          "iconFontFamily": "Material Symbols Outlined",
+                          "fill": "#7A7A7A"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Mdi7a",
+              "name": "Tag Section",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "HRInU",
+                  "name": "tagLabel",
+                  "fill": "#2F2F2F",
+                  "content": "标签",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "frame",
+                  "id": "WzV9W",
+                  "name": "tagContainer",
+                  "width": "fill_container",
+                  "gap": 8,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "FoHgn",
+                      "name": "tag1",
+                      "height": 32,
+                      "fill": "#1A1A1A",
+                      "cornerRadius": 16,
+                      "gap": 6,
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "yYreh",
+                          "name": "tag1Text",
+                          "fill": "#FAFAFA",
+                          "content": "休闲",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Ebl94",
+                      "name": "tag2",
+                      "height": 32,
+                      "fill": "#F5F5F5",
+                      "cornerRadius": 16,
+                      "gap": 6,
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "ehMyO",
+                          "name": "tag2Text",
+                          "fill": "#2F2F2F",
+                          "content": "正式",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "0nzqd",
+                      "name": "tag3",
+                      "height": 32,
+                      "fill": "#F5F5F5",
+                      "cornerRadius": 16,
+                      "gap": 6,
+                      "padding": [
+                        0,
+                        12
+                      ],
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "0iLPF",
+                          "name": "tag3Text",
+                          "fill": "#2F2F2F",
+                          "content": "运动",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "KIA6H",
+                      "name": "addTagButton",
+                      "width": 32,
+                      "height": 32,
+                      "fill": "#F5F5F5",
+                      "cornerRadius": 16,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "QNMB6",
+                          "name": "addTagIcon",
+                          "width": 20,
+                          "height": 20,
+                          "iconFontName": "add",
+                          "iconFontFamily": "Material Symbols Outlined",
+                          "fill": "#1A1A1A"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "YRkeL",
+              "name": "Note Section",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "Iq1D6",
+                  "name": "noteLabel",
+                  "fill": "#2F2F2F",
+                  "content": "备注",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "frame",
+                  "id": "j1FvD",
+                  "name": "noteInput",
+                  "width": "fill_container",
+                  "height": 120,
+                  "fill": "#F5F5F5",
+                  "cornerRadius": 12,
+                  "layout": "vertical",
+                  "padding": [
+                    12,
+                    16
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "ucF6R",
+                      "name": "notePlaceholder",
+                      "fill": "#B8B8B8",
+                      "textGrowth": "fixed-width",
+                      "width": "fill_container",
+                      "content": "记录今天的穿搭心得...",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "P3GFj",
+          "name": "Bottom Bar",
+          "width": "fill_container",
+          "height": 80,
+          "fill": "#FAFAFA",
+          "gap": 12,
+          "padding": [
+            16,
+            20,
+            20,
+            20
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "xLZF6",
+              "name": "saveButton",
+              "width": "fill_container",
+              "height": 48,
+              "fill": "#1A1A1A",
+              "cornerRadius": 24,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "cwXgf",
+                  "name": "saveButtonText",
+                  "fill": "#FAFAFA",
+                  "content": "保存",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "600"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

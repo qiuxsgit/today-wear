@@ -1,0 +1,39 @@
+{
+  "@@locale": "ja",
+  "appTitle": "今日のコーデ",
+  "home": "ホーム",
+  "add": "追加",
+  "profile": "プロフィール",
+  "addOutfit": "コーデを追加",
+  "addOutfitPage": "コーデ追加ページ\n（実装予定）",
+  "profilePage": "プロフィールページ\n（実装予定）",
+  "settings": "設定",
+  "language": "言語",
+  "today": "今日",
+  "yesterday": "昨日",
+  "dayBeforeYesterday": "一昨日",
+  "dateFormat": "{month}月{day}日",
+  "@dateFormat": {
+    "placeholders": {
+      "month": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "simplifiedChinese": "簡体字中国語",
+  "traditionalChinese": "繁体字中国語",
+  "english": "英語",
+  "japanese": "日本語",
+  "korean": "韓国語",
+  "nickname": "ユーザー",
+  "version": "バージョン",
+  "appVersion": "1.0.0",
+  "privacyPolicy": "プライバシーポリシー",
+  "termsOfService": "利用規約",
+  "openSourceLicense": "オープンソースライセンス",
+  "contact": "お問い合わせ",
+  "about": "アプリについて"
+}

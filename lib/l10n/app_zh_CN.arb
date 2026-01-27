@@ -1,0 +1,39 @@
+{
+  "@@locale": "zh_CN",
+  "appTitle": "今日穿什麼",
+  "home": "首页",
+  "add": "添加",
+  "profile": "个人",
+  "addOutfit": "添加穿搭",
+  "addOutfitPage": "添加穿搭页面\n（待实现）",
+  "profilePage": "个人页面\n（待实现）",
+  "settings": "设置",
+  "language": "语言",
+  "today": "今天",
+  "yesterday": "昨天",
+  "dayBeforeYesterday": "前天",
+  "dateFormat": "{month}月{day}日",
+  "@dateFormat": {
+    "placeholders": {
+      "month": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "simplifiedChinese": "简体中文",
+  "traditionalChinese": "繁体中文",
+  "english": "English",
+  "japanese": "日本語",
+  "korean": "한국어",
+  "nickname": "用户",
+  "version": "版本",
+  "appVersion": "1.0.0",
+  "privacyPolicy": "隐私政策",
+  "termsOfService": "使用条款",
+  "openSourceLicense": "开源许可",
+  "contact": "联系方式",
+  "about": "关于应用"
+}

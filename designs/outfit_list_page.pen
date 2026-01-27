@@ -21,7 +21,7 @@
       "name": "Outfit List - 列表状态",
       "width": 375,
       "height": 812,
-      "fill": "#FFFFFF",
+      "fill": "#FAFAFA",
       "layout": "vertical",
       "children": [
         {
@@ -30,7 +30,7 @@
           "name": "header",
           "width": "fill_container",
           "height": 64,
-          "fill": "#FFFFFF",
+          "fill": "#FAFAFA",
           "padding": [
             16,
             20
@@ -41,7 +41,7 @@
               "type": "text",
               "id": "olHBE",
               "name": "title",
-              "fill": "#000000",
+              "fill": "#2F2F2F",
               "content": "今日穿什麼",
               "fontFamily": "system-ui",
               "fontSize": 20,
@@ -67,6 +67,7 @@
               "id": "Nuzbd",
               "name": "item1",
               "width": "fill_container",
+              "fill": "#F5F5F5",
               "stroke": {
                 "align": "inside",
                 "thickness": {
@@ -85,7 +86,7 @@
                   "type": "text",
                   "id": "eFTli",
                   "name": "date1",
-                  "fill": "#666666",
+                  "fill": "#7A7A7A",
                   "content": "2026 / 01 / 26",
                   "fontFamily": "system-ui",
                   "fontSize": 14,
@@ -95,7 +96,7 @@
                   "type": "text",
                   "id": "n7osu",
                   "name": "desc1",
-                  "fill": "#000000",
+                  "fill": "#2F2F2F",
                   "textGrowth": "fixed-width",
                   "width": "fill_container",
                   "content": "白色毛衣 + 牛仔裤 + 运动鞋",
@@ -114,7 +115,7 @@
                       "type": "text",
                       "id": "tSCjV",
                       "name": "tag1",
-                      "fill": "#999999",
+                      "fill": "#7A7A7A",
                       "content": "日常",
                       "fontFamily": "system-ui",
                       "fontSize": 12,
@@ -129,6 +130,7 @@
               "id": "4lvBF",
               "name": "item2",
               "width": "fill_container",
+              "fill": "#F5F5F5",
               "stroke": {
                 "align": "inside",
                 "thickness": {
@@ -147,7 +149,7 @@
                   "type": "text",
                   "id": "RL8Q9",
                   "name": "date2",
-                  "fill": "#666666",
+                  "fill": "#7A7A7A",
                   "content": "2026 / 01 / 25",
                   "fontFamily": "system-ui",
                   "fontSize": 14,
@@ -157,7 +159,7 @@
                   "type": "text",
                   "id": "nPlaA",
                   "name": "desc2",
-                  "fill": "#000000",
+                  "fill": "#2F2F2F",
                   "textGrowth": "fixed-width",
                   "width": "fill_container",
                   "content": "黑色连衣裙 + 短靴",
@@ -176,7 +178,7 @@
                       "type": "text",
                       "id": "P2vzZ",
                       "name": "tag2",
-                      "fill": "#999999",
+                      "fill": "#7A7A7A",
                       "content": "约会",
                       "fontFamily": "system-ui",
                       "fontSize": 12,
@@ -191,6 +193,7 @@
               "id": "NEkXI",
               "name": "item3",
               "width": "fill_container",
+              "fill": "#F5F5F5",
               "stroke": {
                 "align": "inside",
                 "thickness": {
@@ -209,7 +212,7 @@
                   "type": "text",
                   "id": "zuaDM",
                   "name": "date3",
-                  "fill": "#666666",
+                  "fill": "#7A7A7A",
                   "content": "2026 / 01 / 24",
                   "fontFamily": "system-ui",
                   "fontSize": 14,
@@ -219,7 +222,7 @@
                   "type": "text",
                   "id": "KgJ6C",
                   "name": "desc3",
-                  "fill": "#000000",
+                  "fill": "#2F2F2F",
                   "textGrowth": "fixed-width",
                   "width": "fill_container",
                   "content": "灰色卫衣 + 黑色长裤 + 帆布鞋",
@@ -246,7 +249,7 @@
           "name": "addButton",
           "width": "fill_container",
           "height": 56,
-          "fill": "#FFFFFF",
+          "fill": "#FAFAFA",
           "stroke": {
             "align": "inside",
             "thickness": {
@@ -265,7 +268,7 @@
               "type": "text",
               "id": "wOKQQ",
               "name": "buttonText",
-              "fill": "#000000",
+              "fill": "#1A1A1A",
               "content": "新增穿搭",
               "fontFamily": "system-ui",
               "fontSize": 16,
@@ -283,7 +286,7 @@
       "name": "Outfit List - 空状态",
       "width": 375,
       "height": 812,
-      "fill": "#FFFFFF",
+      "fill": "#FAFAFA",
       "layout": "vertical",
       "children": [
         {
@@ -292,7 +295,7 @@
           "name": "emptyHeader",
           "width": "fill_container",
           "height": 64,
-          "fill": "#FFFFFF",
+          "fill": "#FAFAFA",
           "padding": [
             16,
             20
@@ -303,7 +306,7 @@
               "type": "text",
               "id": "Bp6nP",
               "name": "emptyTitle",
-              "fill": "#000000",
+              "fill": "#2F2F2F",
               "content": "今日穿什麼",
               "fontFamily": "system-ui",
               "fontSize": 20,
@@ -330,7 +333,7 @@
               "type": "text",
               "id": "pyBDb",
               "name": "emptyText",
-              "fill": "#666666",
+              "fill": "#7A7A7A",
               "textGrowth": "fixed-width",
               "width": "fill_container",
               "content": "今天還沒有穿搭紀錄",
@@ -344,7 +347,7 @@
               "type": "frame",
               "id": "fVJJr",
               "name": "emptyButton",
-              "fill": "#F5F5F5",
+              "fill": "#1A1A1A",
               "stroke": {
                 "align": "inside",
                 "thickness": 1,
@@ -361,7 +364,7 @@
                   "type": "text",
                   "id": "4gzVb",
                   "name": "emptyButtonText",
-                  "fill": "#000000",
+                  "fill": "#FAFAFA",
                   "content": "新增穿搭",
                   "fontFamily": "system-ui",
                   "fontSize": 16,
@@ -377,7 +380,7 @@
           "name": "emptyBottomButton",
           "width": "fill_container",
           "height": 56,
-          "fill": "#FFFFFF",
+          "fill": "#FAFAFA",
           "stroke": {
             "align": "inside",
             "thickness": {
@@ -396,7 +399,7 @@
               "type": "text",
               "id": "SLTHw",
               "name": "emptyBottomButtonText",
-              "fill": "#000000",
+              "fill": "#1A1A1A",
               "content": "新增穿搭",
               "fontFamily": "system-ui",
               "fontSize": 16,

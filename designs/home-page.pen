@@ -1,0 +1,937 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "2Xl93",
+      "x": -41.428571428571445,
+      "y": 406,
+      "name": "Home Page",
+      "clip": true,
+      "width": 375,
+      "fill": "$--bg-primary",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "dKyAa",
+          "name": "Pull Refresh Indicator",
+          "width": "fill_container",
+          "height": 60,
+          "layout": "vertical",
+          "padding": [
+            16,
+            0
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "icon_font",
+              "id": "8Myn6",
+              "name": "refreshIcon",
+              "width": 24,
+              "height": 24,
+              "iconFontName": "arrow-down",
+              "iconFontFamily": "lucide",
+              "fill": "$--text-secondary"
+            },
+            {
+              "type": "text",
+              "id": "fWy0P",
+              "name": "refreshText",
+              "fill": "$--text-secondary",
+              "content": "下拉刷新",
+              "fontFamily": "Inter",
+              "fontSize": 12,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "GhiAf",
+          "name": "Content Area",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 12,
+          "padding": [
+            0,
+            12
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "IKP8E",
+              "name": "Staggered Grid",
+              "width": "fill_container",
+              "gap": 12,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "mnldM",
+                  "name": "Column 1",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "bs1ao",
+                      "name": "card1",
+                      "width": "fill_container",
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 8,
+                      "effect": {
+                        "type": "shadow",
+                        "shadowType": "outer",
+                        "color": "#0000001F",
+                        "offset": {
+                          "x": 0,
+                          "y": 2
+                        },
+                        "blur": 8
+                      },
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "c6x6Z",
+                          "name": "Image Container",
+                          "clip": true,
+                          "width": "fill_container",
+                          "height": 228,
+                          "fill": "$--image-placeholder",
+                          "cornerRadius": [
+                            8,
+                            8,
+                            0,
+                            0
+                          ],
+                          "layout": "vertical",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "g6A4x",
+                              "name": "Date Overlay",
+                              "width": "fill_container",
+                              "height": 28,
+                              "fill": "#00000080",
+                              "padding": [
+                                8,
+                                12
+                              ],
+                              "justifyContent": "end",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "IZnoo",
+                                  "name": "Date Text",
+                                  "fill": "#FFFFFF",
+                                  "content": "1月26日",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 11,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "3yKpg",
+                              "name": "Image Placeholder",
+                              "width": "fill_container",
+                              "height": "fill_container",
+                              "fill": "$--image-placeholder"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "0eIgm",
+                          "name": "Text Area",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 8,
+                          "padding": 12,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "3ZzVD",
+                              "name": "Name Text",
+                              "fill": "$--text-primary",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "白色毛衣 + 牛仔裤",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "500"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "OVYpA",
+                              "name": "Tags Row",
+                              "width": "fill_container",
+                              "gap": 6,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "gI2rs",
+                                  "name": "Tag 1",
+                                  "fill": "$--text-secondary",
+                                  "content": "晴天",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 10,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "qHtu0",
+                                  "name": "Weather Text",
+                                  "fill": "$--text-secondary",
+                                  "content": "日常",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 10,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "T7Qcb",
+                      "name": "card3",
+                      "width": "fill_container",
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 8,
+                      "effect": {
+                        "type": "shadow",
+                        "shadowType": "outer",
+                        "color": "#0000001F",
+                        "offset": {
+                          "x": 0,
+                          "y": 2
+                        },
+                        "blur": 8
+                      },
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "cxmIF",
+                          "name": "Image Container",
+                          "clip": true,
+                          "width": "fill_container",
+                          "height": 228,
+                          "fill": "$--image-placeholder",
+                          "cornerRadius": [
+                            8,
+                            8,
+                            0,
+                            0
+                          ],
+                          "layout": "vertical",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "WTDu6",
+                              "name": "Date Overlay",
+                              "width": "fill_container",
+                              "height": 28,
+                              "fill": "#00000080",
+                              "padding": [
+                                8,
+                                12
+                              ],
+                              "justifyContent": "end",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "5AvOG",
+                                  "name": "Date Text",
+                                  "fill": "#FFFFFF",
+                                  "content": "1月24日",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 11,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "zenf1",
+                              "name": "Image Placeholder",
+                              "width": "fill_container",
+                              "height": "fill_container",
+                              "fill": "$--image-placeholder"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "ycRah",
+                          "name": "Text Area",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 8,
+                          "padding": 12,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "VF2mu",
+                              "name": "Name Text",
+                              "fill": "$--text-primary",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "粉色卫衣 + 白色短裙",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "500"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "bWLMn",
+                              "name": "Tags Row",
+                              "width": "fill_container",
+                              "gap": 6,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "wbvvh",
+                                  "name": "Tag 1",
+                                  "fill": "$--text-secondary",
+                                  "content": "晴天",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 10,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "PdcQS",
+                                  "name": "Weather Text",
+                                  "fill": "$--text-secondary",
+                                  "content": "日常",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 10,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "WwAsF",
+                      "name": "card5",
+                      "width": "fill_container",
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 8,
+                      "effect": {
+                        "type": "shadow",
+                        "shadowType": "outer",
+                        "color": "#0000001F",
+                        "offset": {
+                          "x": 0,
+                          "y": 2
+                        },
+                        "blur": 8
+                      },
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "Tcznt",
+                          "name": "Image Container",
+                          "clip": true,
+                          "width": "fill_container",
+                          "height": 228,
+                          "fill": "$--image-placeholder",
+                          "cornerRadius": [
+                            8,
+                            8,
+                            0,
+                            0
+                          ],
+                          "layout": "vertical",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "ZUQvT",
+                              "name": "Date Overlay",
+                              "width": "fill_container",
+                              "height": 28,
+                              "fill": "#00000080",
+                              "padding": [
+                                8,
+                                12
+                              ],
+                              "justifyContent": "end",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "N19Iz",
+                                  "name": "Date Text",
+                                  "fill": "#FFFFFF",
+                                  "content": "1月22日",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 11,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "lOZQA",
+                              "name": "Image Placeholder",
+                              "width": "fill_container",
+                              "height": "fill_container",
+                              "fill": "$--image-placeholder"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "FKiLs",
+                          "name": "Text Area",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 8,
+                          "padding": 12,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "3laOA",
+                              "name": "Name Text",
+                              "fill": "$--text-primary",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "米色针织衫 + 黑色牛仔裤",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "500"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "vNvTa",
+                              "name": "Tags Row",
+                              "width": "fill_container",
+                              "gap": 6,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "xbuoT",
+                                  "name": "Tag 1",
+                                  "fill": "$--text-secondary",
+                                  "content": "晴天",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 10,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "LlAfh",
+                                  "name": "Weather Text",
+                                  "fill": "$--text-secondary",
+                                  "content": "日常",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 10,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "w7gEq",
+                  "name": "Column 2",
+                  "width": "fill_container",
+                  "layout": "vertical",
+                  "gap": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "HXVoC",
+                      "name": "card2",
+                      "width": "fill_container",
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 8,
+                      "effect": {
+                        "type": "shadow",
+                        "shadowType": "outer",
+                        "color": "#0000001F",
+                        "offset": {
+                          "x": 0,
+                          "y": 2
+                        },
+                        "blur": 8
+                      },
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "XYL6A",
+                          "name": "Image Container",
+                          "clip": true,
+                          "width": "fill_container",
+                          "height": 228,
+                          "fill": "$--image-placeholder",
+                          "cornerRadius": [
+                            8,
+                            8,
+                            0,
+                            0
+                          ],
+                          "layout": "vertical",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "Iejpd",
+                              "name": "Date Overlay",
+                              "width": "fill_container",
+                              "height": 28,
+                              "fill": "#00000080",
+                              "padding": [
+                                8,
+                                12
+                              ],
+                              "justifyContent": "end",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "JZI7E",
+                                  "name": "Date Text",
+                                  "fill": "#FFFFFF",
+                                  "content": "1月25日",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 11,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "PKjEa",
+                              "name": "Image Placeholder",
+                              "width": "fill_container",
+                              "height": "fill_container",
+                              "fill": "$--image-placeholder"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "QgCuo",
+                          "name": "Text Area",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 8,
+                          "padding": 12,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "fGmsk",
+                              "name": "Name Text",
+                              "fill": "$--text-primary",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "黑色大衣 + 灰色长裤",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "500"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "KBwZ9",
+                              "name": "Tags Row",
+                              "width": "fill_container",
+                              "gap": 6,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "Scp65",
+                                  "name": "Tag 1",
+                                  "fill": "$--text-secondary",
+                                  "content": "阴天",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 10,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "0oOPx",
+                                  "name": "Weather Text",
+                                  "fill": "$--text-secondary",
+                                  "content": "工作",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 10,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "W1ucV",
+                      "name": "card4",
+                      "width": "fill_container",
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 8,
+                      "effect": {
+                        "type": "shadow",
+                        "shadowType": "outer",
+                        "color": "#0000001F",
+                        "offset": {
+                          "x": 0,
+                          "y": 2
+                        },
+                        "blur": 8
+                      },
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "pZvMU",
+                          "name": "Image Container",
+                          "clip": true,
+                          "width": "fill_container",
+                          "height": 228,
+                          "fill": "$--image-placeholder",
+                          "cornerRadius": [
+                            8,
+                            8,
+                            0,
+                            0
+                          ],
+                          "layout": "vertical",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "7rzvx",
+                              "name": "Date Overlay",
+                              "width": "fill_container",
+                              "height": 28,
+                              "fill": "#00000080",
+                              "padding": [
+                                8,
+                                12
+                              ],
+                              "justifyContent": "end",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "0SwYn",
+                                  "name": "Date Text",
+                                  "fill": "#FFFFFF",
+                                  "content": "1月23日",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 11,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "8hp3R",
+                              "name": "Image Placeholder",
+                              "width": "fill_container",
+                              "height": "fill_container",
+                              "fill": "$--image-placeholder"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "FLnVx",
+                          "name": "Text Area",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 8,
+                          "padding": 12,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "hySPm",
+                              "name": "Name Text",
+                              "fill": "$--text-primary",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "蓝色衬衫 + 卡其色长裤",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "500"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "rP5p3",
+                              "name": "Tags Row",
+                              "width": "fill_container",
+                              "gap": 6,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "4RcPI",
+                                  "name": "Tag 1",
+                                  "fill": "$--text-secondary",
+                                  "content": "雨天",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 10,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "qBhtB",
+                                  "name": "Weather Text",
+                                  "fill": "$--text-secondary",
+                                  "content": "工作",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 10,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "aAWTQ",
+                      "name": "card6",
+                      "width": "fill_container",
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 8,
+                      "effect": {
+                        "type": "shadow",
+                        "shadowType": "outer",
+                        "color": "#0000001F",
+                        "offset": {
+                          "x": 0,
+                          "y": 2
+                        },
+                        "blur": 8
+                      },
+                      "layout": "vertical",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "TPsn2",
+                          "name": "Image Container",
+                          "clip": true,
+                          "width": "fill_container",
+                          "height": 228,
+                          "fill": "$--image-placeholder",
+                          "cornerRadius": [
+                            8,
+                            8,
+                            0,
+                            0
+                          ],
+                          "layout": "vertical",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "6X6zF",
+                              "name": "Date Overlay",
+                              "width": "fill_container",
+                              "height": 28,
+                              "fill": "#00000080",
+                              "padding": [
+                                8,
+                                12
+                              ],
+                              "justifyContent": "end",
+                              "alignItems": "center",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "rUnBz",
+                                  "name": "Date Text",
+                                  "fill": "#FFFFFF",
+                                  "content": "1月21日",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 11,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "frame",
+                              "id": "sLnxw",
+                              "name": "Image Placeholder",
+                              "width": "fill_container",
+                              "height": "fill_container",
+                              "fill": "$--image-placeholder"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "2CBE0",
+                          "name": "Text Area",
+                          "width": "fill_container",
+                          "layout": "vertical",
+                          "gap": 8,
+                          "padding": 12,
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "GIpIc",
+                              "name": "Name Text",
+                              "fill": "$--text-primary",
+                              "textGrowth": "fixed-width",
+                              "width": "fill_container",
+                              "content": "灰色西装 + 白色内搭",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "500"
+                            },
+                            {
+                              "type": "frame",
+                              "id": "VMhKo",
+                              "name": "Tags Row",
+                              "width": "fill_container",
+                              "gap": 6,
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "Cp4Po",
+                                  "name": "Tag 1",
+                                  "fill": "$--text-secondary",
+                                  "content": "阴天",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 10,
+                                  "fontWeight": "normal"
+                                },
+                                {
+                                  "type": "text",
+                                  "id": "wX0ob",
+                                  "name": "Weather Text",
+                                  "fill": "$--text-secondary",
+                                  "content": "工作",
+                                  "fontFamily": "Inter",
+                                  "fontSize": 10,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "1ssKl",
+          "name": "Empty State",
+          "enabled": false,
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 24,
+          "padding": [
+            80,
+            24
+          ],
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "icon_font",
+              "id": "qF1qd",
+              "name": "emptyIcon",
+              "width": 64,
+              "height": 64,
+              "iconFontName": "shirt",
+              "iconFontFamily": "lucide",
+              "fill": "$--text-placeholder"
+            },
+            {
+              "type": "text",
+              "id": "4qV6o",
+              "name": "emptyText",
+              "fill": "$--text-placeholder",
+              "content": "还没有穿搭记录",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "BDNn1",
+              "name": "Add Button",
+              "height": 44,
+              "fill": "$--primary",
+              "cornerRadius": 8,
+              "padding": [
+                12,
+                24
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "CW71k",
+                  "name": "buttonText",
+                  "fill": "#FFFFFF",
+                  "content": "新增穿搭",
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                  "fontWeight": "500"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variables": {
+    "--bg-primary": {
+      "type": "color",
+      "value": "#FAFAFA"
+    },
+    "--text-secondary": {
+      "type": "color",
+      "value": "#7A7A7A"
+    },
+    "--image-placeholder": {
+      "type": "color",
+      "value": "#E8E8E8"
+    },
+    "--text-primary": {
+      "type": "color",
+      "value": "#2F2F2F"
+    },
+    "--text-placeholder": {
+      "type": "color",
+      "value": "#B8B8B8"
+    },
+    "--primary": {
+      "type": "color",
+      "value": "#1A1A1A"
+    }
+  }
+}
