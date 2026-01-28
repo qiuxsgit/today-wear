@@ -1,9 +1,11 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:today_wear/l10n/app_localizations.dart';
 import '../models/outfit.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_text_style.dart';
+import '../services/image_service.dart';
 
 /// 穿搭详情页（占位）
 /// 
@@ -51,22 +53,25 @@ class OutfitDetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 图片占位符
-              Container(
-                width: double.infinity,
-                height: 300,
-                decoration: BoxDecoration(
-                  color: AppColors.imagePlaceholder,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Center(
-                  child: Icon(
-                    Icons.image,
-                    size: 64,
-                    color: AppColors.textPlaceholder,
+              // 图片展示
+              if (outfit.photoPaths.isNotEmpty)
+                _buildImageGallery(outfit.photoPaths)
+              else
+                Container(
+                  width: double.infinity,
+                  height: 300,
+                  decoration: BoxDecoration(
+                    color: AppColors.imagePlaceholder,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Center(
+                    child: Icon(
+                      Icons.image,
+                      size: 64,
+                      color: AppColors.textPlaceholder,
+                    ),
                   ),
                 ),
-              ),
               
               const SizedBox(height: AppSpacing.lg),
               
@@ -101,15 +106,88 @@ class OutfitDetailPage extends StatelessWidget {
               ],
               
               const SizedBox(height: AppSpacing.lg),
-              
-              // 占位提示
-              Text(
-                '详情页功能待实现',
-                style: AppTextStyle.hint,
-              ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  /// 构建图片画廊
+  Widget _buildImageGallery(List<String> photoPaths) {
+    if (photoPaths.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return SizedBox(
+      height: 300,
+      child: PageView.builder(
+        itemCount: photoPaths.length,
+        itemBuilder: (context, index) {
+          return FutureBuilder<File?>(
+            future: ImageService.instance.getImageFile(photoPaths[index]),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: AppColors.imagePlaceholder,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
+
+              final file = snapshot.data;
+              if (file == null || !file.existsSync()) {
+                return Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: AppColors.imagePlaceholder,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Center(
+                    child: Icon(
+                      Icons.broken_image,
+                      size: 64,
+                      color: AppColors.textPlaceholder,
+                    ),
+                  ),
+                );
+              }
+
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.file(
+                    file,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: AppColors.imagePlaceholder,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Center(
+                          child: Icon(
+                            Icons.broken_image,
+                            size: 64,
+                            color: AppColors.textPlaceholder,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }

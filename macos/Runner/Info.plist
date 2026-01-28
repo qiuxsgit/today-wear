@@ -28,5 +28,13 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<!-- 相册权限 -->
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>需要访问相册以选择穿搭照片</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>需要访问相册以保存穿搭照片</string>
+	<!-- 相机权限 -->
+	<key>NSCameraUsageDescription</key>
+	<string>需要访问相机以拍摄穿搭照片</string>
 </dict>
 </plist>

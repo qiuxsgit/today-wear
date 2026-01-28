@@ -87,4 +87,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get about => '앱 정보';
+
+  @override
+  String get save => '저장';
 }

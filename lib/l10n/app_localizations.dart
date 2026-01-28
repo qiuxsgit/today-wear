@@ -259,6 +259,12 @@ abstract class AppLocalizations {
   /// In zh_CN, this message translates to:
   /// **'关于应用'**
   String get about;
+
+  /// No description provided for @save.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'保存'**
+  String get save;
 }
 
 class _AppLocalizationsDelegate

@@ -9,6 +9,8 @@ import 'screens/profile_page.dart';
 import 'theme/app_colors.dart';
 import 'widgets/main_navigation.dart';
 import 'services/locale_service.dart';
+import 'database/database.dart';
+import 'services/image_service.dart';
 
 // 导出LocaleServiceProvider以便其他文件使用
 export 'services/locale_service.dart';
@@ -19,6 +21,12 @@ void main() async {
   // 初始化语言服务
   final localeService = LocaleService();
   await localeService.init();
+  
+  // 初始化数据库（创建单例）
+  AppDatabase();
+  
+  // 初始化图片目录
+  await ImageService.instance.ensureImageDirectoriesExist();
   
   // macOS 专用调试配置：将窗口设置为手机比例（iPhone 14/15: 390 × 844）
   if (Platform.isMacOS) {
@@ -120,16 +128,45 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
   
-  final List<Widget> _pages = const [
-    HomePage(),
-    AddOutfitPage(),
-    ProfilePage(),
+  // 标记是否需要刷新首页数据
+  bool _needsRefresh = false;
+  
+  // 使用 GlobalKey 来访问 HomePage 的状态，以便刷新数据
+  final GlobalKey<HomePageState> _homePageKey = GlobalKey<HomePageState>();
+  // 使用 GlobalKey 来访问 AddOutfitPage 的状态
+  final GlobalKey<AddOutfitPageState> _addOutfitPageKey = GlobalKey<AddOutfitPageState>();
+  
+  List<Widget> get _pages => [
+    HomePage(key: _homePageKey),
+    AddOutfitPage(
+      key: _addOutfitPageKey,
+      onDataSaved: _onDataSaved,
+    ),
+    const ProfilePage(),
   ];
   
-  void _onNavigationTap(int index) {
+  /// 当数据保存成功时调用，标记需要刷新首页
+  void _onDataSaved() {
     setState(() {
-      _selectedIndex = index;
+      _needsRefresh = true;
     });
+  }
+  
+  void _onNavigationTap(int index) {
+    // 如果切换到首页，检查是否需要刷新数据
+    if (index == 0 && _needsRefresh) {
+      if (_homePageKey.currentState != null) {
+        _homePageKey.currentState!.refreshData();
+      }
+      setState(() {
+        _needsRefresh = false;
+        _selectedIndex = index;
+      });
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
   }
   
   @override

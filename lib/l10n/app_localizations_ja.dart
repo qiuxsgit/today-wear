@@ -87,4 +87,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get about => 'アプリについて';
+
+  @override
+  String get save => '保存';
 }

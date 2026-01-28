@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../models/outfit.dart';
 import '../theme/app_colors.dart';
 import '../widgets/waterfall_outfit_card.dart';
+import '../database/database.dart';
+import '../repositories/outfit_repository.dart';
 import 'outfit_detail_page.dart';
 
 /// 首页
@@ -11,10 +13,10 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key});
   
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   /// 当前加载的数据
   List<Outfit> _loadedOutfits = [];
   
@@ -30,9 +32,13 @@ class _HomePageState extends State<HomePage> {
   /// 滚动控制器
   final ScrollController _scrollController = ScrollController();
   
+  /// 数据库仓库
+  late final OutfitRepository _repository;
+  
   @override
   void initState() {
     super.initState();
+    _initializeRepository();
     _loadMoreData();
     _scrollController.addListener(_onScroll);
   }
@@ -41,6 +47,23 @@ class _HomePageState extends State<HomePage> {
   void dispose() {
     _scrollController.dispose();
     super.dispose();
+  }
+  
+  /// 初始化仓库
+  void _initializeRepository() {
+    // 从全局获取数据库实例（需要在 main.dart 中初始化）
+    final db = AppDatabase();
+    _repository = OutfitRepository(db);
+  }
+  
+  /// 刷新数据（从第一页重新加载）
+  void refreshData() {
+    setState(() {
+      _loadedOutfits.clear();
+      _hasMore = true;
+      _isLoading = false;
+    });
+    _loadMoreData();
   }
   
   /// 滚动监听，实现加载更多
@@ -52,27 +75,38 @@ class _HomePageState extends State<HomePage> {
   }
   
   /// 加载更多数据
-  void _loadMoreData() {
+  Future<void> _loadMoreData() async {
     if (_isLoading || !_hasMore) return;
     
     setState(() {
       _isLoading = true;
     });
     
-    // 模拟异步加载
-    Future.delayed(const Duration(milliseconds: 500), () {
+    try {
+      final offset = _loadedOutfits.length;
+      final newOutfits = await _repository.getAllOutfits(
+        limit: _pageSize,
+        offset: offset,
+      );
+      
       if (!mounted) return;
       
-      final allData = Outfit.generateMockData();
-      final currentCount = _loadedOutfits.length;
-      final nextCount = (currentCount + _pageSize).clamp(0, allData.length);
-      
       setState(() {
-        _loadedOutfits = allData.sublist(0, nextCount);
-        _hasMore = nextCount < allData.length;
+        if (newOutfits.isEmpty) {
+          _hasMore = false;
+        } else {
+          _loadedOutfits.addAll(newOutfits);
+          _hasMore = newOutfits.length == _pageSize;
+        }
         _isLoading = false;
       });
-    });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _isLoading = false;
+        _hasMore = false;
+      });
+    }
   }
   
   /// 构建两列瀑布流内容

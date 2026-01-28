@@ -1,7 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:today_wear/l10n/app_localizations.dart';
 import '../models/outfit.dart';
 import '../theme/app_colors.dart';
+import '../services/image_service.dart';
 
 /// 瀑布流穿搭卡片组件
 ///
@@ -91,23 +93,10 @@ class WaterfallOutfitCard extends StatelessWidget {
 
           const SizedBox(height: 8),
 
-          // 图片占位符（3:4比例）
+          // 图片（3:4比例）
           AspectRatio(
             aspectRatio: 3 / 4,
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: AppColors.imagePlaceholder,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Center(
-                child: Icon(
-                  Icons.image,
-                  size: 32,
-                  color: AppColors.textPlaceholder,
-                ),
-              ),
-            ),
+            child: _buildImage(),
           ),
 
           const SizedBox(height: 8),
@@ -135,5 +124,88 @@ class WaterfallOutfitCard extends StatelessWidget {
     }
 
     return cardContent;
+  }
+
+  /// 构建图片 widget
+  Widget _buildImage() {
+    if (outfit.photoPaths.isEmpty) {
+      // 没有图片，显示占位符
+      return Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: AppColors.imagePlaceholder,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: const Center(
+          child: Icon(
+            Icons.image,
+            size: 32,
+            color: AppColors.textPlaceholder,
+          ),
+        ),
+      );
+    }
+
+    // 显示第一张图片
+    return FutureBuilder<File?>(
+      future: ImageService.instance.getImageFile(outfit.photoPaths.first),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: AppColors.imagePlaceholder,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+
+        final file = snapshot.data;
+        if (file == null || !file.existsSync()) {
+          return Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: AppColors.imagePlaceholder,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: const Center(
+              child: Icon(
+                Icons.image,
+                size: 32,
+                color: AppColors.textPlaceholder,
+              ),
+            ),
+          );
+        }
+
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.file(
+            file,
+            width: double.infinity,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              return Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: AppColors.imagePlaceholder,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Center(
+                  child: Icon(
+                    Icons.broken_image,
+                    size: 32,
+                    color: AppColors.textPlaceholder,
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
   }
 }

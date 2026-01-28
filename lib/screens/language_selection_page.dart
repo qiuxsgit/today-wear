@@ -71,7 +71,7 @@ class LanguageSelectionPage extends StatelessWidget {
               onChanged: (value) {
                 if (value != null && localeService != null) {
                   localeService.setLocale(value);
-                  Navigator.pop(context);
+                  // 选择语言后留在选择页面，不自动退出
                 }
               },
               selected: isSelected,

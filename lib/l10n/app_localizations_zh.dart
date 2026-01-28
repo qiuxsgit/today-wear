@@ -87,6 +87,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get about => '关于应用';
+
+  @override
+  String get save => '保存';
 }
 
 /// The translations for Chinese, as used in China (`zh_CN`).
@@ -172,6 +175,9 @@ class AppLocalizationsZhCn extends AppLocalizationsZh {
 
   @override
   String get about => '关于应用';
+
+  @override
+  String get save => '保存';
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
@@ -257,4 +263,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get about => '關於應用';
+
+  @override
+  String get save => '保存';
 }
