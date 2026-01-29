@@ -270,9 +270,10 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.bgPrimary,
       appBar: AppBar(
-        title: Text(l10n.profile, style: AppTextStyle.title),
+        toolbarHeight: 0,
         backgroundColor: AppColors.bgPrimary,
         elevation: 0,
+        scrolledUnderElevation: 0,
       ),
       body: FutureBuilder<PackageInfo>(
         future: PackageInfo.fromPlatform(),
