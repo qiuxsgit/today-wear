@@ -90,6 +90,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get save => '保存';
+
+  @override
+  String get homeEmptyMessage => '还没有穿搭记录\n添加第一条穿搭，开始记录你的每日穿搭吧';
+
+  @override
+  String get homeAddFirstOutfit => '添加第一条穿搭';
 }
 
 /// The translations for Chinese, as used in China (`zh_CN`).
@@ -178,6 +184,12 @@ class AppLocalizationsZhCn extends AppLocalizationsZh {
 
   @override
   String get save => '保存';
+
+  @override
+  String get homeEmptyMessage => '还没有穿搭记录\n添加第一条穿搭，开始记录你的每日穿搭吧';
+
+  @override
+  String get homeAddFirstOutfit => '添加第一条穿搭';
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
@@ -266,4 +278,10 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get save => '保存';
+
+  @override
+  String get homeEmptyMessage => '還沒有穿搭記錄\n添加第一條穿搭，開始記錄你的每日穿搭吧';
+
+  @override
+  String get homeAddFirstOutfit => '添加第一條穿搭';
 }

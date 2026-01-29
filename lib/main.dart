@@ -137,7 +137,10 @@ class _MainScreenState extends State<MainScreen> {
   final GlobalKey<AddOutfitPageState> _addOutfitPageKey = GlobalKey<AddOutfitPageState>();
   
   List<Widget> get _pages => [
-    HomePage(key: _homePageKey),
+    HomePage(
+      key: _homePageKey,
+      onAddFirstOutfit: () => setState(() => _selectedIndex = 1),
+    ),
     AddOutfitPage(
       key: _addOutfitPageKey,
       onDataSaved: _onDataSaved,

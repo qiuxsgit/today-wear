@@ -36,5 +36,7 @@
   "openSourceLicense": "開源許可",
   "contact": "聯絡方式",
   "about": "關於應用",
-  "save": "保存"
+  "save": "保存",
+  "homeEmptyMessage": "還沒有穿搭記錄\n添加第一條穿搭，開始記錄你的每日穿搭吧",
+  "homeAddFirstOutfit": "添加第一條穿搭"
 }

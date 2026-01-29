@@ -36,5 +36,7 @@
   "openSourceLicense": "Open Source License",
   "contact": "Contact",
   "about": "About",
-  "save": "Save"
+  "save": "Save",
+  "homeEmptyMessage": "No outfit records yet.\nAdd your first outfit to start recording your daily looks.",
+  "homeAddFirstOutfit": "Add First Outfit"
 }

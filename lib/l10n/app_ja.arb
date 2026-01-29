@@ -36,5 +36,7 @@
   "openSourceLicense": "オープンソースライセンス",
   "contact": "お問い合わせ",
   "about": "アプリについて",
-  "save": "保存"
+  "save": "保存",
+  "homeEmptyMessage": "まだコーデの記録がありません\n最初のコーデを追加して、毎日のコーデを記録しましょう",
+  "homeAddFirstOutfit": "最初のコーデを追加"
 }

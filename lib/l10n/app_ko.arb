@@ -36,5 +36,7 @@
   "openSourceLicense": "오픈소스 라이선스",
   "contact": "연락처",
   "about": "앱 정보",
-  "save": "저장"
+  "save": "저장",
+  "homeEmptyMessage": "아직 코디 기록이 없어요.\n첫 코디를 추가하고 매일의 코디를 기록해 보세요.",
+  "homeAddFirstOutfit": "첫 코디 추가"
 }
