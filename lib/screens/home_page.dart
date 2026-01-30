@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:today_wear/l10n/app_localizations.dart';
 import '../models/outfit.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_spacing.dart';
 import '../widgets/waterfall_outfit_card.dart';
 import '../database/database.dart';
 import '../repositories/outfit_repository.dart';
 import 'outfit_detail_page.dart';
+
+/// 列表卡片间距（与文档「Spacing：20」一致，保持呼吸感）
+const double _listCardSpacing = 20.0;
 
 /// 首页
 /// 
@@ -133,7 +137,7 @@ class HomePageState extends State<HomePage> {
 
       targetColumn.add(
         Padding(
-          padding: const EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.only(bottom: _listCardSpacing),
           child: WaterfallOutfitCard(
             outfit: outfit,
             onTap: () {
@@ -160,7 +164,7 @@ class HomePageState extends State<HomePage> {
               children: leftColumnWidgets,
             ),
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: _listCardSpacing / 2),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -247,7 +251,12 @@ class HomePageState extends State<HomePage> {
       body: SafeArea(
         child: SingleChildScrollView(
           controller: _scrollController,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.only(
+            left: AppSpacing.md,
+            right: AppSpacing.md,
+            top: AppSpacing.lg,
+            bottom: 32,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -255,7 +264,7 @@ class HomePageState extends State<HomePage> {
               // 加载更多指示器
               if (_isLoading)
                 const Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: EdgeInsets.all(AppSpacing.md),
                   child: Center(
                     child: CircularProgressIndicator(),
                   ),

@@ -76,6 +76,17 @@ flutter pub get
 flutter run
 ```
 
+**Android 构建说明**：若本机默认是 Java 25，Gradle 的 Kotlin 脚本会报错（如 `IllegalArgumentException: 25.0.1`）。请先切到 JDK 17 或 21 再运行：
+
+```bash
+# 方式一：临时指定 JDK 17 再运行
+export JAVA_HOME=$(/usr/libexec/java_home -v 17)
+flutter run
+
+# 方式二：直接使用脚本（自动选 JDK 17/21）
+./flutter_run_android.sh
+```
+
 ---
 
 ## Roadmap
