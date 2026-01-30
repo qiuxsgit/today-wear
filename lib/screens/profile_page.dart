@@ -6,6 +6,8 @@ import '../theme/app_text_style.dart';
 import '../theme/app_spacing.dart';
 import '../services/locale_service.dart';
 import 'language_selection_page.dart';
+import 'privacy_policy_page.dart';
+import 'terms_of_service_page.dart';
 
 /// 个人/设置页面
 /// 
@@ -184,7 +186,12 @@ class ProfilePage extends StatelessWidget {
             l10n.privacyPolicy,
             null,
             onTap: () {
-              // TODO: 打开隐私政策页面或链接
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const PrivacyPolicyPage(),
+                ),
+              );
             },
           ),
           // 使用条款
@@ -193,7 +200,12 @@ class ProfilePage extends StatelessWidget {
             l10n.termsOfService,
             null,
             onTap: () {
-              // TODO: 打开使用条款页面或链接
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const TermsOfServicePage(),
+                ),
+              );
             },
           ),
           // 开源许可
