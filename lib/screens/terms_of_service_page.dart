@@ -16,10 +16,11 @@ class TermsOfServicePage extends StatelessWidget {
       backgroundColor: AppColors.bgPrimary,
       appBar: AppBar(
         title: Text(l10n.termsOfService),
-        backgroundColor: AppColors.bgPrimary,
+        backgroundColor: Colors.white,
         foregroundColor: AppColors.textPrimary,
         surfaceTintColor: Colors.transparent,
-        elevation: 0,
+        elevation: 2,
+        scrolledUnderElevation: 2,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSpacing.md),

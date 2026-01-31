@@ -4,6 +4,7 @@ import 'package:today_wear/database/database.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_text_style.dart';
+import '../theme/tag_colors.dart';
 
 /// 标签编辑 Modal
 ///
@@ -46,11 +47,16 @@ class TagEditModal extends StatefulWidget {
 class _TagEditModalState extends State<TagEditModal> {
   late final TextEditingController _nameController;
   late final _tagDao = AppDatabase().tagDao;
+  late String _selectedColorHex;
 
   @override
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.tag.name);
+    final tagColor = widget.tag.color ?? TagColors.defaultColorHex;
+    _selectedColorHex = TagColors.presetHex.contains(tagColor)
+        ? tagColor
+        : TagColors.defaultColorHex;
   }
 
   @override
@@ -68,7 +74,7 @@ class _TagEditModalState extends State<TagEditModal> {
       );
       return;
     }
-    final ok = await _tagDao.updateTagName(widget.tag.id, name);
+    final ok = await _tagDao.updateTag(widget.tag.id, name, _selectedColorHex);
     if (!mounted) return;
     if (ok) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -140,6 +146,44 @@ class _TagEditModalState extends State<TagEditModal> {
           ),
           textCapitalization: TextCapitalization.none,
           autofocus: true,
+        ),
+        const SizedBox(height: AppSpacing.md),
+        Text(
+          l10n.tagColor,
+          style: AppTextStyle.body.copyWith(
+            color: AppColors.textSecondary,
+            fontSize: 12,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.xs),
+        Wrap(
+          spacing: AppSpacing.xs,
+          runSpacing: AppSpacing.xs,
+          children: TagColors.presetHex.map((hex) {
+            final isSelected = _selectedColorHex == hex;
+            return GestureDetector(
+              onTap: () => setState(() => _selectedColorHex = hex),
+              child: Container(
+                width: 28,
+                height: 28,
+                decoration: BoxDecoration(
+                  color: TagColors.fromHex(hex),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: isSelected ? AppColors.primary : AppColors.bgTertiary,
+                    width: isSelected ? 2.5 : 1,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.1),
+                      blurRadius: 2,
+                      offset: const Offset(0, 1),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }).toList(),
         ),
         const SizedBox(height: AppSpacing.lg),
         Row(

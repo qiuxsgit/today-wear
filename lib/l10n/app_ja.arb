@@ -42,6 +42,7 @@
   "deleteOutfitConfirm": "このコーデ記録を削除しますか？削除すると元に戻せません。",
   "tagManagement": "タグ管理",
   "tagName": "タグ名",
+  "tagColor": "タグの色",
   "tagEdit": "タグを編集",
   "tagDeleteConfirm": "このタグを削除しますか？",
   "tagDeleteConfirmInUse": "このタグは {count} 件のコーデで使用されています。削除するとそれらから外れます。削除しますか？",
@@ -56,6 +57,33 @@
   "tagNameDuplicate": "このタグ名は既に存在します",
   "tagSaved": "保存しました",
   "tagNoTags": "タグがありません",
+  "tagManagementWithCount": "タグ管理（全 {count} 件）",
+  "@tagManagementWithCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "homeEmptyMessage": "まだコーデの記録がありません\n最初のコーデを追加して、毎日のコーデを記録しましょう",
-  "homeAddFirstOutfit": "最初のコーデを追加"
+  "homeAddFirstOutfit": "最初のコーデを追加",
+  "contactQQ": "QQ",
+  "contactEmail": "メール",
+  "contactEmailCopyHint": "メールアプリを開けません。メールアドレスを手動でコピーしてください。",
+  "copiedToClipboard": "コピーしました",
+  "editProfile": "プロフィールを編集",
+  "birthday": "誕生日",
+  "gender": "性別",
+  "personality": "性格",
+  "male": "男性",
+  "female": "女性",
+  "genderNotSpecified": "選択しない",
+  "profileSaved": "保存しました",
+  "hintNickname": "ニックネームを入力",
+  "hintPersonality": "あなたの性格を教えてください～",
+  "hintAvatarEmoji": "アバター用の絵文字を選んでください",
+  "selectBirthday": "誕生日を選択",
+  "avatar": "アバター",
+  "avatarSelectHint": "タップして写真を選択",
+  "nicknameField": "ニックネーム"
 }

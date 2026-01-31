@@ -21,8 +21,11 @@ class LanguageSelectionPage extends StatelessWidget {
       backgroundColor: AppColors.bgPrimary,
       appBar: AppBar(
         title: Text(l10n.language, style: AppTextStyle.title),
-        backgroundColor: AppColors.bgPrimary,
-        elevation: 0,
+        backgroundColor: Colors.white,
+        foregroundColor: AppColors.textPrimary,
+        surfaceTintColor: Colors.transparent,
+        elevation: 2,
+        scrolledUnderElevation: 2,
       ),
       body: ListView.separated(
         padding: const EdgeInsets.all(AppSpacing.md),

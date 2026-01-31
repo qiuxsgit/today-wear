@@ -16,13 +16,17 @@ class Outfit {
   
   /// 标签列表（如：天气、场合等）
   final List<String> tags;
-  
+
+  /// 标签颜色列表（与 tags 一一对应，hex 如 #E8F5E9）
+  final List<String> tagColors;
+
   const Outfit({
     required this.id,
     required this.date,
     this.photoPaths = const [],
     required this.description,
     this.tags = const [],
+    this.tagColors = const [],
   });
   
   /// 生成模拟数据（已废弃，请使用数据库）

@@ -3,6 +3,7 @@ import 'package:drift/drift.dart';
 import '../database/database.dart';
 import '../models/outfit.dart' as models;
 import '../services/image_service.dart';
+import '../theme/tag_colors.dart';
 
 /// Outfit 数据仓库
 /// 
@@ -214,9 +215,12 @@ class OutfitRepository {
   Future<models.Outfit> _loadOutfitWithRelations(OutfitData outfitRecord) async {
     final outfitId = outfitRecord.id;
     
-    // 加载 tags
+    // 加载 tags（含颜色）
     final tagRecords = await _db.tagDao.getTagsByOutfitId(outfitId);
     final tags = tagRecords.map((t) => t.name).toList();
+    final tagColors = tagRecords
+        .map((t) => t.color ?? TagColors.defaultColorHex)
+        .toList();
 
     // 加载图片
     final imageRecords = await _db.imageDao.getImagesByOutfitId(outfitId);
@@ -227,6 +231,7 @@ class OutfitRepository {
       date: DateTime.fromMillisecondsSinceEpoch(outfitRecord.date),
       description: outfitRecord.description,
       tags: tags,
+      tagColors: tagColors,
       photoPaths: photoPaths,
     );
   }

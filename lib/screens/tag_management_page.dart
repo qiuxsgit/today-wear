@@ -4,6 +4,7 @@ import 'package:today_wear/database/database.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_text_style.dart';
 import '../theme/app_spacing.dart';
+import '../theme/tag_colors.dart';
 import '../widgets/tag_edit_modal.dart';
 
 /// 标签管理页面
@@ -52,9 +53,15 @@ class _TagManagementPageState extends State<TagManagementPage> {
     return Scaffold(
       backgroundColor: AppColors.bgPrimary,
       appBar: AppBar(
-        title: Text(l10n.tagManagement, style: AppTextStyle.title),
-        backgroundColor: AppColors.bgPrimary,
-        elevation: 0,
+        title: Text(
+          _loading ? l10n.tagManagement : l10n.tagManagementWithCount(_tags.length),
+          style: AppTextStyle.title.copyWith(color: AppColors.primary),
+        ),
+        backgroundColor: Colors.white,
+        foregroundColor: AppColors.textPrimary,
+        surfaceTintColor: Colors.transparent,
+        elevation: 2,
+        scrolledUnderElevation: 2,
       ),
       body: _loading
           ? const Center(child: CircularProgressIndicator())
@@ -73,6 +80,7 @@ class _TagManagementPageState extends State<TagManagementPage> {
                     spacing: AppSpacing.sm,
                     runSpacing: AppSpacing.sm,
                     children: _tags.map((tag) {
+                      final tagColor = TagColors.fromHex(tag.color ?? TagColors.defaultColorHex);
                       return InkWell(
                         onTap: () => _openEditModal(tag),
                         borderRadius: BorderRadius.circular(8),
@@ -82,7 +90,7 @@ class _TagManagementPageState extends State<TagManagementPage> {
                             vertical: AppSpacing.xs,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: tagColor,
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(
                               color: AppColors.bgTertiary,
@@ -91,7 +99,10 @@ class _TagManagementPageState extends State<TagManagementPage> {
                           ),
                           child: Text(
                             tag.name,
-                            style: AppTextStyle.body.copyWith(fontSize: 14),
+                            style: AppTextStyle.body.copyWith(
+                              fontSize: 14,
+                              color: AppColors.textSecondary,
+                            ),
                           ),
                         ),
                       );

@@ -5,6 +5,7 @@ import '../models/outfit.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_text_style.dart';
+import '../theme/tag_colors.dart';
 import '../services/image_service.dart';
 import '../database/database.dart';
 import '../repositories/outfit_repository.dart';
@@ -78,8 +79,11 @@ class OutfitDetailPage extends StatelessWidget {
       backgroundColor: AppColors.bgPrimary,
       appBar: AppBar(
         title: Text(dateText, style: AppTextStyle.title),
-        backgroundColor: AppColors.bgPrimary,
-        elevation: 0,
+        backgroundColor: Colors.white,
+        foregroundColor: AppColors.textPrimary,
+        surfaceTintColor: Colors.transparent,
+        elevation: 2,
+        scrolledUnderElevation: 2,
         actions: [
           IconButton(
             icon: const Icon(Icons.delete_outline),
@@ -122,27 +126,32 @@ class OutfitDetailPage extends StatelessWidget {
                 style: AppTextStyle.title,
               ),
               
-              // 标签
+              // 标签（带颜色）
               if (outfit.tags.isNotEmpty) ...[
                 const SizedBox(height: AppSpacing.md),
                 Wrap(
                   spacing: AppSpacing.xs,
                   runSpacing: AppSpacing.xs,
-                  children: outfit.tags.map((tag) {
+                  children: List.generate(outfit.tags.length, (i) {
+                    final tagName = outfit.tags[i];
+                    final colorHex = i < outfit.tagColors.length
+                        ? outfit.tagColors[i]
+                        : TagColors.defaultColorHex;
+                    final bgColor = TagColors.fromHex(colorHex);
                     return Chip(
                       label: Text(
-                        tag,
+                        tagName,
                         style: const TextStyle(
                           fontSize: 12,
                           color: AppColors.textSecondary,
                         ),
                       ),
-                      backgroundColor: AppColors.bgSecondary,
+                      backgroundColor: bgColor,
                       padding: EdgeInsets.zero,
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       visualDensity: VisualDensity.compact,
                     );
-                  }).toList(),
+                  }),
                 ),
               ],
               

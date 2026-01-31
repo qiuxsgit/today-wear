@@ -133,7 +133,7 @@ class HomePageState extends State<HomePage> {
 
       targetColumn.add(
         Padding(
-          padding: const EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.only(bottom: 20),
           child: WaterfallOutfitCard(
             outfit: outfit,
             onTap: () async {
@@ -163,7 +163,7 @@ class HomePageState extends State<HomePage> {
               children: leftColumnWidgets,
             ),
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -250,12 +250,16 @@ class HomePageState extends State<HomePage> {
       body: SafeArea(
         child: SingleChildScrollView(
           controller: _scrollController,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.only(
+            left: 16,
+            right: 16,
+            top: 24,
+            bottom: 24,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               ...content,
-              // 加载更多指示器
               if (_isLoading)
                 const Padding(
                   padding: EdgeInsets.all(16.0),
@@ -263,6 +267,8 @@ class HomePageState extends State<HomePage> {
                     child: CircularProgressIndicator(),
                   ),
                 ),
+              // 底部留白，不压住导航栏
+              const SizedBox(height: 16),
             ],
           ),
         ),

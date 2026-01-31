@@ -107,6 +107,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get tagName => '태그 이름';
 
   @override
+  String get tagColor => '태그 색상';
+
+  @override
   String get tagEdit => '태그 편집';
 
   @override
@@ -130,8 +133,70 @@ class AppLocalizationsKo extends AppLocalizations {
   String get tagNoTags => '태그가 없습니다';
 
   @override
+  String tagManagementWithCount(int count) {
+    return '태그 관리 (총 $count개)';
+  }
+
+  @override
   String get homeEmptyMessage => '아직 코디 기록이 없어요.\n첫 코디를 추가하고 매일의 코디를 기록해 보세요.';
 
   @override
   String get homeAddFirstOutfit => '첫 코디 추가';
+
+  @override
+  String get contactQQ => 'QQ';
+
+  @override
+  String get contactEmail => '이메일';
+
+  @override
+  String get contactEmailCopyHint => '이메일 앱을 열 수 없습니다. 이메일 주소를 수동으로 복사해 주세요.';
+
+  @override
+  String get copiedToClipboard => '복사됨';
+
+  @override
+  String get editProfile => '프로필 편집';
+
+  @override
+  String get birthday => '생일';
+
+  @override
+  String get gender => '성별';
+
+  @override
+  String get personality => '성격';
+
+  @override
+  String get male => '남성';
+
+  @override
+  String get female => '여성';
+
+  @override
+  String get genderNotSpecified => '선택 안 함';
+
+  @override
+  String get profileSaved => '저장됨';
+
+  @override
+  String get hintNickname => '닉네임을 입력하세요';
+
+  @override
+  String get hintPersonality => '당신의 성격을 소개해 주세요～';
+
+  @override
+  String get hintAvatarEmoji => '아바타용 이모지를 선택하세요';
+
+  @override
+  String get selectBirthday => '생일 선택';
+
+  @override
+  String get avatar => '아바타';
+
+  @override
+  String get avatarSelectHint => '탭하여 사진 선택';
+
+  @override
+  String get nicknameField => '닉네임';
 }

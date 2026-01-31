@@ -107,6 +107,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get tagName => 'タグ名';
 
   @override
+  String get tagColor => 'タグの色';
+
+  @override
   String get tagEdit => 'タグを編集';
 
   @override
@@ -130,8 +133,70 @@ class AppLocalizationsJa extends AppLocalizations {
   String get tagNoTags => 'タグがありません';
 
   @override
+  String tagManagementWithCount(int count) {
+    return 'タグ管理（全 $count 件）';
+  }
+
+  @override
   String get homeEmptyMessage => 'まだコーデの記録がありません\n最初のコーデを追加して、毎日のコーデを記録しましょう';
 
   @override
   String get homeAddFirstOutfit => '最初のコーデを追加';
+
+  @override
+  String get contactQQ => 'QQ';
+
+  @override
+  String get contactEmail => 'メール';
+
+  @override
+  String get contactEmailCopyHint => 'メールアプリを開けません。メールアドレスを手動でコピーしてください。';
+
+  @override
+  String get copiedToClipboard => 'コピーしました';
+
+  @override
+  String get editProfile => 'プロフィールを編集';
+
+  @override
+  String get birthday => '誕生日';
+
+  @override
+  String get gender => '性別';
+
+  @override
+  String get personality => '性格';
+
+  @override
+  String get male => '男性';
+
+  @override
+  String get female => '女性';
+
+  @override
+  String get genderNotSpecified => '選択しない';
+
+  @override
+  String get profileSaved => '保存しました';
+
+  @override
+  String get hintNickname => 'ニックネームを入力';
+
+  @override
+  String get hintPersonality => 'あなたの性格を教えてください～';
+
+  @override
+  String get hintAvatarEmoji => 'アバター用の絵文字を選んでください';
+
+  @override
+  String get selectBirthday => '誕生日を選択';
+
+  @override
+  String get avatar => 'アバター';
+
+  @override
+  String get avatarSelectHint => 'タップして写真を選択';
+
+  @override
+  String get nicknameField => 'ニックネーム';
 }

@@ -8,6 +8,7 @@ import '../theme/app_text_style.dart';
 import '../database/database.dart';
 import '../repositories/outfit_repository.dart';
 import '../models/outfit.dart';
+import '../theme/tag_colors.dart';
 
 /// 添加穿搭页面
 /// 
@@ -286,6 +287,10 @@ class AddOutfitPageState extends State<AddOutfitPage> {
         date: DateTime.now(),
         description: _descriptionController.text.trim(),
         tags: _selectedTags,
+        tagColors: List.filled(
+          _selectedTags.length,
+          TagColors.defaultColorHex,
+        ), // 新建时用默认色，保存后从 DB 加载会带真实颜色
         photoPaths: [], // 保存时由 repository 处理
       );
       

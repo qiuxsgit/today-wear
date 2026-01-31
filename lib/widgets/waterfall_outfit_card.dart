@@ -7,13 +7,11 @@ import '../services/image_service.dart';
 
 /// 瀑布流穿搭卡片组件
 ///
-/// 用于瀑布流布局的卡片，符合设计规范：
-/// - 宽度：自适应（由父容器决定）
-/// - 高度：由内容决定
-/// - 圆角：12
-/// - 白色背景
-/// - 内边距：12
-/// - 图片比例：3:4（竖向）
+/// 用于两列布局的穿搭卡片，符合设计规范：
+/// - 圆角 16，白色背景
+/// - 图片比例 4:5，圆角裁剪
+/// - 今天卡片视觉权重更高（primary 日期标签、略强阴影、图片区略大）
+/// - 过去日期使用灰色系统、轻阴影
 class WaterfallOutfitCard extends StatelessWidget {
   /// 穿搭数据
   final Outfit outfit;
@@ -26,6 +24,14 @@ class WaterfallOutfitCard extends StatelessWidget {
     required this.outfit,
     this.onTap,
   });
+
+  /// 是否为「今天」的穿搭
+  bool _isToday(DateTime date) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final dateOnly = DateTime(date.year, date.month, date.day);
+    return dateOnly == today;
+  }
 
   /// 格式化日期显示
   String _formatDate(BuildContext context, DateTime date) {
@@ -41,7 +47,6 @@ class WaterfallOutfitCard extends StatelessWidget {
     } else if (dateOnly == today.subtract(const Duration(days: 2))) {
       return l10n.dayBeforeYesterday;
     } else {
-      // 使用中文格式：1月26日
       return l10n.dateFormat(date.month, date.day);
     }
   }
@@ -49,69 +54,100 @@ class WaterfallOutfitCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dateText = _formatDate(context, outfit.date);
+    final isToday = _isToday(outfit.date);
+
+    // 今天：略强阴影；过去：轻阴影
+    final shadowColor = Colors.black.withValues(alpha: isToday ? 0.08 : 0.04);
 
     Widget cardContent = Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: shadowColor,
+            blurRadius: isToday ? 12 : 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       padding: const EdgeInsets.all(12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          // 日期标签（左上角）
+          // 日期标签：今天用 primary 低透明背景，过去用灰色
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: AppColors.bgTertiary,
+              color: isToday
+                  ? AppColors.primary.withValues(alpha: 0.12)
+                  : AppColors.bgTertiary,
               borderRadius: BorderRadius.circular(6),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'Date.',
-                  style: const TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.textPlaceholder,
-                  ),
-                ),
-                const SizedBox(width: 4),
-                Text(
                   dateText,
-                  style: const TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.textPrimary,
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: isToday
+                        ? AppColors.primary
+                        : AppColors.textSecondary,
                   ),
                 ),
               ],
             ),
           ),
 
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
 
-          // 图片（3:4比例）
-          AspectRatio(
-            aspectRatio: 3 / 4,
-            child: _buildImage(),
+          // 图片区域：4:5 比例，今天略高 +10px
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final w = constraints.maxWidth;
+              final h = (w * (5 / 4)) + (isToday ? 10.0 : 0.0);
+              return SizedBox(
+                width: w,
+                height: h,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: _buildImage(),
+                ),
+              );
+            },
           ),
 
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
 
-          // 描述文本
+          // 主描述：text-primary
           Text(
             outfit.description,
             style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.normal,
-              color: AppColors.textSecondary,
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
+              color: AppColors.textPrimary,
+              height: 1.35,
             ),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
+
+          // 标签行（轻量）：#标签，text-secondary
+          if (outfit.tags.isNotEmpty) ...[
+            const SizedBox(height: 4),
+            Text(
+              outfit.tags.map((t) => '#$t').join('  '),
+              style: const TextStyle(
+                fontSize: 11,
+                color: AppColors.textSecondary,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
         ],
       ),
     );
@@ -126,15 +162,14 @@ class WaterfallOutfitCard extends StatelessWidget {
     return cardContent;
   }
 
-  /// 构建图片 widget
+  /// 构建图片 widget（由外层 ClipRRect 裁剪圆角，此处填满容器）
   Widget _buildImage() {
     if (outfit.photoPaths.isEmpty) {
-      // 没有图片，显示占位符
       return Container(
         width: double.infinity,
-        decoration: BoxDecoration(
+        height: double.infinity,
+        decoration: const BoxDecoration(
           color: AppColors.imagePlaceholder,
-          borderRadius: BorderRadius.circular(8),
         ),
         child: const Center(
           child: Icon(
@@ -146,17 +181,14 @@ class WaterfallOutfitCard extends StatelessWidget {
       );
     }
 
-    // 显示第一张图片
     return FutureBuilder<File?>(
       future: ImageService.instance.getImageFile(outfit.photoPaths.first),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Container(
             width: double.infinity,
-            decoration: BoxDecoration(
-              color: AppColors.imagePlaceholder,
-              borderRadius: BorderRadius.circular(8),
-            ),
+            height: double.infinity,
+            color: AppColors.imagePlaceholder,
             child: const Center(
               child: CircularProgressIndicator(),
             ),
@@ -167,10 +199,8 @@ class WaterfallOutfitCard extends StatelessWidget {
         if (file == null || !file.existsSync()) {
           return Container(
             width: double.infinity,
-            decoration: BoxDecoration(
-              color: AppColors.imagePlaceholder,
-              borderRadius: BorderRadius.circular(8),
-            ),
+            height: double.infinity,
+            color: AppColors.imagePlaceholder,
             child: const Center(
               child: Icon(
                 Icons.image,
@@ -181,29 +211,25 @@ class WaterfallOutfitCard extends StatelessWidget {
           );
         }
 
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(8),
-          child: Image.file(
-            file,
-            width: double.infinity,
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) {
-              return Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: AppColors.imagePlaceholder,
-                  borderRadius: BorderRadius.circular(8),
+        return Image.file(
+          file,
+          width: double.infinity,
+          height: double.infinity,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            return Container(
+              width: double.infinity,
+              height: double.infinity,
+              color: AppColors.imagePlaceholder,
+              child: const Center(
+                child: Icon(
+                  Icons.broken_image,
+                  size: 32,
+                  color: AppColors.textPlaceholder,
                 ),
-                child: const Center(
-                  child: Icon(
-                    Icons.broken_image,
-                    size: 32,
-                    color: AppColors.textPlaceholder,
-                  ),
-                ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         );
       },
     );

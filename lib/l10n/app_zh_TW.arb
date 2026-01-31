@@ -42,6 +42,7 @@
   "deleteOutfitConfirm": "確定要刪除這條穿搭記錄嗎？刪除後無法恢復。",
   "tagManagement": "標籤管理",
   "tagName": "標籤名稱",
+  "tagColor": "標籤顏色",
   "tagEdit": "編輯標籤",
   "tagDeleteConfirm": "確定要刪除該標籤嗎？",
   "tagDeleteConfirmInUse": "該標籤已被 {count} 條穿搭使用，刪除將從這些穿搭中移除該標籤。確定刪除嗎？",
@@ -56,6 +57,33 @@
   "tagNameDuplicate": "該標籤名稱已存在",
   "tagSaved": "已保存",
   "tagNoTags": "暫無標籤",
+  "tagManagementWithCount": "標籤管理（共 {count} 個）",
+  "@tagManagementWithCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "homeEmptyMessage": "還沒有穿搭記錄\n添加第一條穿搭，開始記錄你的每日穿搭吧",
-  "homeAddFirstOutfit": "添加第一條穿搭"
+  "homeAddFirstOutfit": "添加第一條穿搭",
+  "contactQQ": "QQ",
+  "contactEmail": "郵箱",
+  "contactEmailCopyHint": "無法打開郵件應用，請手動複製郵箱地址",
+  "copiedToClipboard": "已複製",
+  "editProfile": "編輯資料",
+  "birthday": "生日",
+  "gender": "性別",
+  "personality": "性格",
+  "male": "男",
+  "female": "女",
+  "genderNotSpecified": "暫不選擇",
+  "profileSaved": "已保存",
+  "hintNickname": "請輸入暱稱",
+  "hintPersonality": "介紹一下你的性格吧～",
+  "hintAvatarEmoji": "選一個 emoji 做頭像",
+  "selectBirthday": "選擇生日",
+  "avatar": "頭像",
+  "avatarSelectHint": "點擊選擇圖片",
+  "nicknameField": "暱稱"
 }
