@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:today_wear/l10n/app_localizations.dart';
 import '../models/outfit.dart';
 import '../theme/app_colors.dart';
 import '../widgets/waterfall_outfit_card.dart';
@@ -10,8 +11,14 @@ import 'outfit_detail_page.dart';
 /// 
 /// 展示瀑布流布局的穿搭记录，按日期分组
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-  
+  const HomePage({
+    super.key,
+    this.onAddFirstOutfit,
+  });
+
+  /// 无数据时用户点击「添加第一条穿搭」的回调，通常用于切换到添加页
+  final VoidCallback? onAddFirstOutfit;
+
   @override
   State<HomePage> createState() => HomePageState();
 }
@@ -168,11 +175,61 @@ class HomePageState extends State<HomePage> {
     ];
   }
   
+  /// 构建空状态：无穿搭记录时的友好提示
+  Widget _buildEmptyState() {
+    final l10n = AppLocalizations.of(context)!;
+    return Scaffold(
+      backgroundColor: AppColors.bgSecondary,
+      body: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.checkroom_outlined,
+                  size: 64,
+                  color: AppColors.textPlaceholder,
+                ),
+                const SizedBox(height: 24),
+                Text(
+                  l10n.homeEmptyMessage,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: AppColors.textSecondary,
+                    height: 1.5,
+                  ),
+                ),
+                const SizedBox(height: 32),
+                FilledButton.icon(
+                  onPressed: widget.onAddFirstOutfit,
+                  icon: const Icon(Icons.add, size: 20),
+                  label: Text(l10n.homeAddFirstOutfit),
+                  style: FilledButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final content = _buildGroupedContent();
-    
-    if (content.isEmpty) {
+
+    // 正在加载且尚无任何数据：显示转圈
+    if (content.isEmpty && _isLoading) {
       return Scaffold(
         backgroundColor: AppColors.bgSecondary,
         body: const SafeArea(
@@ -182,7 +239,12 @@ class HomePageState extends State<HomePage> {
         ),
       );
     }
-    
+
+    // 已加载完成但没有数据：显示空状态提示
+    if (content.isEmpty) {
+      return _buildEmptyState();
+    }
+
     return Scaffold(
       backgroundColor: AppColors.bgSecondary,
       body: SafeArea(

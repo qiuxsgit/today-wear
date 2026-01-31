@@ -327,52 +327,46 @@ class AddOutfitPageState extends State<AddOutfitPage> {
     return Scaffold(
       backgroundColor: AppColors.bgPrimary,
       appBar: AppBar(
-        title: Text(l10n.addOutfit, style: AppTextStyle.title),
+        toolbarHeight: 0,
         backgroundColor: AppColors.bgPrimary,
         elevation: 0,
-        actions: [
-          if (_isSaving)
-            const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(strokeWidth: 2),
-              ),
-            )
-          else
-            IconButton(
-              icon: const Icon(Icons.check),
-              onPressed: _saveOutfit,
-            ),
-        ],
+        scrolledUnderElevation: 0,
       ),
-      body: Column(
+      body: SafeArea(
+        child: Column(
         children: [
           Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // 图片选择区域
-                  _buildImageSection(),
-                  const SizedBox(height: 24),
-                  
-                  // 标签选择区域
-                  _buildTagSection(),
-                  const SizedBox(height: 24),
-                  
-                  // 新标签输入区域
-                  _buildNewTagInput(),
-                  const SizedBox(height: 24),
-                  
-                  // 备注输入区域
-                  _buildDescriptionInput(),
-                  const SizedBox(height: 24),
-                ],
-              ),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return SingleChildScrollView(
+                  padding: const EdgeInsets.all(16.0),
+                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                    child: GestureDetector(
+                      onTap: () => FocusScope.of(context).unfocus(),
+                      behavior: HitTestBehavior.opaque,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // 图片选择区域
+                          _buildImageSection(),
+                          const SizedBox(height: 24),
+                          // 标签选择区域
+                          _buildTagSection(),
+                          const SizedBox(height: 24),
+                          // 新标签输入区域
+                          _buildNewTagInput(),
+                          const SizedBox(height: 24),
+                          // 备注输入区域
+                          _buildDescriptionInput(),
+                          const SizedBox(height: 24),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
           ),
           // 底部保存按钮
@@ -424,6 +418,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
             ),
           ),
         ],
+        ),
       ),
     );
   }

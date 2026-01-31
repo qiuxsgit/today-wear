@@ -128,4 +128,10 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get tagNoTags => 'タグがありません';
+
+  @override
+  String get homeEmptyMessage => 'まだコーデの記録がありません\n最初のコーデを追加して、毎日のコーデを記録しましょう';
+
+  @override
+  String get homeAddFirstOutfit => '最初のコーデを追加';
 }

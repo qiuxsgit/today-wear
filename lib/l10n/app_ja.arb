@@ -55,5 +55,7 @@
   "tagNameEmpty": "タグ名を入力してください",
   "tagNameDuplicate": "このタグ名は既に存在します",
   "tagSaved": "保存しました",
-  "tagNoTags": "タグがありません"
+  "tagNoTags": "タグがありません",
+  "homeEmptyMessage": "まだコーデの記録がありません\n最初のコーデを追加して、毎日のコーデを記録しましょう",
+  "homeAddFirstOutfit": "最初のコーデを追加"
 }

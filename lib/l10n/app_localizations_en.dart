@@ -129,4 +129,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tagNoTags => 'No tags yet';
+
+  @override
+  String get homeEmptyMessage =>
+      'No outfit records yet.\nAdd your first outfit to start recording your daily looks.';
+
+  @override
+  String get homeAddFirstOutfit => 'Add First Outfit';
 }

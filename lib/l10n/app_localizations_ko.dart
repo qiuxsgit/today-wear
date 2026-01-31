@@ -128,4 +128,10 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get tagNoTags => '태그가 없습니다';
+
+  @override
+  String get homeEmptyMessage => '아직 코디 기록이 없어요.\n첫 코디를 추가하고 매일의 코디를 기록해 보세요.';
+
+  @override
+  String get homeAddFirstOutfit => '첫 코디 추가';
 }

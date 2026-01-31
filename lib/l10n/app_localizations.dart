@@ -337,6 +337,18 @@ abstract class AppLocalizations {
   /// In zh_CN, this message translates to:
   /// **'暂无标签'**
   String get tagNoTags;
+
+  /// No description provided for @homeEmptyMessage.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'还没有穿搭记录\n添加第一条穿搭，开始记录你的每日穿搭吧'**
+  String get homeEmptyMessage;
+
+  /// No description provided for @homeAddFirstOutfit.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'添加第一条穿搭'**
+  String get homeAddFirstOutfit;
 }
 
 class _AppLocalizationsDelegate

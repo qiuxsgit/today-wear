@@ -55,5 +55,7 @@
   "tagNameEmpty": "Please enter a tag name",
   "tagNameDuplicate": "This tag name already exists",
   "tagSaved": "Saved",
-  "tagNoTags": "No tags yet"
+  "tagNoTags": "No tags yet",
+  "homeEmptyMessage": "No outfit records yet.\nAdd your first outfit to start recording your daily looks.",
+  "homeAddFirstOutfit": "Add First Outfit"
 }

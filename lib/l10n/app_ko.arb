@@ -55,5 +55,7 @@
   "tagNameEmpty": "태그 이름을 입력하세요",
   "tagNameDuplicate": "이미 존재하는 태그 이름입니다",
   "tagSaved": "저장됨",
-  "tagNoTags": "태그가 없습니다"
+  "tagNoTags": "태그가 없습니다",
+  "homeEmptyMessage": "아직 코디 기록이 없어요.\n첫 코디를 추가하고 매일의 코디를 기록해 보세요.",
+  "homeAddFirstOutfit": "첫 코디 추가"
 }

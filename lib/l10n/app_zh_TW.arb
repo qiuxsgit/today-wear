@@ -55,5 +55,7 @@
   "tagNameEmpty": "請輸入標籤名稱",
   "tagNameDuplicate": "該標籤名稱已存在",
   "tagSaved": "已保存",
-  "tagNoTags": "暫無標籤"
+  "tagNoTags": "暫無標籤",
+  "homeEmptyMessage": "還沒有穿搭記錄\n添加第一條穿搭，開始記錄你的每日穿搭吧",
+  "homeAddFirstOutfit": "添加第一條穿搭"
 }
