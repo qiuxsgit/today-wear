@@ -129,13 +129,16 @@ class HomePageState extends State<HomePage> {
           padding: const EdgeInsets.only(bottom: 10),
           child: WaterfallOutfitCard(
             outfit: outfit,
-            onTap: () {
-              Navigator.push(
+            onTap: () async {
+              final deleted = await Navigator.push<bool>(
                 context,
                 MaterialPageRoute(
                   builder: (context) => OutfitDetailPage(outfit: outfit),
                 ),
               );
+              if (deleted == true && mounted) {
+                refreshData();
+              }
             },
           ),
         ),

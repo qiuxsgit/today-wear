@@ -90,6 +90,44 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get save => '保存';
+
+  @override
+  String get delete => '删除';
+
+  @override
+  String get cancel => '取消';
+
+  @override
+  String get deleteOutfitConfirm => '确定要删除这条穿搭记录吗？删除后无法恢复。';
+
+  @override
+  String get tagManagement => '标签管理';
+
+  @override
+  String get tagName => '标签名称';
+
+  @override
+  String get tagEdit => '编辑标签';
+
+  @override
+  String get tagDeleteConfirm => '确定要删除该标签吗？';
+
+  @override
+  String tagDeleteConfirmInUse(int count) {
+    return '该标签已被 $count 条穿搭使用，删除将从这些穿搭中移除该标签。确定删除吗？';
+  }
+
+  @override
+  String get tagNameEmpty => '请输入标签名称';
+
+  @override
+  String get tagNameDuplicate => '该标签名称已存在';
+
+  @override
+  String get tagSaved => '已保存';
+
+  @override
+  String get tagNoTags => '暂无标签';
 }
 
 /// The translations for Chinese, as used in China (`zh_CN`).
@@ -178,6 +216,44 @@ class AppLocalizationsZhCn extends AppLocalizationsZh {
 
   @override
   String get save => '保存';
+
+  @override
+  String get delete => '删除';
+
+  @override
+  String get cancel => '取消';
+
+  @override
+  String get deleteOutfitConfirm => '确定要删除这条穿搭记录吗？删除后无法恢复。';
+
+  @override
+  String get tagManagement => '标签管理';
+
+  @override
+  String get tagName => '标签名称';
+
+  @override
+  String get tagEdit => '编辑标签';
+
+  @override
+  String get tagDeleteConfirm => '确定要删除该标签吗？';
+
+  @override
+  String tagDeleteConfirmInUse(int count) {
+    return '该标签已被 $count 条穿搭使用，删除将从这些穿搭中移除该标签。确定删除吗？';
+  }
+
+  @override
+  String get tagNameEmpty => '请输入标签名称';
+
+  @override
+  String get tagNameDuplicate => '该标签名称已存在';
+
+  @override
+  String get tagSaved => '已保存';
+
+  @override
+  String get tagNoTags => '暂无标签';
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
@@ -266,4 +342,42 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get save => '保存';
+
+  @override
+  String get delete => '刪除';
+
+  @override
+  String get cancel => '取消';
+
+  @override
+  String get deleteOutfitConfirm => '確定要刪除這條穿搭記錄嗎？刪除後無法恢復。';
+
+  @override
+  String get tagManagement => '標籤管理';
+
+  @override
+  String get tagName => '標籤名稱';
+
+  @override
+  String get tagEdit => '編輯標籤';
+
+  @override
+  String get tagDeleteConfirm => '確定要刪除該標籤嗎？';
+
+  @override
+  String tagDeleteConfirmInUse(int count) {
+    return '該標籤已被 $count 條穿搭使用，刪除將從這些穿搭中移除該標籤。確定刪除嗎？';
+  }
+
+  @override
+  String get tagNameEmpty => '請輸入標籤名稱';
+
+  @override
+  String get tagNameDuplicate => '該標籤名稱已存在';
+
+  @override
+  String get tagSaved => '已保存';
+
+  @override
+  String get tagNoTags => '暫無標籤';
 }

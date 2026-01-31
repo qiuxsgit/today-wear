@@ -90,4 +90,43 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get save => 'Save';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get deleteOutfitConfirm =>
+      'Are you sure you want to delete this outfit? This cannot be undone.';
+
+  @override
+  String get tagManagement => 'Tag Management';
+
+  @override
+  String get tagName => 'Tag Name';
+
+  @override
+  String get tagEdit => 'Edit Tag';
+
+  @override
+  String get tagDeleteConfirm => 'Are you sure you want to delete this tag?';
+
+  @override
+  String tagDeleteConfirmInUse(int count) {
+    return 'This tag is used by $count outfit(s). Deleting will remove it from those outfits. Continue?';
+  }
+
+  @override
+  String get tagNameEmpty => 'Please enter a tag name';
+
+  @override
+  String get tagNameDuplicate => 'This tag name already exists';
+
+  @override
+  String get tagSaved => 'Saved';
+
+  @override
+  String get tagNoTags => 'No tags yet';
 }

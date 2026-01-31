@@ -6,6 +6,7 @@ import '../theme/app_text_style.dart';
 import '../theme/app_spacing.dart';
 import '../services/locale_service.dart';
 import 'language_selection_page.dart';
+import 'tag_management_page.dart';
 
 /// 个人/设置页面
 /// 
@@ -95,6 +96,42 @@ class ProfilePage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSpacing.sm),
+          // 标签管理
+          Container(
+            margin: const EdgeInsets.only(bottom: AppSpacing.xs),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: ListTile(
+              title: Text(
+                l10n.tagManagement,
+                style: AppTextStyle.body.copyWith(
+                  fontSize: 16,
+                ),
+              ),
+              trailing: const Icon(
+                Icons.chevron_right,
+                color: AppColors.textSecondary,
+                size: 20,
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const TagManagementPage(),
+                  ),
+                );
+              },
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.md,
+              ),
+              dense: true,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+          ),
           // 语言选择项
           Container(
             decoration: BoxDecoration(

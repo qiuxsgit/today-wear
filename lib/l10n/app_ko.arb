@@ -36,5 +36,24 @@
   "openSourceLicense": "오픈소스 라이선스",
   "contact": "연락처",
   "about": "앱 정보",
-  "save": "저장"
+  "save": "저장",
+  "delete": "삭제",
+  "cancel": "취소",
+  "deleteOutfitConfirm": "이 코디 기록을 삭제하시겠습니까? 삭제 후에는 복구할 수 없습니다.",
+  "tagManagement": "태그 관리",
+  "tagName": "태그 이름",
+  "tagEdit": "태그 편집",
+  "tagDeleteConfirm": "이 태그를 삭제하시겠습니까?",
+  "tagDeleteConfirmInUse": "이 태그는 {count}개의 코디에서 사용 중입니다. 삭제하면 해당 코디에서 제거됩니다. 삭제하시겠습니까?",
+  "@tagDeleteConfirmInUse": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tagNameEmpty": "태그 이름을 입력하세요",
+  "tagNameDuplicate": "이미 존재하는 태그 이름입니다",
+  "tagSaved": "저장됨",
+  "tagNoTags": "태그가 없습니다"
 }

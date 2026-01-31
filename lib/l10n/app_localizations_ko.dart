@@ -90,4 +90,42 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get save => '저장';
+
+  @override
+  String get delete => '삭제';
+
+  @override
+  String get cancel => '취소';
+
+  @override
+  String get deleteOutfitConfirm => '이 코디 기록을 삭제하시겠습니까? 삭제 후에는 복구할 수 없습니다.';
+
+  @override
+  String get tagManagement => '태그 관리';
+
+  @override
+  String get tagName => '태그 이름';
+
+  @override
+  String get tagEdit => '태그 편집';
+
+  @override
+  String get tagDeleteConfirm => '이 태그를 삭제하시겠습니까?';
+
+  @override
+  String tagDeleteConfirmInUse(int count) {
+    return '이 태그는 $count개의 코디에서 사용 중입니다. 삭제하면 해당 코디에서 제거됩니다. 삭제하시겠습니까?';
+  }
+
+  @override
+  String get tagNameEmpty => '태그 이름을 입력하세요';
+
+  @override
+  String get tagNameDuplicate => '이미 존재하는 태그 이름입니다';
+
+  @override
+  String get tagSaved => '저장됨';
+
+  @override
+  String get tagNoTags => '태그가 없습니다';
 }

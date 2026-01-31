@@ -265,6 +265,78 @@ abstract class AppLocalizations {
   /// In zh_CN, this message translates to:
   /// **'保存'**
   String get save;
+
+  /// No description provided for @delete.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'删除'**
+  String get delete;
+
+  /// No description provided for @cancel.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'取消'**
+  String get cancel;
+
+  /// No description provided for @deleteOutfitConfirm.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'确定要删除这条穿搭记录吗？删除后无法恢复。'**
+  String get deleteOutfitConfirm;
+
+  /// No description provided for @tagManagement.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'标签管理'**
+  String get tagManagement;
+
+  /// No description provided for @tagName.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'标签名称'**
+  String get tagName;
+
+  /// No description provided for @tagEdit.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'编辑标签'**
+  String get tagEdit;
+
+  /// No description provided for @tagDeleteConfirm.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'确定要删除该标签吗？'**
+  String get tagDeleteConfirm;
+
+  /// No description provided for @tagDeleteConfirmInUse.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'该标签已被 {count} 条穿搭使用，删除将从这些穿搭中移除该标签。确定删除吗？'**
+  String tagDeleteConfirmInUse(int count);
+
+  /// No description provided for @tagNameEmpty.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'请输入标签名称'**
+  String get tagNameEmpty;
+
+  /// No description provided for @tagNameDuplicate.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'该标签名称已存在'**
+  String get tagNameDuplicate;
+
+  /// No description provided for @tagSaved.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'已保存'**
+  String get tagSaved;
+
+  /// No description provided for @tagNoTags.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'暂无标签'**
+  String get tagNoTags;
 }
 
 class _AppLocalizationsDelegate

@@ -36,5 +36,24 @@
   "openSourceLicense": "开源许可",
   "contact": "联系方式",
   "about": "关于应用",
-  "save": "保存"
+  "save": "保存",
+  "delete": "删除",
+  "cancel": "取消",
+  "deleteOutfitConfirm": "确定要删除这条穿搭记录吗？删除后无法恢复。",
+  "tagManagement": "标签管理",
+  "tagName": "标签名称",
+  "tagEdit": "编辑标签",
+  "tagDeleteConfirm": "确定要删除该标签吗？",
+  "tagDeleteConfirmInUse": "该标签已被 {count} 条穿搭使用，删除将从这些穿搭中移除该标签。确定删除吗？",
+  "@tagDeleteConfirmInUse": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tagNameEmpty": "请输入标签名称",
+  "tagNameDuplicate": "该标签名称已存在",
+  "tagSaved": "已保存",
+  "tagNoTags": "暂无标签"
 }

@@ -90,4 +90,42 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get save => '保存';
+
+  @override
+  String get delete => '削除';
+
+  @override
+  String get cancel => 'キャンセル';
+
+  @override
+  String get deleteOutfitConfirm => 'このコーデ記録を削除しますか？削除すると元に戻せません。';
+
+  @override
+  String get tagManagement => 'タグ管理';
+
+  @override
+  String get tagName => 'タグ名';
+
+  @override
+  String get tagEdit => 'タグを編集';
+
+  @override
+  String get tagDeleteConfirm => 'このタグを削除しますか？';
+
+  @override
+  String tagDeleteConfirmInUse(int count) {
+    return 'このタグは $count 件のコーデで使用されています。削除するとそれらから外れます。削除しますか？';
+  }
+
+  @override
+  String get tagNameEmpty => 'タグ名を入力してください';
+
+  @override
+  String get tagNameDuplicate => 'このタグ名は既に存在します';
+
+  @override
+  String get tagSaved => '保存しました';
+
+  @override
+  String get tagNoTags => 'タグがありません';
 }

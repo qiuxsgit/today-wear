@@ -36,5 +36,24 @@
   "openSourceLicense": "オープンソースライセンス",
   "contact": "お問い合わせ",
   "about": "アプリについて",
-  "save": "保存"
+  "save": "保存",
+  "delete": "削除",
+  "cancel": "キャンセル",
+  "deleteOutfitConfirm": "このコーデ記録を削除しますか？削除すると元に戻せません。",
+  "tagManagement": "タグ管理",
+  "tagName": "タグ名",
+  "tagEdit": "タグを編集",
+  "tagDeleteConfirm": "このタグを削除しますか？",
+  "tagDeleteConfirmInUse": "このタグは {count} 件のコーデで使用されています。削除するとそれらから外れます。削除しますか？",
+  "@tagDeleteConfirmInUse": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tagNameEmpty": "タグ名を入力してください",
+  "tagNameDuplicate": "このタグ名は既に存在します",
+  "tagSaved": "保存しました",
+  "tagNoTags": "タグがありません"
 }
