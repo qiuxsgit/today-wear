@@ -57,6 +57,9 @@ dependencies:
   # 图片选择
   image_picker: ^1.0.7
 
+  # 打开链接 / 邮箱
+  url_launcher: ^6.2.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

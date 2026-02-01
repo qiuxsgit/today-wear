@@ -431,8 +431,18 @@ class $TagsTable extends Tags with TableInfo<$TagsTable, TagData> {
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
   );
+  static const VerificationMeta _colorMeta = const VerificationMeta('color');
   @override
-  List<GeneratedColumn> get $columns => [id, name];
+  late final GeneratedColumn<String> color = GeneratedColumn<String>(
+    'color',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('#E8F5E9'),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, name, color];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -456,6 +466,12 @@ class $TagsTable extends Tags with TableInfo<$TagsTable, TagData> {
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
+    if (data.containsKey('color')) {
+      context.handle(
+        _colorMeta,
+        color.isAcceptableOrUnknown(data['color']!, _colorMeta),
+      );
+    }
     return context;
   }
 
@@ -473,6 +489,10 @@ class $TagsTable extends Tags with TableInfo<$TagsTable, TagData> {
         DriftSqlType.string,
         data['${effectivePrefix}name'],
       )!,
+      color: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}color'],
+      ),
     );
   }
 
@@ -485,17 +505,29 @@ class $TagsTable extends Tags with TableInfo<$TagsTable, TagData> {
 class TagData extends DataClass implements Insertable<TagData> {
   final int id;
   final String name;
-  const TagData({required this.id, required this.name});
+
+  /// 标签颜色，存 hex 如 #E8F5E9，可为空（旧数据兼容），读取时用默认色
+  final String? color;
+  const TagData({required this.id, required this.name, this.color});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['name'] = Variable<String>(name);
+    if (!nullToAbsent || color != null) {
+      map['color'] = Variable<String>(color);
+    }
     return map;
   }
 
   TagsCompanion toCompanion(bool nullToAbsent) {
-    return TagsCompanion(id: Value(id), name: Value(name));
+    return TagsCompanion(
+      id: Value(id),
+      name: Value(name),
+      color: color == null && nullToAbsent
+          ? const Value.absent()
+          : Value(color),
+    );
   }
 
   factory TagData.fromJson(
@@ -506,6 +538,7 @@ class TagData extends DataClass implements Insertable<TagData> {
     return TagData(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
+      color: serializer.fromJson<String?>(json['color']),
     );
   }
   @override
@@ -514,15 +547,24 @@ class TagData extends DataClass implements Insertable<TagData> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
+      'color': serializer.toJson<String?>(color),
     };
   }
 
-  TagData copyWith({int? id, String? name}) =>
-      TagData(id: id ?? this.id, name: name ?? this.name);
+  TagData copyWith({
+    int? id,
+    String? name,
+    Value<String?> color = const Value.absent(),
+  }) => TagData(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    color: color.present ? color.value : this.color,
+  );
   TagData copyWithCompanion(TagsCompanion data) {
     return TagData(
       id: data.id.present ? data.id.value : this.id,
       name: data.name.present ? data.name.value : this.name,
+      color: data.color.present ? data.color.value : this.color,
     );
   }
 
@@ -530,40 +572,59 @@ class TagData extends DataClass implements Insertable<TagData> {
   String toString() {
     return (StringBuffer('TagData(')
           ..write('id: $id, ')
-          ..write('name: $name')
+          ..write('name: $name, ')
+          ..write('color: $color')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, name);
+  int get hashCode => Object.hash(id, name, color);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is TagData && other.id == this.id && other.name == this.name);
+      (other is TagData &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.color == this.color);
 }
 
 class TagsCompanion extends UpdateCompanion<TagData> {
   final Value<int> id;
   final Value<String> name;
+  final Value<String?> color;
   const TagsCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
+    this.color = const Value.absent(),
   });
-  TagsCompanion.insert({this.id = const Value.absent(), required String name})
-    : name = Value(name);
+  TagsCompanion.insert({
+    this.id = const Value.absent(),
+    required String name,
+    this.color = const Value.absent(),
+  }) : name = Value(name);
   static Insertable<TagData> custom({
     Expression<int>? id,
     Expression<String>? name,
+    Expression<String>? color,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
+      if (color != null) 'color': color,
     });
   }
 
-  TagsCompanion copyWith({Value<int>? id, Value<String>? name}) {
-    return TagsCompanion(id: id ?? this.id, name: name ?? this.name);
+  TagsCompanion copyWith({
+    Value<int>? id,
+    Value<String>? name,
+    Value<String?>? color,
+  }) {
+    return TagsCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      color: color ?? this.color,
+    );
   }
 
   @override
@@ -575,6 +636,9 @@ class TagsCompanion extends UpdateCompanion<TagData> {
     if (name.present) {
       map['name'] = Variable<String>(name.value);
     }
+    if (color.present) {
+      map['color'] = Variable<String>(color.value);
+    }
     return map;
   }
 
@@ -582,7 +646,8 @@ class TagsCompanion extends UpdateCompanion<TagData> {
   String toString() {
     return (StringBuffer('TagsCompanion(')
           ..write('id: $id, ')
-          ..write('name: $name')
+          ..write('name: $name, ')
+          ..write('color: $color')
           ..write(')'))
         .toString();
   }
@@ -1340,9 +1405,17 @@ typedef $$OutfitsTableProcessedTableManager =
       PrefetchHooks Function()
     >;
 typedef $$TagsTableCreateCompanionBuilder =
-    TagsCompanion Function({Value<int> id, required String name});
+    TagsCompanion Function({
+      Value<int> id,
+      required String name,
+      Value<String?> color,
+    });
 typedef $$TagsTableUpdateCompanionBuilder =
-    TagsCompanion Function({Value<int> id, Value<String> name});
+    TagsCompanion Function({
+      Value<int> id,
+      Value<String> name,
+      Value<String?> color,
+    });
 
 class $$TagsTableFilterComposer extends Composer<_$AppDatabase, $TagsTable> {
   $$TagsTableFilterComposer({
@@ -1359,6 +1432,11 @@ class $$TagsTableFilterComposer extends Composer<_$AppDatabase, $TagsTable> {
 
   ColumnFilters<String> get name => $composableBuilder(
     column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get color => $composableBuilder(
+    column: $table.color,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -1380,6 +1458,11 @@ class $$TagsTableOrderingComposer extends Composer<_$AppDatabase, $TagsTable> {
     column: $table.name,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get color => $composableBuilder(
+    column: $table.color,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$TagsTableAnnotationComposer
@@ -1396,6 +1479,9 @@ class $$TagsTableAnnotationComposer
 
   GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get color =>
+      $composableBuilder(column: $table.color, builder: (column) => column);
 }
 
 class $$TagsTableTableManager
@@ -1428,10 +1514,14 @@ class $$TagsTableTableManager
               ({
                 Value<int> id = const Value.absent(),
                 Value<String> name = const Value.absent(),
-              }) => TagsCompanion(id: id, name: name),
+                Value<String?> color = const Value.absent(),
+              }) => TagsCompanion(id: id, name: name, color: color),
           createCompanionCallback:
-              ({Value<int> id = const Value.absent(), required String name}) =>
-                  TagsCompanion.insert(id: id, name: name),
+              ({
+                Value<int> id = const Value.absent(),
+                required String name,
+                Value<String?> color = const Value.absent(),
+              }) => TagsCompanion.insert(id: id, name: name, color: color),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),

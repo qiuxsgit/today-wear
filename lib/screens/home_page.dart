@@ -140,13 +140,16 @@ class HomePageState extends State<HomePage> {
           padding: const EdgeInsets.only(bottom: _listCardSpacing),
           child: WaterfallOutfitCard(
             outfit: outfit,
-            onTap: () {
-              Navigator.push(
+            onTap: () async {
+              final deleted = await Navigator.push<bool>(
                 context,
                 MaterialPageRoute(
                   builder: (context) => OutfitDetailPage(outfit: outfit),
                 ),
               );
+              if (deleted == true && mounted) {
+                refreshData();
+              }
             },
           ),
         ),
@@ -261,7 +264,6 @@ class HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               ...content,
-              // 加载更多指示器
               if (_isLoading)
                 const Padding(
                   padding: EdgeInsets.all(AppSpacing.md),
@@ -269,6 +271,8 @@ class HomePageState extends State<HomePage> {
                     child: CircularProgressIndicator(),
                   ),
                 ),
+              // 底部留白，不压住导航栏
+              const SizedBox(height: 16),
             ],
           ),
         ),

@@ -15,8 +15,11 @@ class OutfitListPage extends StatelessWidget {
       backgroundColor: AppColors.bgPrimary,
       appBar: AppBar(
         title: Text(l10n.appTitle, style: AppTextStyle.title),
-        backgroundColor: AppColors.bgPrimary,
-        elevation: 0,
+        backgroundColor: Colors.white,
+        foregroundColor: AppColors.textPrimary,
+        surfaceTintColor: Colors.transparent,
+        elevation: 2,
+        scrolledUnderElevation: 2,
       ),
       body: Padding(
         padding: const EdgeInsets.all(AppSpacing.md),

@@ -105,4 +105,21 @@ class ImageService {
       await imagesDir.create(recursive: true);
     }
   }
+
+  /// 保存用户头像（覆盖式保存，固定路径 profile/avatar.jpg）
+  /// 返回相对路径，用于存入 UserProfile.avatarPath
+  Future<String> saveProfileAvatar(File imageFile) async {
+    if (!await imageFile.exists()) {
+      throw Exception('源图片文件不存在: ${imageFile.path}');
+    }
+    final appDir = await _getAppDataDirectory();
+    final profileDir = Directory(p.join(appDir.path, 'profile'));
+    if (!await profileDir.exists()) {
+      await profileDir.create(recursive: true);
+    }
+    const fileName = 'avatar.jpg';
+    final targetFile = File(p.join(profileDir.path, fileName));
+    await imageFile.copy(targetFile.path);
+    return p.join('profile', fileName);
+  }
 }

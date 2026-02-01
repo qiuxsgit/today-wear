@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 import '../database.dart';
 import '../tables.dart';
+import '../../theme/tag_colors.dart';
 
 part 'tag_dao.g.dart';
 
@@ -20,16 +21,53 @@ class TagDao extends DatabaseAccessor<AppDatabase> with _$TagDaoMixin {
         .getSingleOrNull();
   }
 
-  /// 根据名称查找或创建 tag
+  /// 获取使用该 tag 的穿搭数量
+  Future<int> getTagUsageCount(int tagId) async {
+    final count = await (selectOnly(outfitTags)
+          ..addColumns([outfitTags.outfitId.count()])
+          ..where(outfitTags.tagId.equals(tagId)))
+        .getSingle();
+    return count.read(outfitTags.outfitId.count()) ?? 0;
+  }
+
+  /// 更新 tag 名称（新名称不能与已有 tag 重复）
+  Future<bool> updateTagName(int tagId, String newName) async {
+    return updateTag(tagId, newName, null);
+  }
+
+  /// 更新 tag 名称与颜色（名称不能与已有 tag 重复，color 为 null 则不更新颜色）
+  Future<bool> updateTag(int tagId, String newName, String? newColor) async {
+    final trimmed = newName.trim();
+    if (trimmed.isEmpty) return false;
+    final existing = await getTagByName(trimmed);
+    if (existing != null && existing.id != tagId) return false;
+    final companion = TagsCompanion(
+      name: Value(trimmed),
+      color: newColor != null ? Value(newColor) : const Value.absent(),
+    );
+    final result = await (update(tags)..where((tbl) => tbl.id.equals(tagId)))
+        .write(companion);
+    return result > 0;
+  }
+
+  /// 删除 tag：先从所有穿搭中移除该标签，再删除 tag
+  Future<void> deleteTagAndRemoveFromAllOutfits(int tagId) async {
+    await (delete(outfitTags)..where((tbl) => tbl.tagId.equals(tagId))).go();
+    await (delete(tags)..where((tbl) => tbl.id.equals(tagId))).go();
+  }
+
+  /// 根据名称查找或创建 tag（新建时使用默认颜色）
   Future<TagData> getOrCreateTag(String name) async {
     final existing = await getTagByName(name);
     if (existing != null) {
       return existing;
     }
-    
-    final companion = TagsCompanion.insert(name: name);
+    final companion = TagsCompanion.insert(
+      name: name,
+      color: Value(TagColors.defaultColorHex),
+    );
     final id = await into(tags).insert(companion);
-    return TagData(id: id, name: name);
+    return TagData(id: id, name: name, color: TagColors.defaultColorHex);
   }
 
   /// 插入 tag

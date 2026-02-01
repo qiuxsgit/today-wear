@@ -92,8 +92,111 @@ class AppLocalizationsJa extends AppLocalizations {
   String get save => '保存';
 
   @override
+  String get delete => '削除';
+
+  @override
+  String get cancel => 'キャンセル';
+
+  @override
+  String get deleteOutfitConfirm => 'このコーデ記録を削除しますか？削除すると元に戻せません。';
+
+  @override
+  String get tagManagement => 'タグ管理';
+
+  @override
+  String get tagName => 'タグ名';
+
+  @override
+  String get tagColor => 'タグの色';
+
+  @override
+  String get tagEdit => 'タグを編集';
+
+  @override
+  String get tagDeleteConfirm => 'このタグを削除しますか？';
+
+  @override
+  String tagDeleteConfirmInUse(int count) {
+    return 'このタグは $count 件のコーデで使用されています。削除するとそれらから外れます。削除しますか？';
+  }
+
+  @override
+  String get tagNameEmpty => 'タグ名を入力してください';
+
+  @override
+  String get tagNameDuplicate => 'このタグ名は既に存在します';
+
+  @override
+  String get tagSaved => '保存しました';
+
+  @override
+  String get tagNoTags => 'タグがありません';
+
+  @override
+  String tagManagementWithCount(int count) {
+    return 'タグ管理（全 $count 件）';
+  }
+
+  @override
   String get homeEmptyMessage => 'まだコーデの記録がありません\n最初のコーデを追加して、毎日のコーデを記録しましょう';
 
   @override
   String get homeAddFirstOutfit => '最初のコーデを追加';
+
+  @override
+  String get contactQQ => 'QQ';
+
+  @override
+  String get contactEmail => 'メール';
+
+  @override
+  String get contactEmailCopyHint => 'メールアプリを開けません。メールアドレスを手動でコピーしてください。';
+
+  @override
+  String get copiedToClipboard => 'コピーしました';
+
+  @override
+  String get editProfile => 'プロフィールを編集';
+
+  @override
+  String get birthday => '誕生日';
+
+  @override
+  String get gender => '性別';
+
+  @override
+  String get personality => '性格';
+
+  @override
+  String get male => '男性';
+
+  @override
+  String get female => '女性';
+
+  @override
+  String get genderNotSpecified => '選択しない';
+
+  @override
+  String get profileSaved => '保存しました';
+
+  @override
+  String get hintNickname => 'ニックネームを入力';
+
+  @override
+  String get hintPersonality => 'あなたの性格を教えてください～';
+
+  @override
+  String get hintAvatarEmoji => 'アバター用の絵文字を選んでください';
+
+  @override
+  String get selectBirthday => '誕生日を選択';
+
+  @override
+  String get avatar => 'アバター';
+
+  @override
+  String get avatarSelectHint => 'タップして写真を選択';
+
+  @override
+  String get nicknameField => 'ニックネーム';
 }

@@ -37,6 +37,53 @@
   "contact": "연락처",
   "about": "앱 정보",
   "save": "저장",
+  "delete": "삭제",
+  "cancel": "취소",
+  "deleteOutfitConfirm": "이 코디 기록을 삭제하시겠습니까? 삭제 후에는 복구할 수 없습니다.",
+  "tagManagement": "태그 관리",
+  "tagName": "태그 이름",
+  "tagColor": "태그 색상",
+  "tagEdit": "태그 편집",
+  "tagDeleteConfirm": "이 태그를 삭제하시겠습니까?",
+  "tagDeleteConfirmInUse": "이 태그는 {count}개의 코디에서 사용 중입니다. 삭제하면 해당 코디에서 제거됩니다. 삭제하시겠습니까?",
+  "@tagDeleteConfirmInUse": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tagNameEmpty": "태그 이름을 입력하세요",
+  "tagNameDuplicate": "이미 존재하는 태그 이름입니다",
+  "tagSaved": "저장됨",
+  "tagNoTags": "태그가 없습니다",
+  "tagManagementWithCount": "태그 관리 (총 {count}개)",
+  "@tagManagementWithCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "homeEmptyMessage": "아직 코디 기록이 없어요.\n첫 코디를 추가하고 매일의 코디를 기록해 보세요.",
-  "homeAddFirstOutfit": "첫 코디 추가"
+  "homeAddFirstOutfit": "첫 코디 추가",
+  "contactQQ": "QQ",
+  "contactEmail": "이메일",
+  "contactEmailCopyHint": "이메일 앱을 열 수 없습니다. 이메일 주소를 수동으로 복사해 주세요.",
+  "copiedToClipboard": "복사됨",
+  "editProfile": "프로필 편집",
+  "birthday": "생일",
+  "gender": "성별",
+  "personality": "성격",
+  "male": "남성",
+  "female": "여성",
+  "genderNotSpecified": "선택 안 함",
+  "profileSaved": "저장됨",
+  "hintNickname": "닉네임을 입력하세요",
+  "hintPersonality": "당신의 성격을 소개해 주세요～",
+  "hintAvatarEmoji": "아바타용 이모지를 선택하세요",
+  "selectBirthday": "생일 선택",
+  "avatar": "아바타",
+  "avatarSelectHint": "탭하여 사진 선택",
+  "nicknameField": "닉네임"
 }

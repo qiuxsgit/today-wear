@@ -38,5 +38,13 @@ end
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_macos_build_settings(target)
+    # 抑制 sqlite3 的 64-to-32 与 MIN 宏冲突警告
+    if target.name == 'sqlite3'
+      target.build_configurations.each do |config|
+        flags = config.build_settings['OTHER_CFLAGS'] || '$(inherited)'
+        flags = [flags] if flags.is_a?(String)
+        config.build_settings['OTHER_CFLAGS'] = flags + ['-Wno-shorten-64-to-32', '-Wno-ambiguous-macro']
+      end
+    end
   end
 end

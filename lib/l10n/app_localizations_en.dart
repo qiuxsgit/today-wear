@@ -92,9 +92,114 @@ class AppLocalizationsEn extends AppLocalizations {
   String get save => 'Save';
 
   @override
+  String get delete => 'Delete';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get deleteOutfitConfirm =>
+      'Are you sure you want to delete this outfit? This cannot be undone.';
+
+  @override
+  String get tagManagement => 'Tag Management';
+
+  @override
+  String get tagName => 'Tag Name';
+
+  @override
+  String get tagColor => 'Tag Color';
+
+  @override
+  String get tagEdit => 'Edit Tag';
+
+  @override
+  String get tagDeleteConfirm => 'Are you sure you want to delete this tag?';
+
+  @override
+  String tagDeleteConfirmInUse(int count) {
+    return 'This tag is used by $count outfit(s). Deleting will remove it from those outfits. Continue?';
+  }
+
+  @override
+  String get tagNameEmpty => 'Please enter a tag name';
+
+  @override
+  String get tagNameDuplicate => 'This tag name already exists';
+
+  @override
+  String get tagSaved => 'Saved';
+
+  @override
+  String get tagNoTags => 'No tags yet';
+
+  @override
+  String tagManagementWithCount(int count) {
+    return 'Tag Management ($count total)';
+  }
+
+  @override
   String get homeEmptyMessage =>
       'No outfit records yet.\nAdd your first outfit to start recording your daily looks.';
 
   @override
   String get homeAddFirstOutfit => 'Add First Outfit';
+
+  @override
+  String get contactQQ => 'QQ';
+
+  @override
+  String get contactEmail => 'Email';
+
+  @override
+  String get contactEmailCopyHint =>
+      'Cannot open email app. Please copy the email address manually.';
+
+  @override
+  String get copiedToClipboard => 'Copied';
+
+  @override
+  String get editProfile => 'Edit Profile';
+
+  @override
+  String get birthday => 'Birthday';
+
+  @override
+  String get gender => 'Gender';
+
+  @override
+  String get personality => 'Personality';
+
+  @override
+  String get male => 'Male';
+
+  @override
+  String get female => 'Female';
+
+  @override
+  String get genderNotSpecified => 'Prefer not to say';
+
+  @override
+  String get profileSaved => 'Saved';
+
+  @override
+  String get hintNickname => 'Enter nickname';
+
+  @override
+  String get hintPersonality => 'Tell us about your personality～';
+
+  @override
+  String get hintAvatarEmoji => 'Choose an emoji for avatar';
+
+  @override
+  String get selectBirthday => 'Select birthday';
+
+  @override
+  String get avatar => 'Avatar';
+
+  @override
+  String get avatarSelectHint => 'Tap to select photo';
+
+  @override
+  String get nicknameField => 'Nickname';
 }

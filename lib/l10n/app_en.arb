@@ -37,6 +37,53 @@
   "contact": "Contact",
   "about": "About",
   "save": "Save",
+  "delete": "Delete",
+  "cancel": "Cancel",
+  "deleteOutfitConfirm": "Are you sure you want to delete this outfit? This cannot be undone.",
+  "tagManagement": "Tag Management",
+  "tagName": "Tag Name",
+  "tagColor": "Tag Color",
+  "tagEdit": "Edit Tag",
+  "tagDeleteConfirm": "Are you sure you want to delete this tag?",
+  "tagDeleteConfirmInUse": "This tag is used by {count} outfit(s). Deleting will remove it from those outfits. Continue?",
+  "@tagDeleteConfirmInUse": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tagNameEmpty": "Please enter a tag name",
+  "tagNameDuplicate": "This tag name already exists",
+  "tagSaved": "Saved",
+  "tagNoTags": "No tags yet",
+  "tagManagementWithCount": "Tag Management ({count} total)",
+  "@tagManagementWithCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "homeEmptyMessage": "No outfit records yet.\nAdd your first outfit to start recording your daily looks.",
-  "homeAddFirstOutfit": "Add First Outfit"
+  "homeAddFirstOutfit": "Add First Outfit",
+  "contactQQ": "QQ",
+  "contactEmail": "Email",
+  "contactEmailCopyHint": "Cannot open email app. Please copy the email address manually.",
+  "copiedToClipboard": "Copied",
+  "editProfile": "Edit Profile",
+  "birthday": "Birthday",
+  "gender": "Gender",
+  "personality": "Personality",
+  "male": "Male",
+  "female": "Female",
+  "genderNotSpecified": "Prefer not to say",
+  "profileSaved": "Saved",
+  "hintNickname": "Enter nickname",
+  "hintPersonality": "Tell us about your personality～",
+  "hintAvatarEmoji": "Choose an emoji for avatar",
+  "selectBirthday": "Select birthday",
+  "avatar": "Avatar",
+  "avatarSelectHint": "Tap to select photo",
+  "nicknameField": "Nickname"
 }

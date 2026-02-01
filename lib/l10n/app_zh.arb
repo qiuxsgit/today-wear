@@ -37,6 +37,53 @@
   "contact": "联系方式",
   "about": "关于应用",
   "save": "保存",
+  "delete": "删除",
+  "cancel": "取消",
+  "deleteOutfitConfirm": "确定要删除这条穿搭记录吗？删除后无法恢复。",
+  "tagManagement": "标签管理",
+  "tagName": "标签名称",
+  "tagColor": "标签颜色",
+  "tagEdit": "编辑标签",
+  "tagDeleteConfirm": "确定要删除该标签吗？",
+  "tagDeleteConfirmInUse": "该标签已被 {count} 条穿搭使用，删除将从这些穿搭中移除该标签。确定删除吗？",
+  "@tagDeleteConfirmInUse": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tagNameEmpty": "请输入标签名称",
+  "tagNameDuplicate": "该标签名称已存在",
+  "tagSaved": "已保存",
+  "tagNoTags": "暂无标签",
+  "tagManagementWithCount": "标签管理（共 {count} 个）",
+  "@tagManagementWithCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "homeEmptyMessage": "还没有穿搭记录\n添加第一条穿搭，开始记录你的每日穿搭吧",
-  "homeAddFirstOutfit": "添加第一条穿搭"
+  "homeAddFirstOutfit": "添加第一条穿搭",
+  "contactQQ": "QQ",
+  "contactEmail": "邮箱",
+  "contactEmailCopyHint": "无法打开邮件应用，请手动复制邮箱地址",
+  "copiedToClipboard": "已复制",
+  "editProfile": "编辑资料",
+  "birthday": "生日",
+  "gender": "性别",
+  "personality": "性格",
+  "male": "男",
+  "female": "女",
+  "genderNotSpecified": "暂不选择",
+  "profileSaved": "已保存",
+  "hintNickname": "请输入昵称",
+  "hintPersonality": "介绍一下你的性格吧～",
+  "hintAvatarEmoji": "选一个 emoji 做头像",
+  "selectBirthday": "选择生日",
+  "avatar": "头像",
+  "avatarSelectHint": "点击选择图片",
+  "nicknameField": "昵称"
 }

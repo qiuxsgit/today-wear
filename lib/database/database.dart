@@ -26,7 +26,7 @@ class AppDatabase extends _$AppDatabase {
   }
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration {
@@ -41,7 +41,11 @@ class AppDatabase extends _$AppDatabase {
         await customStatement('CREATE INDEX IF NOT EXISTS idx_outfit_images_outfit_id ON outfit_images(outfit_id)');
       },
       onUpgrade: (Migrator m, int from, int to) async {
-        // 未来版本升级逻辑
+        if (from < 2) {
+          await customStatement(
+            "ALTER TABLE tags ADD COLUMN color TEXT DEFAULT '#E8F5E9'",
+          );
+        }
       },
     );
   }

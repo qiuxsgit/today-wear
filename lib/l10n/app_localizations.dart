@@ -266,6 +266,90 @@ abstract class AppLocalizations {
   /// **'保存'**
   String get save;
 
+  /// No description provided for @delete.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'删除'**
+  String get delete;
+
+  /// No description provided for @cancel.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'取消'**
+  String get cancel;
+
+  /// No description provided for @deleteOutfitConfirm.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'确定要删除这条穿搭记录吗？删除后无法恢复。'**
+  String get deleteOutfitConfirm;
+
+  /// No description provided for @tagManagement.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'标签管理'**
+  String get tagManagement;
+
+  /// No description provided for @tagName.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'标签名称'**
+  String get tagName;
+
+  /// No description provided for @tagColor.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'标签颜色'**
+  String get tagColor;
+
+  /// No description provided for @tagEdit.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'编辑标签'**
+  String get tagEdit;
+
+  /// No description provided for @tagDeleteConfirm.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'确定要删除该标签吗？'**
+  String get tagDeleteConfirm;
+
+  /// No description provided for @tagDeleteConfirmInUse.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'该标签已被 {count} 条穿搭使用，删除将从这些穿搭中移除该标签。确定删除吗？'**
+  String tagDeleteConfirmInUse(int count);
+
+  /// No description provided for @tagNameEmpty.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'请输入标签名称'**
+  String get tagNameEmpty;
+
+  /// No description provided for @tagNameDuplicate.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'该标签名称已存在'**
+  String get tagNameDuplicate;
+
+  /// No description provided for @tagSaved.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'已保存'**
+  String get tagSaved;
+
+  /// No description provided for @tagNoTags.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'暂无标签'**
+  String get tagNoTags;
+
+  /// No description provided for @tagManagementWithCount.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'标签管理（共 {count} 个）'**
+  String tagManagementWithCount(int count);
+
   /// No description provided for @homeEmptyMessage.
   ///
   /// In zh_CN, this message translates to:
@@ -277,6 +361,120 @@ abstract class AppLocalizations {
   /// In zh_CN, this message translates to:
   /// **'添加第一条穿搭'**
   String get homeAddFirstOutfit;
+
+  /// No description provided for @contactQQ.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'QQ'**
+  String get contactQQ;
+
+  /// No description provided for @contactEmail.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'邮箱'**
+  String get contactEmail;
+
+  /// No description provided for @contactEmailCopyHint.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'无法打开邮件应用，请手动复制邮箱地址'**
+  String get contactEmailCopyHint;
+
+  /// No description provided for @copiedToClipboard.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'已复制'**
+  String get copiedToClipboard;
+
+  /// No description provided for @editProfile.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'编辑资料'**
+  String get editProfile;
+
+  /// No description provided for @birthday.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'生日'**
+  String get birthday;
+
+  /// No description provided for @gender.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'性别'**
+  String get gender;
+
+  /// No description provided for @personality.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'性格'**
+  String get personality;
+
+  /// No description provided for @male.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'男'**
+  String get male;
+
+  /// No description provided for @female.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'女'**
+  String get female;
+
+  /// No description provided for @genderNotSpecified.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'暂不选择'**
+  String get genderNotSpecified;
+
+  /// No description provided for @profileSaved.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'已保存'**
+  String get profileSaved;
+
+  /// No description provided for @hintNickname.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'请输入昵称'**
+  String get hintNickname;
+
+  /// No description provided for @hintPersonality.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'介绍一下你的性格吧～'**
+  String get hintPersonality;
+
+  /// No description provided for @hintAvatarEmoji.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'选一个 emoji 做头像'**
+  String get hintAvatarEmoji;
+
+  /// No description provided for @selectBirthday.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'选择生日'**
+  String get selectBirthday;
+
+  /// No description provided for @avatar.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'头像'**
+  String get avatar;
+
+  /// No description provided for @avatarSelectHint.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'点击选择图片'**
+  String get avatarSelectHint;
+
+  /// No description provided for @nicknameField.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'昵称'**
+  String get nicknameField;
 }
 
 class _AppLocalizationsDelegate

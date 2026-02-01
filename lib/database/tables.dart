@@ -16,6 +16,8 @@ class Outfits extends Table {
 class Tags extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text().unique()();
+  /// 标签颜色，存 hex 如 #E8F5E9，可为空（旧数据兼容），读取时用默认色
+  TextColumn get color => text().nullable().withDefault(const Constant('#E8F5E9'))();
 }
 
 /// OutfitTags 关联表（多对多）

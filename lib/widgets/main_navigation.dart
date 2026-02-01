@@ -66,7 +66,25 @@ class MainNavigation extends StatelessWidget {
           ),
           NavigationDestination(
             icon: Icon(Icons.add_circle_outline, size: addIconSize),
-            selectedIcon: Icon(Icons.add_circle, size: addIconSize),
+            selectedIcon: Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: AppColors.primary.withValues(alpha: 0.12),
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.06),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Icon(
+                Icons.add,
+                size: addIconSize,
+                color: AppColors.primary,
+              ),
+            ),
             label: l10n.add,
           ),
           NavigationDestination(
