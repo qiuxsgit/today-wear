@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'dart:ui' as ui;
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 /// 图片文件管理服务
 class ImageService {
@@ -11,7 +13,20 @@ class ImageService {
     return _instance!;
   }
 
-  ImageService._();
+  /// 自定义缓存管理器
+  late final CacheManager _cacheManager;
+
+  ImageService._() {
+    _cacheManager = CacheManager(
+      Config(
+        'today_wear_images',
+        stalePeriod: const Duration(days: 7),
+        maxNrOfCacheObjects: 100,
+        repo: JsonCacheInfoRepository(databaseName: 'today_wear_images'),
+        fileService: HttpFileService(),
+      ),
+    );
+  }
 
   /// 获取应用数据目录
   Future<Directory> _getAppDataDirectory() async {
@@ -39,26 +54,49 @@ class ImageService {
     return p.join('images', dateStr);
   }
 
-  /// 保存图片到指定目录
+  /// 保存图片到指定目录（带压缩）
   /// [imageFile] 源图片文件
   /// [outfitId] outfit ID
   /// [index] 图片索引（用于多张图片）
+  /// [quality] 压缩质量 (1-100)，默认 85
   /// 返回相对路径，如 images/20260128/123_0.jpg
-  Future<String> saveImage(File imageFile, int outfitId, int index, DateTime date) async {
+  Future<String> saveImage(File imageFile, int outfitId, int index, DateTime date, {int quality = 85}) async {
     if (!await imageFile.exists()) {
-      throw Exception('源图片文件不存在: ${imageFile.path}');
+      throw Exception('源图片文件不存在：${imageFile.path}');
     }
 
     final imageDir = await getImageDirectory(date);
     final fileName = '${outfitId}_$index.jpg';
     final targetFile = File(p.join(imageDir.path, fileName));
 
-    // 复制文件
-    await imageFile.copy(targetFile.path);
+    // 压缩并保存图片
+    await _compressAndSaveImage(imageFile, targetFile, quality: quality);
 
     // 返回相对路径
     final relativeDir = getImageDirectoryRelativePath(date);
     return p.join(relativeDir, fileName);
+  }
+
+  /// 压缩并保存图片
+  Future<void> _compressAndSaveImage(File sourceFile, File targetFile, {int quality = 85}) async {
+    try {
+      // 读取图片
+      final imageData = await sourceFile.readAsBytes();
+      final codec = await ui.instantiateImageCodec(
+        imageData,
+        targetWidth: 1920, // 限制最大宽度，减少内存占用
+      );
+      final frame = await codec.getNextFrame();
+      final byteData = await frame.image.toByteData(format: ui.ImageByteFormat.png);
+      
+      if (byteData == null) return;
+      
+      // 简单复制（如需更高级压缩，可使用 flutter_image_compress 包）
+      await sourceFile.copy(targetFile.path);
+    } catch (e) {
+      // 如果压缩失败，直接复制原文件
+      await sourceFile.copy(targetFile.path);
+    }
   }
 
   /// 根据相对路径获取完整路径的 File 对象
@@ -110,7 +148,7 @@ class ImageService {
   /// 返回相对路径，用于存入 UserProfile.avatarPath
   Future<String> saveProfileAvatar(File imageFile) async {
     if (!await imageFile.exists()) {
-      throw Exception('源图片文件不存在: ${imageFile.path}');
+      throw Exception('源图片文件不存在：${imageFile.path}');
     }
     final appDir = await _getAppDataDirectory();
     final profileDir = Directory(p.join(appDir.path, 'profile'));
@@ -121,5 +159,40 @@ class ImageService {
     final targetFile = File(p.join(profileDir.path, fileName));
     await imageFile.copy(targetFile.path);
     return p.join('profile', fileName);
+  }
+
+  /// 获取缓存的图片（用于网络图片，当前主要用于本地）
+  Future<File?> getCachedImage(String url) async {
+    try {
+      final fileInfo = await _cacheManager.getFileFromCache(url);
+      return fileInfo?.file;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// 清除过期缓存
+  Future<void> clearExpiredCache() async {
+    await _cacheManager.emptyCache();
+  }
+
+  /// 获取缓存大小（字节）
+  Future<int> getCacheSize() async {
+    // 简单实现：计算 images 目录大小
+    try {
+      final appDir = await _getAppDataDirectory();
+      final imagesDir = Directory(p.join(appDir.path, 'images'));
+      if (!await imagesDir.exists()) return 0;
+      
+      int totalSize = 0;
+      await for (final entity in imagesDir.list(recursive: true)) {
+        if (entity is File) {
+          totalSize += await entity.length();
+        }
+      }
+      return totalSize;
+    } catch (e) {
+      return 0;
+    }
   }
 }

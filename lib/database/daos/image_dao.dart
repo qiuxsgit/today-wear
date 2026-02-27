@@ -42,10 +42,24 @@ class ImageDao extends DatabaseAccessor<AppDatabase> with _$ImageDaoMixin {
         .go();
   }
 
-  /// 更新图片显示顺序
+  /// 更新图片显示顺序（通过 imageId）
   Future<bool> updateImageOrder(int imageId, int displayOrder) async {
     final result = await (update(outfitImages)..where((tbl) => tbl.id.equals(imageId)))
         .write(OutfitImagesCompanion(displayOrder: Value(displayOrder)));
     return result > 0;
+  }
+
+  /// 更新图片显示顺序（通过 outfitId 和 imagePath）
+  Future<void> updateImageOrderByPath(int outfitId, String imagePath, int displayOrder) async {
+    await (update(outfitImages)
+          ..where((tbl) => tbl.outfitId.equals(outfitId) & tbl.imagePath.equals(imagePath)))
+        .write(OutfitImagesCompanion(displayOrder: Value(displayOrder)));
+  }
+
+  /// 删除单个图片（通过路径）
+  Future<void> deleteImageByPath(int outfitId, String imagePath) async {
+    await (delete(outfitImages)
+          ..where((tbl) => tbl.outfitId.equals(outfitId) & tbl.imagePath.equals(imagePath)))
+        .go();
   }
 }

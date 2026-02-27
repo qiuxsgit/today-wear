@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:image_picker/image_picker.dart';
 import 'package:today_wear/l10n/app_localizations.dart';
+import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_text_style.dart';
 import '../database/database.dart';
@@ -10,16 +11,21 @@ import '../repositories/outfit_repository.dart';
 import '../models/outfit.dart';
 import '../theme/tag_colors.dart';
 
-/// 添加穿搭页面
+/// 添加/编辑穿搭页面
 /// 
 /// 支持图片选择、标签管理和备注输入
+/// 支持编辑模式（传入 outfit 参数）
 class AddOutfitPage extends StatefulWidget {
   /// 数据保存成功后的回调
   final VoidCallback? onDataSaved;
   
+  /// 编辑模式时传入的 outfit 数据（null 表示新建模式）
+  final Outfit? outfit;
+  
   const AddOutfitPage({
     super.key,
     this.onDataSaved,
+    this.outfit,
   });
   
   @override
@@ -36,25 +42,78 @@ class AddOutfitPageState extends State<AddOutfitPage> {
   /// 最多可选择的图片数量
   static const int maxImages = 9;
   
-  List<File> _selectedImages = [];
+  /// 是否为编辑模式
+  late final bool _isEditMode;
+  
+  /// 编辑时的 outfit ID
+  int? _editingOutfitId;
+  
+  /// 已选择的图片文件（新建模式）或现有图片路径（编辑模式）
+  /// 编辑模式下，字符串格式为 "path:<relativePath>" 或 "file:<tempPath>"
+  List<String> _selectedImageRefs = [];
+  List<File> _tempImageFiles = []; // 临时文件引用
   List<String> _selectedTags = [];
   List<String> _availableTags = [];
   bool _isSaving = false;
   bool _isLoadingTags = true;
+  bool _isLoadingExistingData = false;
   
   @override
   void initState() {
     super.initState();
+    _isEditMode = widget.outfit != null;
     _db = AppDatabase();
     _repository = OutfitRepository(_db);
-    _loadAvailableTags();
+    
+    if (_isEditMode) {
+      _editingOutfitId = widget.outfit!.id;
+      _loadExistingData();
+    } else {
+      _loadAvailableTags();
+    }
   }
   
   @override
   void dispose() {
     _descriptionController.dispose();
     _tagController.dispose();
+    // 清理临时文件
+    for (final file in _tempImageFiles) {
+      if (file.existsSync()) {
+        file.deleteSync();
+      }
+    }
     super.dispose();
+  }
+  
+  /// 加载已有穿搭数据（编辑模式）
+  Future<void> _loadExistingData() async {
+    setState(() => _isLoadingExistingData = true);
+    
+    try {
+      final outfit = widget.outfit!;
+      
+      _descriptionController.text = outfit.description;
+      _selectedTags = List.from(outfit.tags);
+      
+      // 加载现有图片路径
+      _selectedImageRefs = outfit.photoPaths.map((path) => "path:$path").toList();
+      
+      await _loadAvailableTags();
+      
+      setState(() {
+        _isLoadingExistingData = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoadingExistingData = false;
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('加载数据失败：$e')),
+        );
+      }
+    }
   }
   
   /// 加载可用标签列表
@@ -71,7 +130,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
       });
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('加载标签失败: $e')),
+          SnackBar(content: Text('加载标签失败：$e')),
         );
       }
     }
@@ -81,7 +140,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
   Future<void> _pickImagesFromGallery() async {
     try {
       // 检查是否已达到最大数量
-      if (_selectedImages.length >= maxImages) {
+      if (_selectedImageRefs.length >= maxImages) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('最多只能选择 $maxImages 张图片')),
@@ -97,7 +156,6 @@ class AddOutfitPageState extends State<AddOutfitPage> {
         images = await _imagePicker.pickMultiImage();
       } catch (e) {
         // 如果多选不支持或失败，尝试单选
-        // 用户可以多次选择来添加多张图片
         final XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery);
         if (image != null) {
           images = [image];
@@ -105,10 +163,8 @@ class AddOutfitPageState extends State<AddOutfitPage> {
       }
       
       if (images.isNotEmpty) {
-        // 计算还可以添加多少张图片
-        final remainingSlots = maxImages - _selectedImages.length;
+        final remainingSlots = maxImages - _selectedImageRefs.length;
         
-        // 如果选择的图片超过剩余数量，只保留前面的图片
         if (images.length > remainingSlots) {
           images = images.take(remainingSlots).toList();
           if (mounted) {
@@ -119,13 +175,16 @@ class AddOutfitPageState extends State<AddOutfitPage> {
         }
         
         setState(() {
-          _selectedImages.addAll(images.map((xfile) => File(xfile.path)));
+          for (final xfile in images) {
+            _selectedImageRefs.add("file:${xfile.path}");
+            _tempImageFiles.add(File(xfile.path));
+          }
         });
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('选择图片失败: $e')),
+          SnackBar(content: Text('选择图片失败：$e')),
         );
       }
     }
@@ -134,8 +193,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
   /// 拍照
   Future<void> _takePhoto() async {
     try {
-      // 检查是否已达到最大数量
-      if (_selectedImages.length >= maxImages) {
+      if (_selectedImageRefs.length >= maxImages) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('最多只能选择 $maxImages 张图片')),
@@ -144,18 +202,17 @@ class AddOutfitPageState extends State<AddOutfitPage> {
         return;
       }
       
-      final XFile? image = await _imagePicker.pickImage(
-        source: ImageSource.camera,
-      );
+      final XFile? image = await _imagePicker.pickImage(source: ImageSource.camera);
       if (image != null) {
         setState(() {
-          _selectedImages.add(File(image.path));
+          _selectedImageRefs.add("file:${image.path}");
+          _tempImageFiles.add(File(image.path));
         });
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('拍照失败: $e')),
+          SnackBar(content: Text('拍照失败：$e')),
         );
       }
     }
@@ -199,9 +256,38 @@ class AddOutfitPageState extends State<AddOutfitPage> {
   }
   
   /// 删除图片
-  void _removeImage(int index) {
+  void _removeImage(int index) async {
+    final ref = _selectedImageRefs[index];
+    
+    if (ref.startsWith("path:")) {
+      // 编辑模式下删除已有图片
+      final imagePath = ref.substring(5);
+      if (_editingOutfitId != null) {
+        await _repository.removeImageFromOutfit(_editingOutfitId!, imagePath);
+      }
+    } else if (ref.startsWith("file:")) {
+      // 删除临时文件
+      final filePath = ref.substring(5);
+      final file = File(filePath);
+      if (await file.exists()) {
+        await file.delete();
+      }
+      _tempImageFiles.removeWhere((f) => f.path == filePath);
+    }
+    
     setState(() {
-      _selectedImages.removeAt(index);
+      _selectedImageRefs.removeAt(index);
+    });
+  }
+  
+  /// 图片重新排序
+  void _reorderImages(int oldIndex, int newIndex) {
+    setState(() {
+      if (newIndex > oldIndex) {
+        newIndex -= 1;
+      }
+      final item = _selectedImageRefs.removeAt(oldIndex);
+      _selectedImageRefs.insert(newIndex, item);
     });
   }
   
@@ -223,7 +309,6 @@ class AddOutfitPageState extends State<AddOutfitPage> {
       return;
     }
     
-    // 检查是否已存在
     if (_selectedTags.contains(tag)) {
       _tagController.clear();
       if (mounted) {
@@ -250,7 +335,8 @@ class AddOutfitPageState extends State<AddOutfitPage> {
   /// 清空表单数据
   void _clearForm() {
     setState(() {
-      _selectedImages.clear();
+      _selectedImageRefs.clear();
+      _tempImageFiles.clear();
       _selectedTags.clear();
       _descriptionController.clear();
       _tagController.clear();
@@ -260,7 +346,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
   /// 保存穿搭记录
   Future<void> _saveOutfit() async {
     // 验证图片
-    if (_selectedImages.isEmpty) {
+    if (_selectedImageRefs.isEmpty) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('请至少选择一张图片')),
@@ -282,23 +368,16 @@ class AddOutfitPageState extends State<AddOutfitPage> {
     });
     
     try {
-      final outfit = Outfit(
-        id: 0, // 新建
-        date: DateTime.now(),
-        description: _descriptionController.text.trim(),
-        tags: _selectedTags,
-        tagColors: List.filled(
-          _selectedTags.length,
-          TagColors.defaultColorHex,
-        ), // 新建时用默认色，保存后从 DB 加载会带真实颜色
-        photoPaths: [], // 保存时由 repository 处理
-      );
-      
-      await _repository.saveOutfit(outfit, imageFiles: _selectedImages);
+      if (_isEditMode && _editingOutfitId != null) {
+        // 编辑模式
+        await _updateOutfit();
+      } else {
+        // 新建模式
+        await _createOutfit();
+      }
       
       if (!mounted) return;
       
-      // 显示成功消息
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('保存成功'),
@@ -306,15 +385,12 @@ class AddOutfitPageState extends State<AddOutfitPage> {
         ),
       );
       
-      // 清空表单数据
       _clearForm();
-      
-      // 通知外部数据已保存，需要刷新首页
       widget.onDataSaved?.call();
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('保存失败: $e')),
+        SnackBar(content: Text('保存失败：$e')),
       );
     } finally {
       if (mounted) {
@@ -325,121 +401,251 @@ class AddOutfitPageState extends State<AddOutfitPage> {
     }
   }
   
+  /// 创建新穿搭
+  Future<void> _createOutfit() async {
+    // 收集实际的文件
+    final imageFiles = <File>[];
+    for (final ref in _selectedImageRefs) {
+      if (ref.startsWith("file:")) {
+        final file = File(ref.substring(5));
+        if (await file.exists()) {
+          imageFiles.add(file);
+        }
+      }
+    }
+    
+    final outfit = Outfit(
+      id: 0,
+      date: DateTime.now(),
+      description: _descriptionController.text.trim(),
+      tags: _selectedTags,
+      tagColors: List.filled(_selectedTags.length, TagColors.defaultColorHex),
+      photoPaths: [],
+    );
+    
+    await _repository.saveOutfit(outfit, imageFiles: imageFiles);
+  }
+  
+  /// 更新已有穿搭
+  Future<void> _updateOutfit() async {
+    if (_editingOutfitId == null) return;
+    
+    final now = DateTime.now();
+    
+    // 分离已有图片路径和新添加的图片文件
+    final existingPaths = <String>[];
+    final newImageFiles = <File>[];
+    
+    for (final ref in _selectedImageRefs) {
+      if (ref.startsWith("path:")) {
+        existingPaths.add(ref.substring(5));
+      } else if (ref.startsWith("file:")) {
+        final file = File(ref.substring(5));
+        if (await file.exists()) {
+          newImageFiles.add(file);
+        }
+      }
+    }
+    
+    // 获取现有图片
+    final existingImages = await _db.imageDao.getImagesByOutfitId(_editingOutfitId!);
+    final existingPathSet = existingPaths.toSet();
+    
+    // 删除不在新列表中的图片
+    for (final img in existingImages) {
+      if (!existingPathSet.contains(img.imagePath)) {
+        await _repository.removeImageFromOutfit(_editingOutfitId!, img.imagePath);
+      }
+    }
+    
+    // 添加新图片
+    if (newImageFiles.isNotEmpty) {
+      await _repository.addImagesToOutfit(_editingOutfitId!, newImageFiles, widget.outfit!.date);
+    }
+    
+    // 更新图片顺序
+    final allPaths = existingPaths.toList();
+    final startIndex = allPaths.length;
+    
+    // 保存新图片并获取路径
+    for (int i = 0; i < newImageFiles.length; i++) {
+      final relativePath = await _db.imageService.saveImage(
+        newImageFiles[i],
+        _editingOutfitId!,
+        startIndex + i,
+        widget.outfit!.date,
+      );
+      allPaths.add(relativePath);
+    }
+    
+    // 按照 _selectedImageRefs 的顺序更新
+    final orderedPaths = <String>[];
+    for (final ref in _selectedImageRefs) {
+      if (ref.startsWith("path:")) {
+        orderedPaths.add(ref.substring(5));
+      }
+    }
+    // 添加新图片的路径（按顺序）
+    int newImageIndex = 0;
+    for (final ref in _selectedImageRefs) {
+      if (ref.startsWith("file:")) {
+        // 找到对应的新图片路径
+        final newPaths = await _db.imageDao.getImagesByOutfitId(_editingOutfitId!);
+        for (final img in newPaths) {
+          if (img.displayOrder >= startIndex + newImageIndex && 
+              img.displayOrder < startIndex + newImageIndex + 1) {
+            orderedPaths.add(img.imagePath);
+            newImageIndex++;
+            break;
+          }
+        }
+      }
+    }
+    
+    if (orderedPaths.isNotEmpty) {
+      await _repository.updateImageOrder(_editingOutfitId!, orderedPaths);
+    }
+    
+    // 更新描述和标签
+    final outfit = Outfit(
+      id: _editingOutfitId!,
+      date: widget.outfit!.date,
+      description: _descriptionController.text.trim(),
+      tags: _selectedTags,
+      tagColors: List.filled(_selectedTags.length, TagColors.defaultColorHex),
+      photoPaths: [],
+    );
+    
+    await _repository.saveOutfit(outfit);
+  }
+  
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     
+    if (_isEditMode && _isLoadingExistingData) {
+      return Scaffold(
+        backgroundColor: AppColors.bgPrimary,
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
+    
     return Scaffold(
       backgroundColor: AppColors.bgPrimary,
       appBar: AppBar(
-        toolbarHeight: 0,
+        title: Text(_isEditMode ? '编辑穿搭' : l10n.addOutfit),
         backgroundColor: AppColors.bgPrimary,
         elevation: 0,
         scrolledUnderElevation: 0,
       ),
       body: SafeArea(
         child: Column(
-        children: [
-          Expanded(
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return SingleChildScrollView(
-                  padding: const EdgeInsets.all(16.0),
-                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                    child: GestureDetector(
-                      onTap: () => FocusScope.of(context).unfocus(),
-                      behavior: HitTestBehavior.opaque,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // 图片选择区域
-                          _buildImageSection(),
-                          const SizedBox(height: 24),
-                          // 标签选择区域
-                          _buildTagSection(),
-                          const SizedBox(height: 24),
-                          // 新标签输入区域
-                          _buildNewTagInput(),
-                          const SizedBox(height: 24),
-                          // 备注输入区域
-                          _buildDescriptionInput(),
-                          const SizedBox(height: 24),
-                        ],
+          children: [
+            Expanded(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return SingleChildScrollView(
+                    padding: const EdgeInsets.all(16.0),
+                    keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                      child: GestureDetector(
+                        onTap: () => FocusScope.of(context).unfocus(),
+                        behavior: HitTestBehavior.opaque,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _buildImageSection(),
+                            const SizedBox(height: 24),
+                            _buildTagSection(),
+                            const SizedBox(height: 24),
+                            _buildNewTagInput(),
+                            const SizedBox(height: 24),
+                            _buildDescriptionInput(),
+                            const SizedBox(height: 24),
+                          ],
+                        ),
                       ),
                     ),
+                  );
+                },
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              decoration: BoxDecoration(
+                color: AppColors.bgPrimary,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, -2),
                   ),
-                );
-              },
-            ),
-          ),
-          // 底部保存按钮
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-            decoration: BoxDecoration(
-              color: AppColors.bgPrimary,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 10,
-                  offset: const Offset(0, -2),
-                ),
-              ],
-            ),
-            child: SafeArea(
-              child: SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: ElevatedButton(
-                  onPressed: _isSaving ? null : _saveOutfit,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: Colors.white,
-                    disabledBackgroundColor: AppColors.textSecondary,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24),
+                ],
+              ),
+              child: SafeArea(
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 48,
+                  child: ElevatedButton(
+                    onPressed: _isSaving ? null : _saveOutfit,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: Colors.white,
+                      disabledBackgroundColor: AppColors.textSecondary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      elevation: 0,
                     ),
-                    elevation: 0,
+                    child: _isSaving
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            ),
+                          )
+                        : Text(
+                            _isEditMode ? '保存修改' : l10n.save,
+                            style: AppTextStyle.title.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                   ),
-                  child: _isSaving
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                          ),
-                        )
-                      : Text(
-                          l10n.save,
-                          style: AppTextStyle.title.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
         ),
       ),
     );
   }
   
-  /// 构建图片选择区域
+  /// 构建图片选择区域（支持拖拽排序）
   Widget _buildImageSection() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          '选择图片',
-          style: AppTextStyle.title,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              '选择图片',
+              style: AppTextStyle.title,
+            ),
+            if (_selectedImageRefs.length > 1)
+              Text(
+                '长按拖拽排序',
+                style: AppTextStyle.hint.copyWith(fontSize: 12),
+              ),
+          ],
         ),
         const SizedBox(height: 12),
-        // 图片网格（包含已选图片和添加按钮）
-        GridView.builder(
+        // 使用 ReorderableGridView 实现拖拽排序
+        ReorderableGridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -447,16 +653,16 @@ class AddOutfitPageState extends State<AddOutfitPage> {
             crossAxisSpacing: 8,
             mainAxisSpacing: 8,
           ),
-          // 如果图片数量达到最大值，不显示添加按钮
-          itemCount: _selectedImages.length < maxImages 
-              ? _selectedImages.length + 1 
-              : _selectedImages.length,
+          itemCount: _selectedImageRefs.length < maxImages 
+              ? _selectedImageRefs.length + 1 
+              : _selectedImageRefs.length,
+          onReorder: _reorderImages,
           itemBuilder: (context, index) {
-            // 如果图片数量未达到最大值，且是最后一个位置，显示添加按钮
-            if (_selectedImages.length < maxImages && index == _selectedImages.length) {
+            if (_selectedImageRefs.length < maxImages && index == _selectedImageRefs.length) {
               return GestureDetector(
                 onTap: _showImagePickerDialog,
                 child: Container(
+                  key: ValueKey('add_button'),
                   decoration: BoxDecoration(
                     color: AppColors.bgSecondary,
                     borderRadius: BorderRadius.circular(8),
@@ -487,16 +693,13 @@ class AddOutfitPageState extends State<AddOutfitPage> {
               );
             }
             
-            // 显示已选图片
+            final ref = _selectedImageRefs[index];
             return Stack(
               fit: StackFit.expand,
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
-                  child: Image.file(
-                    _selectedImages[index],
-                    fit: BoxFit.cover,
-                  ),
+                  child: _buildImageWidget(ref),
                 ),
                 Positioned(
                   top: 4,
@@ -529,6 +732,46 @@ class AddOutfitPageState extends State<AddOutfitPage> {
     );
   }
   
+  /// 构建单个图片 Widget
+  Widget _buildImageWidget(String ref) {
+    if (ref.startsWith("path:")) {
+      final path = ref.substring(5);
+      return FutureBuilder<File?>(
+        future: ImageService.instance.getImageFile(path),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Container(
+              color: AppColors.imagePlaceholder,
+              child: const Center(child: CircularProgressIndicator()),
+            );
+          }
+          final file = snapshot.data;
+          if (file == null || !file.existsSync()) {
+            return Container(
+              color: AppColors.imagePlaceholder,
+              child: const Icon(Icons.broken_image, color: AppColors.textPlaceholder),
+            );
+          }
+          return Image.file(file, fit: BoxFit.cover);
+        },
+      );
+    } else if (ref.startsWith("file:")) {
+      final path = ref.substring(5);
+      final file = File(path);
+      if (!file.existsSync()) {
+        return Container(
+          color: AppColors.imagePlaceholder,
+          child: const Icon(Icons.broken_image, color: AppColors.textPlaceholder),
+        );
+      }
+      return Image.file(file, fit: BoxFit.cover);
+    }
+    return Container(
+      color: AppColors.imagePlaceholder,
+      child: const Icon(Icons.broken_image, color: AppColors.textPlaceholder),
+    );
+  }
+  
   /// 构建标签选择区域
   Widget _buildTagSection() {
     return Column(
@@ -539,7 +782,6 @@ class AddOutfitPageState extends State<AddOutfitPage> {
           style: AppTextStyle.title,
         ),
         const SizedBox(height: 12),
-        // 可用标签列表
         if (_isLoadingTags)
           const Center(
             child: Padding(
@@ -577,7 +819,6 @@ class AddOutfitPageState extends State<AddOutfitPage> {
             }).toList(),
           ),
         const SizedBox(height: 16),
-        // 已选标签显示
         if (_selectedTags.isNotEmpty) ...[
           Text(
             '已选标签',

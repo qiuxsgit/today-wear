@@ -247,4 +247,63 @@ class OutfitRepository {
 
     return outfits;
   }
+
+  /// 更新 outfit 的图片顺序
+  /// [outfitId] outfit ID
+  /// [imagePaths] 按新顺序排列的图片路径列表
+  Future<void> updateImageOrder(int outfitId, List<String> imagePaths) async {
+    for (int i = 0; i < imagePaths.length; i++) {
+      await _db.imageDao.updateImageOrderByPath(outfitId, imagePaths[i], i);
+    }
+  }
+
+  /// 添加图片到已有 outfit
+  /// [outfitId] outfit ID
+  /// [imageFiles] 要添加的图片文件列表
+  /// [date] outfit 日期
+  Future<void> addImagesToOutfit(int outfitId, List<File> imageFiles, DateTime date) async {
+    // 获取现有图片数量
+    final existingImages = await _db.imageDao.getImagesByOutfitId(outfitId);
+    final startIndex = existingImages.length;
+
+    final imageCompanions = <OutfitImagesCompanion>[];
+    for (int i = 0; i < imageFiles.length; i++) {
+      final relativePath = await _imageService.saveImage(
+        imageFiles[i],
+        outfitId,
+        startIndex + i,
+        date,
+      );
+
+      imageCompanions.add(
+        OutfitImagesCompanion.insert(
+          outfitId: outfitId,
+          imagePath: relativePath,
+          displayOrder: startIndex + i,
+        ),
+      );
+    }
+
+    await _db.imageDao.insertImages(imageCompanions);
+  }
+
+  /// 从 outfit 删除指定图片
+  /// [outfitId] outfit ID
+  /// [imagePath] 要删除的图片路径
+  Future<void> removeImageFromOutfit(int outfitId, String imagePath) async {
+    // 删除文件
+    await _imageService.deleteImage(imagePath);
+    
+    // 删除数据库记录
+    await _db.imageDao.deleteImageByPath(outfitId, imagePath);
+    
+    // 重新排序剩余图片
+    final remainingImages = await _db.imageDao.getImagesByOutfitId(outfitId);
+    final sortedImages = remainingImages.toList()
+      ..sort((a, b) => a.displayOrder.compareTo(b.displayOrder));
+    
+    for (int i = 0; i < sortedImages.length; i++) {
+      await _db.imageDao.updateImageOrder(outfitId, sortedImages[i].imagePath, i);
+    }
+  }
 }

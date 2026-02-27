@@ -56,6 +56,12 @@ dependencies:
   
   # 图片选择
   image_picker: ^1.0.7
+  
+  # 图片缓存
+  flutter_cache_manager: ^3.3.1
+  
+  # 可拖拽网格布局
+  reorderable_grid_view: ^2.2.8
 
   # 打开链接 / 邮箱
   url_launcher: ^6.2.5

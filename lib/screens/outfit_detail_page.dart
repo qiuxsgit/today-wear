@@ -9,10 +9,11 @@ import '../theme/tag_colors.dart';
 import '../services/image_service.dart';
 import '../database/database.dart';
 import '../repositories/outfit_repository.dart';
+import 'add_outfit_page.dart';
 
 /// 穿搭详情页
 ///
-/// 显示穿搭基本信息，支持删除记录
+/// 显示穿搭基本信息，支持删除和编辑记录
 class OutfitDetailPage extends StatelessWidget {
   /// 穿搭数据
   final Outfit outfit;
@@ -69,6 +70,20 @@ class OutfitDetailPage extends StatelessWidget {
       }
     }
   }
+  
+  /// 编辑穿搭
+  Future<void> _onEdit(BuildContext context) async {
+    final result = await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddOutfitPage(outfit: outfit),
+      ),
+    );
+    // 如果编辑后删除了，返回 true
+    if (result == true && context.mounted) {
+      Navigator.pop(context, true);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +100,11 @@ class OutfitDetailPage extends StatelessWidget {
         elevation: 2,
         scrolledUnderElevation: 2,
         actions: [
+          IconButton(
+            icon: const Icon(Icons.edit_outlined),
+            onPressed: () => _onEdit(context),
+            tooltip: '编辑',
+          ),
           IconButton(
             icon: const Icon(Icons.delete_outline),
             onPressed: () => _onDelete(context),
