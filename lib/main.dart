@@ -9,11 +9,14 @@ import 'screens/profile_page.dart';
 import 'theme/app_colors.dart';
 import 'widgets/main_navigation.dart';
 import 'services/locale_service.dart';
+import 'services/theme_service.dart';
 import 'database/database.dart';
 import 'services/image_service.dart';
 
-// 导出LocaleServiceProvider以便其他文件使用
+// 导出 LocaleServiceProvider 以便其他文件使用
 export 'services/locale_service.dart';
+// 导出 ThemeService 以便其他文件使用
+export 'services/theme_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +24,10 @@ void main() async {
   // 初始化语言服务
   final localeService = LocaleService();
   await localeService.init();
+  
+  // 初始化主题服务
+  final themeService = ThemeService.instance;
+  await themeService.init();
   
   // 初始化数据库（创建单例）
   AppDatabase();
@@ -45,16 +52,21 @@ void main() async {
     });
   }
   
-  runApp(MyApp(localeService: localeService));
+  runApp(MyApp(
+    localeService: localeService,
+    themeService: themeService,
+  ));
 }
 
 /// App 根组件
 class MyApp extends StatefulWidget {
   final LocaleService localeService;
+  final ThemeService themeService;
   
   const MyApp({
     super.key,
     required this.localeService,
+    required this.themeService,
   });
 
   @override
@@ -67,15 +79,22 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     // 监听语言变化
     widget.localeService.addListener(_onLocaleChanged);
+    // 监听主题变化
+    widget.themeService.addListener(_onThemeChanged);
   }
   
   @override
   void dispose() {
     widget.localeService.removeListener(_onLocaleChanged);
+    widget.themeService.removeListener(_onThemeChanged);
     super.dispose();
   }
   
   void _onLocaleChanged() {
+    setState(() {});
+  }
+  
+  void _onThemeChanged() {
     setState(() {});
   }
 
@@ -87,29 +106,63 @@ class _MyAppState extends State<MyApp> {
           WidgetsBinding.instance.platformDispatcher.locales,
         );
     
-    return LocaleServiceProvider(
-      localeService: widget.localeService,
-      child: MaterialApp(
-        title: '今日穿什麼',
-        locale: locale,
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: LocaleService.supportedLocales,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: AppColors.primary,
-            brightness: Brightness.light,
-          ).copyWith(
-            primary: AppColors.primary,
+    // 监听系统亮度变化（用于跟随系统模式）
+    WidgetsBinding.instance.platformDispatcher.onBrightnessChange = () {
+      final brightness = WidgetsBinding.instance.platformDispatcher.platformBrightness;
+      widget.themeService.updateSystemBrightness(brightness);
+    };
+    
+    return ThemeServiceProvider(
+      themeService: widget.themeService,
+      child: LocaleServiceProvider(
+        localeService: widget.localeService,
+        child: MaterialApp(
+          title: '今日穿什麼',
+          locale: locale,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: LocaleService.supportedLocales,
+          themeMode: widget.themeService.themeMode,
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: AppColors.primary,
+              brightness: Brightness.light,
+            ).copyWith(
+              primary: AppColors.primary,
+              surface: AppColors.bgSecondary,
+            ),
+            useMaterial3: true,
+            scaffoldBackgroundColor: AppColors.bgPrimary,
+            cardColor: AppColors.bgSecondary,
+            appBarTheme: const AppBarTheme(
+              backgroundColor: AppColors.bgPrimary,
+              foregroundColor: AppColors.textPrimary,
+              elevation: 0,
+            ),
           ),
-          useMaterial3: true,
-          scaffoldBackgroundColor: AppColors.bgPrimary,
+          darkTheme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: AppColors.primaryDark,
+              brightness: Brightness.dark,
+            ).copyWith(
+              primary: AppColors.primaryDark,
+              surface: AppColors.bgSecondaryDark,
+            ),
+            useMaterial3: true,
+            scaffoldBackgroundColor: AppColors.bgPrimaryDark,
+            cardColor: AppColors.bgSecondaryDark,
+            appBarTheme: const AppBarTheme(
+              backgroundColor: AppColors.bgPrimaryDark,
+              foregroundColor: AppColors.textPrimaryDark,
+              elevation: 0,
+            ),
+          ),
+          home: const MainScreen(),
         ),
-        home: const MainScreen(),
       ),
     );
   }

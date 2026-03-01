@@ -36,6 +36,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get language => '语言';
 
   @override
+  String get darkMode => '深色模式';
+
+  @override
   String get today => '今天';
 
   @override

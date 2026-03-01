@@ -158,6 +158,12 @@ abstract class AppLocalizations {
   /// **'语言'**
   String get language;
 
+  /// No description provided for @darkMode.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'深色模式'**
+  String get darkMode;
+
   /// No description provided for @today.
   ///
   /// In zh_CN, this message translates to:

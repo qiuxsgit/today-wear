@@ -9,6 +9,7 @@ import '../theme/app_colors.dart';
 import '../theme/app_text_style.dart';
 import '../theme/app_spacing.dart';
 import '../services/locale_service.dart';
+import '../services/theme_service.dart';
 import 'contact_page.dart';
 import 'language_selection_page.dart';
 import 'privacy_policy_page.dart';
@@ -176,6 +177,56 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
   
+  /// 构建深色模式开关
+  Widget _buildDarkModeTile(BuildContext context, AppLocalizations l10n) {
+    final themeService = ThemeService.instance;
+    
+    return Container(
+      margin: const EdgeInsets.only(bottom: AppSpacing.xs),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: ListTile(
+        title: Text(
+          l10n.darkMode,
+          style: AppTextStyle.body.copyWith(
+            fontSize: 16,
+          ),
+        ),
+        trailing: SegmentedButton<ThemeModeType>(
+          segments: const [
+            ButtonSegment(
+              value: ThemeModeType.light,
+              icon: Icon(Icons.light_mode, size: 20),
+            ),
+            ButtonSegment(
+              value: ThemeModeType.system,
+              icon: Icon(Icons.brightness_auto, size: 20),
+            ),
+            ButtonSegment(
+              value: ThemeModeType.dark,
+              icon: Icon(Icons.dark_mode, size: 20),
+            ),
+          ],
+          selected: {themeService.currentMode},
+          onSelectionChanged: (Set<ThemeModeType> selected) {
+            themeService.setThemeMode(selected.first);
+          },
+          showSelectedIcon: false,
+          emptySelectionAllowed: false,
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.md,
+        ),
+        dense: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+    );
+  }
+  
   /// 构建设置卡片
   Widget _buildSettingsCard(
     BuildContext context,
@@ -225,6 +276,8 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
           const SizedBox(height: AppSpacing.sm),
+          // 深色模式开关
+          _buildDarkModeTile(context, l10n),
           // 标签管理
           Container(
             margin: const EdgeInsets.only(bottom: AppSpacing.xs),
