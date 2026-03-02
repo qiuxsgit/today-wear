@@ -6,6 +6,7 @@ import 'package:today_wear/l10n/app_localizations.dart';
 import 'screens/home_page.dart';
 import 'screens/add_outfit_page.dart';
 import 'screens/calendar_page.dart';
+import 'screens/statistics_page.dart';
 import 'screens/profile_page.dart';
 import 'theme/app_colors.dart';
 import 'widgets/main_navigation.dart';
@@ -193,9 +194,10 @@ class _MainScreenState extends State<MainScreen> {
   List<Widget> get _pages => [
     HomePage(
       key: _homePageKey,
-      onAddFirstOutfit: () => setState(() => _selectedIndex = 2),
+      onAddFirstOutfit: () => setState(() => _selectedIndex = 3),
     ),
     const CalendarPage(),
+    const StatisticsPage(),
     AddOutfitPage(
       key: _addOutfitPageKey,
       onDataSaved: _onDataSaved,

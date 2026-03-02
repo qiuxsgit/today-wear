@@ -330,4 +330,15 @@ class OutfitRepository {
       await _db.imageDao.updateImageOrder(outfitId, sortedImages[i].imagePath, i);
     }
   }
+
+  /// 获取总记录数
+  Future<int> getTotalCount() async {
+    return await _db.outfitDao.getTotalCount();
+  }
+
+  /// 获取标签使用频率统计
+  Future<Map<String, int>> getTagUsageStats() async {
+    final tagStats = await _db.outfitDao.getTagUsageStats();
+    return Map.fromEntries(tagStats.map((e) => MapEntry(e.key, e.value)));
+  }
 }

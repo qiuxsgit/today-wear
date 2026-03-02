@@ -70,6 +70,11 @@ class MainNavigation extends StatelessWidget {
             label: l10n.calendar,
           ),
           NavigationDestination(
+            icon: const Icon(Icons.bar_chart_outlined),
+            selectedIcon: const Icon(Icons.bar_chart),
+            label: l10n.statistics,
+          ),
+          NavigationDestination(
             icon: Icon(Icons.add_circle_outline, size: addIconSize),
             selectedIcon: Container(
               padding: const EdgeInsets.all(6),

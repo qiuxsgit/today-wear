@@ -139,4 +139,29 @@ class OutfitDao extends DatabaseAccessor<AppDatabase> with _$OutfitDaoMixin {
     
     return count.read(outfits.id.count()) ?? 0;
   }
+  
+  /// 获取总记录数
+  Future<int> getTotalCount() async {
+    final count = await (selectOnly(outfits)
+          ..addColumns([outfits.id.count()])
+          ..where(outfits.isDeleted.equals(0)))
+        .getSingle();
+    
+    return count.read(outfits.id.count()) ?? 0;
+  }
+  
+  /// 获取标签使用频率统计
+  Future<Map<String, int>> getTagUsageStats() async {
+    final query = selectOnly(outfitTags)
+      ..addColumns([outfitTags.tagName, outfitTags.tagName.count()])
+      ..groupBy([outfitTags.tagName]);
+    
+    final results = await query.get();
+    
+    return Map.fromEntries(results.map((row) {
+      final tagName = row.read(outfitTags.tagName);
+      final count = row.read(outfitTags.tagName.count()) ?? 0;
+      return MapEntry(tagName, count);
+    }));
+  }
 }

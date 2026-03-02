@@ -605,4 +605,31 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get calendarAddOutfit => '添加穿搭';
+
+  @override
+  String get statistics => '统计';
+
+  @override
+  String get statsTotal => '总记录';
+
+  @override
+  String get statsMonthly => '本月';
+
+  @override
+  String get statsWeekly => '本周';
+
+  @override
+  String get statsTip => '保持记录！';
+
+  @override
+  String get statsTagFrequency => '标签使用频率';
+
+  @override
+  String get statsMonthlyTrend => '月度趋势';
+
+  @override
+  String get statsNoTags => '暂无标签数据';
+
+  @override
+  String get refresh => '刷新';
 }
