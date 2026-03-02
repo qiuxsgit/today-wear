@@ -481,6 +481,24 @@ abstract class AppLocalizations {
   /// In zh_CN, this message translates to:
   /// **'昵称'**
   String get nicknameField;
+
+  /// No description provided for @calendar.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'日历'**
+  String get calendar;
+
+  /// No description provided for @calendarNoOutfits.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'这一天还没有穿搭记录'**
+  String get calendarNoOutfits;
+
+  /// No description provided for @calendarAddOutfit.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'添加穿搭'**
+  String get calendarAddOutfit;
 }
 
 class _AppLocalizationsDelegate

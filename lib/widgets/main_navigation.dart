@@ -65,6 +65,11 @@ class MainNavigation extends StatelessWidget {
             label: l10n.home,
           ),
           NavigationDestination(
+            icon: const Icon(Icons.calendar_today_outlined),
+            selectedIcon: const Icon(Icons.calendar_today),
+            label: l10n.calendar,
+          ),
+          NavigationDestination(
             icon: Icon(Icons.add_circle_outline, size: addIconSize),
             selectedIcon: Container(
               padding: const EdgeInsets.all(6),

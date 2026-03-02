@@ -65,6 +65,12 @@ dependencies:
 
   # 打开链接 / 邮箱
   url_launcher: ^6.2.5
+  
+  # 日历视图
+  table_calendar: ^3.0.9
+  
+  # 图表绘制
+  fl_chart: ^0.66.0
 
 dev_dependencies:
   flutter_test:

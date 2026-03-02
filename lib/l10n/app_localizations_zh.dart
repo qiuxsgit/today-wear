@@ -596,4 +596,13 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get nicknameField => '暱稱';
+
+  @override
+  String get calendar => '日曆';
+
+  @override
+  String get calendarNoOutfits => '這一天還沒有穿搭記錄';
+
+  @override
+  String get calendarAddOutfit => '添加穿搭';
 }

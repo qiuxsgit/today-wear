@@ -107,4 +107,36 @@ class OutfitDao extends DatabaseAccessor<AppDatabase> with _$OutfitDaoMixin {
     
     return count.read(outfits.id.count()) ?? 0;
   }
+  
+  /// 获取指定月份的所有 outfits（用于日历显示）
+  Future<List<OutfitData>> getOutfitsByMonth(int year, int month) async {
+    final startDate = DateTime(year, month, 1);
+    final endDate = DateTime(year, month + 1, 0, 23, 59, 59);
+    final startTimestamp = startDate.millisecondsSinceEpoch;
+    final endTimestamp = endDate.millisecondsSinceEpoch;
+    
+    return await (select(outfits)
+          ..where(
+              outfits.date.isBiggerOrEqualValue(startTimestamp) &
+              outfits.date.isSmallerOrEqualValue(endTimestamp) &
+              outfits.isDeleted.equals(0))
+          ..orderBy([(tbl) => OrderingTerm.desc(tbl.date)]))
+        .get();
+  }
+  
+  /// 获取某天的 outfits 数量
+  Future<int> getOutfitCountByDay(DateTime day) async {
+    final startTimestamp = DateTime(day.year, day.month, day.day).millisecondsSinceEpoch;
+    final endTimestamp = DateTime(day.year, day.month, day.day, 23, 59, 59).millisecondsSinceEpoch;
+    
+    final count = await (selectOnly(outfits)
+          ..addColumns([outfits.id.count()])
+          ..where(
+              outfits.date.isBiggerOrEqualValue(startTimestamp) &
+              outfits.date.isSmallerOrEqualValue(endTimestamp) &
+              outfits.isDeleted.equals(0)))
+        .getSingle();
+    
+    return count.read(outfits.id.count()) ?? 0;
+  }
 }

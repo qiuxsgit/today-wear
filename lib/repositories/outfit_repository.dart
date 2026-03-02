@@ -80,6 +80,30 @@ class OutfitRepository {
     return await _db.outfitDao.getOutfitCountByMonth(year, month);
   }
 
+  /// 获取指定月份的所有 outfits（用于日历显示）
+  Future<List<models.Outfit>> getOutfitsByMonth(int year, int month) async {
+    final outfitRecords = await _db.outfitDao.getOutfitsByMonth(year, month);
+    return await _loadOutfitsWithRelations(outfitRecords);
+  }
+
+  /// 获取某天的 outfits 数量
+  Future<int> getOutfitCountByDay(DateTime day) async {
+    return await _db.outfitDao.getOutfitCountByDay(day);
+  }
+
+  /// 获取月度统计数据（按日期分组）
+  Future<Map<int, int>> getMonthlyStats(int year, int month) async {
+    final outfits = await getOutfitsByMonth(year, month);
+    final stats = <int, int>{}; // day -> count
+    
+    for (final outfit in outfits) {
+      final day = outfit.date.day;
+      stats[day] = (stats[day] ?? 0) + 1;
+    }
+    
+    return stats;
+  }
+
   /// 保存 outfit（新建或更新）
   /// [outfit] Outfit 模型
   /// [imageFiles] 图片文件列表（可选，新建时使用）
