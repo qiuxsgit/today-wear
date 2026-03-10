@@ -430,8 +430,6 @@ class AddOutfitPageState extends State<AddOutfitPage> {
   Future<void> _updateOutfit() async {
     if (_editingOutfitId == null) return;
     
-    final now = DateTime.now();
-    
     // 分离已有图片路径和新添加的图片文件
     final existingPaths = <String>[];
     final newImageFiles = <File>[];
@@ -451,60 +449,67 @@ class AddOutfitPageState extends State<AddOutfitPage> {
     final existingImages = await _db.imageDao.getImagesByOutfitId(_editingOutfitId!);
     final existingPathSet = existingPaths.toSet();
     
-    // 删除不在新列表中的图片
+    // 删除不在新列表中的图片（文件和数据库记录）
     for (final img in existingImages) {
       if (!existingPathSet.contains(img.imagePath)) {
         await _repository.removeImageFromOutfit(_editingOutfitId!, img.imagePath);
       }
     }
     
-    // 添加新图片
+    // 保存新图片到文件系统，并构建路径映射
+    final newPathMap = <String, String>{}; // tempPath -> relativePath
     if (newImageFiles.isNotEmpty) {
-      await _repository.addImagesToOutfit(_editingOutfitId!, newImageFiles, widget.outfit!.date);
+      for (int i = 0; i < newImageFiles.length; i++) {
+        final tempPath = newImageFiles[i].path;
+        final relativePath = await _db.imageService.saveImage(
+          newImageFiles[i],
+          _editingOutfitId!,
+          i, // 临时顺序，后面会统一更新
+          widget.outfit!.date,
+        );
+        newPathMap[tempPath] = relativePath;
+      }
     }
     
-    // 更新图片顺序
-    final allPaths = existingPaths.toList();
-    final startIndex = allPaths.length;
-    
-    // 保存新图片并获取路径
-    for (int i = 0; i < newImageFiles.length; i++) {
-      final relativePath = await _db.imageService.saveImage(
-        newImageFiles[i],
-        _editingOutfitId!,
-        startIndex + i,
-        widget.outfit!.date,
-      );
-      allPaths.add(relativePath);
-    }
-    
-    // 按照 _selectedImageRefs 的顺序更新
+    // 构建最终排序后的图片路径列表（按照 _selectedImageRefs 的顺序）
     final orderedPaths = <String>[];
     for (final ref in _selectedImageRefs) {
       if (ref.startsWith("path:")) {
         orderedPaths.add(ref.substring(5));
-      }
-    }
-    // 添加新图片的路径（按顺序）
-    int newImageIndex = 0;
-    for (final ref in _selectedImageRefs) {
-      if (ref.startsWith("file:")) {
-        // 找到对应的新图片路径
-        final newPaths = await _db.imageDao.getImagesByOutfitId(_editingOutfitId!);
-        for (final img in newPaths) {
-          if (img.displayOrder >= startIndex + newImageIndex && 
-              img.displayOrder < startIndex + newImageIndex + 1) {
-            orderedPaths.add(img.imagePath);
-            newImageIndex++;
-            break;
-          }
+      } else if (ref.startsWith("file:")) {
+        final tempPath = ref.substring(5);
+        final relativePath = newPathMap[tempPath];
+        if (relativePath != null) {
+          orderedPaths.add(relativePath);
         }
       }
     }
     
-    if (orderedPaths.isNotEmpty) {
-      await _repository.updateImageOrder(_editingOutfitId!, orderedPaths);
+    // 批量插入新图片的数据库记录
+    if (newImageFiles.isNotEmpty) {
+      final imageCompanions = <OutfitImagesCompanion>[];
+      for (int i = 0; i < newImageFiles.length; i++) {
+        final tempPath = newImageFiles[i].path;
+        final relativePath = newPathMap[tempPath];
+        if (relativePath != null) {
+          // 找到这张图片在最终顺序中的位置
+          final order = orderedPaths.indexOf(relativePath);
+          imageCompanions.add(
+            OutfitImagesCompanion.insert(
+              outfitId: _editingOutfitId!,
+              imagePath: relativePath,
+              displayOrder: order,
+            ),
+          );
+        }
+      }
+      if (imageCompanions.isNotEmpty) {
+        await _db.imageDao.insertImages(imageCompanions);
+      }
     }
+    
+    // 更新所有图片的显示顺序（确保与 UI 一致）
+    await _repository.updateImageOrder(_editingOutfitId!, orderedPaths);
     
     // 更新描述和标签
     final outfit = Outfit(
