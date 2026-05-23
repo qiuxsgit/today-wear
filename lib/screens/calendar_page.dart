@@ -123,10 +123,10 @@ class _CalendarPageState extends State<CalendarPage> {
   }
   
   /// 获取日历标记构建器
-  Widget Function(DateTime)? _getCalendarBuilders() {
+  Widget? Function(DateTime)? _getCalendarBuilders() {
     return (day) {
       final dayCount = _monthlyStats[day.day] ?? 0;
-      
+
       if (dayCount > 0) {
         // 有穿搭记录的日期，显示标记
         return Positioned(
@@ -250,7 +250,7 @@ class _CalendarPageState extends State<CalendarPage> {
     
     if (_selectedDayOutfits.isEmpty) {
       return Container(
-        padding: const EdgeInsets.all(AppSpacing.xl),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           children: [
             Icon(
@@ -260,7 +260,7 @@ class _CalendarPageState extends State<CalendarPage> {
             ),
             const SizedBox(height: AppSpacing.md),
             Text(
-              l10n.calendarNoOutfits,
+              '当日暂无穿搭记录',
               style: AppTextStyle.body.copyWith(
                 color: AppColors.textSecondary,
               ),
@@ -272,7 +272,7 @@ class _CalendarPageState extends State<CalendarPage> {
                 final result = await Navigator.push<bool>(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AddOutfitPage(initialDate: _selectedDay),
+                    builder: (context) => const AddOutfitPage(),
                   ),
                 );
                 if (result == true) {
@@ -281,7 +281,7 @@ class _CalendarPageState extends State<CalendarPage> {
                 }
               },
               icon: const Icon(Icons.add, size: 18),
-              label: Text(l10n.calendarAddOutfit),
+              label: const Text('添加穿搭'),
               style: FilledButton.styleFrom(
                 backgroundColor: AppColors.primary,
                 foregroundColor: Colors.white,
@@ -333,7 +333,7 @@ class _CalendarPageState extends State<CalendarPage> {
             title: Text(
               outfit.description.isNotEmpty
                   ? outfit.description
-                  : l10n.outfitNoDescription,
+                  : '暂无描述',
               style: AppTextStyle.body.copyWith(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
@@ -396,7 +396,7 @@ class _CalendarPageState extends State<CalendarPage> {
     return Scaffold(
       backgroundColor: AppColors.bgSecondary,
       appBar: AppBar(
-        title: Text(l10n.calendar),
+        title: const Text('日历'),
         backgroundColor: AppColors.bgPrimary,
         foregroundColor: AppColors.textPrimary,
         elevation: 0,

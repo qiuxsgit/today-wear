@@ -9,7 +9,6 @@ android {
     namespace = "com.example.today_wear"
     compileSdk = 36
     ndkVersion = flutter.ndkVersion
-    buildToolsVersion = "28.0.3"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

@@ -33,12 +33,18 @@ class WaterfallOutfitCard extends StatelessWidget {
     this.isToday,
   });
 
-  /// 是否为「今天」的穿搭
-  bool _isToday(DateTime date) {
+  /// 是否为「今天」的穿搭（根据日期计算）
+  bool _checkIsToday(DateTime date) {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final dateOnly = DateTime(date.year, date.month, date.day);
     return dateOnly == today;
+  }
+
+  /// 获取是否为今天的卡片
+  bool _getIsToday() {
+    if (isToday != null) return isToday!;
+    return _checkIsToday(outfit.date);
   }
 
   /// 格式化日期显示
@@ -59,18 +65,10 @@ class WaterfallOutfitCard extends StatelessWidget {
     }
   }
 
-  bool _isToday(BuildContext context) {
-    if (isToday != null) return isToday!;
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final dateOnly = DateTime(outfit.date.year, outfit.date.month, outfit.date.day);
-    return dateOnly == today;
-  }
-
   @override
   Widget build(BuildContext context) {
     final dateText = _formatDate(context, outfit.date);
-    final isTodayCard = _isToday(context);
+    final isTodayCard = _getIsToday();
 
     Widget cardContent = Container(
       decoration: BoxDecoration(
@@ -198,7 +196,7 @@ class WaterfallOutfitCard extends StatelessWidget {
       return Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: AppColors.imagePlaceholder,
           borderRadius: BorderRadius.circular(10),
         ),

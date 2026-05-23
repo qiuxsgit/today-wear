@@ -35,7 +35,10 @@ class _StatisticsPageState extends State<StatisticsPage> {
   
   /// 是否正在加载
   bool _isLoading = true;
-  
+
+  /// 是否为首次加载（用于区分初始加载和刷新）
+  bool _isFirstLoad = true;
+
   /// 当前统计月份
   DateTime _currentMonth = DateTime.now();
   
@@ -54,43 +57,48 @@ class _StatisticsPageState extends State<StatisticsPage> {
   
   /// 加载统计数据
   Future<void> _loadStatistics() async {
-    setState(() {
-      _isLoading = true;
-    });
-    
+    // 只在首次加载时显示全屏 loading，刷新时由 RefreshIndicator 处理
+    if (_isFirstLoad) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
+
     try {
       // 加载总数
       final totalCount = await _repository.getTotalCount();
-      
+
       // 加载月度统计
       final monthlyStats = await _repository.getMonthlyStats(
         _currentMonth.year,
         _currentMonth.month,
       );
       final monthlyCount = monthlyStats.values.fold(0, (sum, count) => sum + count);
-      
+
       // 加载周度统计（最近 7 天）
       final now = DateTime.now();
       final weekAgo = now.subtract(const Duration(days: 7));
       final weeklyOutfits = await _repository.getOutfitsByDateRange(weekAgo, now);
-      
+
       // 加载标签统计
       final tagStats = await _repository.getTagUsageStats();
-      
+
       if (!mounted) return;
-      
+
       setState(() {
         _totalCount = totalCount;
         _monthlyCount = monthlyCount;
         _weeklyCount = weeklyOutfits.length;
         _tagStats = tagStats;
         _isLoading = false;
+        _isFirstLoad = false;
       });
     } catch (e) {
       debugPrint('Load statistics error: $e');
       if (!mounted) return;
       setState(() {
         _isLoading = false;
+        _isFirstLoad = false;
       });
     }
   }
@@ -101,6 +109,11 @@ class _StatisticsPageState extends State<StatisticsPage> {
       _currentMonth = DateTime(_currentMonth.year, _currentMonth.month + delta, 1);
     });
     _loadStatistics();
+  }
+
+  /// 刷新按钮点击（由 RefreshIndicator 处理动画）
+  Future<void> _onRefreshPressed() async {
+    await _loadStatistics();
   }
   
   /// 构建统计卡片
@@ -140,7 +153,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
           const SizedBox(height: AppSpacing.xs),
           Text(
             value.toString(),
-            style: AppTextStyle.heading.copyWith(
+            style: AppTextStyle.title.copyWith(
               fontSize: 28,
               fontWeight: FontWeight.bold,
               color: AppColors.textPrimary,
@@ -157,7 +170,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
     
     if (_tagStats.isEmpty) {
       return Container(
-        padding: const EdgeInsets.all(AppSpacing.xl),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           children: [
             Icon(
@@ -167,7 +180,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
             ),
             const SizedBox(height: AppSpacing.md),
             Text(
-              l10n.statsNoTags,
+              '暂无标签数据',
               style: AppTextStyle.body.copyWith(
                 color: AppColors.textSecondary,
               ),
@@ -199,8 +212,8 @@ class _StatisticsPageState extends State<StatisticsPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            l10n.statsTagFrequency,
-            style: AppTextStyle.heading.copyWith(
+            '标签使用频率',
+            style: AppTextStyle.title.copyWith(
               fontSize: 16,
               fontWeight: FontWeight.w600,
             ),
@@ -271,8 +284,8 @@ class _StatisticsPageState extends State<StatisticsPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                l10n.statsMonthlyTrend,
-                style: AppTextStyle.heading.copyWith(
+                '月度趋势',
+                style: AppTextStyle.title.copyWith(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
@@ -456,7 +469,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
     return Scaffold(
       backgroundColor: AppColors.bgSecondary,
       appBar: AppBar(
-        title: Text(l10n.statistics),
+        title: const Text('统计'),
         backgroundColor: AppColors.bgPrimary,
         foregroundColor: AppColors.textPrimary,
         elevation: 0,
@@ -464,7 +477,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: _loadStatistics,
-            tooltip: l10n.refresh,
+            tooltip: '刷新',
           ),
         ],
       ),
@@ -481,7 +494,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                 children: [
                   Expanded(
                     child: _buildStatCard(
-                      l10n.statsTotal,
+                      '总计',
                       _totalCount,
                       Icons.checkroom,
                       AppColors.primary,
@@ -490,7 +503,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                   const SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: _buildStatCard(
-                      l10n.statsMonthly,
+                      '本月',
                       _monthlyCount,
                       Icons.calendar_month,
                       AppColors.success,
@@ -503,7 +516,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                 children: [
                   Expanded(
                     child: _buildStatCard(
-                      l10n.statsWeekly,
+                      '本周',
                       _weeklyCount,
                       Icons.date_range,
                       AppColors.warning,
@@ -524,14 +537,14 @@ class _StatisticsPageState extends State<StatisticsPage> {
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: AppColors.info.withValues(alpha: 0.1),
+                              color: AppColors.primary.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: const Icon(Icons.info_outline, size: 24, color: AppColors.info),
+                            child: const Icon(Icons.info_outline, size: 24, color: AppColors.primary),
                           ),
                           const SizedBox(height: AppSpacing.sm),
                           Text(
-                            l10n.statsTip,
+                            '小贴士',
                             style: AppTextStyle.body.copyWith(
                               fontSize: 13,
                               color: AppColors.textSecondary,
@@ -543,18 +556,18 @@ class _StatisticsPageState extends State<StatisticsPage> {
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: AppSpacing.lg),
-              
+
               // 月度趋势图
               _buildMonthlyTrendChart(),
-              
+
               const SizedBox(height: AppSpacing.lg),
-              
+
               // 标签使用频率
               _buildTagChart(),
-              
-              const SizedBox(height: AppSpacing.xl),
+
+              const SizedBox(height: AppSpacing.lg),
             ],
           ),
         ),

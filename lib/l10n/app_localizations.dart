@@ -158,12 +158,6 @@ abstract class AppLocalizations {
   /// **'语言'**
   String get language;
 
-  /// No description provided for @darkMode.
-  ///
-  /// In zh_CN, this message translates to:
-  /// **'深色模式'**
-  String get darkMode;
-
   /// No description provided for @today.
   ///
   /// In zh_CN, this message translates to:
@@ -481,78 +475,6 @@ abstract class AppLocalizations {
   /// In zh_CN, this message translates to:
   /// **'昵称'**
   String get nicknameField;
-
-  /// No description provided for @calendar.
-  ///
-  /// In zh_CN, this message translates to:
-  /// **'日历'**
-  String get calendar;
-
-  /// No description provided for @calendarNoOutfits.
-  ///
-  /// In zh_CN, this message translates to:
-  /// **'这一天还没有穿搭记录'**
-  String get calendarNoOutfits;
-
-  /// No description provided for @calendarAddOutfit.
-  ///
-  /// In zh_CN, this message translates to:
-  /// **'添加穿搭'**
-  String get calendarAddOutfit;
-
-  /// No description provided for @statistics.
-  ///
-  /// In zh_CN, this message translates to:
-  /// **'统计'**
-  String get statistics;
-
-  /// No description provided for @statsTotal.
-  ///
-  /// In zh_CN, this message translates to:
-  /// **'总记录'**
-  String get statsTotal;
-
-  /// No description provided for @statsMonthly.
-  ///
-  /// In zh_CN, this message translates to:
-  /// **'本月'**
-  String get statsMonthly;
-
-  /// No description provided for @statsWeekly.
-  ///
-  /// In zh_CN, this message translates to:
-  /// **'本周'**
-  String get statsWeekly;
-
-  /// No description provided for @statsTip.
-  ///
-  /// In zh_CN, this message translates to:
-  /// **'保持记录！'**
-  String get statsTip;
-
-  /// No description provided for @statsTagFrequency.
-  ///
-  /// In zh_CN, this message translates to:
-  /// **'标签使用频率'**
-  String get statsTagFrequency;
-
-  /// No description provided for @statsMonthlyTrend.
-  ///
-  /// In zh_CN, this message translates to:
-  /// **'月度趋势'**
-  String get statsMonthlyTrend;
-
-  /// No description provided for @statsNoTags.
-  ///
-  /// In zh_CN, this message translates to:
-  /// **'暂无标签数据'**
-  String get statsNoTags;
-
-  /// No description provided for @refresh.
-  ///
-  /// In zh_CN, this message translates to:
-  /// **'刷新'**
-  String get refresh;
 }
 
 class _AppLocalizationsDelegate

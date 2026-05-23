@@ -5,7 +5,7 @@ import '../tables.dart';
 part 'outfit_dao.g.dart';
 
 /// Outfit 数据访问对象
-@DriftAccessor(tables: [Outfits, OutfitTags])
+@DriftAccessor(tables: [Outfits, OutfitTags, Tags])
 class OutfitDao extends DatabaseAccessor<AppDatabase> with _$OutfitDaoMixin {
   OutfitDao(AppDatabase db) : super(db);
 
@@ -114,12 +114,12 @@ class OutfitDao extends DatabaseAccessor<AppDatabase> with _$OutfitDaoMixin {
     final endDate = DateTime(year, month + 1, 0, 23, 59, 59);
     final startTimestamp = startDate.millisecondsSinceEpoch;
     final endTimestamp = endDate.millisecondsSinceEpoch;
-    
+
     return await (select(outfits)
-          ..where(
-              outfits.date.isBiggerOrEqualValue(startTimestamp) &
-              outfits.date.isSmallerOrEqualValue(endTimestamp) &
-              outfits.isDeleted.equals(0))
+          ..where((tbl) =>
+              tbl.date.isBiggerOrEqualValue(startTimestamp) &
+              tbl.date.isSmallerOrEqualValue(endTimestamp) &
+              tbl.isDeleted.equals(0))
           ..orderBy([(tbl) => OrderingTerm.desc(tbl.date)]))
         .get();
   }
@@ -152,16 +152,43 @@ class OutfitDao extends DatabaseAccessor<AppDatabase> with _$OutfitDaoMixin {
   
   /// 获取标签使用频率统计
   Future<Map<String, int>> getTagUsageStats() async {
+    // 查询 outfit_tags 并按 tagId 分组统计
     final query = selectOnly(outfitTags)
-      ..addColumns([outfitTags.tagName, outfitTags.tagName.count()])
-      ..groupBy([outfitTags.tagName]);
-    
+      ..addColumns([outfitTags.tagId, outfitTags.tagId.count()])
+      ..groupBy([outfitTags.tagId]);
+
     final results = await query.get();
-    
-    return Map.fromEntries(results.map((row) {
-      final tagName = row.read(outfitTags.tagName);
-      final count = row.read(outfitTags.tagName.count()) ?? 0;
-      return MapEntry(tagName, count);
-    }));
+
+    // 获取 tagId -> count 映射
+    final tagIdCountMap = <int, int>{};
+    for (final row in results) {
+      final tagId = row.read(outfitTags.tagId);
+      final count = row.read(outfitTags.tagId.count()) ?? 0;
+      if (tagId != null) {
+        tagIdCountMap[tagId] = count;
+      }
+    }
+
+    // 获取所有标签名称
+    final tagNameMap = <int, String>{};
+    if (tagIdCountMap.isNotEmpty) {
+      final tagsResult = await (select(db.tags)
+            ..where((tbl) => tbl.id.isIn(tagIdCountMap.keys.toList())))
+          .get();
+      for (final tag in tagsResult) {
+        tagNameMap[tag.id] = tag.name;
+      }
+    }
+
+    // 构建 tagName -> count 映射
+    final result = <String, int>{};
+    for (final entry in tagIdCountMap.entries) {
+      final tagName = tagNameMap[entry.key];
+      if (tagName != null) {
+        result[tagName] = entry.value;
+      }
+    }
+
+    return result;
   }
 }

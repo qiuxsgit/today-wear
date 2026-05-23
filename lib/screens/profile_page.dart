@@ -180,7 +180,7 @@ class _ProfilePageState extends State<ProfilePage> {
   /// 构建深色模式开关
   Widget _buildDarkModeTile(BuildContext context, AppLocalizations l10n) {
     final themeService = ThemeService.instance;
-    
+
     return Container(
       margin: const EdgeInsets.only(bottom: AppSpacing.xs),
       decoration: BoxDecoration(
@@ -189,7 +189,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       child: ListTile(
         title: Text(
-          l10n.darkMode,
+          '深色模式',
           style: AppTextStyle.body.copyWith(
             fontSize: 16,
           ),

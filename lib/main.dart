@@ -107,12 +107,14 @@ class _MyAppState extends State<MyApp> {
         LocaleService.getSystemLocale(
           WidgetsBinding.instance.platformDispatcher.locales,
         );
-    
+
     // 监听系统亮度变化（用于跟随系统模式）
-    WidgetsBinding.instance.platformDispatcher.onBrightnessChange = () {
-      final brightness = WidgetsBinding.instance.platformDispatcher.platformBrightness;
+    // 注意：需要在 build 外部设置监听器，这里在 initState 中处理
+    final brightness = WidgetsBinding.instance.platformDispatcher.platformBrightness;
+    // 异步更新亮度，避免在 build 中调用 setState
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       widget.themeService.updateSystemBrightness(brightness);
-    };
+    });
     
     return ThemeServiceProvider(
       themeService: widget.themeService,
@@ -194,14 +196,14 @@ class _MainScreenState extends State<MainScreen> {
   List<Widget> get _pages => [
     HomePage(
       key: _homePageKey,
-      onAddFirstOutfit: () => setState(() => _selectedIndex = 3),
+      onAddFirstOutfit: () => setState(() => _selectedIndex = 2),
     ),
     const CalendarPage(),
-    const StatisticsPage(),
     AddOutfitPage(
       key: _addOutfitPageKey,
       onDataSaved: _onDataSaved,
     ),
+    const StatisticsPage(),
     const ProfilePage(),
   ];
   

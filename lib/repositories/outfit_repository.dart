@@ -276,8 +276,15 @@ class OutfitRepository {
   /// [outfitId] outfit ID
   /// [imagePaths] 按新顺序排列的图片路径列表
   Future<void> updateImageOrder(int outfitId, List<String> imagePaths) async {
+    // 获取所有图片
+    final images = await _db.imageDao.getImagesByOutfitId(outfitId);
+    final pathToIdMap = {for (final img in images) img.imagePath: img.id};
+
     for (int i = 0; i < imagePaths.length; i++) {
-      await _db.imageDao.updateImageOrderByPath(outfitId, imagePaths[i], i);
+      final imageId = pathToIdMap[imagePaths[i]];
+      if (imageId != null) {
+        await _db.imageDao.updateImageOrder(imageId, i);
+      }
     }
   }
 
@@ -317,17 +324,17 @@ class OutfitRepository {
   Future<void> removeImageFromOutfit(int outfitId, String imagePath) async {
     // 删除文件
     await _imageService.deleteImage(imagePath);
-    
+
     // 删除数据库记录
     await _db.imageDao.deleteImageByPath(outfitId, imagePath);
-    
+
     // 重新排序剩余图片
     final remainingImages = await _db.imageDao.getImagesByOutfitId(outfitId);
     final sortedImages = remainingImages.toList()
       ..sort((a, b) => a.displayOrder.compareTo(b.displayOrder));
-    
+
     for (int i = 0; i < sortedImages.length; i++) {
-      await _db.imageDao.updateImageOrder(outfitId, sortedImages[i].imagePath, i);
+      await _db.imageDao.updateImageOrder(sortedImages[i].id, i);
     }
   }
 
@@ -338,7 +345,6 @@ class OutfitRepository {
 
   /// 获取标签使用频率统计
   Future<Map<String, int>> getTagUsageStats() async {
-    final tagStats = await _db.outfitDao.getTagUsageStats();
-    return Map.fromEntries(tagStats.map((e) => MapEntry(e.key, e.value)));
+    return await _db.outfitDao.getTagUsageStats();
   }
 }

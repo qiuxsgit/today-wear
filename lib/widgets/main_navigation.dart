@@ -67,12 +67,7 @@ class MainNavigation extends StatelessWidget {
           NavigationDestination(
             icon: const Icon(Icons.calendar_today_outlined),
             selectedIcon: const Icon(Icons.calendar_today),
-            label: l10n.calendar,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.bar_chart_outlined),
-            selectedIcon: const Icon(Icons.bar_chart),
-            label: l10n.statistics,
+            label: '日历',
           ),
           NavigationDestination(
             icon: Icon(Icons.add_circle_outline, size: addIconSize),
@@ -96,6 +91,11 @@ class MainNavigation extends StatelessWidget {
               ),
             ),
             label: l10n.add,
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.bar_chart_outlined),
+            selectedIcon: const Icon(Icons.bar_chart),
+            label: '统计',
           ),
           NavigationDestination(
             icon: const Icon(Icons.person_outline),

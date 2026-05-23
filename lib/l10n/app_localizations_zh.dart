@@ -36,9 +36,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get language => '语言';
 
   @override
-  String get darkMode => '深色模式';
-
-  @override
   String get today => '今天';
 
   @override
@@ -596,40 +593,4 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get nicknameField => '暱稱';
-
-  @override
-  String get calendar => '日曆';
-
-  @override
-  String get calendarNoOutfits => '這一天還沒有穿搭記錄';
-
-  @override
-  String get calendarAddOutfit => '添加穿搭';
-
-  @override
-  String get statistics => '统计';
-
-  @override
-  String get statsTotal => '总记录';
-
-  @override
-  String get statsMonthly => '本月';
-
-  @override
-  String get statsWeekly => '本周';
-
-  @override
-  String get statsTip => '保持记录！';
-
-  @override
-  String get statsTagFrequency => '标签使用频率';
-
-  @override
-  String get statsMonthlyTrend => '月度趋势';
-
-  @override
-  String get statsNoTags => '暂无标签数据';
-
-  @override
-  String get refresh => '刷新';
 }

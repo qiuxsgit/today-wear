@@ -10,6 +10,7 @@ import '../database/database.dart';
 import '../repositories/outfit_repository.dart';
 import '../models/outfit.dart';
 import '../theme/tag_colors.dart';
+import '../services/image_service.dart';
 
 /// 添加/编辑穿搭页面
 /// 
@@ -700,6 +701,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
             
             final ref = _selectedImageRefs[index];
             return Stack(
+              key: ValueKey(ref),
               fit: StackFit.expand,
               children: [
                 ClipRRect(
