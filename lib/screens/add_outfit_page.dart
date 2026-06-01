@@ -462,7 +462,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
     if (newImageFiles.isNotEmpty) {
       for (int i = 0; i < newImageFiles.length; i++) {
         final tempPath = newImageFiles[i].path;
-        final relativePath = await _db.imageService.saveImage(
+        final relativePath = await ImageService.instance.saveImage(
           newImageFiles[i],
           _editingOutfitId!,
           i, // 临时顺序，后面会统一更新
