@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>今日穿什麼 - Theme Switching Concept</title>
+  <style>
+    :root {
+      --ink: #25221f;
+      --muted: #766f68;
+      --canvas: #f8f3ed;
+      --line: rgba(37, 34, 31, .12);
+      --shadow: 0 24px 60px rgba(69, 54, 42, .14);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(215, 154, 165, .22), transparent 28%),
+        radial-gradient(circle at 88% 20%, rgba(115, 150, 191, .18), transparent 30%),
+        linear-gradient(135deg, #fffaf4 0%, #f4eee6 52%, #eef3ee 100%);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      letter-spacing: 0;
+    }
+
+    .board {
+      width: 1440px;
+      min-height: 1024px;
+      margin: 0 auto;
+      padding: 54px 56px;
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 38px;
+    }
+
+    .brief {
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      padding: 34px;
+      background: rgba(255, 252, 247, .78);
+      box-shadow: 0 14px 40px rgba(69, 54, 42, .10);
+      backdrop-filter: blur(16px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .mark {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      color: #fffaf4;
+      background: #25221f;
+      font-size: 27px;
+      font-weight: 800;
+      margin-bottom: 26px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 40px;
+      line-height: 1.08;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .sub {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .section-title {
+      margin: 32px 0 14px;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .rule {
+      display: grid;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .rule div {
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: rgba(245, 238, 229, .78);
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: 330px 1fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .phone {
+      width: 330px;
+      height: 714px;
+      border-radius: 44px;
+      padding: 12px;
+      background: #171513;
+      box-shadow: var(--shadow);
+    }
+
+    .screen {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      border-radius: 34px;
+      background: #fbf8f3;
+    }
+
+    .screen::before {
+      content: "";
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      z-index: 3;
+      width: 88px;
+      height: 25px;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      background: #171513;
+    }
+
+    .status {
+      height: 44px;
+      padding: 15px 22px 0;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 780;
+    }
+
+    .content {
+      padding: 16px 18px 22px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .circle {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #fffdf9;
+      box-shadow: 0 8px 18px rgba(69, 54, 42, .08);
+      font-size: 22px;
+      font-weight: 520;
+    }
+
+    .title {
+      font-size: 25px;
+      line-height: 1.05;
+      font-weight: 820;
+    }
+
+    .caption {
+      color: #7c746d;
+      font-size: 12px;
+      font-weight: 660;
+      margin-bottom: 6px;
+    }
+
+    .mode-card {
+      display: grid;
+      gap: 10px;
+      padding: 15px;
+      border-radius: 24px;
+      background: #fffdf9;
+      box-shadow: 0 10px 24px rgba(69, 54, 42, .08);
+      margin-bottom: 16px;
+    }
+
+    .segmented {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      padding: 5px;
+      border-radius: 18px;
+      background: #f0e9df;
+    }
+
+    .seg {
+      height: 36px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      color: #766f68;
+      font-size: 12px;
+      font-weight: 760;
+    }
+
+    .seg.active {
+      background: #25221f;
+      color: #fffaf4;
+    }
+
+    .theme-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .theme-row {
+      display: grid;
+      grid-template-columns: 54px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      min-height: 76px;
+      padding: 11px;
+      border-radius: 22px;
+      background: #fffdf9;
+      border: 1px solid rgba(37, 34, 31, .06);
+      box-shadow: 0 8px 18px rgba(69, 54, 42, .06);
+    }
+
+    .theme-row.selected {
+      border-color: rgba(37, 34, 31, .34);
+      box-shadow: 0 12px 28px rgba(69, 54, 42, .12);
+    }
+
+    .mini-palette {
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+      border: 1px solid rgba(37, 34, 31, .08);
+    }
+
+    .theme-name {
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .theme-desc {
+      margin-top: 4px;
+      color: #7c746d;
+      font-size: 11px;
+      font-weight: 620;
+    }
+
+    .check {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #25221f;
+      color: #fffaf4;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .theme-card {
+      position: relative;
+      min-height: 292px;
+      overflow: hidden;
+      border-radius: 30px;
+      padding: 20px;
+      background: var(--bg);
+      color: var(--text);
+      box-shadow: var(--shadow);
+    }
+
+    .theme-card.dark {
+      box-shadow: 0 24px 60px rgba(16, 15, 14, .28);
+    }
+
+    .card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .theme-card h2 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.08;
+      font-weight: 820;
+      letter-spacing: 0;
+    }
+
+    .theme-card p {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+      font-weight: 620;
+    }
+
+    .theme-swatches {
+      display: flex;
+      gap: 7px;
+    }
+
+    .theme-swatches span {
+      width: 28px;
+      height: 28px;
+      border-radius: 10px;
+      border: 1px solid rgba(127, 117, 105, .18);
+    }
+
+    .preview {
+      display: grid;
+      grid-template-columns: 118px 1fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .look {
+      position: relative;
+      overflow: hidden;
+      min-height: 146px;
+      border-radius: 24px;
+      background: linear-gradient(145deg, var(--accent), var(--primary));
+    }
+
+    .look::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 28px;
+      width: 58px;
+      height: 90px;
+      transform: translateX(-50%);
+      border-radius: 30px 30px 13px 13px;
+      background: rgba(255, 253, 249, .80);
+      box-shadow: inset 0 -22px rgba(37, 34, 31, .12);
+    }
+
+    .look::after {
+      content: "6/02";
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: rgba(255, 253, 249, .80);
+      color: #25221f;
+      font-size: 10px;
+      font-weight: 820;
+    }
+
+    .preview-panel {
+      min-height: 146px;
+      padding: 14px;
+      border-radius: 24px;
+      background: var(--surface);
+    }
+
+    .preview-title {
+      font-size: 17px;
+      line-height: 1.2;
+      font-weight: 820;
+    }
+
+    .preview-meta {
+      margin: 8px 0 11px;
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: var(--tag);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 760;
+    }
+
+    .button {
+      height: 42px;
+      border-radius: 17px;
+      display: grid;
+      place-items: center;
+      color: var(--buttonText);
+      background: var(--primary);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .token-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .token {
+      height: 42px;
+      border-radius: 14px;
+      background: var(--surface);
+      color: var(--muted);
+      display: grid;
+      place-items: center;
+      font-size: 10px;
+      font-weight: 760;
+    }
+
+    .soft {
+      --bg: #fbf8f3;
+      --surface: #fffdf9;
+      --primary: #25221f;
+      --accent: #c78363;
+      --text: #25221f;
+      --muted: #7c746d;
+      --tag: #efe7dc;
+      --buttonText: #fffaf4;
+    }
+
+    .matcha {
+      --bg: #f7f8f2;
+      --surface: #ffffff;
+      --primary: #486554;
+      --accent: #8aa07b;
+      --text: #243029;
+      --muted: #6f7b70;
+      --tag: #e4eadb;
+      --buttonText: #f7f8f2;
+    }
+
+    .city {
+      --bg: #f6f8fb;
+      --surface: #ffffff;
+      --primary: #3f68a8;
+      --accent: #7396bf;
+      --text: #202a38;
+      --muted: #6e7a8a;
+      --tag: #e6edf7;
+      --buttonText: #f6f8fb;
+    }
+
+    .rose {
+      --bg: #fcf6f6;
+      --surface: #ffffff;
+      --primary: #7b4b54;
+      --accent: #d79aa5;
+      --text: #302225;
+      --muted: #806c70;
+      --tag: #f0dde1;
+      --buttonText: #fcf6f6;
+    }
+
+    .night {
+      --bg: #10100f;
+      --surface: #1c1b19;
+      --primary: #f3e9da;
+      --accent: #c9a46a;
+      --text: #f3e9da;
+      --muted: #a9a097;
+      --tag: #34312d;
+      --buttonText: #10100f;
+    }
+  </style>
+</head>
+<body>
+  <main class="board">
+    <aside class="brief">
+      <div>
+        <div class="mark">題</div>
+        <h1>Theme Switching<br />System</h1>
+        <p class="sub">主题切换建议拆成两层：主题色盘决定气质，显示模式决定浅色/深色/跟随系统。这样用户可以保留自己习惯的明暗模式，同时自由换风格。</p>
+
+        <div class="section-title">Interaction Rules</div>
+        <div class="rule">
+          <div>设置页入口命名为「外观主题」，比「深色模式」更适合未来扩展。</div>
+          <div>主题卡必须带实时小预览：色块、穿搭卡、标签和主按钮一起展示。</div>
+          <div>首发 5 套即可：默认、自然、城市、玫瑰、夜间图库。</div>
+        </div>
+      </div>
+      <p class="sub">Deliverables: theme tokens, setting UI, preset previews</p>
+    </aside>
+
+    <section class="workspace">
+      <div class="phone">
+        <div class="screen">
+          <div class="status"><span>9:41</span><span>5G 100%</span></div>
+          <div class="content">
+            <div class="topbar">
+              <div class="circle">‹</div>
+              <div class="title">外觀主題</div>
+              <div class="circle">✓</div>
+            </div>
+
+            <div class="caption">顯示模式</div>
+            <div class="mode-card">
+              <div class="segmented">
+                <div class="seg">淺色</div>
+                <div class="seg active">跟隨</div>
+                <div class="seg">深色</div>
+              </div>
+            </div>
+
+            <div class="caption">主題色盤</div>
+            <div class="theme-list">
+              <div class="theme-row selected">
+                <div class="mini-palette">
+                  <span style="background:#25221f"></span><span style="background:#fbf8f3"></span>
+                  <span style="background:#c78363"></span><span style="background:#efe7dc"></span>
+                </div>
+                <div><div class="theme-name">Soft Wardrobe</div><div class="theme-desc">柔和衣櫥 · 預設</div></div>
+                <div class="check">✓</div>
+              </div>
+              <div class="theme-row">
+                <div class="mini-palette">
+                  <span style="background:#486554"></span><span style="background:#f7f8f2"></span>
+                  <span style="background:#8aa07b"></span><span style="background:#e4eadb"></span>
+                </div>
+                <div><div class="theme-name">Matcha Minimal</div><div class="theme-desc">清爽自然 · 日常通勤</div></div>
+              </div>
+              <div class="theme-row">
+                <div class="mini-palette">
+                  <span style="background:#3f68a8"></span><span style="background:#f6f8fb"></span>
+                  <span style="background:#7396bf"></span><span style="background:#e6edf7"></span>
+                </div>
+                <div><div class="theme-name">City Blue</div><div class="theme-desc">利落现代 · 统计日历</div></div>
+              </div>
+              <div class="theme-row">
+                <div class="mini-palette">
+                  <span style="background:#7b4b54"></span><span style="background:#fcf6f6"></span>
+                  <span style="background:#d79aa5"></span><span style="background:#f0dde1"></span>
+                </div>
+                <div><div class="theme-name">Rose Editorial</div><div class="theme-desc">柔粉杂志 · 漂亮但克制</div></div>
+              </div>
+              <div class="theme-row">
+                <div class="mini-palette">
+                  <span style="background:#10100f"></span><span style="background:#1c1b19"></span>
+                  <span style="background:#f3e9da"></span><span style="background:#c9a46a"></span>
+                </div>
+                <div><div class="theme-name">Night Gallery</div><div class="theme-desc">夜间图库 · 沉浸浏览</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards">
+        <article class="theme-card soft">
+          <div class="card-head">
+            <div><h2>Soft Wardrobe</h2><p>默认主题，温柔但不甜腻。</p></div>
+            <div class="theme-swatches"><span style="background:#25221f"></span><span style="background:#c78363"></span><span style="background:#efe7dc"></span></div>
+          </div>
+          <div class="preview"><div class="look"></div><div class="preview-panel"><div class="preview-title">奶油針織 + 直筒牛仔</div><div class="preview-meta"><span class="pill">通勤</span><span class="pill">舒服</span></div><div class="button">保存穿搭</div></div></div>
+          <div class="token-grid"><div class="token">primary</div><div class="token">surface</div><div class="token">tag</div><div class="token">accent</div></div>
+        </article>
+
+        <article class="theme-card matcha">
+          <div class="card-head">
+            <div><h2>Matcha Minimal</h2><p>自然、清爽，适合日常记录。</p></div>
+            <div class="theme-swatches"><span style="background:#486554"></span><span style="background:#8aa07b"></span><span style="background:#e4eadb"></span></div>
+          </div>
+          <div class="preview"><div class="look"></div><div class="preview-panel"><div class="preview-title">鼠尾草襯衫 + 米色長裙</div><div class="preview-meta"><span class="pill">咖啡</span><span class="pill">晴天</span></div><div class="button">保存穿搭</div></div></div>
+          <div class="token-grid"><div class="token">primary</div><div class="token">surface</div><div class="token">tag</div><div class="token">accent</div></div>
+        </article>
+
+        <article class="theme-card city">
+          <div class="card-head">
+            <div><h2>City Blue</h2><p>利落现代，适合统计和日历。</p></div>
+            <div class="theme-swatches"><span style="background:#3f68a8"></span><span style="background:#7396bf"></span><span style="background:#e6edf7"></span></div>
+          </div>
+          <div class="preview"><div class="look"></div><div class="preview-panel"><div class="preview-title">灰藍西外 + 白色背心</div><div class="preview-meta"><span class="pill">正式</span><span class="pill">城市</span></div><div class="button">保存穿搭</div></div></div>
+          <div class="token-grid"><div class="token">primary</div><div class="token">surface</div><div class="token">tag</div><div class="token">accent</div></div>
+        </article>
+
+        <article class="theme-card rose">
+          <div class="card-head">
+            <div><h2>Rose Editorial</h2><p>更漂亮的杂志感备选主题。</p></div>
+            <div class="theme-swatches"><span style="background:#7b4b54"></span><span style="background:#d79aa5"></span><span style="background:#f0dde1"></span></div>
+          </div>
+          <div class="preview"><div class="look"></div><div class="preview-panel"><div class="preview-title">粉棕針織 + 緞面半裙</div><div class="preview-meta"><span class="pill">約會</span><span class="pill">溫柔</span></div><div class="button">保存穿搭</div></div></div>
+          <div class="token-grid"><div class="token">primary</div><div class="token">surface</div><div class="token">tag</div><div class="token">accent</div></div>
+        </article>
+
+        <article class="theme-card night dark" style="grid-column: span 2; min-height: 214px;">
+          <div class="card-head">
+            <div><h2>Night Gallery</h2><p>真正为夜间浏览设计，不是简单反色。</p></div>
+            <div class="theme-swatches"><span style="background:#10100f"></span><span style="background:#1c1b19"></span><span style="background:#c9a46a"></span></div>
+          </div>
+          <div class="preview"><div class="look"></div><div class="preview-panel"><div class="preview-title">黑色長裙 + 金色耳環</div><div class="preview-meta"><span class="pill">晚餐</span><span class="pill">夜間</span></div><div class="button">保存穿搭</div></div></div>
+        </article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
