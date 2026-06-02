@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../theme/app_colors.dart';
 
-/// 日历卡片：白色卡片包裹的月历视图
+/// 日历月视图卡片 — 暖色风格
 ///
-/// 视觉层级：
-/// - 选中日期：实心主色圆形 + 白字
-/// - 今天（未选中）：浅蓝底圆形 + 主色字 + 加粗
-/// - 周末：弱化为主色低透明
-/// - 有记录的日期：底部小圆点标记
+/// - 今日：warmInk 实心圆 + 浅色字
+/// - 选中：warmMist 底 + warmInk 字
+/// - 有记录：warmClay 小圆点
 class CalendarMonthCard extends StatelessWidget {
   final DateTime focusedMonth;
   final DateTime selectedDay;
@@ -32,32 +30,18 @@ class CalendarMonthCard extends StatelessWidget {
     return (monthlyStats[day.day] ?? 0) > 0;
   }
 
-  /// 自绘日期单元：32px 圆 + 下方 4px 圆点
-  ///
-  /// 不再依赖 BoxDecoration 填满整个 cell，所以圆圈不会盖住下面的事件点。
-  Widget _buildDay(
-    DateTime day, {
-    required bool selected,
-    required bool today,
-  }) {
-    final isWeekend =
-        day.weekday == DateTime.saturday || day.weekday == DateTime.sunday;
-
-    // 选中态：浅蓝底 + 蓝字（柔和不抢眼）
-    // 今天（未选中）：仅蓝色加粗文字，避免与选中态视觉冲突
-    // 圆点（事件标记）独立于以上两种状态，永远落在下方
+  Widget _buildDay(DateTime day, {required bool selected, required bool today}) {
     Color textColor;
     Color? bgColor;
-    if (selected) {
-      textColor = AppColors.brandBlue;
-      bgColor = AppColors.brandBlue.withValues(alpha: 0.12);
-    } else if (today) {
-      textColor = AppColors.brandBlue;
-      bgColor = null;
+
+    if (today) {
+      textColor = const Color(0xFFFFFDF9);
+      bgColor = AppColors.warmInk;
+    } else if (selected) {
+      textColor = AppColors.warmInk;
+      bgColor = AppColors.warmMist;
     } else {
-      textColor = isWeekend
-          ? AppColors.brandBlue.withValues(alpha: 0.75)
-          : AppColors.textPrimaryV2;
+      textColor = AppColors.warmInk;
       bgColor = null;
     }
 
@@ -77,8 +61,7 @@ class CalendarMonthCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: 14,
                 color: textColor,
-                fontWeight:
-                    (selected || today) ? FontWeight.w700 : FontWeight.w500,
+                fontWeight: (selected || today) ? FontWeight.w700 : FontWeight.w500,
               ),
             ),
           ),
@@ -87,7 +70,7 @@ class CalendarMonthCard extends StatelessWidget {
             width: 4,
             height: 4,
             decoration: BoxDecoration(
-              color: _hasEvent(day) ? AppColors.brandBlue : Colors.transparent,
+              color: _hasEvent(day) ? AppColors.warmClay : Colors.transparent,
               shape: BoxShape.circle,
             ),
           ),
@@ -101,13 +84,17 @@ class CalendarMonthCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(8, 12, 8, 12),
       decoration: BoxDecoration(
-        color: AppColors.cardSurface,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
+        gradient: const LinearGradient(
+          begin: Alignment(-0.5, -1),
+          end: Alignment(0.5, 1),
+          colors: [AppColors.warmSurface, Color(0xFFF2EADF)],
+        ),
+        borderRadius: BorderRadius.circular(26),
+        boxShadow: const [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
+            color: Color(0x1A554230),
+            blurRadius: 28,
+            offset: Offset(0, 10),
           ),
         ],
       ),
@@ -138,29 +125,29 @@ class CalendarMonthCard extends StatelessWidget {
           titleTextStyle: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            color: AppColors.textPrimaryV2,
+            color: AppColors.warmInk,
           ),
           leftChevronIcon: Icon(
             Icons.chevron_left,
             size: 22,
-            color: AppColors.textSecondaryV2,
+            color: AppColors.warmMuted,
           ),
           rightChevronIcon: Icon(
             Icons.chevron_right,
             size: 22,
-            color: AppColors.textSecondaryV2,
+            color: AppColors.warmMuted,
           ),
         ),
         daysOfWeekStyle: const DaysOfWeekStyle(
           weekdayStyle: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w500,
-            color: AppColors.textSecondaryV2,
+            color: AppColors.warmMuted,
           ),
           weekendStyle: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w500,
-            color: AppColors.brandBlue,
+            color: AppColors.warmMuted,
           ),
         ),
         calendarStyle: const CalendarStyle(

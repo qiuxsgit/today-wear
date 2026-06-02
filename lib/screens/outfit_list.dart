@@ -12,11 +12,11 @@ class OutfitListPage extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     
     return Scaffold(
-      backgroundColor: AppColors.bgPrimary,
+      backgroundColor: AppColors.pageBg,
       appBar: AppBar(
         title: Text(l10n.appTitle, style: AppTextStyle.title),
-        backgroundColor: Colors.white,
-        foregroundColor: AppColors.textPrimary,
+        backgroundColor: AppColors.cardSurface,
+        foregroundColor: AppColors.textPrimaryV2,
         surfaceTintColor: Colors.transparent,
         elevation: 2,
         scrolledUnderElevation: 2,

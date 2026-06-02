@@ -117,18 +117,18 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
       onTap: _unfocusKeyboard,
       behavior: HitTestBehavior.opaque,
       child: Scaffold(
-        backgroundColor: AppColors.bgPrimary,
+        backgroundColor: AppColors.warmPage,
         appBar: AppBar(
           title: Text(l10n.editProfile, style: AppTextStyle.title),
-          backgroundColor: Colors.white,
-          foregroundColor: AppColors.textPrimary,
+          backgroundColor: AppColors.warmSurface,
+          foregroundColor: AppColors.warmInk,
           surfaceTintColor: Colors.transparent,
           elevation: 2,
           scrolledUnderElevation: 2,
           actions: [
             TextButton(
               onPressed: _save,
-              child: Text(l10n.save, style: const TextStyle(color: AppColors.primary)),
+              child: Text(l10n.save, style: const TextStyle(color: AppColors.warmInk)),
             ),
           ],
         ),
@@ -180,11 +180,11 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
       width: 64,
       height: 64,
       decoration: const BoxDecoration(
-        color: AppColors.imagePlaceholder,
+        color: AppColors.warmMist,
         shape: BoxShape.circle,
       ),
       alignment: Alignment.center,
-      child: const Icon(Icons.add_a_photo_outlined, size: 26, color: AppColors.textSecondary),
+      child: const Icon(Icons.add_a_photo_outlined, size: 26, color: AppColors.warmInk),
     );
   }
 
@@ -202,8 +202,9 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.sm),
       decoration: BoxDecoration(
-        color: AppColors.bgSecondary,
+        color: AppColors.warmSurface,
         borderRadius: BorderRadius.circular(12),
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 12, offset: Offset(0, 4))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -223,7 +224,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
               border: _inputBorder,
               enabledBorder: _inputBorder,
               focusedBorder: _inputBorder.copyWith(
-                borderSide: const BorderSide(color: AppColors.primary, width: 1),
+                borderSide: const BorderSide(color: AppColors.warmInk, width: 1),
               ),
             ),
             style: AppTextStyle.body.copyWith(fontSize: 14),
@@ -251,8 +252,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                     Icons.calendar_today_outlined,
                     size: 20,
                     color: dateText.isEmpty
-                        ? AppColors.textPlaceholder
-                        : AppColors.textPrimary,
+                        ? AppColors.warmMuted
+                        : AppColors.warmInk,
                   ),
                   const SizedBox(width: 10),
                   Expanded(
@@ -261,12 +262,12 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                       style: AppTextStyle.body.copyWith(
                         fontSize: 14,
                         color: dateText.isEmpty
-                            ? AppColors.textPlaceholder
-                            : AppColors.textPrimary,
+                            ? AppColors.warmMuted
+                            : AppColors.warmInk,
                       ),
                     ),
                   ),
-                  const Icon(Icons.chevron_right, color: AppColors.textSecondary, size: 20),
+                  const Icon(Icons.chevron_right, color: AppColors.warmMuted, size: 20),
                 ],
               ),
             ),
@@ -296,7 +297,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
       style: AppTextStyle.body.copyWith(
         fontSize: 14,
         fontWeight: FontWeight.w500,
-        color: AppColors.textPrimary,
+        color: AppColors.warmInk,
       ),
     );
   }
@@ -312,8 +313,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
       },
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      selectedColor: AppColors.primary.withValues(alpha: 0.2),
-      checkmarkColor: AppColors.primary,
+      selectedColor: AppColors.warmInk.withValues(alpha: 0.2),
+      checkmarkColor: AppColors.warmInk,
     );
   }
 
@@ -321,8 +322,9 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.sm),
       decoration: BoxDecoration(
-        color: AppColors.bgSecondary,
+        color: AppColors.warmSurface,
         borderRadius: BorderRadius.circular(12),
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 12, offset: Offset(0, 4))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -344,7 +346,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
               border: _inputBorder,
               enabledBorder: _inputBorder,
               focusedBorder: _inputBorder.copyWith(
-                borderSide: const BorderSide(color: AppColors.primary, width: 1),
+                borderSide: const BorderSide(color: AppColors.warmInk, width: 1),
               ),
             ),
             style: AppTextStyle.body.copyWith(fontSize: 14),

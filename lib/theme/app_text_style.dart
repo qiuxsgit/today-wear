@@ -39,4 +39,20 @@ class AppTextStyle {
     fontWeight: FontWeight.normal,
     color: AppColors.textSecondary,
   );
+
+  /// 眉题样式 — 用于页面标题上方的小标注（如日期、分类名）
+  static const TextStyle eyebrow = TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w600,
+    color: AppColors.warmMuted,
+    letterSpacing: 0.3,
+  );
+
+  /// 大标题样式 — 用于首页/日历页的主标题
+  static const TextStyle displayTitle = TextStyle(
+    fontSize: 26,
+    fontWeight: FontWeight.w800,
+    color: AppColors.warmInk,
+    height: 1.05,
+  );
 }

@@ -40,11 +40,11 @@ class ContactPage extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: AppColors.bgPrimary,
+      backgroundColor: AppColors.warmPage,
       appBar: AppBar(
         title: Text(l10n.contact, style: AppTextStyle.title),
-        backgroundColor: Colors.white,
-        foregroundColor: AppColors.textPrimary,
+        backgroundColor: AppColors.warmSurface,
+        foregroundColor: AppColors.warmInk,
         surfaceTintColor: Colors.transparent,
         elevation: 2,
         scrolledUnderElevation: 2,
@@ -71,7 +71,7 @@ class ContactPage extends StatelessWidget {
               trailingAction: IconButton(
                 icon: const Icon(Icons.open_in_new, size: 20),
                 onPressed: () => _openEmail(context),
-                color: AppColors.primary,
+                color: AppColors.warmInk,
                 style: IconButton.styleFrom(
                   padding: const EdgeInsets.all(8),
                   minimumSize: const Size(36, 36),
@@ -95,12 +95,13 @@ class ContactPage extends StatelessWidget {
     final content = Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.bgSecondary,
+        color: AppColors.warmSurface,
         borderRadius: BorderRadius.circular(12),
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 12, offset: Offset(0, 4))],
       ),
       child: Row(
         children: [
-          Icon(icon, color: AppColors.textSecondary, size: 24),
+          Icon(icon, color: AppColors.warmInk, size: 24),
           const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Column(
@@ -109,7 +110,7 @@ class ContactPage extends StatelessWidget {
                 Text(
                   label,
                   style: AppTextStyle.body.copyWith(
-                    color: AppColors.textSecondary,
+                    color: AppColors.warmMuted,
                     fontSize: 12,
                   ),
                 ),

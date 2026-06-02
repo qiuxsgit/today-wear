@@ -104,6 +104,35 @@ class OutfitRepository {
     return stats;
   }
 
+  /// 获取指定月份的标签使用频率与各标签首张图片路径
+  ///
+  /// 返回 (tagCounts, tagFirstPhoto)：
+  /// - tagCounts: 标签名 → 出现次数（降序排列）
+  /// - tagFirstPhoto: 标签名 → 首张图片路径（可为 null）
+  Future<(Map<String, int>, Map<String, String?>)> getMonthlyTagStats(
+    int year,
+    int month,
+  ) async {
+    final outfits = await getOutfitsByMonth(year, month);
+    final tagCounts = <String, int>{};
+    final tagFirstPhoto = <String, String?>{};
+
+    for (final outfit in outfits) {
+      for (final tag in outfit.tags) {
+        tagCounts[tag] = (tagCounts[tag] ?? 0) + 1;
+        tagFirstPhoto.putIfAbsent(
+          tag,
+          () => outfit.photoPaths.isEmpty ? null : outfit.photoPaths.first,
+        );
+      }
+    }
+
+    final sorted = Map.fromEntries(
+      tagCounts.entries.toList()..sort((a, b) => b.value.compareTo(a.value)),
+    );
+    return (sorted, tagFirstPhoto);
+  }
+
   /// 保存 outfit（新建或更新）
   /// [outfit] Outfit 模型
   /// [imageFiles] 图片文件列表（可选，新建时使用）

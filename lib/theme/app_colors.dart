@@ -155,6 +155,24 @@ class AppColors {
   /// V2 次文字 #888888
   static const Color textSecondaryV2 = Color(0xFF888888);
 
+  // ========== Warm Redesign Tokens ==========
+
+  static const Color warmInk      = Color(0xFF25221F);
+  static const Color warmInkDark  = Color(0xFFECE6DF);
+  static const Color warmMuted    = Color(0xFF7C746D);
+  static const Color warmMutedDark= Color(0xFF9C9189);
+  static const Color warmLine     = Color(0xFFECE6DF);
+  static const Color warmLineDark = Color(0xFF3A3530);
+  static const Color warmPage     = Color(0xFFFBF8F3);
+  static const Color warmPageDark = Color(0xFF1C1917);
+  static const Color warmSurface  = Color(0xFFFFFDF9);
+  static const Color warmSurfaceDark = Color(0xFF252220);
+  static const Color warmMist     = Color(0xFFF4EFE7);
+  static const Color warmMistDark = Color(0xFF2E2A25);
+  static const Color warmSage     = Color(0xFF7D9A88);
+  static const Color warmClay     = Color(0xFFC78363);
+  static const Color warmRose     = Color(0xFFD7A0A6);
+
   // ========== Helper Methods ==========
 
   /// 根据亮度模式获取背景主色
@@ -196,4 +214,11 @@ class AppColors {
   static Color getImagePlaceholder(Brightness brightness) {
     return brightness == Brightness.dark ? imagePlaceholderDark : imagePlaceholder;
   }
+
+  static Color getWarmPage(Brightness b)    => b == Brightness.dark ? warmPageDark    : warmPage;
+  static Color getWarmSurface(Brightness b) => b == Brightness.dark ? warmSurfaceDark : warmSurface;
+  static Color getWarmInk(Brightness b)     => b == Brightness.dark ? warmInkDark     : warmInk;
+  static Color getWarmMuted(Brightness b)   => b == Brightness.dark ? warmMutedDark   : warmMuted;
+  static Color getWarmLine(Brightness b)    => b == Brightness.dark ? warmLineDark    : warmLine;
+  static Color getWarmMist(Brightness b)    => b == Brightness.dark ? warmMistDark    : warmMist;
 }

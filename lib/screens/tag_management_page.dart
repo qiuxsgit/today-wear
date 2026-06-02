@@ -51,14 +51,14 @@ class _TagManagementPageState extends State<TagManagementPage> {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: AppColors.bgPrimary,
+      backgroundColor: AppColors.warmPage,
       appBar: AppBar(
         title: Text(
           _loading ? l10n.tagManagement : l10n.tagManagementWithCount(_tags.length),
-          style: AppTextStyle.title.copyWith(color: AppColors.primary),
+          style: AppTextStyle.title.copyWith(color: AppColors.warmInk),
         ),
-        backgroundColor: Colors.white,
-        foregroundColor: AppColors.textPrimary,
+        backgroundColor: AppColors.warmSurface,
+        foregroundColor: AppColors.warmInk,
         surfaceTintColor: Colors.transparent,
         elevation: 2,
         scrolledUnderElevation: 2,
@@ -70,7 +70,7 @@ class _TagManagementPageState extends State<TagManagementPage> {
                   child: Text(
                     l10n.tagNoTags,
                     style: AppTextStyle.body.copyWith(
-                      color: AppColors.textPlaceholder,
+                      color: AppColors.warmMuted,
                     ),
                   ),
                 )
@@ -101,7 +101,7 @@ class _TagManagementPageState extends State<TagManagementPage> {
                             tag.name,
                             style: AppTextStyle.body.copyWith(
                               fontSize: 14,
-                              color: AppColors.textSecondary,
+                              color: AppColors.warmMuted,
                             ),
                           ),
                         ),

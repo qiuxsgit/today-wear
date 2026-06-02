@@ -55,12 +55,12 @@ class _ProfilePageState extends State<ProfilePage> {
       return Container(
         width: 64,
         height: 64,
-        decoration: const BoxDecoration(
-          color: AppColors.imagePlaceholder,
+        decoration: BoxDecoration(
+          color: AppColors.warmInk.withValues(alpha: 0.08),
           shape: BoxShape.circle,
         ),
         alignment: Alignment.center,
-        child: const Icon(Icons.person_outline, size: 32, color: AppColors.textSecondary),
+        child: const Icon(Icons.person_outline, size: 32, color: AppColors.warmInk),
       );
     }
     return FutureBuilder<File?>(
@@ -80,11 +80,11 @@ class _ProfilePageState extends State<ProfilePage> {
           width: 64,
           height: 64,
           decoration: const BoxDecoration(
-            color: AppColors.imagePlaceholder,
+            color: AppColors.warmMist,
             shape: BoxShape.circle,
           ),
           alignment: Alignment.center,
-          child: const Icon(Icons.person_outline, size: 32, color: AppColors.textSecondary),
+          child: const Icon(Icons.person_outline, size: 32, color: AppColors.warmMuted),
         );
       },
     );
@@ -104,8 +104,9 @@ class _ProfilePageState extends State<ProfilePage> {
         width: double.infinity,
         padding: const EdgeInsets.all(AppSpacing.md + 4),
         decoration: BoxDecoration(
-          color: AppColors.bgSecondary,
+          color: AppColors.warmSurface,
           borderRadius: BorderRadius.circular(12),
+          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 12, offset: Offset(0, 4))],
         ),
         child: Column(
           children: [
@@ -184,7 +185,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Container(
       margin: const EdgeInsets.only(bottom: AppSpacing.xs),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.warmSurface,
         borderRadius: BorderRadius.circular(8),
       ),
       child: ListTile(
@@ -262,8 +263,9 @@ class _ProfilePageState extends State<ProfilePage> {
       width: double.infinity,
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.bgSecondary,
+        color: AppColors.warmSurface,
         borderRadius: BorderRadius.circular(12),
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 12, offset: Offset(0, 4))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -282,7 +284,7 @@ class _ProfilePageState extends State<ProfilePage> {
           Container(
             margin: const EdgeInsets.only(bottom: AppSpacing.xs),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.warmSurface,
               borderRadius: BorderRadius.circular(8),
             ),
             child: ListTile(
@@ -294,7 +296,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               trailing: const Icon(
                 Icons.chevron_right,
-                color: AppColors.textSecondary,
+                color: AppColors.warmMuted,
                 size: 20,
               ),
               onTap: () {
@@ -317,7 +319,7 @@ class _ProfilePageState extends State<ProfilePage> {
           // 语言选择项
           Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.warmSurface,
               borderRadius: BorderRadius.circular(8),
             ),
             child: ListTile(
@@ -333,13 +335,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   Text(
                     currentLanguageName,
                     style: AppTextStyle.body.copyWith(
-                      color: AppColors.textSecondary,
+                      color: AppColors.warmMuted,
                     ),
                   ),
                   const SizedBox(width: 4),
                   const Icon(
                     Icons.chevron_right,
-                    color: AppColors.textSecondary,
+                    color: AppColors.warmMuted,
                     size: 20,
                   ),
                 ],
@@ -376,8 +378,9 @@ class _ProfilePageState extends State<ProfilePage> {
       width: double.infinity,
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.bgSecondary,
+        color: AppColors.warmSurface,
         borderRadius: BorderRadius.circular(12),
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 12, offset: Offset(0, 4))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -455,7 +458,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Container(
       margin: const EdgeInsets.only(bottom: AppSpacing.xs),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.warmSurface,
         borderRadius: BorderRadius.circular(8),
       ),
       child: ListTile(
@@ -467,13 +470,13 @@ class _ProfilePageState extends State<ProfilePage> {
             ? Text(
                 value,
                 style: AppTextStyle.body.copyWith(
-                  color: AppColors.textSecondary,
+                  color: AppColors.warmMuted,
                 ),
               )
             : showArrow
                 ? const Icon(
                     Icons.chevron_right,
-                    color: AppColors.textSecondary,
+                    color: AppColors.warmMuted,
                     size: 20,
                   )
                 : null,
@@ -493,10 +496,10 @@ class _ProfilePageState extends State<ProfilePage> {
     final currentLocale = localeService?.currentLocale;
     
     return Scaffold(
-      backgroundColor: AppColors.bgPrimary,
+      backgroundColor: AppColors.warmPage,
       appBar: AppBar(
         toolbarHeight: 0,
-        backgroundColor: AppColors.bgPrimary,
+        backgroundColor: AppColors.warmPage,
         elevation: 0,
         scrolledUnderElevation: 0,
       ),

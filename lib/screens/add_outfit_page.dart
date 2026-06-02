@@ -212,7 +212,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
     
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.bgPrimary,
+      backgroundColor: AppColors.warmPage,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
@@ -499,19 +499,13 @@ class AddOutfitPageState extends State<AddOutfitPage> {
     
     if (_isEditMode && _isLoadingExistingData) {
       return Scaffold(
-        backgroundColor: AppColors.bgPrimary,
+        backgroundColor: AppColors.warmPage,
         body: const Center(child: CircularProgressIndicator()),
       );
     }
-    
+
     return Scaffold(
-      backgroundColor: AppColors.bgPrimary,
-      appBar: AppBar(
-        title: Text(_isEditMode ? '编辑穿搭' : l10n.addOutfit),
-        backgroundColor: AppColors.bgPrimary,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-      ),
+      backgroundColor: AppColors.warmPage,
       body: SafeArea(
         child: Column(
           children: [
@@ -519,7 +513,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
               child: LayoutBuilder(
                 builder: (context, constraints) {
                   return SingleChildScrollView(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                     keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                     child: ConstrainedBox(
                       constraints: BoxConstraints(minHeight: constraints.maxHeight),
@@ -529,6 +523,9 @@ class AddOutfitPageState extends State<AddOutfitPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            _buildCustomTopBar(),
+                            if (!_isEditMode) _buildHeroSection(),
+                            const SizedBox(height: 16),
                             _buildImageSection(),
                             const SizedBox(height: 24),
                             _buildTagSection(),
@@ -546,54 +543,121 @@ class AddOutfitPageState extends State<AddOutfitPage> {
               ),
             ),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-              decoration: BoxDecoration(
-                color: AppColors.bgPrimary,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, -2),
-                  ),
-                ],
-              ),
-              child: SafeArea(
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 48,
-                  child: ElevatedButton(
-                    onPressed: _isSaving ? null : _saveOutfit,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      foregroundColor: Colors.white,
-                      disabledBackgroundColor: AppColors.textSecondary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      elevation: 0,
+              padding: const EdgeInsets.fromLTRB(18, 0, 18, 18),
+              color: AppColors.warmPage,
+              child: SizedBox(
+                width: double.infinity,
+                height: 54,
+                child: ElevatedButton(
+                  onPressed: _isSaving ? null : _saveOutfit,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.warmInk,
+                    foregroundColor: const Color(0xFFFFFAF4),
+                    disabledBackgroundColor: AppColors.warmMuted,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(22),
                     ),
-                    child: _isSaving
-                        ? const SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                            ),
-                          )
-                        : Text(
-                            _isEditMode ? '保存修改' : l10n.save,
-                            style: AppTextStyle.title.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
+                    elevation: 0,
                   ),
+                  child: _isSaving
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFFFAF4)),
+                          ),
+                        )
+                      : Text(
+                          _isEditMode ? '保存修改' : '保存今日穿搭',
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFFFFFAF4),
+                          ),
+                        ),
                 ),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildCustomTopBar() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 14),
+      child: Row(
+        children: [
+          _RoundBtn(
+            icon: Icons.arrow_back_ios_new,
+            onTap: () => Navigator.of(context).pop(),
+          ),
+          const Expanded(
+            child: Center(
+              child: Text(
+                '新增穿搭',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: AppColors.warmInk),
+              ),
+            ),
+          ),
+          _RoundBtn(icon: Icons.more_horiz, onTap: () {}),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeroSection() {
+    final now = DateTime.now();
+    const monthNames = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+    final monthStr = monthNames[now.month - 1];
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(bottom: 8),
+      decoration: BoxDecoration(
+        color: AppColors.warmSurface,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: const [BoxShadow(color: Color(0x14554230), blurRadius: 28, offset: Offset(0, 10))],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('今天的搭配', style: AppTextStyle.eyebrow),
+                const SizedBox(height: 8),
+                const Text(
+                  '先放照片，\n再補一點感覺',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: AppColors.warmInk, height: 1.3),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 12),
+          Container(
+            width: 92,
+            height: 92,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              gradient: const LinearGradient(
+                begin: Alignment(-0.5, -1),
+                end: Alignment(0.5, 1),
+                colors: [AppColors.warmClay, Color(0xFFDFB79E)],
+              ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(monthStr, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: Color(0xFFFFFAF4))),
+                Text('${now.day}', style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w800, color: Color(0xFFFFFAF4), height: 1.1)),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -638,28 +702,18 @@ class AddOutfitPageState extends State<AddOutfitPage> {
                 onTap: _showImagePickerDialog,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: AppColors.bgSecondary,
+                    color: AppColors.warmSurface,
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: AppColors.textSecondary.withValues(alpha: 0.3),
-                      width: 1,
-                    ),
+                    border: Border.all(color: AppColors.warmLine),
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.add,
-                        size: 32,
-                        color: AppColors.textSecondary,
-                      ),
+                      const Icon(Icons.add, size: 32, color: AppColors.warmMuted),
                       const SizedBox(height: 4),
                       Text(
                         '添加图片',
-                        style: AppTextStyle.body.copyWith(
-                          fontSize: 12,
-                          color: AppColors.textSecondary,
-                        ),
+                        style: AppTextStyle.body.copyWith(fontSize: 12, color: AppColors.warmMuted),
                       ),
                     ],
                   ),
@@ -716,8 +770,8 @@ class AddOutfitPageState extends State<AddOutfitPage> {
         return Image.file(file, fit: BoxFit.cover);
       }
       return Container(
-        color: AppColors.imagePlaceholder,
-        child: const Icon(Icons.broken_image, color: AppColors.textPlaceholder),
+        color: AppColors.warmMist,
+        child: const Icon(Icons.broken_image, color: AppColors.warmMuted),
       );
     }
     if (ref.startsWith("path:")) {
@@ -727,7 +781,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(
-              color: AppColors.imagePlaceholder,
+              color: AppColors.warmMist,
               child: const Center(child: CircularProgressIndicator()),
             );
           }
@@ -738,8 +792,8 @@ class AddOutfitPageState extends State<AddOutfitPage> {
           }
           if (file == null || !file.existsSync()) {
             return Container(
-              color: AppColors.imagePlaceholder,
-              child: const Icon(Icons.broken_image, color: AppColors.textPlaceholder),
+              color: AppColors.warmMist,
+              child: const Icon(Icons.broken_image, color: AppColors.warmMuted),
             );
           }
           return Image.file(file, fit: BoxFit.cover);
@@ -750,15 +804,15 @@ class AddOutfitPageState extends State<AddOutfitPage> {
       final file = File(path);
       if (!file.existsSync()) {
         return Container(
-          color: AppColors.imagePlaceholder,
-          child: const Icon(Icons.broken_image, color: AppColors.textPlaceholder),
+          color: AppColors.warmMist,
+          child: const Icon(Icons.broken_image, color: AppColors.warmMuted),
         );
       }
       return Image.file(file, fit: BoxFit.cover);
     }
     return Container(
-      color: AppColors.imagePlaceholder,
-      child: const Icon(Icons.broken_image, color: AppColors.textPlaceholder),
+      color: AppColors.warmMist,
+      child: const Icon(Icons.broken_image, color: AppColors.warmMuted),
     );
   }
   
@@ -797,13 +851,11 @@ class AddOutfitPageState extends State<AddOutfitPage> {
                 label: Text(tag),
                 selected: isSelected,
                 onSelected: (_) => _toggleTag(tag),
-                backgroundColor: AppColors.bgSecondary,
-                selectedColor: AppColors.bgTertiary,
-                checkmarkColor: AppColors.primary,
+                backgroundColor: AppColors.warmSurface,
+                selectedColor: AppColors.warmMist,
+                checkmarkColor: AppColors.warmInk,
                 labelStyle: TextStyle(
-                  color: isSelected
-                      ? AppColors.primary
-                      : AppColors.textPrimary,
+                  color: isSelected ? AppColors.warmInk : AppColors.warmMuted,
                 ),
               );
             }).toList(),
@@ -824,11 +876,8 @@ class AddOutfitPageState extends State<AddOutfitPage> {
               return Chip(
                 label: Text(tag),
                 onDeleted: () => _removeTag(tag),
-                backgroundColor: AppColors.bgTertiary,
-                deleteIcon: const Icon(
-                  Icons.close,
-                  size: 18,
-                ),
+                backgroundColor: AppColors.warmMist,
+                deleteIcon: const Icon(Icons.close, size: 18),
               );
             }).toList(),
           ),
@@ -874,12 +923,9 @@ class AddOutfitPageState extends State<AddOutfitPage> {
             ElevatedButton(
               onPressed: _addNewTag,
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
-                ),
+                backgroundColor: AppColors.warmInk,
+                foregroundColor: const Color(0xFFFFFAF4),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               ),
               child: const Text('添加'),
             ),
@@ -916,6 +962,30 @@ class AddOutfitPageState extends State<AddOutfitPage> {
           textInputAction: TextInputAction.newline,
         ),
       ],
+    );
+  }
+}
+
+class _RoundBtn extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onTap;
+  const _RoundBtn({required this.icon, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 42,
+        height: 42,
+        decoration: BoxDecoration(
+          color: AppColors.warmSurface,
+          shape: BoxShape.circle,
+          border: Border.all(color: AppColors.warmLine),
+          boxShadow: const [BoxShadow(color: Color(0x14554230), blurRadius: 18, offset: Offset(0, 8))],
+        ),
+        child: Icon(icon, size: 18, color: AppColors.warmInk),
+      ),
     );
   }
 }

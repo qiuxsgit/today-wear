@@ -18,11 +18,11 @@ class LanguageSelectionPage extends StatelessWidget {
     final currentLocale = localeService?.currentLocale;
 
     return Scaffold(
-      backgroundColor: AppColors.bgPrimary,
+      backgroundColor: AppColors.warmPage,
       appBar: AppBar(
         title: Text(l10n.language, style: AppTextStyle.title),
-        backgroundColor: Colors.white,
-        foregroundColor: AppColors.textPrimary,
+        backgroundColor: AppColors.warmSurface,
+        foregroundColor: AppColors.warmInk,
         surfaceTintColor: Colors.transparent,
         elevation: 2,
         scrolledUnderElevation: 2,
@@ -58,8 +58,9 @@ class LanguageSelectionPage extends StatelessWidget {
 
           return Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.warmSurface,
               borderRadius: BorderRadius.circular(12),
+              boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 8, offset: Offset(0, 2))],
             ),
             child: RadioListTile<Locale>(
               title: Text(

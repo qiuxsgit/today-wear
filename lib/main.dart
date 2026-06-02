@@ -135,35 +135,35 @@ class _MyAppState extends State<MyApp> {
           themeMode: widget.themeService.themeMode,
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(
-              seedColor: AppColors.primary,
+              seedColor: AppColors.warmInk,
               brightness: Brightness.light,
             ).copyWith(
-              primary: AppColors.primary,
-              surface: AppColors.bgSecondary,
+              primary: AppColors.warmInk,
+              surface: AppColors.warmSurface,
             ),
             useMaterial3: true,
-            scaffoldBackgroundColor: AppColors.bgPrimary,
-            cardColor: AppColors.bgSecondary,
+            scaffoldBackgroundColor: AppColors.warmPage,
+            cardColor: AppColors.warmSurface,
             appBarTheme: const AppBarTheme(
-              backgroundColor: AppColors.bgPrimary,
-              foregroundColor: AppColors.textPrimary,
+              backgroundColor: AppColors.warmSurface,
+              foregroundColor: AppColors.warmInk,
               elevation: 0,
             ),
           ),
           darkTheme: ThemeData(
             colorScheme: ColorScheme.fromSeed(
-              seedColor: AppColors.primaryDark,
+              seedColor: AppColors.warmInkDark,
               brightness: Brightness.dark,
             ).copyWith(
-              primary: AppColors.primaryDark,
-              surface: AppColors.bgSecondaryDark,
+              primary: AppColors.warmInkDark,
+              surface: AppColors.warmSurfaceDark,
             ),
             useMaterial3: true,
-            scaffoldBackgroundColor: AppColors.bgPrimaryDark,
-            cardColor: AppColors.bgSecondaryDark,
+            scaffoldBackgroundColor: AppColors.warmPageDark,
+            cardColor: AppColors.warmSurfaceDark,
             appBarTheme: const AppBarTheme(
-              backgroundColor: AppColors.bgPrimaryDark,
-              foregroundColor: AppColors.textPrimaryDark,
+              backgroundColor: AppColors.warmPageDark,
+              foregroundColor: AppColors.warmInkDark,
               elevation: 0,
             ),
           ),
@@ -298,6 +298,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       body: _pages[_selectedIndex],
       bottomNavigationBar: MainNavigation(
         selectedIndex: _selectedIndex,

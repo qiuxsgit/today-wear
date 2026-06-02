@@ -173,7 +173,7 @@ class _StatisticsPageState extends State<StatisticsPage>
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.warmSurface,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -203,7 +203,7 @@ class _StatisticsPageState extends State<StatisticsPage>
                   title,
                   style: AppTextStyle.body.copyWith(
                     fontSize: 13,
-                    color: AppColors.textSecondary,
+                    color: AppColors.warmMuted,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -215,13 +215,13 @@ class _StatisticsPageState extends State<StatisticsPage>
                       ? AppTextStyle.title.copyWith(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.textPrimary,
+                          color: AppColors.warmInk,
                           height: 1.1,
                         )
                       : AppTextStyle.body.copyWith(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
-                          color: AppColors.textPrimary,
+                          color: AppColors.warmInk,
                           height: 1.2,
                         ),
                   maxLines: 1,
@@ -247,13 +247,13 @@ class _StatisticsPageState extends State<StatisticsPage>
             Icon(
               Icons.tag,
               size: 48,
-              color: AppColors.textPlaceholder,
+              color: AppColors.warmMuted,
             ),
             const SizedBox(height: AppSpacing.md),
             Text(
               '暂无标签数据',
               style: AppTextStyle.body.copyWith(
-                color: AppColors.textSecondary,
+                color: AppColors.warmMuted,
               ),
             ),
           ],
@@ -269,7 +269,7 @@ class _StatisticsPageState extends State<StatisticsPage>
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.warmSurface,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -311,7 +311,7 @@ class _StatisticsPageState extends State<StatisticsPage>
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withValues(alpha: 0.1),
+                    color: AppColors.warmInk.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
@@ -319,7 +319,7 @@ class _StatisticsPageState extends State<StatisticsPage>
                     style: const TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.primary,
+                      color: AppColors.warmInk,
                     ),
                   ),
                 ),
@@ -338,7 +338,7 @@ class _StatisticsPageState extends State<StatisticsPage>
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.warmSurface,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -406,7 +406,7 @@ class _StatisticsPageState extends State<StatisticsPage>
                       return BarTooltipItem(
                         rod.toY.round().toString(),
                         const TextStyle(
-                          color: Colors.white,
+                          color: AppColors.warmSurface,
                           fontWeight: FontWeight.bold,
                         ),
                       );
@@ -451,7 +451,7 @@ class _StatisticsPageState extends State<StatisticsPage>
                     barRods: [
                       BarChartRodData(
                         toY: (_monthlyCount / 4).toDouble(),
-                        color: AppColors.primary,
+                        color: AppColors.warmInk,
                         width: 12,
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(6),
@@ -465,7 +465,7 @@ class _StatisticsPageState extends State<StatisticsPage>
                     barRods: [
                       BarChartRodData(
                         toY: (_monthlyCount / 3).toDouble(),
-                        color: AppColors.primary,
+                        color: AppColors.warmInk,
                         width: 12,
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(6),
@@ -479,7 +479,7 @@ class _StatisticsPageState extends State<StatisticsPage>
                     barRods: [
                       BarChartRodData(
                         toY: (_monthlyCount / 2.5).toDouble(),
-                        color: AppColors.primary,
+                        color: AppColors.warmInk,
                         width: 12,
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(6),
@@ -493,7 +493,7 @@ class _StatisticsPageState extends State<StatisticsPage>
                     barRods: [
                       BarChartRodData(
                         toY: (_monthlyCount / 3.5).toDouble(),
-                        color: AppColors.primary,
+                        color: AppColors.warmInk,
                         width: 12,
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(6),
@@ -507,7 +507,7 @@ class _StatisticsPageState extends State<StatisticsPage>
                     barRods: [
                       BarChartRodData(
                         toY: (_monthlyCount / 4.5).toDouble(),
-                        color: AppColors.primary,
+                        color: AppColors.warmInk,
                         width: 12,
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(6),
@@ -538,11 +538,11 @@ class _StatisticsPageState extends State<StatisticsPage>
     }
     
     return Scaffold(
-      backgroundColor: AppColors.bgSecondary,
+      backgroundColor: AppColors.warmPage,
       appBar: AppBar(
         title: const Text('统计'),
-        backgroundColor: AppColors.bgPrimary,
-        foregroundColor: AppColors.textPrimary,
+        backgroundColor: AppColors.warmSurface,
+        foregroundColor: AppColors.warmInk,
         elevation: 0,
         actions: [
           IconButton(
@@ -571,7 +571,7 @@ class _StatisticsPageState extends State<StatisticsPage>
                       title: '总计',
                       value: '$_totalCount',
                       icon: Icons.checkroom,
-                      color: AppColors.primary,
+                      color: AppColors.warmInk,
                     ),
                   ),
                   const SizedBox(width: AppSpacing.sm),
@@ -602,7 +602,7 @@ class _StatisticsPageState extends State<StatisticsPage>
                       title: '小贴士',
                       value: '保持记录',
                       icon: Icons.info_outline,
-                      color: AppColors.primary,
+                      color: AppColors.warmInk,
                       valueIsNumber: false,
                     ),
                   ),

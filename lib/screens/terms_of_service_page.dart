@@ -13,11 +13,11 @@ class TermsOfServicePage extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: AppColors.bgPrimary,
+      backgroundColor: AppColors.warmPage,
       appBar: AppBar(
         title: Text(l10n.termsOfService),
-        backgroundColor: Colors.white,
-        foregroundColor: AppColors.textPrimary,
+        backgroundColor: AppColors.warmSurface,
+        foregroundColor: AppColors.warmInk,
         surfaceTintColor: Colors.transparent,
         elevation: 2,
         scrolledUnderElevation: 2,
@@ -25,7 +25,7 @@ class TermsOfServicePage extends StatelessWidget {
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSpacing.md),
         child: Card(
-          color: AppColors.bgSecondary,
+          color: AppColors.warmSurface,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),

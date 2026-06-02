@@ -97,11 +97,11 @@ class OutfitDetailPage extends StatelessWidget {
     final dateText = _formatDate(context, outfit.date);
 
     return Scaffold(
-      backgroundColor: AppColors.bgPrimary,
+      backgroundColor: AppColors.warmPage,
       appBar: AppBar(
         title: Text(dateText, style: AppTextStyle.title),
-        backgroundColor: Colors.white,
-        foregroundColor: AppColors.textPrimary,
+        backgroundColor: AppColors.warmSurface,
+        foregroundColor: AppColors.warmInk,
         surfaceTintColor: Colors.transparent,
         elevation: 2,
         scrolledUnderElevation: 2,
@@ -132,14 +132,14 @@ class OutfitDetailPage extends StatelessWidget {
                   width: double.infinity,
                   height: 300,
                   decoration: BoxDecoration(
-                    color: AppColors.imagePlaceholder,
+                    color: AppColors.warmMist,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Center(
                     child: Icon(
                       Icons.image,
                       size: 64,
-                      color: AppColors.textPlaceholder,
+                      color: AppColors.warmMuted,
                     ),
                   ),
                 ),
@@ -169,7 +169,7 @@ class OutfitDetailPage extends StatelessWidget {
                         tagName,
                         style: const TextStyle(
                           fontSize: 12,
-                          color: AppColors.textSecondary,
+                          color: AppColors.warmMuted,
                         ),
                       ),
                       backgroundColor: bgColor,
@@ -207,7 +207,7 @@ class OutfitDetailPage extends StatelessWidget {
                 return Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: AppColors.imagePlaceholder,
+                    color: AppColors.warmMist,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Center(
@@ -221,14 +221,14 @@ class OutfitDetailPage extends StatelessWidget {
                 return Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: AppColors.imagePlaceholder,
+                    color: AppColors.warmMist,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Center(
                     child: Icon(
                       Icons.broken_image,
                       size: 64,
-                      color: AppColors.textPlaceholder,
+                      color: AppColors.warmMuted,
                     ),
                   ),
                 );
@@ -246,14 +246,14 @@ class OutfitDetailPage extends StatelessWidget {
                       return Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
-                          color: AppColors.imagePlaceholder,
+                          color: AppColors.warmMist,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: const Center(
                           child: Icon(
                             Icons.broken_image,
                             size: 64,
-                            color: AppColors.textPlaceholder,
+                            color: AppColors.warmMuted,
                           ),
                         ),
                       );

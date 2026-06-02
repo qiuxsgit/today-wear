@@ -34,11 +34,11 @@ class OutfitRecordCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppColors.cardSurface,
+      color: AppColors.warmSurface,
       borderRadius: BorderRadius.circular(16),
       child: Ink(
         decoration: BoxDecoration(
-          color: AppColors.cardSurface,
+          color: AppColors.warmSurface,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
@@ -68,7 +68,7 @@ class OutfitRecordCard extends StatelessWidget {
                   padding: EdgeInsets.only(top: 4),
                   child: Icon(
                     Icons.chevron_right,
-                    color: AppColors.textSecondaryV2,
+                    color: AppColors.warmMuted,
                     size: 20,
                   ),
                 ),
@@ -98,7 +98,7 @@ class _Info extends StatelessWidget {
           style: const TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.w600,
-            color: AppColors.textPrimaryV2,
+            color: AppColors.warmInk,
             height: 1.35,
           ),
           maxLines: 2,
@@ -110,14 +110,14 @@ class _Info extends StatelessWidget {
             const Icon(
               Icons.access_time,
               size: 12,
-              color: AppColors.textSecondaryV2,
+              color: AppColors.warmMuted,
             ),
             const SizedBox(width: 4),
             Text(
               time,
               style: const TextStyle(
                 fontSize: 12,
-                color: AppColors.textSecondaryV2,
+                color: AppColors.warmMuted,
               ),
             ),
             if (outfit.photoPaths.length > 1) ...[
@@ -125,14 +125,14 @@ class _Info extends StatelessWidget {
               const Icon(
                 Icons.photo_library_outlined,
                 size: 12,
-                color: AppColors.textSecondaryV2,
+                color: AppColors.warmMuted,
               ),
               const SizedBox(width: 3),
               Text(
                 '${outfit.photoPaths.length}',
                 style: const TextStyle(
                   fontSize: 12,
-                  color: AppColors.textSecondaryV2,
+                  color: AppColors.warmMuted,
                 ),
               ),
             ],
@@ -147,14 +147,14 @@ class _Info extends StatelessWidget {
               return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
-                  color: AppColors.brandBlue.withValues(alpha: 0.08),
+                  color: AppColors.warmInk.withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
                   tag,
                   style: const TextStyle(
                     fontSize: 11,
-                    color: AppColors.brandBlue,
+                    color: AppColors.warmInk,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -178,12 +178,12 @@ class _Cover extends StatelessWidget {
         width: _size,
         height: _size,
         decoration: BoxDecoration(
-          color: AppColors.brandBlue.withValues(alpha: 0.06),
+          color: AppColors.warmInk.withValues(alpha: 0.06),
           borderRadius: BorderRadius.circular(_radius),
         ),
         child: const Icon(
           Icons.checkroom,
-          color: AppColors.brandBlue,
+          color: AppColors.warmInk,
           size: 28,
         ),
       );
@@ -200,7 +200,7 @@ class _Cover extends StatelessWidget {
             return Container(
               width: _size,
               height: _size,
-              color: AppColors.imagePlaceholder,
+              color: AppColors.warmMist,
             );
           }
           final file = snapshot.data;
