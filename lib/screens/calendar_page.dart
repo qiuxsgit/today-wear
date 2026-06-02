@@ -176,6 +176,7 @@ class _CalendarPageState extends State<CalendarPage> {
                               color: surface,
                               shape: BoxShape.circle,
                               border: Border.all(color: tt.line),
+                              boxShadow: const [BoxShadow(color: Color(0x14554230), blurRadius: 18, offset: Offset(0, 8))],
                             ),
                             child: Icon(Icons.ios_share_outlined, size: 18, color: muted),
                           ),
@@ -277,14 +278,14 @@ class _StatBox extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(13),
       decoration: BoxDecoration(
-        color: tt.surface,
+        color: tt.mist,
         borderRadius: BorderRadius.circular(20),
         boxShadow: const [BoxShadow(color: Color(0x0F554230), blurRadius: 18, offset: Offset(0, 8))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(value, style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: tt.ink)),
+          Text(value, style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800, color: tt.ink)),
           const SizedBox(height: 4),
           Text(label, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: tt.muted)),
         ],

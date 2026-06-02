@@ -265,6 +265,9 @@ class AppLocalizationsJa extends AppLocalizations {
   @override String get statsTagFrequency => 'タグ使用頻度';
   @override String get statsMonthlyTrend => '月間トレンド';
   @override String get statsNoTagData => 'タグデータなし';
+  @override String get statsRecordedDaysLabel => '記録日数';
+  @override String get statsLast7Days => '過去7日間';
+  @override String get statsInspirationTitle => '今月のスタイル';
 
   @override String get editOutfitTooltip => '編集';
 

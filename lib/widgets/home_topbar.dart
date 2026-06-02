@@ -96,16 +96,15 @@ class _HomeFilterChipsState extends State<HomeFilterChips> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
-                    color: isActive ? tt.ink : tt.surface,
+                    color: isActive ? tt.ink : tt.mist,
                     borderRadius: BorderRadius.circular(999),
-                    border: isActive ? null : Border.all(color: tt.line),
                   ),
                   child: Text(
                     labels[i],
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
-                      color: isActive ? const Color(0xFFFFFAF4) : tt.muted,
+                      color: isActive ? tt.page : tt.muted,
                     ),
                   ),
                 ),

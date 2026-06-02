@@ -268,6 +268,9 @@ class AppLocalizationsZh extends AppLocalizations {
   @override String get statsTagFrequency => '标签使用频率';
   @override String get statsMonthlyTrend => '月度趋势';
   @override String get statsNoTagData => '暂无标签数据';
+  @override String get statsRecordedDaysLabel => '已记录天数';
+  @override String get statsLast7Days => '最近 7 天';
+  @override String get statsInspirationTitle => '本月穿搭灵感';
 
   @override String get editOutfitTooltip => '编辑';
 
@@ -735,6 +738,9 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   @override String get statsTagFrequency => '標籤使用頻率';
   @override String get statsMonthlyTrend => '月度趨勢';
   @override String get statsNoTagData => '暫無標籤數據';
+  @override String get statsRecordedDaysLabel => '已記錄天數';
+  @override String get statsLast7Days => '最近 7 天';
+  @override String get statsInspirationTitle => '本月穿搭靈感';
   @override String get editOutfitTooltip => '編輯';
   @override String get themeModeLight => '淺色';
   @override String get themeModeDark => '深色';

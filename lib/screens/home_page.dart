@@ -135,6 +135,7 @@ class HomePageState extends State<HomePage> {
         child: Column(
           children: [
             HomeTopBar(onAdd: widget.onAddFirstOutfit),
+            _WeatherCard(tt: tt),
             const HomeFilterChips(),
             Expanded(
               child: Center(
@@ -176,12 +177,14 @@ class HomePageState extends State<HomePage> {
     final content = _buildMasonryContent();
 
     if (content.isEmpty && _isLoading) {
+      final tt = context.tt;
       return Scaffold(
-        backgroundColor: context.tt.page,
+        backgroundColor: tt.page,
         body: SafeArea(
           child: Column(
             children: [
               HomeTopBar(onAdd: widget.onAddFirstOutfit),
+              _WeatherCard(tt: tt),
               const HomeFilterChips(),
               const Expanded(child: Center(child: CircularProgressIndicator())),
             ],
@@ -192,13 +195,15 @@ class HomePageState extends State<HomePage> {
 
     if (content.isEmpty) return _buildEmptyState();
 
+    final tt = context.tt;
     return Scaffold(
-      backgroundColor: context.tt.page,
+      backgroundColor: tt.page,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             HomeTopBar(onAdd: widget.onAddFirstOutfit),
+            _WeatherCard(tt: tt),
             const HomeFilterChips(),
             Expanded(
               child: SingleChildScrollView(
@@ -221,6 +226,54 @@ class HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _WeatherCard extends StatelessWidget {
+  final AppThemeTokens tt;
+  const _WeatherCard({required this.tt});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(18, 10, 18, 0),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: const Alignment(-0.77, -0.64),
+            end: const Alignment(0.77, 0.64),
+            colors: [tt.ink, tt.accent2],
+          ),
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: const [BoxShadow(color: Color(0x12554230), blurRadius: 28, offset: Offset(0, 12))],
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '台北 · 晴天',
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: tt.page.withValues(alpha: 0.8)),
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    '薄外套剛剛好',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: tt.page),
+                  ),
+                ],
+              ),
+            ),
+            Text(
+              '24°',
+              style: TextStyle(fontSize: 38, fontWeight: FontWeight.w300, color: tt.page),
             ),
           ],
         ),

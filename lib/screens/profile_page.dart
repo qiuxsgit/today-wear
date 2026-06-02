@@ -5,8 +5,8 @@ import 'package:package_info_plus/package_info_plus.dart';
 import '../models/user_profile.dart';
 import '../services/profile_service.dart';
 import '../services/image_service.dart';
-import '../theme/app_colors.dart';
 import '../theme/app_text_style.dart';
+import '../theme/app_theme_tokens.dart';
 import '../theme/app_spacing.dart';
 import '../services/locale_service.dart';
 import '../services/theme_service.dart';
@@ -52,40 +52,50 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildAvatar(String? avatarPath) {
+    final tt = context.tt;
     if (avatarPath == null || avatarPath.isEmpty) {
       return Container(
-        width: 64,
-        height: 64,
+        width: 78,
+        height: 78,
         decoration: BoxDecoration(
-          color: AppColors.warmInk.withValues(alpha: 0.08),
+          gradient: LinearGradient(
+            begin: const Alignment(-0.5, -1),
+            end: const Alignment(0.5, 1),
+            colors: [tt.accent, tt.ink],
+          ),
           shape: BoxShape.circle,
         ),
         alignment: Alignment.center,
-        child: const Icon(Icons.person_outline, size: 32, color: AppColors.warmInk),
+        child: Text('穿', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800, color: tt.page)),
       );
     }
     return FutureBuilder<File?>(
       future: ImageService.instance.getImageFile(avatarPath),
       builder: (context, snapshot) {
+        final t = context.tt;
         if (snapshot.hasData && snapshot.data != null) {
           return ClipOval(
             child: Image.file(
               snapshot.data!,
-              width: 64,
-              height: 64,
+              width: 78,
+              height: 78,
               fit: BoxFit.cover,
             ),
           );
         }
         return Container(
-          width: 64,
-          height: 64,
-          decoration: const BoxDecoration(
-            color: AppColors.warmMist,
+          width: 78,
+          height: 78,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: const Alignment(-0.5, -1),
+              end: const Alignment(0.5, 1),
+              colors: [t.accent, t.ink],
+            ),
             shape: BoxShape.circle,
           ),
           alignment: Alignment.center,
-          child: const Icon(Icons.person_outline, size: 32, color: AppColors.warmMuted),
+          child: Text('穿', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800, color: t.page)),
         );
       },
     );
@@ -93,6 +103,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   /// 构建个人信息卡片
   Widget _buildProfileCard(BuildContext context, AppLocalizations l10n) {
+    final tt = context.tt;
     final p = _profile;
     final displayName = (p?.nickname != null && p!.nickname!.trim().isNotEmpty)
         ? p.nickname!.trim()
@@ -100,14 +111,14 @@ class _ProfilePageState extends State<ProfilePage> {
 
     return InkWell(
       onTap: _openProfileEdit,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(24),
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(AppSpacing.md + 4),
         decoration: BoxDecoration(
-          color: AppColors.warmSurface,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 12, offset: Offset(0, 4))],
+          color: tt.surface,
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: const [BoxShadow(color: Color(0x0F554230), blurRadius: 24, offset: Offset(0, 10))],
         ),
         child: Column(
           children: [
@@ -180,30 +191,27 @@ class _ProfilePageState extends State<ProfilePage> {
   }
   
   Widget _buildAppearanceTile(BuildContext context) {
+    final tt = context.tt;
     final presetName = ThemeService.getPresetName(ThemeService.instance.currentPreset);
-    return Container(
-      margin: const EdgeInsets.only(bottom: AppSpacing.xs),
-      decoration: BoxDecoration(
-        color: AppColors.warmSurface,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: ListTile(
-        title: Text('外觀主題', style: AppTextStyle.body.copyWith(fontSize: 16)),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(presetName, style: AppTextStyle.body.copyWith(color: AppColors.warmMuted)),
-            const SizedBox(width: 4),
-            const Icon(Icons.chevron_right, color: AppColors.warmMuted, size: 20),
-          ],
-        ),
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const AppearanceThemePage()),
-        ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-        dense: true,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    return SizedBox(
+      height: 48,
+      child: Row(
+        children: [
+          Expanded(
+            child: Text('外觀主題', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: tt.ink)),
+          ),
+          GestureDetector(
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AppearanceThemePage())),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(presetName, style: TextStyle(fontSize: 13, color: tt.muted)),
+                const SizedBox(width: 4),
+                Icon(Icons.chevron_right, color: tt.muted, size: 18),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -214,7 +222,7 @@ class _ProfilePageState extends State<ProfilePage> {
     AppLocalizations l10n,
     Locale? currentLocale,
   ) {
-    // 获取当前语言名称
+    final tt = context.tt;
     String currentLanguageName;
     if (currentLocale != null) {
       switch (currentLocale.languageCode) {
@@ -241,107 +249,62 @@ class _ProfilePageState extends State<ProfilePage> {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 6),
       decoration: BoxDecoration(
-        color: AppColors.warmSurface,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 12, offset: Offset(0, 4))],
+        color: tt.surface,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: const [BoxShadow(color: Color(0x0F554230), blurRadius: 24, offset: Offset(0, 10))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 设置标题
-          Text(
-            l10n.settings,
-            style: AppTextStyle.title.copyWith(
-              fontSize: 18,
+          Text(l10n.settings, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800, color: tt.ink)),
+          const SizedBox(height: 10),
+          _buildSettingsRow(tt, l10n.settings, _buildAppearanceTile(context)),
+          Divider(height: 1, color: tt.line),
+          _buildSettingsNavRow(
+            tt: tt,
+            label: l10n.tagManagement,
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TagManagementPage())),
+          ),
+          Divider(height: 1, color: tt.line),
+          SizedBox(
+            height: 48,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(l10n.language, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: tt.ink)),
+                ),
+                GestureDetector(
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const LanguageSelectionPage())),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(currentLanguageName, style: TextStyle(fontSize: 13, color: tt.muted)),
+                      const SizedBox(width: 4),
+                      Icon(Icons.chevron_right, color: tt.muted, size: 18),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: AppSpacing.sm),
-          // 外觀主題入口
-          _buildAppearanceTile(context),
-          // 标签管理
-          Container(
-            margin: const EdgeInsets.only(bottom: AppSpacing.xs),
-            decoration: BoxDecoration(
-              color: AppColors.warmSurface,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: ListTile(
-              title: Text(
-                l10n.tagManagement,
-                style: AppTextStyle.body.copyWith(
-                  fontSize: 16,
-                ),
-              ),
-              trailing: const Icon(
-                Icons.chevron_right,
-                color: AppColors.warmMuted,
-                size: 20,
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const TagManagementPage(),
-                  ),
-                );
-              },
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.md,
-              ),
-              dense: true,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-          ),
-          // 语言选择项
-          Container(
-            decoration: BoxDecoration(
-              color: AppColors.warmSurface,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: ListTile(
-              title: Text(
-                l10n.language,
-                style: AppTextStyle.body.copyWith(
-                  fontSize: 16,
-                ),
-              ),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    currentLanguageName,
-                    style: AppTextStyle.body.copyWith(
-                      color: AppColors.warmMuted,
-                    ),
-                  ),
-                  const SizedBox(width: 4),
-                  const Icon(
-                    Icons.chevron_right,
-                    color: AppColors.warmMuted,
-                    size: 20,
-                  ),
-                ],
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LanguageSelectionPage(),
-                  ),
-                );
-              },
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.md,
-              ),
-              dense: true,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSettingsRow(AppThemeTokens tt, String _, Widget child) => child;
+
+  Widget _buildSettingsNavRow({required AppThemeTokens tt, required String label, required VoidCallback onTap}) {
+    return SizedBox(
+      height: 48,
+      child: Row(
+        children: [
+          Expanded(child: Text(label, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: tt.ink))),
+          GestureDetector(
+            onTap: onTap,
+            child: Icon(Icons.chevron_right, color: tt.muted, size: 18),
           ),
         ],
       ),
@@ -354,117 +317,53 @@ class _ProfilePageState extends State<ProfilePage> {
     AppLocalizations l10n,
     String? version,
   ) {
+    final tt = context.tt;
+    final items = [
+      (l10n.privacyPolicy, null as String?, true, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PrivacyPolicyPage()))),
+      (l10n.termsOfService, null, true, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TermsOfServicePage()))),
+      (l10n.contact, null, true, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ContactPage()))),
+      (l10n.version, version ?? l10n.appVersion, false, null as VoidCallback?),
+    ];
+
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 6),
       decoration: BoxDecoration(
-        color: AppColors.warmSurface,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 12, offset: Offset(0, 4))],
+        color: tt.surface,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: const [BoxShadow(color: Color(0x0F554230), blurRadius: 24, offset: Offset(0, 10))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 关于应用标题
-          Text(
-            l10n.about,
-            style: AppTextStyle.title.copyWith(
-              fontSize: 18,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          // 隐私政策
-          _buildAboutItem(
-            context,
-            l10n.privacyPolicy,
-            null,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const PrivacyPolicyPage(),
+          Text(l10n.about, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800, color: tt.ink)),
+          const SizedBox(height: 10),
+          ...items.asMap().entries.map((e) {
+            final (title, value, showArrow, onTap) = e.value;
+            final isLast = e.key == items.length - 1;
+            return Column(
+              children: [
+                SizedBox(
+                  height: 46,
+                  child: GestureDetector(
+                    onTap: onTap,
+                    behavior: HitTestBehavior.opaque,
+                    child: Row(
+                      children: [
+                        Expanded(child: Text(title, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: tt.ink))),
+                        if (value != null)
+                          Text(value, style: TextStyle(fontSize: 13, color: tt.muted))
+                        else if (showArrow)
+                          Icon(Icons.chevron_right, color: tt.muted, size: 18),
+                      ],
+                    ),
+                  ),
                 ),
-              );
-            },
-          ),
-          // 使用条款
-          _buildAboutItem(
-            context,
-            l10n.termsOfService,
-            null,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const TermsOfServicePage(),
-                ),
-              );
-            },
-          ),
-          // 联系方式
-          _buildAboutItem(
-            context,
-            l10n.contact,
-            null,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ContactPage(),
-                ),
-              );
-            },
-          ),
-          // 版本号
-          _buildAboutItem(
-            context,
-            l10n.version,
-            version ?? l10n.appVersion,
-            showArrow: false,
-          ),
+                if (!isLast) Divider(height: 1, color: tt.line),
+              ],
+            );
+          }),
         ],
-      ),
-    );
-  }
-  
-  /// 构建关于应用列表项
-  Widget _buildAboutItem(
-    BuildContext context,
-    String title,
-    String? value, {
-    bool showArrow = true,
-    VoidCallback? onTap,
-  }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: AppSpacing.xs),
-      decoration: BoxDecoration(
-        color: AppColors.warmSurface,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: ListTile(
-        title: Text(
-          title,
-          style: AppTextStyle.body,
-        ),
-        trailing: value != null
-            ? Text(
-                value,
-                style: AppTextStyle.body.copyWith(
-                  color: AppColors.warmMuted,
-                ),
-              )
-            : showArrow
-                ? const Icon(
-                    Icons.chevron_right,
-                    color: AppColors.warmMuted,
-                    size: 20,
-                  )
-                : null,
-        onTap: onTap,
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.md,
-        ),
-        dense: true,
       ),
     );
   }
@@ -475,11 +374,12 @@ class _ProfilePageState extends State<ProfilePage> {
     final localeService = LocaleServiceProvider.of(context);
     final currentLocale = localeService?.currentLocale;
     
+    final tt = context.tt;
     return Scaffold(
-      backgroundColor: AppColors.warmPage,
+      backgroundColor: tt.page,
       appBar: AppBar(
         toolbarHeight: 0,
-        backgroundColor: AppColors.warmPage,
+        backgroundColor: tt.page,
         elevation: 0,
         scrolledUnderElevation: 0,
       ),
@@ -496,6 +396,34 @@ class _ProfilePageState extends State<ProfilePage> {
               horizontal: AppSpacing.md,
             ),
             children: [
+              // Topbar
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 14, 0, 0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        l10n.profile,
+                        style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800, color: tt.ink, height: 1.05),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: _openProfileEdit,
+                      child: Container(
+                        width: 42,
+                        height: 42,
+                        decoration: BoxDecoration(
+                          color: tt.surface,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: tt.line),
+                          boxShadow: const [BoxShadow(color: Color(0x14554230), blurRadius: 18, offset: Offset(0, 8))],
+                        ),
+                        child: Icon(Icons.settings_outlined, size: 18, color: tt.muted),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               const SizedBox(height: AppSpacing.md),
               // 个人信息卡片
               _buildProfileCard(context, l10n),

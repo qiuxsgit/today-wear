@@ -543,6 +543,9 @@ abstract class AppLocalizations {
   String get statsTagFrequency;
   String get statsMonthlyTrend;
   String get statsNoTagData;
+  String get statsRecordedDaysLabel;
+  String get statsLast7Days;
+  String get statsInspirationTitle;
 
   // ── Outfit Detail ──
   String get editOutfitTooltip;

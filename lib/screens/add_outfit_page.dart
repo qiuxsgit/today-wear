@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:today_wear/l10n/app_localizations.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_theme_tokens.dart';
 import '../theme/app_text_style.dart';
 import '../database/database.dart';
 import '../repositories/outfit_repository.dart';
@@ -213,7 +214,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
     
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.warmPage,
+      backgroundColor: context.tt.page,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
@@ -496,15 +497,16 @@ class AddOutfitPageState extends State<AddOutfitPage> {
   
   @override
   Widget build(BuildContext context) {
+    final tt = context.tt;
     if (_isEditMode && _isLoadingExistingData) {
       return Scaffold(
-        backgroundColor: AppColors.warmPage,
+        backgroundColor: tt.page,
         body: const Center(child: CircularProgressIndicator()),
       );
     }
 
     return Scaffold(
-      backgroundColor: AppColors.warmPage,
+      backgroundColor: tt.page,
       body: SafeArea(
         child: Column(
           children: [
@@ -543,36 +545,36 @@ class AddOutfitPageState extends State<AddOutfitPage> {
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(18, 0, 18, 18),
-              color: AppColors.warmPage,
+              color: tt.page,
               child: SizedBox(
                 width: double.infinity,
                 height: 54,
                 child: ElevatedButton(
                   onPressed: _isSaving ? null : _saveOutfit,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.warmInk,
-                    foregroundColor: const Color(0xFFFFFAF4),
-                    disabledBackgroundColor: AppColors.warmMuted,
+                    backgroundColor: tt.ink,
+                    foregroundColor: tt.page,
+                    disabledBackgroundColor: tt.muted,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(22),
                     ),
                     elevation: 0,
                   ),
                   child: _isSaving
-                      ? const SizedBox(
+                      ? SizedBox(
                           width: 20,
                           height: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFFFAF4)),
+                            valueColor: AlwaysStoppedAnimation<Color>(tt.page),
                           ),
                         )
                       : Text(
                           _isEditMode ? _l10n.addOutfitSaveEditBtn : _l10n.addOutfitSaveBtn,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w700,
-                            color: Color(0xFFFFFAF4),
+                            color: tt.page,
                           ),
                         ),
                 ),
@@ -585,6 +587,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
   }
 
   Widget _buildCustomTopBar() {
+    final tt = context.tt;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 14),
       child: Row(
@@ -597,7 +600,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
             child: Center(
               child: Text(
                 _l10n.addOutfitTitle,
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: AppColors.warmInk),
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: tt.ink),
               ),
             ),
           ),
@@ -608,6 +611,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
   }
 
   Widget _buildHeroSection() {
+    final tt = context.tt;
     final now = DateTime.now();
     const monthNames = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
     final monthStr = monthNames[now.month - 1];
@@ -616,7 +620,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
       padding: const EdgeInsets.all(16),
       margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
-        color: AppColors.warmSurface,
+        color: tt.surface,
         borderRadius: BorderRadius.circular(24),
         boxShadow: const [BoxShadow(color: Color(0x14554230), blurRadius: 28, offset: Offset(0, 10))],
       ),
@@ -627,11 +631,11 @@ class AddOutfitPageState extends State<AddOutfitPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(_l10n.addOutfitHeroEyebrow, style: AppTextStyle.eyebrow),
+                Text(_l10n.addOutfitHeroEyebrow, style: AppTextStyle.eyebrow.copyWith(color: tt.muted)),
                 const SizedBox(height: 8),
                 Text(
                   _l10n.addOutfitHeroText,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: AppColors.warmInk, height: 1.3),
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: tt.ink, height: 1.3),
                 ),
               ],
             ),
@@ -642,17 +646,17 @@ class AddOutfitPageState extends State<AddOutfitPage> {
             height: 92,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              gradient: const LinearGradient(
-                begin: Alignment(-0.5, -1),
-                end: Alignment(0.5, 1),
-                colors: [AppColors.warmClay, Color(0xFFDFB79E)],
+              gradient: LinearGradient(
+                begin: const Alignment(-0.5, -1),
+                end: const Alignment(0.5, 1),
+                colors: [tt.accent, tt.ink],
               ),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(monthStr, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: Color(0xFFFFFAF4))),
-                Text('${now.day}', style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w800, color: Color(0xFFFFFAF4), height: 1.1)),
+                Text(monthStr, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: tt.page)),
+                Text('${now.day}', style: TextStyle(fontSize: 34, fontWeight: FontWeight.w800, color: tt.page, height: 1.1)),
               ],
             ),
           ),
@@ -696,23 +700,24 @@ class AddOutfitPageState extends State<AddOutfitPage> {
           onReorder: _reorderImages,
           itemBuilder: (context, index) {
             if (_selectedImageRefs.length < maxImages && index == _selectedImageRefs.length) {
+              final tt = context.tt;
               return GestureDetector(
                 key: const ValueKey('add_button'),
                 onTap: _showImagePickerDialog,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: AppColors.warmSurface,
+                    color: tt.surface,
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: AppColors.warmLine),
+                    border: Border.all(color: tt.line, style: BorderStyle.solid),
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(Icons.add, size: 32, color: AppColors.warmMuted),
+                      Icon(Icons.add, size: 32, color: tt.muted),
                       const SizedBox(height: 4),
                       Text(
                         _l10n.addOutfitAddPhotoBtn,
-                        style: AppTextStyle.body.copyWith(fontSize: 12, color: AppColors.warmMuted),
+                        style: AppTextStyle.body.copyWith(fontSize: 12, color: tt.muted),
                       ),
                     ],
                   ),
@@ -762,6 +767,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
   
   /// 构建单个图片 Widget
   Widget _buildImageWidget(String ref) {
+    final tt = context.tt;
     // 优先使用缓存，避免 FutureBuilder 在 rebuild 时重复加载
     if (_imageFileCache.containsKey(ref)) {
       final file = _imageFileCache[ref];
@@ -769,8 +775,8 @@ class AddOutfitPageState extends State<AddOutfitPage> {
         return Image.file(file, fit: BoxFit.cover);
       }
       return Container(
-        color: AppColors.warmMist,
-        child: const Icon(Icons.broken_image, color: AppColors.warmMuted),
+        color: tt.mist,
+        child: Icon(Icons.broken_image, color: tt.muted),
       );
     }
     if (ref.startsWith("path:")) {
@@ -778,21 +784,21 @@ class AddOutfitPageState extends State<AddOutfitPage> {
       return FutureBuilder<File?>(
         future: ImageService.instance.getImageFile(path),
         builder: (context, snapshot) {
+          final t = context.tt;
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(
-              color: AppColors.warmMist,
+              color: t.mist,
               child: const Center(child: CircularProgressIndicator()),
             );
           }
           final file = snapshot.data;
-          // 加载成功后写入缓存
           if (file != null) {
             _imageFileCache[ref] = file;
           }
           if (file == null || !file.existsSync()) {
             return Container(
-              color: AppColors.warmMist,
-              child: const Icon(Icons.broken_image, color: AppColors.warmMuted),
+              color: t.mist,
+              child: Icon(Icons.broken_image, color: t.muted),
             );
           }
           return Image.file(file, fit: BoxFit.cover);
@@ -803,15 +809,15 @@ class AddOutfitPageState extends State<AddOutfitPage> {
       final file = File(path);
       if (!file.existsSync()) {
         return Container(
-          color: AppColors.warmMist,
-          child: const Icon(Icons.broken_image, color: AppColors.warmMuted),
+          color: tt.mist,
+          child: Icon(Icons.broken_image, color: tt.muted),
         );
       }
       return Image.file(file, fit: BoxFit.cover);
     }
     return Container(
-      color: AppColors.warmMist,
-      child: const Icon(Icons.broken_image, color: AppColors.warmMuted),
+      color: tt.mist,
+      child: Icon(Icons.broken_image, color: tt.muted),
     );
   }
   
@@ -841,23 +847,28 @@ class AddOutfitPageState extends State<AddOutfitPage> {
             ),
           )
         else
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: _availableTags.map((tag) {
-              final isSelected = _selectedTags.contains(tag);
-              return FilterChip(
-                label: Text(tag),
-                selected: isSelected,
-                onSelected: (_) => _toggleTag(tag),
-                backgroundColor: AppColors.warmSurface,
-                selectedColor: AppColors.warmMist,
-                checkmarkColor: AppColors.warmInk,
-                labelStyle: TextStyle(
-                  color: isSelected ? AppColors.warmInk : AppColors.warmMuted,
-                ),
+          Builder(
+            builder: (context) {
+              final tt = context.tt;
+              return Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: _availableTags.map((tag) {
+                  final isSelected = _selectedTags.contains(tag);
+                  return FilterChip(
+                    label: Text(tag),
+                    selected: isSelected,
+                    onSelected: (_) => _toggleTag(tag),
+                    backgroundColor: tt.surface,
+                    selectedColor: tt.mist,
+                    checkmarkColor: tt.ink,
+                    labelStyle: TextStyle(
+                      color: isSelected ? tt.ink : tt.muted,
+                    ),
+                  );
+                }).toList(),
               );
-            }).toList(),
+            },
           ),
         const SizedBox(height: 16),
         if (_selectedTags.isNotEmpty) ...[
@@ -868,17 +879,22 @@ class AddOutfitPageState extends State<AddOutfitPage> {
             ),
           ),
           const SizedBox(height: 8),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: _selectedTags.map((tag) {
-              return Chip(
-                label: Text(tag),
-                onDeleted: () => _removeTag(tag),
-                backgroundColor: AppColors.warmMist,
-                deleteIcon: const Icon(Icons.close, size: 18),
+          Builder(
+            builder: (context) {
+              final tt = context.tt;
+              return Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: _selectedTags.map((tag) {
+                  return Chip(
+                    label: Text(tag),
+                    onDeleted: () => _removeTag(tag),
+                    backgroundColor: tt.mist,
+                    deleteIcon: const Icon(Icons.close, size: 18),
+                  );
+                }).toList(),
               );
-            }).toList(),
+            },
           ),
         ],
       ],
@@ -919,14 +935,19 @@ class AddOutfitPageState extends State<AddOutfitPage> {
               ),
             ),
             const SizedBox(width: 8),
-            ElevatedButton(
-              onPressed: _addNewTag,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.warmInk,
-                foregroundColor: const Color(0xFFFFFAF4),
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              ),
-              child: Text(_l10n.addOutfitAddTagBtn),
+            Builder(
+              builder: (context) {
+                final tt = context.tt;
+                return ElevatedButton(
+                  onPressed: _addNewTag,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: tt.ink,
+                    foregroundColor: tt.page,
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  ),
+                  child: Text(_l10n.addOutfitAddTagBtn),
+                );
+              },
             ),
           ],
         ),
@@ -972,18 +993,19 @@ class _RoundBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tt = context.tt;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: 42,
         height: 42,
         decoration: BoxDecoration(
-          color: AppColors.warmSurface,
+          color: tt.surface,
           shape: BoxShape.circle,
-          border: Border.all(color: AppColors.warmLine),
+          border: Border.all(color: tt.line),
           boxShadow: const [BoxShadow(color: Color(0x14554230), blurRadius: 18, offset: Offset(0, 8))],
         ),
-        child: Icon(icon, size: 18, color: AppColors.warmInk),
+        child: Icon(icon, size: 18, color: tt.ink),
       ),
     );
   }

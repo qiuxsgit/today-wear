@@ -106,7 +106,7 @@ class _NavItem extends StatelessWidget {
               child: Icon(
                 icon,
                 size: 14,
-                color: isActive ? const Color(0xFFFFFAF4) : muted,
+                color: isActive ? tt.page : muted,
               ),
             ),
             const SizedBox(height: 2),

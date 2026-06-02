@@ -265,6 +265,9 @@ class AppLocalizationsKo extends AppLocalizations {
   @override String get statsTagFrequency => '태그 사용 빈도';
   @override String get statsMonthlyTrend => '월별 트렌드';
   @override String get statsNoTagData => '태그 데이터 없음';
+  @override String get statsRecordedDaysLabel => '기록된 날짜';
+  @override String get statsLast7Days => '최근 7일';
+  @override String get statsInspirationTitle => '이번 달 스타일';
 
   @override String get editOutfitTooltip => '수정';
 

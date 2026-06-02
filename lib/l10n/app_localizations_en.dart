@@ -272,6 +272,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override String get statsTagFrequency => 'Tag Frequency';
   @override String get statsMonthlyTrend => 'Monthly Trend';
   @override String get statsNoTagData => 'No tag data';
+  @override String get statsRecordedDaysLabel => 'Recorded Days';
+  @override String get statsLast7Days => 'Last 7 Days';
+  @override String get statsInspirationTitle => 'Monthly Inspiration';
 
   @override String get editOutfitTooltip => 'Edit';
 
