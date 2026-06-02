@@ -510,6 +510,10 @@ class AddOutfitPageState extends State<AddOutfitPage> {
       body: SafeArea(
         child: Column(
           children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: _buildCustomTopBar(),
+            ),
             Expanded(
               child: LayoutBuilder(
                 builder: (context, constraints) {
@@ -524,7 +528,6 @@ class AddOutfitPageState extends State<AddOutfitPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildCustomTopBar(),
                             if (!_isEditMode) _buildHeroSection(),
                             const SizedBox(height: 16),
                             _buildImageSection(),
@@ -604,7 +607,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
               ),
             ),
           ),
-          _RoundBtn(icon: Icons.more_horiz, onTap: () {}),
+          const SizedBox(width: 44),
         ],
       ),
     );
