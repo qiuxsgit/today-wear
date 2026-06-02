@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:today_wear/l10n/app_localizations.dart';
 import '../theme/app_colors.dart';
 
-/// 底部导航栏组件
+/// 底部导航栏 V2
 ///
-/// 使用 Material 3 的 NavigationBar：
-/// - 选中态图标与文字使用 primary，背景 pill 更浅
-/// - 中间「添加」略大、略有悬浮感
+/// 设计变更：
+/// - 移除中间的 "+" destination，改由 Scaffold 外层 FAB 承载
+/// - 4 个 destination：首页 / 日历 / 统计 / 个人
+/// - 选中态使用 brandBlue
 class MainNavigation extends StatelessWidget {
-  /// 当前选中的索引
   final int selectedIndex;
-
-  /// 索引变化回调
   final ValueChanged<int> onTap;
 
   const MainNavigation({
@@ -23,30 +21,34 @@ class MainNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    const double addIconSize = 26.0;
-
     return Theme(
       data: Theme.of(context).copyWith(
         navigationBarTheme: NavigationBarThemeData(
-          indicatorColor: AppColors.primary.withValues(alpha: 0.12),
+          indicatorColor: AppColors.brandBlue.withValues(alpha: 0.12),
           iconTheme: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.selected)) {
-              return const IconThemeData(color: AppColors.primary, size: 24);
+              return const IconThemeData(
+                color: AppColors.brandBlue,
+                size: 24,
+              );
             }
-            return const IconThemeData(color: AppColors.textSecondary, size: 24);
+            return const IconThemeData(
+              color: AppColors.textSecondaryV2,
+              size: 24,
+            );
           }),
           labelTextStyle: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.selected)) {
               return const TextStyle(
                 fontSize: 12,
-                fontWeight: FontWeight.w500,
-                color: AppColors.primary,
+                fontWeight: FontWeight.w600,
+                color: AppColors.brandBlue,
               );
             }
             return const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w500,
-              color: AppColors.textSecondary,
+              color: AppColors.textSecondaryV2,
             );
           }),
         ),
@@ -54,9 +56,10 @@ class MainNavigation extends StatelessWidget {
       child: NavigationBar(
         selectedIndex: selectedIndex,
         onDestinationSelected: onTap,
-        backgroundColor: Colors.white,
-        elevation: 2,
-        indicatorColor: AppColors.primary.withValues(alpha: 0.12),
+        backgroundColor: AppColors.cardSurface,
+        surfaceTintColor: AppColors.cardSurface,
+        elevation: 4,
+        height: 64,
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         destinations: [
           NavigationDestination(
@@ -64,37 +67,14 @@ class MainNavigation extends StatelessWidget {
             selectedIcon: const Icon(Icons.home),
             label: l10n.home,
           ),
-          NavigationDestination(
-            icon: const Icon(Icons.calendar_today_outlined),
-            selectedIcon: const Icon(Icons.calendar_today),
+          const NavigationDestination(
+            icon: Icon(Icons.calendar_today_outlined),
+            selectedIcon: Icon(Icons.calendar_today),
             label: '日历',
           ),
-          NavigationDestination(
-            icon: Icon(Icons.add_circle_outline, size: addIconSize),
-            selectedIcon: Container(
-              padding: const EdgeInsets.all(6),
-              decoration: BoxDecoration(
-                color: AppColors.primary.withValues(alpha: 0.12),
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.06),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Icon(
-                Icons.add,
-                size: addIconSize,
-                color: AppColors.primary,
-              ),
-            ),
-            label: l10n.add,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.bar_chart_outlined),
-            selectedIcon: const Icon(Icons.bar_chart),
+          const NavigationDestination(
+            icon: Icon(Icons.bar_chart_outlined),
+            selectedIcon: Icon(Icons.bar_chart),
             label: '统计',
           ),
           NavigationDestination(

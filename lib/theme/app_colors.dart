@@ -136,6 +136,25 @@ class AppColors {
   /// 用途：深色模式图片占位符背景
   static const Color imagePlaceholderDark = Color(0xFF333333);
 
+  // ========== Brand V2 — 现代蓝色卡片化试用调色板 ==========
+  // 仅日历页等被设计师指定页面使用，验证通过后全局替换 primary / bgPrimary。
+  // 此处临时引入纯白/渐变，与 CLAUDE.md 旧版禁色规则不一致 — 见 PR 描述。
+
+  /// V2 品牌主色 #4F7CF3
+  static const Color brandBlue = Color(0xFF4F7CF3);
+
+  /// V2 页面背景 #F7F8FA
+  static const Color pageBg = Color(0xFFF7F8FA);
+
+  /// V2 卡片背景 #FFFFFF
+  static const Color cardSurface = Color(0xFFFFFFFF);
+
+  /// V2 主文字 #222222
+  static const Color textPrimaryV2 = Color(0xFF222222);
+
+  /// V2 次文字 #888888
+  static const Color textSecondaryV2 = Color(0xFF888888);
+
   // ========== Helper Methods ==========
 
   /// 根据亮度模式获取背景主色

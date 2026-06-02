@@ -17,9 +17,17 @@ class StatisticsPage extends StatefulWidget {
   State<StatisticsPage> createState() => _StatisticsPageState();
 }
 
-class _StatisticsPageState extends State<StatisticsPage> {
+class _StatisticsPageState extends State<StatisticsPage>
+    with SingleTickerProviderStateMixin {
   /// 数据库仓库
   late final OutfitRepository _repository;
+
+  /// 刷新按钮旋转动画控制器（600ms 一圈）
+  /// 用 late final + 声明处初始化：首次 build 时懒加载，对 hot reload 也安全
+  late final AnimationController _refreshAnimController = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 600),
+  );
   
   /// 月度穿搭数量
   int _monthlyCount = 0;
@@ -48,7 +56,13 @@ class _StatisticsPageState extends State<StatisticsPage> {
     _initializeRepository();
     _loadStatistics();
   }
-  
+
+  @override
+  void dispose() {
+    _refreshAnimController.dispose();
+    super.dispose();
+  }
+
   /// 初始化仓库
   void _initializeRepository() {
     final db = AppDatabase();
@@ -111,13 +125,51 @@ class _StatisticsPageState extends State<StatisticsPage> {
     _loadStatistics();
   }
 
-  /// 刷新按钮点击（由 RefreshIndicator 处理动画）
+  /// 刷新按钮点击：旋转动画 + 数据刷新
+  ///
+  /// - 启动时连续旋转，给用户即时反馈
+  /// - 保证至少转一圈（哪怕数据瞬间加载完）
+  /// - 数据加载完后平滑减速到 360° 停下，避免突兀
+  ///
+  /// 注：`_loadStatistics` 内部已 catch 异常，不会向外抛出。
   Future<void> _onRefreshPressed() async {
+    if (_refreshAnimController.isAnimating) return;
+
+    _refreshAnimController.repeat();
+    final start = DateTime.now();
+
     await _loadStatistics();
+    if (!mounted) return;
+
+    final elapsedMs = DateTime.now().difference(start).inMilliseconds;
+    if (elapsedMs < 600) {
+      await Future.delayed(Duration(milliseconds: 600 - elapsedMs));
+      if (!mounted) return;
+    }
+
+    final remaining = 1.0 - _refreshAnimController.value;
+    final tailMs = (remaining * 600).round().clamp(120, 600);
+    await _refreshAnimController.animateTo(
+      1.0,
+      duration: Duration(milliseconds: tailMs),
+      curve: Curves.easeOut,
+    );
+    if (!mounted) return;
+    _refreshAnimController.value = 0;
   }
   
-  /// 构建统计卡片
-  Widget _buildStatCard(String title, int value, IconData icon, Color color) {
+  /// 构建统计卡片：图标在左、数据在右的单行布局
+  ///
+  /// - [title] 上方小字标签
+  /// - [value] 下方主数值（或文本提示）
+  /// - [valueIsNumber] 控制 value 是大号粗体（数字）还是普通文本（提示）
+  Widget _buildStatCard({
+    required String title,
+    required String value,
+    required IconData icon,
+    required Color color,
+    bool valueIsNumber = true,
+  }) {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
@@ -131,32 +183,51 @@ class _StatisticsPageState extends State<StatisticsPage> {
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: color.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(icon, size: 24, color: color),
+            child: Icon(icon, size: 22, color: color),
           ),
-          const SizedBox(height: AppSpacing.sm),
-          Text(
-            title,
-            style: AppTextStyle.body.copyWith(
-              fontSize: 13,
-              color: AppColors.textSecondary,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.xs),
-          Text(
-            value.toString(),
-            style: AppTextStyle.title.copyWith(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary,
+          const SizedBox(width: AppSpacing.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  title,
+                  style: AppTextStyle.body.copyWith(
+                    fontSize: 13,
+                    color: AppColors.textSecondary,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  value,
+                  style: valueIsNumber
+                      ? AppTextStyle.title.copyWith(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textPrimary,
+                          height: 1.1,
+                        )
+                      : AppTextStyle.body.copyWith(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.textPrimary,
+                          height: 1.2,
+                        ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
             ),
           ),
         ],
@@ -475,8 +546,11 @@ class _StatisticsPageState extends State<StatisticsPage> {
         elevation: 0,
         actions: [
           IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _loadStatistics,
+            icon: RotationTransition(
+              turns: _refreshAnimController,
+              child: const Icon(Icons.refresh),
+            ),
+            onPressed: _onRefreshPressed,
             tooltip: '刷新',
           ),
         ],
@@ -489,24 +563,24 @@ class _StatisticsPageState extends State<StatisticsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 统计卡片
+              // 统计卡片：四张同结构卡片，图标在左、数据在右
               Row(
                 children: [
                   Expanded(
                     child: _buildStatCard(
-                      '总计',
-                      _totalCount,
-                      Icons.checkroom,
-                      AppColors.primary,
+                      title: '总计',
+                      value: '$_totalCount',
+                      icon: Icons.checkroom,
+                      color: AppColors.primary,
                     ),
                   ),
                   const SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: _buildStatCard(
-                      '本月',
-                      _monthlyCount,
-                      Icons.calendar_month,
-                      AppColors.success,
+                      title: '本月',
+                      value: '$_monthlyCount',
+                      icon: Icons.calendar_month,
+                      color: AppColors.success,
                     ),
                   ),
                 ],
@@ -516,42 +590,20 @@ class _StatisticsPageState extends State<StatisticsPage> {
                 children: [
                   Expanded(
                     child: _buildStatCard(
-                      '本周',
-                      _weeklyCount,
-                      Icons.date_range,
-                      AppColors.warning,
+                      title: '本周',
+                      value: '$_weeklyCount',
+                      icon: Icons.date_range,
+                      color: AppColors.warning,
                     ),
                   ),
                   const SizedBox(width: AppSpacing.sm),
-                  // 占位卡片，保持布局对称
                   Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.all(AppSpacing.md),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: AppColors.primary.withValues(alpha: 0.1),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: const Icon(Icons.info_outline, size: 24, color: AppColors.primary),
-                          ),
-                          const SizedBox(height: AppSpacing.sm),
-                          Text(
-                            '小贴士',
-                            style: AppTextStyle.body.copyWith(
-                              fontSize: 13,
-                              color: AppColors.textSecondary,
-                            ),
-                          ),
-                        ],
-                      ),
+                    child: _buildStatCard(
+                      title: '小贴士',
+                      value: '保持记录',
+                      icon: Icons.info_outline,
+                      color: AppColors.primary,
+                      valueIsNumber: false,
                     ),
                   ),
                 ],

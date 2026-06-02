@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:window_manager/window_manager.dart';
@@ -123,6 +124,7 @@ class _MyAppState extends State<MyApp> {
         child: MaterialApp(
           title: '今日穿什麼',
           locale: locale,
+          scrollBehavior: const _TightBounceScrollBehavior(),
           localizationsDelegates: const [
             AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
@@ -172,6 +174,60 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
+/// 全局滚动行为
+///
+/// - 关掉 Android 默认 `StretchingOverscrollIndicator`（整体拉伸会让头像等元素变形）
+/// - 改用紧凑版 `BouncingScrollPhysics`：拉得短、回弹快，仍保留弹性反馈
+class _TightBounceScrollBehavior extends MaterialScrollBehavior {
+  const _TightBounceScrollBehavior();
+
+  @override
+  Widget buildOverscrollIndicator(
+    BuildContext context,
+    Widget child,
+    ScrollableDetails details,
+  ) {
+    return child;
+  }
+
+  @override
+  ScrollPhysics getScrollPhysics(BuildContext context) {
+    return const _TightBouncingScrollPhysics();
+  }
+}
+
+/// 紧凑回弹的滚动物理
+///
+/// - `frictionFactor` 调小 → 同样的拖动手势，实际能拉出的距离更短
+/// - `spring` 加硬 + 轻量 → 回弹更快
+class _TightBouncingScrollPhysics extends BouncingScrollPhysics {
+  const _TightBouncingScrollPhysics({super.parent})
+      : super(decelerationRate: ScrollDecelerationRate.fast);
+
+  @override
+  _TightBouncingScrollPhysics applyTo(ScrollPhysics? ancestor) {
+    return _TightBouncingScrollPhysics(parent: buildParent(ancestor));
+  }
+
+  /// 默认实现是 `0.52 * (1 - overscrollFraction)^2`
+  /// 这里降到 0.2，等价于"用同样的力，只能拉出原来约 40% 的距离"
+  @override
+  double frictionFactor(double overscrollFraction) {
+    return 0.2 * math.pow(1 - overscrollFraction, 2).toDouble();
+  }
+
+  /// 默认 mass=0.5 stiffness=100 damping=1.0（严重欠阻尼，会震荡）
+  ///
+  /// 这里临界阻尼 c = 2·√(m·k) = 2·√(0.3·220) ≈ 16.25
+  /// 设 18（略过阻尼）确保回弹单调收敛到边界，不来回震荡
+  @override
+  SpringDescription get spring => const SpringDescription(
+        mass: 0.3,
+        stiffness: 220,
+        damping: 18,
+      );
+}
+
 /// 主应用框架
 /// 
 /// 管理底部导航栏状态和页面切换
@@ -183,58 +239,70 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  /// 0: 首页 / 1: 日历 / 2: 统计 / 3: 个人
   int _selectedIndex = 0;
-  
-  // 标记是否需要刷新首页数据
+
+  /// 标记是否需要刷新首页数据
   bool _needsRefresh = false;
-  
-  // 使用 GlobalKey 来访问 HomePage 的状态，以便刷新数据
+
   final GlobalKey<HomePageState> _homePageKey = GlobalKey<HomePageState>();
-  // 使用 GlobalKey 来访问 AddOutfitPage 的状态
-  final GlobalKey<AddOutfitPageState> _addOutfitPageKey = GlobalKey<AddOutfitPageState>();
-  
+
   List<Widget> get _pages => [
-    HomePage(
-      key: _homePageKey,
-      onAddFirstOutfit: () => setState(() => _selectedIndex = 2),
-    ),
-    const CalendarPage(),
-    AddOutfitPage(
-      key: _addOutfitPageKey,
-      onDataSaved: _onDataSaved,
-    ),
-    const StatisticsPage(),
-    const ProfilePage(),
-  ];
-  
-  /// 当数据保存成功时调用，标记需要刷新首页
-  void _onDataSaved() {
-    setState(() {
-      _needsRefresh = true;
-    });
-  }
-  
+        HomePage(
+          key: _homePageKey,
+          onAddFirstOutfit: _openAddOutfit,
+        ),
+        const CalendarPage(),
+        const StatisticsPage(),
+        const ProfilePage(),
+      ];
+
   void _onNavigationTap(int index) {
-    // 如果切换到首页，检查是否需要刷新数据
     if (index == 0 && _needsRefresh) {
-      if (_homePageKey.currentState != null) {
-        _homePageKey.currentState!.refreshData();
-      }
+      _homePageKey.currentState?.refreshData();
       setState(() {
         _needsRefresh = false;
         _selectedIndex = index;
       });
     } else {
-      setState(() {
-        _selectedIndex = index;
-      });
+      setState(() => _selectedIndex = index);
     }
   }
-  
+
+  /// 打开新增穿搭页（FAB 入口）
+  /// 保存成功后 pop(true)，回调里立即刷新当前页或标记首页需刷新
+  Future<void> _openAddOutfit() async {
+    final saved = await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) => AddOutfitPage(
+          onDataSaved: () => Navigator.of(ctx).pop(true),
+        ),
+      ),
+    );
+    if (saved != true || !mounted) return;
+    if (_selectedIndex == 0) {
+      _homePageKey.currentState?.refreshData();
+      _needsRefresh = false;
+    } else {
+      _needsRefresh = true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[_selectedIndex],
+      floatingActionButton: FloatingActionButton(
+        onPressed: _openAddOutfit,
+        backgroundColor: AppColors.brandBlue,
+        foregroundColor: Colors.white,
+        elevation: 4,
+        shape: const CircleBorder(),
+        tooltip: '记录穿搭',
+        child: const Icon(Icons.add, size: 28),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: MainNavigation(
         selectedIndex: _selectedIndex,
         onTap: _onNavigationTap,

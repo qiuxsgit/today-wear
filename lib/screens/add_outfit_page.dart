@@ -666,9 +666,9 @@ class AddOutfitPageState extends State<AddOutfitPage> {
           itemBuilder: (context, index) {
             if (_selectedImageRefs.length < maxImages && index == _selectedImageRefs.length) {
               return GestureDetector(
+                key: const ValueKey('add_button'),
                 onTap: _showImagePickerDialog,
                 child: Container(
-                  key: ValueKey('add_button'),
                   decoration: BoxDecoration(
                     color: AppColors.bgSecondary,
                     borderRadius: BorderRadius.circular(8),
