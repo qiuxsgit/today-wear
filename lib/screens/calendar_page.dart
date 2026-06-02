@@ -163,7 +163,7 @@ class _CalendarPageState extends State<CalendarPage> {
                                 Text(l10n.calendarWardrobeReview, style: AppTextStyle.eyebrow.copyWith(color: muted)),
                                 const SizedBox(height: 3),
                                 Text(
-                                  l10n.calendarMonthTitle(_focusedMonth.month),
+                                  l10n.calendarMonthTitle(_focusedMonth.month.toString()),
                                   style: AppTextStyle.displayTitle.copyWith(color: ink),
                                 ),
                               ],

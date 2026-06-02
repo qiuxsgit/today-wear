@@ -15,12 +15,8 @@
   "dateFormat": "{month}月{day}日",
   "@dateFormat": {
     "placeholders": {
-      "month": {
-        "type": "int"
-      },
-      "day": {
-        "type": "int"
-      }
+      "month": { "type": "int" },
+      "day": { "type": "int" }
     }
   },
   "simplifiedChinese": "簡体字中国語",
@@ -48,9 +44,7 @@
   "tagDeleteConfirmInUse": "このタグは {count} 件のコーデで使用されています。削除するとそれらから外れます。削除しますか？",
   "@tagDeleteConfirmInUse": {
     "placeholders": {
-      "count": {
-        "type": "int"
-      }
+      "count": { "type": "int" }
     }
   },
   "tagNameEmpty": "タグ名を入力してください",
@@ -60,9 +54,7 @@
   "tagManagementWithCount": "タグ管理（全 {count} 件）",
   "@tagManagementWithCount": {
     "placeholders": {
-      "count": {
-        "type": "int"
-      }
+      "count": { "type": "int" }
     }
   },
   "homeEmptyMessage": "まだコーデの記録がありません\n最初のコーデを追加して、毎日のコーデを記録しましょう",
@@ -85,5 +77,81 @@
   "selectBirthday": "誕生日を選択",
   "avatar": "アバター",
   "avatarSelectHint": "タップして写真を選択",
-  "nicknameField": "ニックネーム"
+  "nicknameField": "ニックネーム",
+
+  "navCalendar": "カレンダー",
+  "navAdd": "記録",
+  "navStats": "統計",
+
+  "homeAppTitle": "今日のコーデ",
+  "homeDateLabel": "{weekday, select, 1{月} 2{火} 3{水} 4{木} 5{金} 6{土} 7{日} other{}}曜日 · {month}月{day}日",
+
+  "filterAll": "すべて",
+  "filterCommute": "通勤",
+  "filterDate": "デート",
+  "filterRainy": "雨の日",
+  "filterCasual": "カジュアル",
+
+  "addOutfitTitle": "コーデを追加",
+  "addOutfitHeroEyebrow": "今日のコーデ",
+  "addOutfitHeroText": "着こなしを記録しよう",
+  "addOutfitPhotosSection": "写真",
+  "addOutfitDragHint": "ドラッグして並べ替え",
+  "addOutfitAddPhotoBtn": "写真を追加",
+  "addOutfitFromGallery": "フォトライブラリから",
+  "addOutfitTakePhotoOption": "写真を撮る",
+  "addOutfitTagsSection": "タグ",
+  "addOutfitNoTagsHint": "タグがありません",
+  "addOutfitSelectedTagsLabel": "選択中のタグ",
+  "addOutfitNewTagSection": "新しいタグ",
+  "addOutfitTagInputHint": "タグ名を入力",
+  "addOutfitAddTagBtn": "追加",
+  "addOutfitDescSection": "メモ",
+  "addOutfitDescHint": "今日のコーデを説明してください...",
+  "addOutfitSaveBtn": "コーデを保存",
+  "addOutfitSaveEditBtn": "変更を保存",
+
+  "warnTagAlreadyExists": "タグは既に存在します",
+  "warnSelectAtLeastOneImage": "1枚以上の写真を選んでください",
+  "warnEnterDescription": "説明を入力してください",
+  "warnImageLimit": "写真は最大 {maxImages} 枚まで",
+  "warnImageLimitExceeded": "最大 {maxImages} 枚、あと {remainingSlots} 枚追加できます",
+  "successOutfitSaved": "コーデを保存しました",
+  "errLoadData": "読み込みに失敗しました：{error}",
+  "errLoadTags": "タグの読み込みに失敗しました：{error}",
+  "errSelectImage": "写真の選択に失敗しました：{error}",
+  "errTakePhoto": "撮影に失敗しました：{error}",
+  "errSaveOutfit": "保存に失敗しました：{error}",
+
+  "calendarWardrobeReview": "クローゼットレビュー",
+  "calendarMonthTitle": "{month, select, 1{1月} 2{2月} 3{3月} 4{4月} 5{5月} 6{6月} 7{7月} 8{8月} 9{9月} 10{10月} 11{11月} 12{12月} other{}}",
+  "calendarMonthName": "{month, select, 1{1月} 2{2月} 3{3月} 4{4月} 5{5月} 6{6月} 7{7月} 8{8月} 9{9月} 10{10月} 11{11月} 12{12月} other{}}",
+  "calendarRecordedDays": "記録した日数",
+  "calendarUniqueTags": "タグの種類",
+  "calendarTopOutfits": "人気コーデ",
+  "calendarTagUsedCount": "{count}回使用",
+  "calendarDaySheetTitle": "{month}月{day}日",
+  "calendarNoDayOutfits": "この日はコーデの記録がありません",
+
+  "statsPageTitle": "統計",
+  "statsMonthly": "今月",
+  "statsRecordedDaysLabel": "記録日数",
+  "statsLast7Days": "直近7日",
+  "statsTotal": "累計",
+  "statsTagFrequency": "タグ頻度",
+  "statsInspirationTitle": "コーデインスピレーション",
+
+  "editOutfitTooltip": "編集",
+
+  "appearanceTitle": "外観",
+  "appearanceDisplayMode": "表示モード",
+  "appearanceColorPalette": "カラーテーマ",
+  "presetDescSoftWardrobe": "ソフトワードローブ",
+  "presetDescMatcha": "抹茶",
+  "presetDescCityBlue": "シティブルー",
+  "presetDescRose": "ローズ",
+  "presetDescNightGallery": "ナイトギャラリー",
+  "themeModeLight": "ライト",
+  "themeModeAuto": "自動",
+  "themeModeDark": "ダーク"
 }

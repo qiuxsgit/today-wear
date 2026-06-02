@@ -15,12 +15,8 @@
   "dateFormat": "{month}月{day}日",
   "@dateFormat": {
     "placeholders": {
-      "month": {
-        "type": "int"
-      },
-      "day": {
-        "type": "int"
-      }
+      "month": { "type": "int" },
+      "day": { "type": "int" }
     }
   },
   "simplifiedChinese": "簡體中文",
@@ -48,9 +44,7 @@
   "tagDeleteConfirmInUse": "該標籤已被 {count} 條穿搭使用，刪除將從這些穿搭中移除該標籤。確定刪除嗎？",
   "@tagDeleteConfirmInUse": {
     "placeholders": {
-      "count": {
-        "type": "int"
-      }
+      "count": { "type": "int" }
     }
   },
   "tagNameEmpty": "請輸入標籤名稱",
@@ -60,9 +54,7 @@
   "tagManagementWithCount": "標籤管理（共 {count} 個）",
   "@tagManagementWithCount": {
     "placeholders": {
-      "count": {
-        "type": "int"
-      }
+      "count": { "type": "int" }
     }
   },
   "homeEmptyMessage": "還沒有穿搭記錄\n添加第一條穿搭，開始記錄你的每日穿搭吧",
@@ -85,5 +77,81 @@
   "selectBirthday": "選擇生日",
   "avatar": "頭像",
   "avatarSelectHint": "點擊選擇圖片",
-  "nicknameField": "暱稱"
+  "nicknameField": "暱稱",
+
+  "navCalendar": "日曆",
+  "navAdd": "記錄",
+  "navStats": "統計",
+
+  "homeAppTitle": "今日穿什麼",
+  "homeDateLabel": "{weekday, select, 1{週一} 2{週二} 3{週三} 4{週四} 5{週五} 6{週六} 7{週日} other{}} · {month}月{day}日",
+
+  "filterAll": "全部",
+  "filterCommute": "通勤",
+  "filterDate": "約會",
+  "filterRainy": "雨天",
+  "filterCasual": "休閒",
+
+  "addOutfitTitle": "新增穿搭",
+  "addOutfitHeroEyebrow": "今日穿搭",
+  "addOutfitHeroText": "記錄你的穿搭",
+  "addOutfitPhotosSection": "照片",
+  "addOutfitDragHint": "拖動可排序",
+  "addOutfitAddPhotoBtn": "新增照片",
+  "addOutfitFromGallery": "從相簿選擇",
+  "addOutfitTakePhotoOption": "拍照",
+  "addOutfitTagsSection": "標籤",
+  "addOutfitNoTagsHint": "尚無標籤",
+  "addOutfitSelectedTagsLabel": "已選標籤",
+  "addOutfitNewTagSection": "新建標籤",
+  "addOutfitTagInputHint": "輸入標籤名稱",
+  "addOutfitAddTagBtn": "新增",
+  "addOutfitDescSection": "描述",
+  "addOutfitDescHint": "描述一下今天的穿搭...",
+  "addOutfitSaveBtn": "儲存穿搭",
+  "addOutfitSaveEditBtn": "儲存修改",
+
+  "warnTagAlreadyExists": "標籤已存在",
+  "warnSelectAtLeastOneImage": "請至少選擇一張照片",
+  "warnEnterDescription": "請填寫描述",
+  "warnImageLimit": "最多只能新增 {maxImages} 張照片",
+  "warnImageLimitExceeded": "最多新增 {maxImages} 張，還可新增 {remainingSlots} 張",
+  "successOutfitSaved": "穿搭已儲存",
+  "errLoadData": "載入失敗：{error}",
+  "errLoadTags": "載入標籤失敗：{error}",
+  "errSelectImage": "選擇照片失敗：{error}",
+  "errTakePhoto": "拍照失敗：{error}",
+  "errSaveOutfit": "儲存失敗：{error}",
+
+  "calendarWardrobeReview": "衣櫃回顧",
+  "calendarMonthTitle": "{month, select, 1{1月} 2{2月} 3{3月} 4{4月} 5{5月} 6{6月} 7{7月} 8{8月} 9{9月} 10{10月} 11{11月} 12{12月} other{}}",
+  "calendarMonthName": "{month, select, 1{1月} 2{2月} 3{3月} 4{4月} 5{5月} 6{6月} 7{7月} 8{8月} 9{9月} 10{10月} 11{11月} 12{12月} other{}}",
+  "calendarRecordedDays": "記錄天數",
+  "calendarUniqueTags": "標籤種類",
+  "calendarTopOutfits": "熱門穿搭",
+  "calendarTagUsedCount": "使用 {count} 次",
+  "calendarDaySheetTitle": "{month}月{day}日",
+  "calendarNoDayOutfits": "這天沒有穿搭記錄",
+
+  "statsPageTitle": "統計",
+  "statsMonthly": "本月",
+  "statsRecordedDaysLabel": "記錄天數",
+  "statsLast7Days": "近7天",
+  "statsTotal": "累計",
+  "statsTagFrequency": "標籤頻率",
+  "statsInspirationTitle": "穿搭靈感",
+
+  "editOutfitTooltip": "編輯",
+
+  "appearanceTitle": "外觀",
+  "appearanceDisplayMode": "顯示模式",
+  "appearanceColorPalette": "色彩主題",
+  "presetDescSoftWardrobe": "柔美衣橱",
+  "presetDescMatcha": "抹茶日和",
+  "presetDescCityBlue": "城市藍調",
+  "presetDescRose": "玫瑰編輯",
+  "presetDescNightGallery": "暗夜畫廊",
+  "themeModeLight": "淺色",
+  "themeModeAuto": "跟隨系統",
+  "themeModeDark": "深色"
 }

@@ -199,7 +199,7 @@ class _StatisticsPageState extends State<StatisticsPage>
 
   Widget _buildMainCard(AppThemeTokens tt, AppLocalizations l10n) {
     final now = DateTime.now();
-    final monthName = l10n.calendarMonthName(now.month);
+    final monthName = l10n.calendarMonthName(now.month.toString());
     final daysInMonth = DateTime(now.year, now.month + 1, 0).day;
     final percent = daysInMonth > 0
         ? (_monthlyCount / daysInMonth).clamp(0.0, 1.0)

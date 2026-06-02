@@ -25,7 +25,7 @@ class HomeTopBar extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  l10n.homeDateLabel(now.weekday, now.month, now.day),
+                  l10n.homeDateLabel(now.weekday.toString(), now.month, now.day),
                   style: AppTextStyle.eyebrow.copyWith(color: tt.muted),
                 ),
                 const SizedBox(height: 3),

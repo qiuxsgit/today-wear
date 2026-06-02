@@ -15,12 +15,8 @@
   "dateFormat": "{month}/{day}",
   "@dateFormat": {
     "placeholders": {
-      "month": {
-        "type": "int"
-      },
-      "day": {
-        "type": "int"
-      }
+      "month": { "type": "int" },
+      "day": { "type": "int" }
     }
   },
   "simplifiedChinese": "Simplified Chinese",
@@ -48,9 +44,7 @@
   "tagDeleteConfirmInUse": "This tag is used by {count} outfit(s). Deleting will remove it from those outfits. Continue?",
   "@tagDeleteConfirmInUse": {
     "placeholders": {
-      "count": {
-        "type": "int"
-      }
+      "count": { "type": "int" }
     }
   },
   "tagNameEmpty": "Please enter a tag name",
@@ -60,9 +54,7 @@
   "tagManagementWithCount": "Tag Management ({count} total)",
   "@tagManagementWithCount": {
     "placeholders": {
-      "count": {
-        "type": "int"
-      }
+      "count": { "type": "int" }
     }
   },
   "homeEmptyMessage": "No outfit records yet.\nAdd your first outfit to start recording your daily looks.",
@@ -85,5 +77,81 @@
   "selectBirthday": "Select birthday",
   "avatar": "Avatar",
   "avatarSelectHint": "Tap to select photo",
-  "nicknameField": "Nickname"
+  "nicknameField": "Nickname",
+
+  "navCalendar": "Calendar",
+  "navAdd": "Record",
+  "navStats": "Stats",
+
+  "homeAppTitle": "Today Wear",
+  "homeDateLabel": "{weekday, select, 1{Mon} 2{Tue} 3{Wed} 4{Thu} 5{Fri} 6{Sat} 7{Sun} other{}} · {month}/{day}",
+
+  "filterAll": "All",
+  "filterCommute": "Work",
+  "filterDate": "Date",
+  "filterRainy": "Rainy",
+  "filterCasual": "Casual",
+
+  "addOutfitTitle": "New Outfit",
+  "addOutfitHeroEyebrow": "Today's Look",
+  "addOutfitHeroText": "Record your outfit",
+  "addOutfitPhotosSection": "Photos",
+  "addOutfitDragHint": "Drag to reorder",
+  "addOutfitAddPhotoBtn": "Add Photo",
+  "addOutfitFromGallery": "Choose from Gallery",
+  "addOutfitTakePhotoOption": "Take Photo",
+  "addOutfitTagsSection": "Tags",
+  "addOutfitNoTagsHint": "No tags yet",
+  "addOutfitSelectedTagsLabel": "Selected Tags",
+  "addOutfitNewTagSection": "New Tag",
+  "addOutfitTagInputHint": "Enter tag name",
+  "addOutfitAddTagBtn": "Add",
+  "addOutfitDescSection": "Notes",
+  "addOutfitDescHint": "Describe today's outfit...",
+  "addOutfitSaveBtn": "Save Outfit",
+  "addOutfitSaveEditBtn": "Save Changes",
+
+  "warnTagAlreadyExists": "Tag already exists",
+  "warnSelectAtLeastOneImage": "Please add at least one photo",
+  "warnEnterDescription": "Please enter a description",
+  "warnImageLimit": "Maximum {maxImages} photos allowed",
+  "warnImageLimitExceeded": "Max {maxImages} photos, {remainingSlots} remaining",
+  "successOutfitSaved": "Outfit saved",
+  "errLoadData": "Failed to load: {error}",
+  "errLoadTags": "Failed to load tags: {error}",
+  "errSelectImage": "Failed to select photo: {error}",
+  "errTakePhoto": "Failed to take photo: {error}",
+  "errSaveOutfit": "Failed to save outfit: {error}",
+
+  "calendarWardrobeReview": "Wardrobe Review",
+  "calendarMonthTitle": "{month, select, 1{January} 2{February} 3{March} 4{April} 5{May} 6{June} 7{July} 8{August} 9{September} 10{October} 11{November} 12{December} other{}}",
+  "calendarMonthName": "{month, select, 1{January} 2{February} 3{March} 4{April} 5{May} 6{June} 7{July} 8{August} 9{September} 10{October} 11{November} 12{December} other{}}",
+  "calendarRecordedDays": "Days Recorded",
+  "calendarUniqueTags": "Unique Tags",
+  "calendarTopOutfits": "Top Outfits",
+  "calendarTagUsedCount": "Used {count} times",
+  "calendarDaySheetTitle": "{month}/{day}",
+  "calendarNoDayOutfits": "No outfits on this day",
+
+  "statsPageTitle": "Statistics",
+  "statsMonthly": "This Month",
+  "statsRecordedDaysLabel": "Days Recorded",
+  "statsLast7Days": "Last 7 Days",
+  "statsTotal": "All Time",
+  "statsTagFrequency": "Tag Frequency",
+  "statsInspirationTitle": "Style Inspiration",
+
+  "editOutfitTooltip": "Edit",
+
+  "appearanceTitle": "Appearance",
+  "appearanceDisplayMode": "Display Mode",
+  "appearanceColorPalette": "Color Palette",
+  "presetDescSoftWardrobe": "Soft Wardrobe",
+  "presetDescMatcha": "Matcha",
+  "presetDescCityBlue": "City Blue",
+  "presetDescRose": "Rose",
+  "presetDescNightGallery": "Night Gallery",
+  "themeModeLight": "Light",
+  "themeModeAuto": "Auto",
+  "themeModeDark": "Dark"
 }

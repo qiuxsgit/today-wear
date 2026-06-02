@@ -15,12 +15,8 @@
   "dateFormat": "{month}월 {day}일",
   "@dateFormat": {
     "placeholders": {
-      "month": {
-        "type": "int"
-      },
-      "day": {
-        "type": "int"
-      }
+      "month": { "type": "int" },
+      "day": { "type": "int" }
     }
   },
   "simplifiedChinese": "간체 중국어",
@@ -48,9 +44,7 @@
   "tagDeleteConfirmInUse": "이 태그는 {count}개의 코디에서 사용 중입니다. 삭제하면 해당 코디에서 제거됩니다. 삭제하시겠습니까?",
   "@tagDeleteConfirmInUse": {
     "placeholders": {
-      "count": {
-        "type": "int"
-      }
+      "count": { "type": "int" }
     }
   },
   "tagNameEmpty": "태그 이름을 입력하세요",
@@ -60,9 +54,7 @@
   "tagManagementWithCount": "태그 관리 (총 {count}개)",
   "@tagManagementWithCount": {
     "placeholders": {
-      "count": {
-        "type": "int"
-      }
+      "count": { "type": "int" }
     }
   },
   "homeEmptyMessage": "아직 코디 기록이 없어요.\n첫 코디를 추가하고 매일의 코디를 기록해 보세요.",
@@ -85,5 +77,81 @@
   "selectBirthday": "생일 선택",
   "avatar": "아바타",
   "avatarSelectHint": "탭하여 사진 선택",
-  "nicknameField": "닉네임"
+  "nicknameField": "닉네임",
+
+  "navCalendar": "캘린더",
+  "navAdd": "기록",
+  "navStats": "통계",
+
+  "homeAppTitle": "오늘의 코디",
+  "homeDateLabel": "{weekday, select, 1{월} 2{화} 3{수} 4{목} 5{금} 6{토} 7{일} other{}}요일 · {month}월 {day}일",
+
+  "filterAll": "전체",
+  "filterCommute": "출퇴근",
+  "filterDate": "데이트",
+  "filterRainy": "비 오는 날",
+  "filterCasual": "캐주얼",
+
+  "addOutfitTitle": "코디 추가",
+  "addOutfitHeroEyebrow": "오늘의 코디",
+  "addOutfitHeroText": "나만의 스타일을 기록하세요",
+  "addOutfitPhotosSection": "사진",
+  "addOutfitDragHint": "드래그하여 순서 변경",
+  "addOutfitAddPhotoBtn": "사진 추가",
+  "addOutfitFromGallery": "갤러리에서 선택",
+  "addOutfitTakePhotoOption": "사진 촬영",
+  "addOutfitTagsSection": "태그",
+  "addOutfitNoTagsHint": "태그가 없습니다",
+  "addOutfitSelectedTagsLabel": "선택한 태그",
+  "addOutfitNewTagSection": "새 태그",
+  "addOutfitTagInputHint": "태그 이름 입력",
+  "addOutfitAddTagBtn": "추가",
+  "addOutfitDescSection": "메모",
+  "addOutfitDescHint": "오늘의 코디를 설명해 주세요...",
+  "addOutfitSaveBtn": "코디 저장",
+  "addOutfitSaveEditBtn": "변경 저장",
+
+  "warnTagAlreadyExists": "이미 존재하는 태그입니다",
+  "warnSelectAtLeastOneImage": "사진을 한 장 이상 선택해 주세요",
+  "warnEnterDescription": "설명을 입력해 주세요",
+  "warnImageLimit": "사진은 최대 {maxImages}장까지",
+  "warnImageLimitExceeded": "최대 {maxImages}장, {remainingSlots}장 더 추가 가능",
+  "successOutfitSaved": "코디가 저장되었습니다",
+  "errLoadData": "로드 실패：{error}",
+  "errLoadTags": "태그 로드 실패：{error}",
+  "errSelectImage": "사진 선택 실패：{error}",
+  "errTakePhoto": "촬영 실패：{error}",
+  "errSaveOutfit": "저장 실패：{error}",
+
+  "calendarWardrobeReview": "옷장 리뷰",
+  "calendarMonthTitle": "{month, select, 1{1월} 2{2월} 3{3월} 4{4월} 5{5월} 6{6월} 7{7월} 8{8월} 9{9월} 10{10월} 11{11월} 12{12월} other{}}",
+  "calendarMonthName": "{month, select, 1{1월} 2{2월} 3{3월} 4{4월} 5{5월} 6{6월} 7{7월} 8{8월} 9{9월} 10{10월} 11{11월} 12{12월} other{}}",
+  "calendarRecordedDays": "기록한 날수",
+  "calendarUniqueTags": "태그 종류",
+  "calendarTopOutfits": "인기 코디",
+  "calendarTagUsedCount": "{count}회 사용",
+  "calendarDaySheetTitle": "{month}월 {day}일",
+  "calendarNoDayOutfits": "이 날의 코디 기록이 없습니다",
+
+  "statsPageTitle": "통계",
+  "statsMonthly": "이번 달",
+  "statsRecordedDaysLabel": "기록 일수",
+  "statsLast7Days": "최근 7일",
+  "statsTotal": "누계",
+  "statsTagFrequency": "태그 빈도",
+  "statsInspirationTitle": "스타일 영감",
+
+  "editOutfitTooltip": "편집",
+
+  "appearanceTitle": "외관",
+  "appearanceDisplayMode": "표시 모드",
+  "appearanceColorPalette": "색상 테마",
+  "presetDescSoftWardrobe": "소프트 워드로브",
+  "presetDescMatcha": "말차",
+  "presetDescCityBlue": "시티 블루",
+  "presetDescRose": "로즈",
+  "presetDescNightGallery": "나이트 갤러리",
+  "themeModeLight": "라이트",
+  "themeModeAuto": "자동",
+  "themeModeDark": "다크"
 }

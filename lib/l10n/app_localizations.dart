@@ -476,95 +476,407 @@ abstract class AppLocalizations {
   /// **'昵称'**
   String get nicknameField;
 
-  // ── Navigation ──
+  /// No description provided for @navCalendar.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'日历'**
   String get navCalendar;
+
+  /// No description provided for @navAdd.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'记录'**
   String get navAdd;
+
+  /// No description provided for @navStats.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'统计'**
   String get navStats;
 
-  // ── Home ──
+  /// No description provided for @homeAppTitle.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'今日穿什么'**
   String get homeAppTitle;
-  String homeDateLabel(int weekday, int month, int day);
+
+  /// No description provided for @homeDateLabel.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'{weekday, select, 1{周一} 2{周二} 3{周三} 4{周四} 5{周五} 6{周六} 7{周日} other{}} · {month}月{day}日'**
+  String homeDateLabel(String weekday, int month, int day);
+
+  /// No description provided for @filterAll.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'全部'**
   String get filterAll;
+
+  /// No description provided for @filterCommute.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'通勤'**
   String get filterCommute;
+
+  /// No description provided for @filterDate.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'约会'**
   String get filterDate;
+
+  /// No description provided for @filterRainy.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'雨天'**
   String get filterRainy;
+
+  /// No description provided for @filterCasual.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'休闲'**
   String get filterCasual;
 
-  // ── Calendar ──
-  String calendarMonthName(int month);
+  /// No description provided for @addOutfitTitle.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'新增穿搭'**
+  String get addOutfitTitle;
+
+  /// No description provided for @addOutfitHeroEyebrow.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'今日穿搭'**
+  String get addOutfitHeroEyebrow;
+
+  /// No description provided for @addOutfitHeroText.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'记录你的穿搭'**
+  String get addOutfitHeroText;
+
+  /// No description provided for @addOutfitPhotosSection.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'照片'**
+  String get addOutfitPhotosSection;
+
+  /// No description provided for @addOutfitDragHint.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'拖动可排序'**
+  String get addOutfitDragHint;
+
+  /// No description provided for @addOutfitAddPhotoBtn.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'添加照片'**
+  String get addOutfitAddPhotoBtn;
+
+  /// No description provided for @addOutfitFromGallery.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'从相册选择'**
+  String get addOutfitFromGallery;
+
+  /// No description provided for @addOutfitTakePhotoOption.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'拍照'**
+  String get addOutfitTakePhotoOption;
+
+  /// No description provided for @addOutfitTagsSection.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'标签'**
+  String get addOutfitTagsSection;
+
+  /// No description provided for @addOutfitNoTagsHint.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'暂无标签'**
+  String get addOutfitNoTagsHint;
+
+  /// No description provided for @addOutfitSelectedTagsLabel.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'已选标签'**
+  String get addOutfitSelectedTagsLabel;
+
+  /// No description provided for @addOutfitNewTagSection.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'新建标签'**
+  String get addOutfitNewTagSection;
+
+  /// No description provided for @addOutfitTagInputHint.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'输入标签名称'**
+  String get addOutfitTagInputHint;
+
+  /// No description provided for @addOutfitAddTagBtn.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'添加'**
+  String get addOutfitAddTagBtn;
+
+  /// No description provided for @addOutfitDescSection.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'描述'**
+  String get addOutfitDescSection;
+
+  /// No description provided for @addOutfitDescHint.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'描述一下今天的穿搭...'**
+  String get addOutfitDescHint;
+
+  /// No description provided for @addOutfitSaveBtn.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'保存穿搭'**
+  String get addOutfitSaveBtn;
+
+  /// No description provided for @addOutfitSaveEditBtn.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'保存修改'**
+  String get addOutfitSaveEditBtn;
+
+  /// No description provided for @warnTagAlreadyExists.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'标签已存在'**
+  String get warnTagAlreadyExists;
+
+  /// No description provided for @warnSelectAtLeastOneImage.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'请至少选择一张图片'**
+  String get warnSelectAtLeastOneImage;
+
+  /// No description provided for @warnEnterDescription.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'请填写描述'**
+  String get warnEnterDescription;
+
+  /// No description provided for @warnImageLimit.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'最多只能添加 {maxImages} 张图片'**
+  String warnImageLimit(int maxImages);
+
+  /// No description provided for @warnImageLimitExceeded.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'最多添加 {maxImages} 张，还可添加 {remainingSlots} 张'**
+  String warnImageLimitExceeded(int maxImages, int remainingSlots);
+
+  /// No description provided for @successOutfitSaved.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'穿搭已保存'**
+  String get successOutfitSaved;
+
+  /// No description provided for @errLoadData.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'加载失败：{error}'**
+  String errLoadData(String error);
+
+  /// No description provided for @errLoadTags.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'加载标签失败：{error}'**
+  String errLoadTags(String error);
+
+  /// No description provided for @errSelectImage.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'选择图片失败：{error}'**
+  String errSelectImage(String error);
+
+  /// No description provided for @errTakePhoto.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'拍照失败：{error}'**
+  String errTakePhoto(String error);
+
+  /// No description provided for @errSaveOutfit.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'保存失败：{error}'**
+  String errSaveOutfit(String error);
+
+  /// No description provided for @calendarWardrobeReview.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'衣橱回顾'**
   String get calendarWardrobeReview;
-  String calendarMonthTitle(int month);
+
+  /// No description provided for @calendarMonthTitle.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'{month, select, 1{1月} 2{2月} 3{3月} 4{4月} 5{5月} 6{6月} 7{7月} 8{8月} 9{9月} 10{10月} 11{11月} 12{12月} other{}}'**
+  String calendarMonthTitle(String month);
+
+  /// No description provided for @calendarMonthName.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'{month, select, 1{1月} 2{2月} 3{3月} 4{4月} 5{5月} 6{6月} 7{7月} 8{8月} 9{9月} 10{10月} 11{11月} 12{12月} other{}}'**
+  String calendarMonthName(String month);
+
+  /// No description provided for @calendarRecordedDays.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'记录天数'**
   String get calendarRecordedDays;
+
+  /// No description provided for @calendarUniqueTags.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'标签种类'**
   String get calendarUniqueTags;
+
+  /// No description provided for @calendarTopOutfits.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'热门穿搭'**
   String get calendarTopOutfits;
+
+  /// No description provided for @calendarTagUsedCount.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'使用 {count} 次'**
   String calendarTagUsedCount(int count);
+
+  /// No description provided for @calendarDaySheetTitle.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'{month}月{day}日'**
   String calendarDaySheetTitle(int month, int day);
+
+  /// No description provided for @calendarNoDayOutfits.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'这天没有穿搭记录'**
   String get calendarNoDayOutfits;
 
-  // ── Add Outfit ──
-  String get addOutfitTitle;
-  String get addOutfitHeroEyebrow;
-  String get addOutfitHeroText;
-  String get addOutfitPhotosSection;
-  String get addOutfitDragHint;
-  String get addOutfitAddPhotoBtn;
-  String get addOutfitTagsSection;
-  String get addOutfitNoTagsHint;
-  String get addOutfitSelectedTagsLabel;
-  String get addOutfitNewTagSection;
-  String get addOutfitTagInputHint;
-  String get addOutfitAddTagBtn;
-  String get addOutfitDescSection;
-  String get addOutfitDescHint;
-  String get addOutfitSaveBtn;
-  String get addOutfitSaveEditBtn;
-  String get addOutfitFromGallery;
-  String get addOutfitTakePhotoOption;
-  String errLoadData(String e);
-  String errLoadTags(String e);
-  String warnImageLimit(int max);
-  String warnImageLimitExceeded(int max, int kept);
-  String errSelectImage(String e);
-  String errTakePhoto(String e);
-  String get warnTagAlreadyExists;
-  String get warnSelectAtLeastOneImage;
-  String get warnEnterDescription;
-  String get successOutfitSaved;
-  String errSaveOutfit(String e);
-
-  // ── Statistics ──
+  /// No description provided for @statsPageTitle.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'统计'**
   String get statsPageTitle;
-  String get statsRefreshTooltip;
-  String get statsTotal;
+
+  /// No description provided for @statsMonthly.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'本月'**
   String get statsMonthly;
-  String get statsWeekly;
-  String get statsTip;
-  String get statsKeepRecording;
-  String get statsTagFrequency;
-  String get statsMonthlyTrend;
-  String get statsNoTagData;
+
+  /// No description provided for @statsRecordedDaysLabel.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'记录天数'**
   String get statsRecordedDaysLabel;
+
+  /// No description provided for @statsLast7Days.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'近7天'**
   String get statsLast7Days;
+
+  /// No description provided for @statsTotal.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'累计'**
+  String get statsTotal;
+
+  /// No description provided for @statsTagFrequency.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'标签频率'**
+  String get statsTagFrequency;
+
+  /// No description provided for @statsInspirationTitle.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'穿搭灵感'**
   String get statsInspirationTitle;
 
-  // ── Outfit Detail ──
+  /// No description provided for @editOutfitTooltip.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'编辑'**
   String get editOutfitTooltip;
 
-  // ── Theme ──
-  String get themeModeLight;
-  String get themeModeAuto;
-  String get themeModeDark;
+  /// No description provided for @appearanceTitle.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'外观'**
   String get appearanceTitle;
+
+  /// No description provided for @appearanceDisplayMode.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'显示模式'**
   String get appearanceDisplayMode;
+
+  /// No description provided for @appearanceColorPalette.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'色彩主题'**
   String get appearanceColorPalette;
+
+  /// No description provided for @presetDescSoftWardrobe.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'柔美衣橱'**
   String get presetDescSoftWardrobe;
+
+  /// No description provided for @presetDescMatcha.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'抹茶日和'**
   String get presetDescMatcha;
+
+  /// No description provided for @presetDescCityBlue.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'城市蓝调'**
   String get presetDescCityBlue;
+
+  /// No description provided for @presetDescRose.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'玫瑰编辑'**
   String get presetDescRose;
+
+  /// No description provided for @presetDescNightGallery.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'暗夜画廊'**
   String get presetDescNightGallery;
-  String get themeModeNameSystem;
-  String get themeModeNameLight;
-  String get themeModeNameDark;
+
+  /// No description provided for @themeModeLight.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'浅色'**
+  String get themeModeLight;
+
+  /// No description provided for @themeModeAuto.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'跟随系统'**
+  String get themeModeAuto;
+
+  /// No description provided for @themeModeDark.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'深色'**
+  String get themeModeDark;
 }
 
 class _AppLocalizationsDelegate
