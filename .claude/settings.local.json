@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(flutter --version)",
+      "Bash(flutter pub get)",
+      "Bash(flutter build apk --release)",
+      "Bash(flutter doctor -v)",
+      "Bash(flutter build apk)",
+      "Bash(flutter emulators)",
+      "Bash(flutter emulators --launch flutter_pixel_7)",
+      "Bash(flutter devices)",
+      "Bash(flutter run -d emulator-5554)",
+      "Bash(flutter run)",
+      "Bash(flutter run -d macos)"
+    ]
+  }
+}
