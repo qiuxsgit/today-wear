@@ -53,6 +53,10 @@ class AddOutfitPageState extends State<AddOutfitPage> {
   /// 编辑模式下，字符串格式为 "path:<relativePath>" 或 "file:<tempPath>"
   List<String> _selectedImageRefs = [];
   List<File> _tempImageFiles = []; // 临时文件引用
+
+  /// 图片文件缓存，避免 FutureBuilder 在 rebuild 时重复加载
+  final Map<String, File?> _imageFileCache = {};
+
   List<String> _selectedTags = [];
   List<String> _availableTags = [];
   bool _isSaving = false;
@@ -99,7 +103,12 @@ class AddOutfitPageState extends State<AddOutfitPage> {
       
       // 加载现有图片路径
       _selectedImageRefs = outfit.photoPaths.map((path) => "path:$path").toList();
-      
+
+      // 预加载图片文件到缓存，避免 FutureBuilder 在 rebuild 时重复加载
+      for (final path in outfit.photoPaths) {
+        _imageFileCache["path:$path"] = await ImageService.instance.getImageFile(path);
+      }
+
       await _loadAvailableTags();
       
       setState(() {
@@ -177,8 +186,11 @@ class AddOutfitPageState extends State<AddOutfitPage> {
         
         setState(() {
           for (final xfile in images) {
-            _selectedImageRefs.add("file:${xfile.path}");
-            _tempImageFiles.add(File(xfile.path));
+            final ref = "file:${xfile.path}";
+            final file = File(xfile.path);
+            _selectedImageRefs.add(ref);
+            _tempImageFiles.add(file);
+            _imageFileCache[ref] = file; // 缓存文件，避免重复加载
           }
         });
       }
@@ -206,8 +218,11 @@ class AddOutfitPageState extends State<AddOutfitPage> {
       final XFile? image = await _imagePicker.pickImage(source: ImageSource.camera);
       if (image != null) {
         setState(() {
-          _selectedImageRefs.add("file:${image.path}");
-          _tempImageFiles.add(File(image.path));
+          final ref = "file:${image.path}";
+          final file = File(image.path);
+          _selectedImageRefs.add(ref);
+          _tempImageFiles.add(file);
+          _imageFileCache[ref] = file; // 缓存文件，避免重复加载
         });
       }
     } catch (e) {
@@ -277,6 +292,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
     }
     
     setState(() {
+      _imageFileCache.remove(ref); // 清理缓存
       _selectedImageRefs.removeAt(index);
     });
   }
@@ -333,17 +349,6 @@ class AddOutfitPageState extends State<AddOutfitPage> {
     });
   }
   
-  /// 清空表单数据
-  void _clearForm() {
-    setState(() {
-      _selectedImageRefs.clear();
-      _tempImageFiles.clear();
-      _selectedTags.clear();
-      _descriptionController.clear();
-      _tagController.clear();
-    });
-  }
-  
   /// 保存穿搭记录
   Future<void> _saveOutfit() async {
     // 验证图片
@@ -378,16 +383,21 @@ class AddOutfitPageState extends State<AddOutfitPage> {
       }
       
       if (!mounted) return;
-      
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('保存成功'),
           backgroundColor: AppColors.success,
         ),
       );
-      
-      _clearForm();
-      widget.onDataSaved?.call();
+
+      if (_isEditMode) {
+        // 编辑模式：直接返回上一页，通知数据已保存
+        Navigator.pop(context, true);
+      } else {
+        // 新建模式：通过回调返回（回调中执行 pop）
+        widget.onDataSaved?.call();
+      }
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -741,6 +751,17 @@ class AddOutfitPageState extends State<AddOutfitPage> {
   
   /// 构建单个图片 Widget
   Widget _buildImageWidget(String ref) {
+    // 优先使用缓存，避免 FutureBuilder 在 rebuild 时重复加载
+    if (_imageFileCache.containsKey(ref)) {
+      final file = _imageFileCache[ref];
+      if (file != null && file.existsSync()) {
+        return Image.file(file, fit: BoxFit.cover);
+      }
+      return Container(
+        color: AppColors.imagePlaceholder,
+        child: const Icon(Icons.broken_image, color: AppColors.textPlaceholder),
+      );
+    }
     if (ref.startsWith("path:")) {
       final path = ref.substring(5);
       return FutureBuilder<File?>(
@@ -753,6 +774,10 @@ class AddOutfitPageState extends State<AddOutfitPage> {
             );
           }
           final file = snapshot.data;
+          // 加载成功后写入缓存
+          if (file != null) {
+            _imageFileCache[ref] = file;
+          }
           if (file == null || !file.existsSync()) {
             return Container(
               color: AppColors.imagePlaceholder,
