@@ -64,9 +64,10 @@ class OutfitDao extends DatabaseAccessor<AppDatabase> with _$OutfitDaoMixin {
       id: Value(outfit.id),
       date: Value(outfit.date),
       description: Value(outfit.description),
+      createdAt: Value(outfit.createdAt),
       updatedAt: Value(DateTime.now().millisecondsSinceEpoch),
     );
-    
+
     return await update(outfits).replace(companion);
   }
 

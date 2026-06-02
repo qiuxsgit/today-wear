@@ -6,6 +6,7 @@ part of 'outfit_dao.dart';
 mixin _$OutfitDaoMixin on DatabaseAccessor<AppDatabase> {
   $OutfitsTable get outfits => attachedDatabase.outfits;
   $OutfitTagsTable get outfitTags => attachedDatabase.outfitTags;
+  $TagsTable get tags => attachedDatabase.tags;
   OutfitDaoManager get managers => OutfitDaoManager(this);
 }
 
@@ -16,4 +17,6 @@ class OutfitDaoManager {
       $$OutfitsTableTableManager(_db.attachedDatabase, _db.outfits);
   $$OutfitTagsTableTableManager get outfitTags =>
       $$OutfitTagsTableTableManager(_db.attachedDatabase, _db.outfitTags);
+  $$TagsTableTableManager get tags =>
+      $$TagsTableTableManager(_db.attachedDatabase, _db.tags);
 }

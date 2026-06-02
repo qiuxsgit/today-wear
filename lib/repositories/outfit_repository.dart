@@ -135,13 +135,6 @@ class OutfitRepository {
       return outfitId;
     } else {
       // 更新
-      final companion = OutfitsCompanion(
-        id: Value(outfit.id),
-        date: Value(outfit.date.millisecondsSinceEpoch),
-        description: Value(outfit.description),
-        updatedAt: Value(nowTimestamp),
-      );
-
       // 获取现有记录以保留 createdAt
       final existing = await _db.outfitDao.getOutfitById(outfit.id);
       if (existing == null) {
