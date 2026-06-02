@@ -101,3 +101,7 @@ All colors defined in `lib/theme/app_colors.dart`:
 - `reorderable_grid_view` - Draggable grid for image ordering
 - `shared_preferences` - Simple key-value storage
 - `intl` + `flutter_localizations` - i18n support
+
+## AI 协作规范
+
+- 任何任务完成后，需说一句「任务已完成，等待下一步指示」
