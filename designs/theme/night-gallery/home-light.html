@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Night Gallery Home - light</title>
+  <style>
+    :root {
+      --bg:#F8F4EC; --surface:#FFFDF8; --surface-alt:#EEE4D3; --primary:#2B2722;
+      --accent:#C9A46A; --accent-2:#4F6477; --text:#2B2722; --muted:#786F64;
+      --line:#E3D7C6; --tag:#EFE3D1; --shadow:rgba(54,43,32,.13); --button-text:#FFF8EC;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; background: var(--bg); color: var(--text);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      letter-spacing: 0; display: grid; place-items: start center; padding: 28px;
+    }
+    .page {
+      width: 390px; min-height: 844px; overflow: hidden; background: var(--bg);
+      border: 1px solid var(--line); border-radius: 28px; box-shadow: 0 24px 60px var(--shadow);
+      position: relative;
+    }
+    .status { height: 42px; padding: 14px 22px 0; display: flex; justify-content: space-between; font-size: 11px; font-weight: 800; }
+    .content { padding: 12px 18px 92px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .title-block small { color: var(--muted); font-size: 12px; font-weight: 720; }
+    h1 { margin: 4px 0 0; font-size: 28px; line-height: 1.08; font-weight: 850; letter-spacing: 0; }
+    h2 { margin: 0 0 12px; font-size: 17px; font-weight: 820; letter-spacing: 0; }
+    .icon-btn { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: var(--surface); color: var(--text); border: 1px solid var(--line); box-shadow: 0 8px 18px var(--shadow); font-size: 18px; font-weight: 800; }
+    .card { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 16px; box-shadow: 0 12px 28px var(--shadow); }
+    .section { margin-top: 18px; }
+    .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .muted { color: var(--muted); }
+    .chip, .pill { display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; background: var(--tag); color: var(--muted); font-size: 12px; font-weight: 750; }
+    .chip { padding: 8px 11px; }
+    .chip.active { background: var(--primary); color: var(--button-text); }
+    .pill { padding: 6px 9px; }
+    .nav { position: absolute; left: 18px; right: 18px; bottom: 14px; height: 58px; border-radius: 24px; background: color-mix(in srgb, var(--surface) 92%, transparent); border: 1px solid var(--line); box-shadow: 0 16px 34px var(--shadow); display: grid; grid-template-columns: repeat(5, 1fr); align-items: center; justify-items: center; backdrop-filter: blur(16px); }
+    .nav-item { display: grid; gap: 3px; justify-items: center; color: var(--muted); font-size: 10px; font-weight: 760; }
+    .nav-item b { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; }
+    .nav-item.active { color: var(--text); }
+    .nav-item.active b { background: var(--primary); color: var(--button-text); }
+    .theme-note { position: fixed; left: 24px; bottom: 18px; color: var(--muted); font-size: 12px; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="status"><span>9:41</span><span>5G 100%</span></div>
+    <section class="content">
+      <div class="topbar">
+        <div class="title-block"><small>Tue, Jun 2 · Night Gallery</small><h1>今日穿什麼</h1></div>
+        <div class="icon-btn">+</div>
+      </div>
+      <div class="card" style="background:linear-gradient(145deg,var(--primary),var(--accent-2));color:var(--button-text);">
+        <div class="row"><span style="font-size:12px;font-weight:760;opacity:.82;">台北 · 多雲</span><span style="font-size:34px;font-weight:850;line-height:1;">24</span></div>
+        <div style="font-size:19px;font-weight:850;margin-top:4px;">薄外套剛剛好</div>
+      </div>
+      <div class="section" style="display:flex;gap:8px;overflow:hidden;"><span class="chip active">全部</span><span class="chip">通勤</span><span class="chip">約會</span><span class="chip">雨天</span></div>
+      <div class="section" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        
+          <div class="card" style="padding:0;overflow:hidden;border-radius:22px;">
+            <div style="height:176px;position:relative;background:linear-gradient(145deg,var(--accent),var(--surface-alt));">
+              <span class="pill" style="position:absolute;left:10px;top:10px;background:color-mix(in srgb,var(--surface) 82%,transparent);color:var(--text);">6/02</span>
+              <div style="position:absolute;left:50%;top:34px;width:58px;height:92px;transform:translateX(-50%);border-radius:30px 30px 14px 14px;background:color-mix(in srgb,var(--surface) 82%,transparent);"></div>
+            </div>
+            <div style="padding:11px;"><div style="font-size:13px;font-weight:820;line-height:1.35;">奶油針織 + 直筒牛仔</div><div style="margin-top:8px;"><span class="pill">通勤</span></div></div>
+          </div>
+          <div class="card" style="padding:0;overflow:hidden;border-radius:22px;">
+            <div style="height:132px;position:relative;background:linear-gradient(145deg,var(--accent-2),var(--surface-alt));">
+              <span class="pill" style="position:absolute;left:10px;top:10px;background:color-mix(in srgb,var(--surface) 82%,transparent);color:var(--text);">5/30</span>
+              <div style="position:absolute;left:50%;top:34px;width:58px;height:92px;transform:translateX(-50%);border-radius:30px 30px 14px 14px;background:color-mix(in srgb,var(--surface) 82%,transparent);"></div>
+            </div>
+            <div style="padding:11px;"><div style="font-size:13px;font-weight:820;line-height:1.35;">鼠尾草襯衫</div><div style="margin-top:8px;"><span class="pill">咖啡</span></div></div>
+          </div>
+          <div class="card" style="padding:0;overflow:hidden;border-radius:22px;">
+            <div style="height:132px;position:relative;background:linear-gradient(145deg,var(--primary),var(--surface-alt));">
+              <span class="pill" style="position:absolute;left:10px;top:10px;background:color-mix(in srgb,var(--surface) 82%,transparent);color:var(--text);">5/28</span>
+              <div style="position:absolute;left:50%;top:34px;width:58px;height:92px;transform:translateX(-50%);border-radius:30px 30px 14px 14px;background:color-mix(in srgb,var(--surface) 82%,transparent);"></div>
+            </div>
+            <div style="padding:11px;"><div style="font-size:13px;font-weight:820;line-height:1.35;">灰藍西外</div><div style="margin-top:8px;"><span class="pill">正式</span></div></div>
+          </div>
+          <div class="card" style="padding:0;overflow:hidden;border-radius:22px;">
+            <div style="height:176px;position:relative;background:linear-gradient(145deg,var(--accent),var(--surface-alt));">
+              <span class="pill" style="position:absolute;left:10px;top:10px;background:color-mix(in srgb,var(--surface) 82%,transparent);color:var(--text);">5/26</span>
+              <div style="position:absolute;left:50%;top:34px;width:58px;height:92px;transform:translateX(-50%);border-radius:30px 30px 14px 14px;background:color-mix(in srgb,var(--surface) 82%,transparent);"></div>
+            </div>
+            <div style="padding:11px;"><div style="font-size:13px;font-weight:820;line-height:1.35;">亞麻裙裝</div><div style="margin-top:8px;"><span class="pill">週末</span></div></div>
+          </div>
+      </div>
+    </section>
+    <div class="nav">
+  <div class="nav-item active"><b>⌂</b><span>首頁</span></div><div class="nav-item "><b>□</b><span>日曆</span></div><div class="nav-item "><b>+</b><span>新增</span></div><div class="nav-item "><b>▥</b><span>統計</span></div><div class="nav-item "><b>○</b><span>我的</span></div>
+</div>
+  </main>
+  <div class="theme-note">Night Gallery / home-light</div>
+</body>
+</html>

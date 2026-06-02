@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Matcha Minimal Calendar - light</title>
+  <style>
+    :root {
+      --bg:#F7F8F2; --surface:#FFFFFF; --surface-alt:#E8EDE2; --primary:#486554;
+      --accent:#8AA07B; --accent-2:#C49A6C; --text:#243029; --muted:#6F7B70;
+      --line:#DDE6D6; --tag:#E4EADB; --shadow:rgba(52,76,61,.12); --button-text:#F7F8F2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; background: var(--bg); color: var(--text);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      letter-spacing: 0; display: grid; place-items: start center; padding: 28px;
+    }
+    .page {
+      width: 390px; min-height: 844px; overflow: hidden; background: var(--bg);
+      border: 1px solid var(--line); border-radius: 28px; box-shadow: 0 24px 60px var(--shadow);
+      position: relative;
+    }
+    .status { height: 42px; padding: 14px 22px 0; display: flex; justify-content: space-between; font-size: 11px; font-weight: 800; }
+    .content { padding: 12px 18px 92px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .title-block small { color: var(--muted); font-size: 12px; font-weight: 720; }
+    h1 { margin: 4px 0 0; font-size: 28px; line-height: 1.08; font-weight: 850; letter-spacing: 0; }
+    h2 { margin: 0 0 12px; font-size: 17px; font-weight: 820; letter-spacing: 0; }
+    .icon-btn { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: var(--surface); color: var(--text); border: 1px solid var(--line); box-shadow: 0 8px 18px var(--shadow); font-size: 18px; font-weight: 800; }
+    .card { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 16px; box-shadow: 0 12px 28px var(--shadow); }
+    .section { margin-top: 18px; }
+    .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .muted { color: var(--muted); }
+    .chip, .pill { display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; background: var(--tag); color: var(--muted); font-size: 12px; font-weight: 750; }
+    .chip { padding: 8px 11px; }
+    .chip.active { background: var(--primary); color: var(--button-text); }
+    .pill { padding: 6px 9px; }
+    .nav { position: absolute; left: 18px; right: 18px; bottom: 14px; height: 58px; border-radius: 24px; background: color-mix(in srgb, var(--surface) 92%, transparent); border: 1px solid var(--line); box-shadow: 0 16px 34px var(--shadow); display: grid; grid-template-columns: repeat(5, 1fr); align-items: center; justify-items: center; backdrop-filter: blur(16px); }
+    .nav-item { display: grid; gap: 3px; justify-items: center; color: var(--muted); font-size: 10px; font-weight: 760; }
+    .nav-item b { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; }
+    .nav-item.active { color: var(--text); }
+    .nav-item.active b { background: var(--primary); color: var(--button-text); }
+    .theme-note { position: fixed; left: 24px; bottom: 18px; color: var(--muted); font-size: 12px; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="status"><span>9:41</span><span>5G 100%</span></div>
+    <section class="content">
+      <div class="topbar">
+        <div class="title-block"><small>Wardrobe review · Matcha Minimal</small><h1>六月回顧</h1></div>
+        <div class="icon-btn">↗</div>
+      </div>
+      <div class="card">
+        <div class="row"><h2 style="margin:0;">June 2026</h2><span class="pill">本月</span></div>
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:7px;text-align:center;margin-top:16px;color:var(--muted);font-size:11px;font-weight:800;"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:7px;text-align:center;margin-top:8px;">
+          <div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:var(--tag);color:var(--text);">1</div><div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:var(--primary);color:var(--button-text);">2</div><div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:transparent;color:var(--muted);">3</div><div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:var(--tag);color:var(--text);">4</div><div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:transparent;color:var(--muted);">5</div><div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:transparent;color:var(--muted);">6</div><div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:var(--tag);color:var(--text);">7</div><div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:transparent;color:var(--muted);">8</div><div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:var(--tag);color:var(--text);">9</div><div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:transparent;color:var(--muted);">10</div><div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:transparent;color:var(--muted);">11</div><div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:var(--tag);color:var(--text);">12</div><div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:transparent;color:var(--muted);">13</div><div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:transparent;color:var(--muted);">14</div><div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:var(--tag);color:var(--text);">15</div><div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:transparent;color:var(--muted);">16</div><div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:transparent;color:var(--muted);">17</div><div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:var(--tag);color:var(--text);">18</div><div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:transparent;color:var(--muted);">19</div><div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:transparent;color:var(--muted);">20</div><div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:transparent;color:var(--muted);">21</div><div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:transparent;color:var(--muted);">22</div><div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:var(--tag);color:var(--text);">23</div><div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:transparent;color:var(--muted);">24</div><div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:transparent;color:var(--muted);">25</div><div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:transparent;color:var(--muted);">26</div><div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:var(--tag);color:var(--text);">27</div><div style="height:32px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:760;background:transparent;color:var(--muted);">28</div>
+        </div>
+      </div>
+      <div class="section" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="card"><div style="font-size:30px;font-weight:850;">12</div><div class="muted" style="font-size:12px;font-weight:760;">已記錄天數</div></div>
+        <div class="card"><div style="font-size:30px;font-weight:850;">7</div><div class="muted" style="font-size:12px;font-weight:760;">常用標籤</div></div>
+      </div>
+      <div class="section card">
+        <h2>本月最常穿</h2>
+        <div class="row" style="height:58px;border-bottom:1px solid var(--line);"><div class="row" style="justify-content:start;"><div style="width:42px;height:42px;border-radius:14px;background:linear-gradient(145deg,var(--accent),var(--primary));"></div><div><div style="font-size:13px;font-weight:820;">奶油針織</div><div class="muted" style="font-size:11px;margin-top:3px;">搭配 5 次</div></div></div><span style="color:var(--accent);font-weight:850;">92</span></div><div class="row" style="height:58px;border-bottom:1px solid var(--line);"><div class="row" style="justify-content:start;"><div style="width:42px;height:42px;border-radius:14px;background:linear-gradient(145deg,var(--accent),var(--primary));"></div><div><div style="font-size:13px;font-weight:820;">綠色襯衫</div><div class="muted" style="font-size:11px;margin-top:3px;">搭配 4 次</div></div></div><span style="color:var(--accent);font-weight:850;">86</span></div><div class="row" style="height:58px;border-bottom:1px solid var(--line);"><div class="row" style="justify-content:start;"><div style="width:42px;height:42px;border-radius:14px;background:linear-gradient(145deg,var(--accent),var(--primary));"></div><div><div style="font-size:13px;font-weight:820;">灰藍西外</div><div class="muted" style="font-size:11px;margin-top:3px;">搭配 3 次</div></div></div><span style="color:var(--accent);font-weight:850;">79</span></div>
+      </div>
+    </section>
+    <div class="nav">
+  <div class="nav-item "><b>⌂</b><span>首頁</span></div><div class="nav-item active"><b>□</b><span>日曆</span></div><div class="nav-item "><b>+</b><span>新增</span></div><div class="nav-item "><b>▥</b><span>統計</span></div><div class="nav-item "><b>○</b><span>我的</span></div>
+</div>
+  </main>
+  <div class="theme-note">Matcha Minimal / calendar-light</div>
+</body>
+</html>
