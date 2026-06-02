@@ -34,8 +34,8 @@ class WaterfallLayout extends StatefulWidget {
 }
 
 class _WaterfallLayoutState extends State<WaterfallLayout> {
-  final List<GlobalKey> _itemKeys = [];
-  final List<double> _itemHeights = [];
+  List<GlobalKey> _itemKeys = [];
+  List<double> _itemHeights = [];
   List<List<int>> _columnItems = [];
   bool _measured = false;
   

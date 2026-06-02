@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import '../models/outfit.dart';
-import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_theme_tokens.dart';
 import '../services/image_service.dart';
@@ -152,7 +151,7 @@ class WaterfallOutfitCard extends StatelessWidget {
             width: double.infinity,
             height: double.infinity,
             fit: BoxFit.cover,
-            errorBuilder: (ctx, __, ___) => _Placeholder(mist: ctx.tt.mist, muted: ctx.tt.muted),
+            errorBuilder: (ctx, _, __) => _Placeholder(mist: ctx.tt.mist, muted: ctx.tt.muted),
           ),
         );
       },

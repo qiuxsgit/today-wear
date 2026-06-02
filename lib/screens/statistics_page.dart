@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:today_wear/l10n/app_localizations.dart';
 import '../database/database.dart';
 import '../repositories/outfit_repository.dart';
 import '../theme/app_colors.dart';
@@ -237,7 +236,6 @@ class _StatisticsPageState extends State<StatisticsPage>
   
   /// 构建标签使用频率图表
   Widget _buildTagChart() {
-    final l10n = AppLocalizations.of(context)!;
     
     if (_tagStats.isEmpty) {
       return Container(
@@ -333,7 +331,6 @@ class _StatisticsPageState extends State<StatisticsPage>
   
   /// 构建月度趋势图
   Widget _buildMonthlyTrendChart() {
-    final l10n = AppLocalizations.of(context)!;
     
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
@@ -527,7 +524,6 @@ class _StatisticsPageState extends State<StatisticsPage>
   
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
     
     if (_isLoading) {
       return const Scaffold(

@@ -32,14 +32,6 @@ class DateSectionHeader extends StatelessWidget {
     }
   }
   
-  /// 判断是否为今天
-  bool _isToday(DateTime date) {
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final dateOnly = DateTime(date.year, date.month, date.day);
-    return dateOnly == today;
-  }
-  
   @override
   Widget build(BuildContext context) {
     final dateText = _formatDate(context, date);

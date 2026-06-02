@@ -89,7 +89,6 @@ class _AppearanceThemePageState extends State<AppearanceThemePage> {
     final muted = tt.muted;
     final page = tt.page;
     final surface = tt.surface;
-    final line = tt.line;
 
     return Scaffold(
       backgroundColor: page,

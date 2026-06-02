@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:today_wear/l10n/app_localizations.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_text_style.dart';
@@ -495,8 +494,6 @@ class AddOutfitPageState extends State<AddOutfitPage> {
   
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    
     if (_isEditMode && _isLoadingExistingData) {
       return Scaffold(
         backgroundColor: AppColors.warmPage,
