@@ -7,7 +7,7 @@ part 'image_dao.g.dart';
 /// Image 数据访问对象
 @DriftAccessor(tables: [OutfitImages])
 class ImageDao extends DatabaseAccessor<AppDatabase> with _$ImageDaoMixin {
-  ImageDao(AppDatabase db) : super(db);
+  ImageDao(super.db);
 
   /// 获取 outfit 的所有图片（按显示顺序）
   Future<List<OutfitImageData>> getImagesByOutfitId(int outfitId) async {

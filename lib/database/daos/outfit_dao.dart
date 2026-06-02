@@ -7,7 +7,7 @@ part 'outfit_dao.g.dart';
 /// Outfit 数据访问对象
 @DriftAccessor(tables: [Outfits, OutfitTags, Tags])
 class OutfitDao extends DatabaseAccessor<AppDatabase> with _$OutfitDaoMixin {
-  OutfitDao(AppDatabase db) : super(db);
+  OutfitDao(super.db);
 
   /// 获取所有未删除的 outfits（按日期倒序）
   Future<List<OutfitData>> getAllOutfits({int? limit, int? offset}) async {

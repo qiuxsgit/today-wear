@@ -122,7 +122,7 @@ class ContactPage extends StatelessWidget {
               ],
             ),
           ),
-          if (trailingAction != null) trailingAction,
+          ?trailingAction,
         ],
       ),
     );

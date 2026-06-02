@@ -151,7 +151,7 @@ class WaterfallOutfitCard extends StatelessWidget {
             width: double.infinity,
             height: double.infinity,
             fit: BoxFit.cover,
-            errorBuilder: (ctx, _, __) => _Placeholder(mist: ctx.tt.mist, muted: ctx.tt.muted),
+            errorBuilder: (ctx, _, _) => _Placeholder(mist: ctx.tt.mist, muted: ctx.tt.muted),
           ),
         );
       },

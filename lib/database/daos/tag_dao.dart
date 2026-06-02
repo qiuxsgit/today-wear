@@ -8,7 +8,7 @@ part 'tag_dao.g.dart';
 /// Tag 数据访问对象
 @DriftAccessor(tables: [Tags, OutfitTags])
 class TagDao extends DatabaseAccessor<AppDatabase> with _$TagDaoMixin {
-  TagDao(AppDatabase db) : super(db);
+  TagDao(super.db);
 
   /// 获取所有 tags
   Future<List<TagData>> getAllTags() async {
