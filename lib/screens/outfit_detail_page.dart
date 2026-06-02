@@ -84,10 +84,9 @@ class OutfitDetailPage extends StatelessWidget {
       ),
     );
     if (result == true) {
-      // 编辑保存成功 → 先通知上一页刷新，再关闭详情页
       onOutfitChanged?.call();
       if (context.mounted) {
-        Navigator.pop(context, true);
+        Navigator.pop(context);
       }
     }
   }
