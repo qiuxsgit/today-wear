@@ -193,25 +193,21 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildAppearanceTile(BuildContext context, AppLocalizations l10n) {
     final tt = context.tt;
     final presetName = ThemeService.getPresetName(ThemeService.instance.currentPreset);
-    return SizedBox(
-      height: 48,
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(l10n.appearanceTitle, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: tt.ink)),
-          ),
-          GestureDetector(
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AppearanceThemePage())),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(presetName, style: TextStyle(fontSize: 13, color: tt.muted)),
-                const SizedBox(width: 4),
-                Icon(Icons.chevron_right, color: tt.muted, size: 18),
-              ],
+    return GestureDetector(
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AppearanceThemePage())),
+      behavior: HitTestBehavior.opaque,
+      child: SizedBox(
+        height: 48,
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(l10n.appearanceTitle, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: tt.ink)),
             ),
-          ),
-        ],
+            Text(presetName, style: TextStyle(fontSize: 13, color: tt.muted)),
+            const SizedBox(width: 4),
+            Icon(Icons.chevron_right, color: tt.muted, size: 18),
+          ],
+        ),
       ),
     );
   }
@@ -268,25 +264,21 @@ class _ProfilePageState extends State<ProfilePage> {
             onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TagManagementPage())),
           ),
           Divider(height: 1, color: tt.line),
-          SizedBox(
-            height: 48,
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(l10n.language, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: tt.ink)),
-                ),
-                GestureDetector(
-                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const LanguageSelectionPage())),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(currentLanguageName, style: TextStyle(fontSize: 13, color: tt.muted)),
-                      const SizedBox(width: 4),
-                      Icon(Icons.chevron_right, color: tt.muted, size: 18),
-                    ],
+          GestureDetector(
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const LanguageSelectionPage())),
+            behavior: HitTestBehavior.opaque,
+            child: SizedBox(
+              height: 48,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(l10n.language, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: tt.ink)),
                   ),
-                ),
-              ],
+                  Text(currentLanguageName, style: TextStyle(fontSize: 13, color: tt.muted)),
+                  const SizedBox(width: 4),
+                  Icon(Icons.chevron_right, color: tt.muted, size: 18),
+                ],
+              ),
             ),
           ),
         ],
