@@ -43,21 +43,29 @@ class LocaleService extends ChangeNotifier {
   Locale? get currentLocale => _currentLocale;
   
   /// 初始化语言服务
-  /// 
-  /// 从SharedPreferences加载保存的语言设置，如果没有则返回null（使用系统语言）
+  ///
+  /// 从 SharedPreferences 加载保存的语言设置；首次启动时自动检测系统语言并持久化。
   Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
     final localeString = prefs.getString(_localeKey);
-    
+
     if (localeString != null) {
       final parts = localeString.split('_');
-      if (parts.length == 2) {
-        _currentLocale = Locale(parts[0], parts[1]);
-      } else {
-        _currentLocale = Locale(parts[0]);
-      }
-      notifyListeners();
+      _currentLocale = parts.length == 2
+          ? Locale(parts[0], parts[1])
+          : Locale(parts[0]);
+    } else {
+      // 首次启动：检测系统语言，写入持久化，避免后续渲染语言与系统不一致
+      final systemLocale = getSystemLocale(
+        WidgetsBinding.instance.platformDispatcher.locales,
+      );
+      _currentLocale = systemLocale;
+      final localeStr = systemLocale.countryCode != null
+          ? '${systemLocale.languageCode}_${systemLocale.countryCode}'
+          : systemLocale.languageCode;
+      await prefs.setString(_localeKey, localeStr);
     }
+    notifyListeners();
   }
   
   /// 设置语言
