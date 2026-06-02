@@ -2,11 +2,7 @@
   "@@locale": "en",
   "appTitle": "Today Wear",
   "home": "Home",
-  "add": "Add",
   "profile": "Profile",
-  "addOutfit": "Add Outfit",
-  "addOutfitPage": "Add Outfit Page\n(Coming Soon)",
-  "profilePage": "Profile Page\n(Coming Soon)",
   "settings": "Settings",
   "language": "Language",
   "today": "Today",
@@ -15,8 +11,12 @@
   "dateFormat": "{month}/{day}",
   "@dateFormat": {
     "placeholders": {
-      "month": { "type": "int" },
-      "day": { "type": "int" }
+      "month": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      }
     }
   },
   "simplifiedChinese": "Simplified Chinese",
@@ -29,7 +29,6 @@
   "appVersion": "1.0.0",
   "privacyPolicy": "Privacy Policy",
   "termsOfService": "Terms of Service",
-  "openSourceLicense": "Open Source License",
   "contact": "Contact",
   "about": "About",
   "save": "Save",
@@ -44,7 +43,9 @@
   "tagDeleteConfirmInUse": "This tag is used by {count} outfit(s). Deleting will remove it from those outfits. Continue?",
   "@tagDeleteConfirmInUse": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "tagNameEmpty": "Please enter a tag name",
@@ -54,7 +55,9 @@
   "tagManagementWithCount": "Tag Management ({count} total)",
   "@tagManagementWithCount": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "homeEmptyMessage": "No outfit records yet.\nAdd your first outfit to start recording your daily looks.",
@@ -73,25 +76,14 @@
   "profileSaved": "Saved",
   "hintNickname": "Enter nickname",
   "hintPersonality": "Tell us about your personality～",
-  "hintAvatarEmoji": "Choose an emoji for avatar",
   "selectBirthday": "Select birthday",
-  "avatar": "Avatar",
-  "avatarSelectHint": "Tap to select photo",
   "nicknameField": "Nickname",
-
   "navCalendar": "Calendar",
   "navAdd": "Record",
   "navStats": "Stats",
-
   "homeAppTitle": "Today Wear",
   "homeDateLabel": "{weekday, select, 1{Mon} 2{Tue} 3{Wed} 4{Thu} 5{Fri} 6{Sat} 7{Sun} other{}} · {month}/{day}",
-
   "filterAll": "All",
-  "filterCommute": "Work",
-  "filterDate": "Date",
-  "filterRainy": "Rainy",
-  "filterCasual": "Casual",
-
   "addOutfitTitle": "New Outfit",
   "addOutfitHeroEyebrow": "Today's Look",
   "addOutfitHeroText": "Record your outfit",
@@ -110,7 +102,6 @@
   "addOutfitDescHint": "Describe today's outfit...",
   "addOutfitSaveBtn": "Save Outfit",
   "addOutfitSaveEditBtn": "Save Changes",
-
   "warnTagAlreadyExists": "Tag already exists",
   "warnSelectAtLeastOneImage": "Please add at least one photo",
   "warnEnterDescription": "Please enter a description",
@@ -122,7 +113,6 @@
   "errSelectImage": "Failed to select photo: {error}",
   "errTakePhoto": "Failed to take photo: {error}",
   "errSaveOutfit": "Failed to save outfit: {error}",
-
   "calendarWardrobeReview": "Wardrobe Review",
   "calendarMonthTitle": "{month, select, 1{January} 2{February} 3{March} 4{April} 5{May} 6{June} 7{July} 8{August} 9{September} 10{October} 11{November} 12{December} other{}}",
   "calendarMonthName": "{month, select, 1{January} 2{February} 3{March} 4{April} 5{May} 6{June} 7{July} 8{August} 9{September} 10{October} 11{November} 12{December} other{}}",
@@ -132,7 +122,6 @@
   "calendarTagUsedCount": "Used {count} times",
   "calendarDaySheetTitle": "{month}/{day}",
   "calendarNoDayOutfits": "No outfits on this day",
-
   "statsPageTitle": "Statistics",
   "statsMonthly": "This Month",
   "statsRecordedDaysLabel": "Days Recorded",
@@ -140,9 +129,7 @@
   "statsTotal": "All Time",
   "statsTagFrequency": "Tag Frequency",
   "statsInspirationTitle": "Style Inspiration",
-
   "editOutfitTooltip": "Edit",
-
   "appearanceTitle": "Appearance",
   "appearanceDisplayMode": "Display Mode",
   "appearanceColorPalette": "Color Palette",

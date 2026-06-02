@@ -15,19 +15,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get home => 'Home';
 
   @override
-  String get add => 'Add';
-
-  @override
   String get profile => 'Profile';
-
-  @override
-  String get addOutfit => 'Add Outfit';
-
-  @override
-  String get addOutfitPage => 'Add Outfit Page\n(Coming Soon)';
-
-  @override
-  String get profilePage => 'Profile Page\n(Coming Soon)';
 
   @override
   String get settings => 'Settings';
@@ -78,9 +66,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get termsOfService => 'Terms of Service';
-
-  @override
-  String get openSourceLicense => 'Open Source License';
 
   @override
   String get contact => 'Contact';
@@ -189,16 +174,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintPersonality => 'Tell us about your personality～';
 
   @override
-  String get hintAvatarEmoji => 'Choose an emoji for avatar';
-
-  @override
   String get selectBirthday => 'Select birthday';
-
-  @override
-  String get avatar => 'Avatar';
-
-  @override
-  String get avatarSelectHint => 'Tap to select photo';
 
   @override
   String get nicknameField => 'Nickname';
@@ -232,18 +208,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get filterAll => 'All';
-
-  @override
-  String get filterCommute => 'Work';
-
-  @override
-  String get filterDate => 'Date';
-
-  @override
-  String get filterRainy => 'Rainy';
-
-  @override
-  String get filterCasual => 'Casual';
 
   @override
   String get addOutfitTitle => 'New Outfit';

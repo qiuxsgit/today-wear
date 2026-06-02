@@ -2,11 +2,7 @@
   "@@locale": "zh_CN",
   "appTitle": "今日穿什麼",
   "home": "首页",
-  "add": "添加",
   "profile": "个人",
-  "addOutfit": "添加穿搭",
-  "addOutfitPage": "添加穿搭页面\n（待实现）",
-  "profilePage": "个人页面\n（待实现）",
   "settings": "设置",
   "language": "语言",
   "today": "今天",
@@ -15,8 +11,12 @@
   "dateFormat": "{month}月{day}日",
   "@dateFormat": {
     "placeholders": {
-      "month": { "type": "int" },
-      "day": { "type": "int" }
+      "month": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      }
     }
   },
   "simplifiedChinese": "简体中文",
@@ -29,7 +29,6 @@
   "appVersion": "1.0.0",
   "privacyPolicy": "隐私政策",
   "termsOfService": "使用条款",
-  "openSourceLicense": "开源许可",
   "contact": "联系方式",
   "about": "关于应用",
   "save": "保存",
@@ -44,7 +43,9 @@
   "tagDeleteConfirmInUse": "该标签已被 {count} 条穿搭使用，删除将从这些穿搭中移除该标签。确定删除吗？",
   "@tagDeleteConfirmInUse": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "tagNameEmpty": "请输入标签名称",
@@ -54,7 +55,9 @@
   "tagManagementWithCount": "标签管理（共 {count} 个）",
   "@tagManagementWithCount": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "homeEmptyMessage": "还没有穿搭记录\n添加第一条穿搭，开始记录你的每日穿搭吧",
@@ -73,32 +76,27 @@
   "profileSaved": "已保存",
   "hintNickname": "请输入昵称",
   "hintPersonality": "介绍一下你的性格吧～",
-  "hintAvatarEmoji": "选一个 emoji 做头像",
   "selectBirthday": "选择生日",
-  "avatar": "头像",
-  "avatarSelectHint": "点击选择图片",
   "nicknameField": "昵称",
-
   "navCalendar": "日历",
   "navAdd": "记录",
   "navStats": "统计",
-
   "homeAppTitle": "今日穿什么",
   "homeDateLabel": "{weekday, select, 1{周一} 2{周二} 3{周三} 4{周四} 5{周五} 6{周六} 7{周日} other{}} · {month}月{day}日",
   "@homeDateLabel": {
     "placeholders": {
-      "weekday": { "type": "String" },
-      "month": { "type": "int" },
-      "day": { "type": "int" }
+      "weekday": {
+        "type": "String"
+      },
+      "month": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      }
     }
   },
-
   "filterAll": "全部",
-  "filterCommute": "通勤",
-  "filterDate": "约会",
-  "filterRainy": "雨天",
-  "filterCasual": "休闲",
-
   "addOutfitTitle": "新增穿搭",
   "addOutfitHeroEyebrow": "今日穿搭",
   "addOutfitHeroText": "记录你的穿搭",
@@ -117,66 +115,84 @@
   "addOutfitDescHint": "描述一下今天的穿搭...",
   "addOutfitSaveBtn": "保存穿搭",
   "addOutfitSaveEditBtn": "保存修改",
-
   "warnTagAlreadyExists": "标签已存在",
   "warnSelectAtLeastOneImage": "请至少选择一张图片",
   "warnEnterDescription": "请填写描述",
   "warnImageLimit": "最多只能添加 {maxImages} 张图片",
   "@warnImageLimit": {
     "placeholders": {
-      "maxImages": { "type": "int" }
+      "maxImages": {
+        "type": "int"
+      }
     }
   },
   "warnImageLimitExceeded": "最多添加 {maxImages} 张，还可添加 {remainingSlots} 张",
   "@warnImageLimitExceeded": {
     "placeholders": {
-      "maxImages": { "type": "int" },
-      "remainingSlots": { "type": "int" }
+      "maxImages": {
+        "type": "int"
+      },
+      "remainingSlots": {
+        "type": "int"
+      }
     }
   },
   "successOutfitSaved": "穿搭已保存",
   "errLoadData": "加载失败：{error}",
   "@errLoadData": {
     "placeholders": {
-      "error": { "type": "String" }
+      "error": {
+        "type": "String"
+      }
     }
   },
   "errLoadTags": "加载标签失败：{error}",
   "@errLoadTags": {
     "placeholders": {
-      "error": { "type": "String" }
+      "error": {
+        "type": "String"
+      }
     }
   },
   "errSelectImage": "选择图片失败：{error}",
   "@errSelectImage": {
     "placeholders": {
-      "error": { "type": "String" }
+      "error": {
+        "type": "String"
+      }
     }
   },
   "errTakePhoto": "拍照失败：{error}",
   "@errTakePhoto": {
     "placeholders": {
-      "error": { "type": "String" }
+      "error": {
+        "type": "String"
+      }
     }
   },
   "errSaveOutfit": "保存失败：{error}",
   "@errSaveOutfit": {
     "placeholders": {
-      "error": { "type": "String" }
+      "error": {
+        "type": "String"
+      }
     }
   },
-
   "calendarWardrobeReview": "衣橱回顾",
   "calendarMonthTitle": "{month, select, 1{1月} 2{2月} 3{3月} 4{4月} 5{5月} 6{6月} 7{7月} 8{8月} 9{9月} 10{10月} 11{11月} 12{12月} other{}}",
   "@calendarMonthTitle": {
     "placeholders": {
-      "month": { "type": "String" }
+      "month": {
+        "type": "String"
+      }
     }
   },
   "calendarMonthName": "{month, select, 1{1月} 2{2月} 3{3月} 4{4月} 5{5月} 6{6月} 7{7月} 8{8月} 9{9月} 10{10月} 11{11月} 12{12月} other{}}",
   "@calendarMonthName": {
     "placeholders": {
-      "month": { "type": "String" }
+      "month": {
+        "type": "String"
+      }
     }
   },
   "calendarRecordedDays": "记录天数",
@@ -185,18 +201,23 @@
   "calendarTagUsedCount": "使用 {count} 次",
   "@calendarTagUsedCount": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "calendarDaySheetTitle": "{month}月{day}日",
   "@calendarDaySheetTitle": {
     "placeholders": {
-      "month": { "type": "int" },
-      "day": { "type": "int" }
+      "month": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      }
     }
   },
   "calendarNoDayOutfits": "这天没有穿搭记录",
-
   "statsPageTitle": "统计",
   "statsMonthly": "本月",
   "statsRecordedDaysLabel": "记录天数",
@@ -204,9 +225,7 @@
   "statsTotal": "累计",
   "statsTagFrequency": "标签频率",
   "statsInspirationTitle": "穿搭灵感",
-
   "editOutfitTooltip": "编辑",
-
   "appearanceTitle": "外观",
   "appearanceDisplayMode": "显示模式",
   "appearanceColorPalette": "色彩主题",

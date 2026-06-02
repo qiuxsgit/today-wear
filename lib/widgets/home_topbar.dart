@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:today_wear/l10n/app_localizations.dart';
+import '../database/database.dart';
 import '../theme/app_text_style.dart';
 import '../theme/app_theme_tokens.dart';
 
@@ -58,7 +59,7 @@ class HomeTopBar extends StatelessWidget {
   }
 }
 
-/// 首页标签筛选栏
+/// 首页标签筛选栏（动态读取数据库中已有的标签）
 class HomeFilterChips extends StatefulWidget {
   const HomeFilterChips({super.key});
 
@@ -68,18 +69,28 @@ class HomeFilterChips extends StatefulWidget {
 
 class _HomeFilterChipsState extends State<HomeFilterChips> {
   int _activeIndex = 0;
+  List<String> _tagNames = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTags();
+  }
+
+  Future<void> _loadTags() async {
+    final db = AppDatabase();
+    final tags = await db.tagDao.getAllTags();
+    if (!mounted) return;
+    setState(() {
+      _tagNames = tags.map((t) => t.name).toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final tt = context.tt;
-    final labels = [
-      l10n.filterAll,
-      l10n.filterCommute,
-      l10n.filterDate,
-      l10n.filterRainy,
-      l10n.filterCasual,
-    ];
+    final labels = [l10n.filterAll, ..._tagNames];
 
     return Padding(
       padding: const EdgeInsets.only(top: 14, bottom: 14),

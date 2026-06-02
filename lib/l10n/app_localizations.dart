@@ -116,35 +116,11 @@ abstract class AppLocalizations {
   /// **'首页'**
   String get home;
 
-  /// No description provided for @add.
-  ///
-  /// In zh_CN, this message translates to:
-  /// **'添加'**
-  String get add;
-
   /// No description provided for @profile.
   ///
   /// In zh_CN, this message translates to:
   /// **'个人'**
   String get profile;
-
-  /// No description provided for @addOutfit.
-  ///
-  /// In zh_CN, this message translates to:
-  /// **'添加穿搭'**
-  String get addOutfit;
-
-  /// No description provided for @addOutfitPage.
-  ///
-  /// In zh_CN, this message translates to:
-  /// **'添加穿搭页面\n（待实现）'**
-  String get addOutfitPage;
-
-  /// No description provided for @profilePage.
-  ///
-  /// In zh_CN, this message translates to:
-  /// **'个人页面\n（待实现）'**
-  String get profilePage;
 
   /// No description provided for @settings.
   ///
@@ -241,12 +217,6 @@ abstract class AppLocalizations {
   /// In zh_CN, this message translates to:
   /// **'使用条款'**
   String get termsOfService;
-
-  /// No description provided for @openSourceLicense.
-  ///
-  /// In zh_CN, this message translates to:
-  /// **'开源许可'**
-  String get openSourceLicense;
 
   /// No description provided for @contact.
   ///
@@ -446,29 +416,11 @@ abstract class AppLocalizations {
   /// **'介绍一下你的性格吧～'**
   String get hintPersonality;
 
-  /// No description provided for @hintAvatarEmoji.
-  ///
-  /// In zh_CN, this message translates to:
-  /// **'选一个 emoji 做头像'**
-  String get hintAvatarEmoji;
-
   /// No description provided for @selectBirthday.
   ///
   /// In zh_CN, this message translates to:
   /// **'选择生日'**
   String get selectBirthday;
-
-  /// No description provided for @avatar.
-  ///
-  /// In zh_CN, this message translates to:
-  /// **'头像'**
-  String get avatar;
-
-  /// No description provided for @avatarSelectHint.
-  ///
-  /// In zh_CN, this message translates to:
-  /// **'点击选择图片'**
-  String get avatarSelectHint;
 
   /// No description provided for @nicknameField.
   ///
@@ -511,30 +463,6 @@ abstract class AppLocalizations {
   /// In zh_CN, this message translates to:
   /// **'全部'**
   String get filterAll;
-
-  /// No description provided for @filterCommute.
-  ///
-  /// In zh_CN, this message translates to:
-  /// **'通勤'**
-  String get filterCommute;
-
-  /// No description provided for @filterDate.
-  ///
-  /// In zh_CN, this message translates to:
-  /// **'约会'**
-  String get filterDate;
-
-  /// No description provided for @filterRainy.
-  ///
-  /// In zh_CN, this message translates to:
-  /// **'雨天'**
-  String get filterRainy;
-
-  /// No description provided for @filterCasual.
-  ///
-  /// In zh_CN, this message translates to:
-  /// **'休闲'**
-  String get filterCasual;
 
   /// No description provided for @addOutfitTitle.
   ///

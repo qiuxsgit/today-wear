@@ -15,19 +15,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get home => '首页';
 
   @override
-  String get add => '添加';
-
-  @override
   String get profile => '个人';
-
-  @override
-  String get addOutfit => '添加穿搭';
-
-  @override
-  String get addOutfitPage => '添加穿搭页面\n（待实现）';
-
-  @override
-  String get profilePage => '个人页面\n（待实现）';
 
   @override
   String get settings => '设置';
@@ -78,9 +66,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get termsOfService => '使用条款';
-
-  @override
-  String get openSourceLicense => '开源许可';
 
   @override
   String get contact => '联系方式';
@@ -186,16 +171,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get hintPersonality => '介绍一下你的性格吧～';
 
   @override
-  String get hintAvatarEmoji => '选一个 emoji 做头像';
-
-  @override
   String get selectBirthday => '选择生日';
-
-  @override
-  String get avatar => '头像';
-
-  @override
-  String get avatarSelectHint => '点击选择图片';
 
   @override
   String get nicknameField => '昵称';
@@ -229,18 +205,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get filterAll => '全部';
-
-  @override
-  String get filterCommute => '通勤';
-
-  @override
-  String get filterDate => '约会';
-
-  @override
-  String get filterRainy => '雨天';
-
-  @override
-  String get filterCasual => '休闲';
 
   @override
   String get addOutfitTitle => '新增穿搭';
@@ -477,19 +441,7 @@ class AppLocalizationsZhCn extends AppLocalizationsZh {
   String get home => '首页';
 
   @override
-  String get add => '添加';
-
-  @override
   String get profile => '个人';
-
-  @override
-  String get addOutfit => '添加穿搭';
-
-  @override
-  String get addOutfitPage => '添加穿搭页面\n（待实现）';
-
-  @override
-  String get profilePage => '个人页面\n（待实现）';
 
   @override
   String get settings => '设置';
@@ -540,9 +492,6 @@ class AppLocalizationsZhCn extends AppLocalizationsZh {
 
   @override
   String get termsOfService => '使用条款';
-
-  @override
-  String get openSourceLicense => '开源许可';
 
   @override
   String get contact => '联系方式';
@@ -648,16 +597,7 @@ class AppLocalizationsZhCn extends AppLocalizationsZh {
   String get hintPersonality => '介绍一下你的性格吧～';
 
   @override
-  String get hintAvatarEmoji => '选一个 emoji 做头像';
-
-  @override
   String get selectBirthday => '选择生日';
-
-  @override
-  String get avatar => '头像';
-
-  @override
-  String get avatarSelectHint => '点击选择图片';
 
   @override
   String get nicknameField => '昵称';
@@ -691,18 +631,6 @@ class AppLocalizationsZhCn extends AppLocalizationsZh {
 
   @override
   String get filterAll => '全部';
-
-  @override
-  String get filterCommute => '通勤';
-
-  @override
-  String get filterDate => '约会';
-
-  @override
-  String get filterRainy => '雨天';
-
-  @override
-  String get filterCasual => '休闲';
 
   @override
   String get addOutfitTitle => '新增穿搭';
@@ -939,19 +867,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get home => '首頁';
 
   @override
-  String get add => '添加';
-
-  @override
   String get profile => '個人';
-
-  @override
-  String get addOutfit => '添加穿搭';
-
-  @override
-  String get addOutfitPage => '添加穿搭頁面\n（待實現）';
-
-  @override
-  String get profilePage => '個人頁面\n（待實現）';
 
   @override
   String get settings => '設定';
@@ -1002,9 +918,6 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get termsOfService => '使用條款';
-
-  @override
-  String get openSourceLicense => '開源許可';
 
   @override
   String get contact => '聯絡方式';
@@ -1110,16 +1023,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get hintPersonality => '介紹一下你的性格吧～';
 
   @override
-  String get hintAvatarEmoji => '選一個 emoji 做頭像';
-
-  @override
   String get selectBirthday => '選擇生日';
-
-  @override
-  String get avatar => '頭像';
-
-  @override
-  String get avatarSelectHint => '點擊選擇圖片';
 
   @override
   String get nicknameField => '暱稱';
@@ -1153,18 +1057,6 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get filterAll => '全部';
-
-  @override
-  String get filterCommute => '通勤';
-
-  @override
-  String get filterDate => '約會';
-
-  @override
-  String get filterRainy => '雨天';
-
-  @override
-  String get filterCasual => '休閒';
 
   @override
   String get addOutfitTitle => '新增穿搭';

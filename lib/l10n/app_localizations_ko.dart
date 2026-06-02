@@ -15,19 +15,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get home => '홈';
 
   @override
-  String get add => '추가';
-
-  @override
   String get profile => '프로필';
-
-  @override
-  String get addOutfit => '코디 추가';
-
-  @override
-  String get addOutfitPage => '코디 추가 페이지\n(준비 중)';
-
-  @override
-  String get profilePage => '프로필 페이지\n(준비 중)';
 
   @override
   String get settings => '설정';
@@ -78,9 +66,6 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get termsOfService => '이용약관';
-
-  @override
-  String get openSourceLicense => '오픈소스 라이선스';
 
   @override
   String get contact => '연락처';
@@ -186,16 +171,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get hintPersonality => '당신의 성격을 소개해 주세요～';
 
   @override
-  String get hintAvatarEmoji => '아바타용 이모지를 선택하세요';
-
-  @override
   String get selectBirthday => '생일 선택';
-
-  @override
-  String get avatar => '아바타';
-
-  @override
-  String get avatarSelectHint => '탭하여 사진 선택';
 
   @override
   String get nicknameField => '닉네임';
@@ -229,18 +205,6 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get filterAll => '전체';
-
-  @override
-  String get filterCommute => '출퇴근';
-
-  @override
-  String get filterDate => '데이트';
-
-  @override
-  String get filterRainy => '비 오는 날';
-
-  @override
-  String get filterCasual => '캐주얼';
 
   @override
   String get addOutfitTitle => '코디 추가';

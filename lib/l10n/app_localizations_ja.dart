@@ -15,19 +15,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get home => 'ホーム';
 
   @override
-  String get add => '追加';
-
-  @override
   String get profile => 'プロフィール';
-
-  @override
-  String get addOutfit => 'コーデを追加';
-
-  @override
-  String get addOutfitPage => 'コーデ追加ページ\n（実装予定）';
-
-  @override
-  String get profilePage => 'プロフィールページ\n（実装予定）';
 
   @override
   String get settings => '設定';
@@ -78,9 +66,6 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get termsOfService => '利用規約';
-
-  @override
-  String get openSourceLicense => 'オープンソースライセンス';
 
   @override
   String get contact => 'お問い合わせ';
@@ -186,16 +171,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get hintPersonality => 'あなたの性格を教えてください～';
 
   @override
-  String get hintAvatarEmoji => 'アバター用の絵文字を選んでください';
-
-  @override
   String get selectBirthday => '誕生日を選択';
-
-  @override
-  String get avatar => 'アバター';
-
-  @override
-  String get avatarSelectHint => 'タップして写真を選択';
 
   @override
   String get nicknameField => 'ニックネーム';
@@ -229,18 +205,6 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get filterAll => 'すべて';
-
-  @override
-  String get filterCommute => '通勤';
-
-  @override
-  String get filterDate => 'デート';
-
-  @override
-  String get filterRainy => '雨の日';
-
-  @override
-  String get filterCasual => 'カジュアル';
 
   @override
   String get addOutfitTitle => 'コーデを追加';
