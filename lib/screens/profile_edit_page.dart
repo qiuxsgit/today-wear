@@ -8,6 +8,7 @@ import '../services/image_service.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_text_style.dart';
 import '../theme/app_spacing.dart';
+import '../widgets/app_toast.dart';
 
 /// 用户资料编辑页面
 ///
@@ -104,9 +105,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
     await ProfileService.save(profile);
 
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(AppLocalizations.of(context)!.profileSaved)),
-    );
+    AppToast.success(AppLocalizations.of(context)!.profileSaved);
     Navigator.of(context).pop(profile);
   }
 

@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_text_style.dart';
 import '../theme/app_spacing.dart';
+import '../widgets/app_toast.dart';
 
 /// 联系方式页面
 ///
@@ -17,31 +18,20 @@ class ContactPage extends StatelessWidget {
 
   void _copyToClipboard(BuildContext context, String text) {
     Clipboard.setData(ClipboardData(text: text));
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppLocalizations.of(context)!.copiedToClipboard)),
-      );
-    }
+    AppToast.success(AppLocalizations.of(context)!.copiedToClipboard);
   }
 
   Future<void> _openEmail(BuildContext context) async {
     final uri = Uri.parse('mailto:$email');
+    final hint = AppLocalizations.of(context)!.contactEmailCopyHint;
     try {
       if (await canLaunchUrl(uri)) {
         await launchUrl(uri, mode: LaunchMode.externalApplication);
       } else {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(AppLocalizations.of(context)!.contactEmailCopyHint)),
-          );
-        }
+        AppToast.info(hint);
       }
     } catch (_) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)!.contactEmailCopyHint)),
-        );
-      }
+      AppToast.info(hint);
     }
   }
 

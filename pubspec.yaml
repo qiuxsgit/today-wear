@@ -66,6 +66,9 @@ dependencies:
   # 打开链接 / 邮箱
   url_launcher: ^6.2.5
   
+  # Toast 提示
+  fluttertoast: ^8.2.4
+
   # 日历视图
   table_calendar: ^3.0.9
   

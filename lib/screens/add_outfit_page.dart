@@ -10,6 +10,7 @@ import '../repositories/outfit_repository.dart';
 import '../models/outfit.dart';
 import '../theme/tag_colors.dart';
 import '../services/image_service.dart';
+import '../widgets/app_toast.dart';
 
 /// 添加/编辑穿搭页面
 /// 
@@ -117,11 +118,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
       setState(() {
         _isLoadingExistingData = false;
       });
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('加载数据失败：$e')),
-        );
-      }
+      AppToast.error('加载数据失败：$e');
     }
   }
   
@@ -137,11 +134,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
       setState(() {
         _isLoadingTags = false;
       });
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('加载标签失败：$e')),
-        );
-      }
+      AppToast.error('加载标签失败：$e');
     }
   }
   
@@ -150,14 +143,10 @@ class AddOutfitPageState extends State<AddOutfitPage> {
     try {
       // 检查是否已达到最大数量
       if (_selectedImageRefs.length >= maxImages) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('最多只能选择 $maxImages 张图片')),
-          );
-        }
+        AppToast.warning('最多只能选择 $maxImages 张图片');
         return;
       }
-      
+
       List<XFile> images = [];
       
       // 优先尝试多选
@@ -176,11 +165,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
         
         if (images.length > remainingSlots) {
           images = images.take(remainingSlots).toList();
-          if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('最多只能选择 $maxImages 张图片，已保留前 $remainingSlots 张')),
-            );
-          }
+          AppToast.warning('最多只能选择 $maxImages 张图片，已保留前 $remainingSlots 张');
         }
         
         setState(() {
@@ -194,11 +179,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
         });
       }
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('选择图片失败：$e')),
-        );
-      }
+      AppToast.error('选择图片失败：$e');
     }
   }
   
@@ -206,14 +187,10 @@ class AddOutfitPageState extends State<AddOutfitPage> {
   Future<void> _takePhoto() async {
     try {
       if (_selectedImageRefs.length >= maxImages) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('最多只能选择 $maxImages 张图片')),
-          );
-        }
+        AppToast.warning('最多只能选择 $maxImages 张图片');
         return;
       }
-      
+
       final XFile? image = await _imagePicker.pickImage(source: ImageSource.camera);
       if (image != null) {
         setState(() {
@@ -225,11 +202,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
         });
       }
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('拍照失败：$e')),
-        );
-      }
+      AppToast.error('拍照失败：$e');
     }
   }
   
@@ -327,11 +300,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
     
     if (_selectedTags.contains(tag)) {
       _tagController.clear();
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('标签已存在')),
-        );
-      }
+      AppToast.warning('标签已存在');
       return;
     }
     
@@ -353,18 +322,14 @@ class AddOutfitPageState extends State<AddOutfitPage> {
     // 验证图片
     if (_selectedImageRefs.isEmpty) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('请至少选择一张图片')),
-      );
+      AppToast.warning('请至少选择一张图片');
       return;
     }
     
     // 验证备注
     if (_descriptionController.text.trim().isEmpty) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('请输入备注')),
-      );
+      AppToast.warning('请输入备注');
       return;
     }
     
@@ -383,15 +348,8 @@ class AddOutfitPageState extends State<AddOutfitPage> {
       
       if (!mounted) return;
 
-      final messenger = ScaffoldMessenger.of(context);
-      final snackBarController = messenger.showSnackBar(
-        const SnackBar(
-          content: Text('保存成功'),
-          backgroundColor: AppColors.success,
-          duration: Duration(milliseconds: 1200),
-        ),
-      );
-      await snackBarController.closed;
+      AppToast.success('保存成功');
+      await Future.delayed(const Duration(milliseconds: 1200));
 
       if (!mounted) return;
 
@@ -402,9 +360,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
       }
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('保存失败：$e')),
-      );
+      AppToast.error('保存失败：$e');
     } finally {
       if (mounted) {
         setState(() {

@@ -5,6 +5,7 @@ import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_text_style.dart';
 import '../theme/tag_colors.dart';
+import 'app_toast.dart';
 
 /// 标签编辑 Modal
 ///
@@ -69,22 +70,16 @@ class _TagEditModalState extends State<TagEditModal> {
     final l10n = AppLocalizations.of(context)!;
     final name = _nameController.text.trim();
     if (name.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.tagNameEmpty)),
-      );
+      AppToast.warning(l10n.tagNameEmpty);
       return;
     }
     final ok = await _tagDao.updateTag(widget.tag.id, name, _selectedColorHex);
     if (!mounted) return;
     if (ok) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.tagSaved)),
-      );
+      AppToast.success(l10n.tagSaved);
       Navigator.pop(context, true);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.tagNameDuplicate)),
-      );
+      AppToast.warning(l10n.tagNameDuplicate);
     }
   }
 
