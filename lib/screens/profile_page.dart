@@ -391,9 +391,10 @@ class _ProfilePageState extends State<ProfilePage> {
               : null;
           
           return ListView(
-            padding: const EdgeInsets.symmetric(
-              vertical: 0,
-              horizontal: AppSpacing.md,
+            padding: EdgeInsets.only(
+              left: AppSpacing.md,
+              right: AppSpacing.md,
+              bottom: 72 + MediaQuery.of(context).padding.bottom,
             ),
             children: [
               // Topbar
