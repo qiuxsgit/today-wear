@@ -85,6 +85,7 @@
   "homeDateLabel": "{weekday, select, 1{월} 2{화} 3{수} 4{목} 5{금} 6{토} 7{일} other{}}요일 · {month}월 {day}일",
   "filterAll": "전체",
   "addOutfitTitle": "코디 추가",
+  "editOutfitTitle": "코디 편집",
   "addOutfitHeroEyebrow": "오늘의 코디",
   "addOutfitHeroText": "나만의 스타일을 기록하세요",
   "addOutfitPhotosSection": "사진",

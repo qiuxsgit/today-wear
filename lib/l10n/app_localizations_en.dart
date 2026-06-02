@@ -213,6 +213,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addOutfitTitle => 'New Outfit';
 
   @override
+  String get editOutfitTitle => 'Edit Outfit';
+
+  @override
   String get addOutfitHeroEyebrow => 'Today\'s Look';
 
   @override

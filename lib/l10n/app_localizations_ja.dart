@@ -210,6 +210,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get addOutfitTitle => 'コーデを追加';
 
   @override
+  String get editOutfitTitle => 'コーデを編集';
+
+  @override
   String get addOutfitHeroEyebrow => '今日のコーデ';
 
   @override

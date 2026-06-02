@@ -85,6 +85,7 @@
   "homeDateLabel": "{weekday, select, 1{週一} 2{週二} 3{週三} 4{週四} 5{週五} 6{週六} 7{週日} other{}} · {month}月{day}日",
   "filterAll": "全部",
   "addOutfitTitle": "新增穿搭",
+  "editOutfitTitle": "編輯穿搭",
   "addOutfitHeroEyebrow": "今日穿搭",
   "addOutfitHeroText": "記錄你的穿搭",
   "addOutfitPhotosSection": "照片",

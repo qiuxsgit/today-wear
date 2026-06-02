@@ -210,6 +210,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get addOutfitTitle => '코디 추가';
 
   @override
+  String get editOutfitTitle => '코디 편집';
+
+  @override
   String get addOutfitHeroEyebrow => '오늘의 코디';
 
   @override

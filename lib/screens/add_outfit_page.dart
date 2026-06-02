@@ -602,7 +602,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
           Expanded(
             child: Center(
               child: Text(
-                _l10n.addOutfitTitle,
+                _isEditMode ? _l10n.editOutfitTitle : _l10n.addOutfitTitle,
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: tt.ink),
               ),
             ),
@@ -670,6 +670,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
   
   /// 构建图片选择区域（支持拖拽排序）
   Widget _buildImageSection() {
+    final tt = context.tt;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -678,12 +679,12 @@ class AddOutfitPageState extends State<AddOutfitPage> {
           children: [
             Text(
               _l10n.addOutfitPhotosSection,
-              style: AppTextStyle.title,
+              style: AppTextStyle.title.copyWith(color: tt.ink),
             ),
             if (_selectedImageRefs.length > 1)
               Text(
                 _l10n.addOutfitDragHint,
-                style: AppTextStyle.hint.copyWith(fontSize: 12),
+                style: AppTextStyle.hint.copyWith(fontSize: 12, color: tt.muted),
               ),
           ],
         ),
@@ -826,12 +827,13 @@ class AddOutfitPageState extends State<AddOutfitPage> {
   
   /// 构建标签选择区域
   Widget _buildTagSection() {
+    final tt = context.tt;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           _l10n.addOutfitTagsSection,
-          style: AppTextStyle.title,
+          style: AppTextStyle.title.copyWith(color: tt.ink),
         ),
         const SizedBox(height: 12),
         if (_isLoadingTags)
@@ -846,7 +848,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
               _l10n.addOutfitNoTagsHint,
-              style: AppTextStyle.hint,
+              style: AppTextStyle.hint.copyWith(color: tt.muted),
             ),
           )
         else
@@ -879,6 +881,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
             _l10n.addOutfitSelectedTagsLabel,
             style: AppTextStyle.body.copyWith(
               fontWeight: FontWeight.w600,
+              color: tt.ink,
             ),
           ),
           const SizedBox(height: 8),
@@ -906,12 +909,13 @@ class AddOutfitPageState extends State<AddOutfitPage> {
   
   /// 构建新标签输入区域
   Widget _buildNewTagInput() {
+    final tt = context.tt;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           _l10n.addOutfitNewTagSection,
-          style: AppTextStyle.title,
+          style: AppTextStyle.title.copyWith(color: tt.ink),
         ),
         const SizedBox(height: 12),
         Row(
@@ -923,7 +927,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
                 autofocus: false,
                 decoration: InputDecoration(
                   hintText: _l10n.addOutfitTagInputHint,
-                  hintStyle: AppTextStyle.hint,
+                  hintStyle: AppTextStyle.hint.copyWith(color: tt.muted),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -932,7 +936,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
                     vertical: 12,
                   ),
                 ),
-                style: AppTextStyle.body,
+                style: AppTextStyle.body.copyWith(color: tt.ink),
                 onSubmitted: (_) => _addNewTag(),
                 textInputAction: TextInputAction.done,
               ),
@@ -960,12 +964,13 @@ class AddOutfitPageState extends State<AddOutfitPage> {
   
   /// 构建备注输入区域
   Widget _buildDescriptionInput() {
+    final tt = context.tt;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           _l10n.addOutfitDescSection,
-          style: AppTextStyle.title,
+          style: AppTextStyle.title.copyWith(color: tt.ink),
         ),
         const SizedBox(height: 12),
         TextField(
@@ -974,13 +979,13 @@ class AddOutfitPageState extends State<AddOutfitPage> {
           autofocus: false,
           decoration: InputDecoration(
             hintText: _l10n.addOutfitDescHint,
-            hintStyle: AppTextStyle.hint,
+            hintStyle: AppTextStyle.hint.copyWith(color: tt.muted),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
             ),
             contentPadding: const EdgeInsets.all(12),
           ),
-          style: AppTextStyle.body,
+          style: AppTextStyle.body.copyWith(color: tt.ink),
           maxLines: 5,
           textInputAction: TextInputAction.newline,
         ),

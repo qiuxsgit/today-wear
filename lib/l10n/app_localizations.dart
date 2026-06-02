@@ -470,6 +470,12 @@ abstract class AppLocalizations {
   /// **'新增穿搭'**
   String get addOutfitTitle;
 
+  /// No description provided for @editOutfitTitle.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'编辑穿搭'**
+  String get editOutfitTitle;
+
   /// No description provided for @addOutfitHeroEyebrow.
   ///
   /// In zh_CN, this message translates to:

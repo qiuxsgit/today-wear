@@ -4,7 +4,7 @@ import 'package:today_wear/l10n/app_localizations.dart';
 import '../models/outfit.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
-import '../theme/app_text_style.dart';
+import '../theme/app_theme_tokens.dart';
 import '../theme/tag_colors.dart';
 import '../services/image_service.dart';
 import '../database/database.dart';
@@ -26,14 +26,14 @@ class OutfitDetailPage extends StatelessWidget {
     required this.outfit,
     this.onOutfitChanged,
   });
-  
+
   /// 格式化日期显示
   String _formatDate(BuildContext context, DateTime date) {
     final l10n = AppLocalizations.of(context)!;
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final dateOnly = DateTime(date.year, date.month, date.day);
-    
+
     if (dateOnly == today) {
       return l10n.today;
     } else if (dateOnly == today.subtract(const Duration(days: 1))) {
@@ -42,7 +42,7 @@ class OutfitDetailPage extends StatelessWidget {
       return l10n.dateFormat(date.month, date.day);
     }
   }
-  
+
   /// 执行删除：弹窗确认后删除并返回
   Future<void> _onDelete(BuildContext context) async {
     final l10n = AppLocalizations.of(context)!;
@@ -74,7 +74,7 @@ class OutfitDetailPage extends StatelessWidget {
       }
     }
   }
-  
+
   /// 编辑穿搭
   Future<void> _onEdit(BuildContext context) async {
     final result = await Navigator.push<bool>(
@@ -94,14 +94,18 @@ class OutfitDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final tt = context.tt;
     final dateText = _formatDate(context, outfit.date);
 
     return Scaffold(
-      backgroundColor: AppColors.warmPage,
+      backgroundColor: tt.page,
       appBar: AppBar(
-        title: Text(dateText, style: AppTextStyle.title),
-        backgroundColor: AppColors.warmSurface,
-        foregroundColor: AppColors.warmInk,
+        title: Text(
+          dateText,
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: tt.ink),
+        ),
+        backgroundColor: tt.surface,
+        foregroundColor: tt.ink,
         surfaceTintColor: Colors.transparent,
         elevation: 2,
         scrolledUnderElevation: 2,
@@ -124,35 +128,28 @@ class OutfitDetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 图片展示
               if (outfit.photoPaths.isNotEmpty)
-                _buildImageGallery(outfit.photoPaths)
+                _buildImageGallery(context, outfit.photoPaths)
               else
                 Container(
                   width: double.infinity,
                   height: 300,
                   decoration: BoxDecoration(
-                    color: AppColors.warmMist,
+                    color: tt.mist,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.image,
-                      size: 64,
-                      color: AppColors.warmMuted,
-                    ),
+                  child: Center(
+                    child: Icon(Icons.image, size: 64, color: tt.muted),
                   ),
                 ),
-              
+
               const SizedBox(height: AppSpacing.lg),
-              
-              // 描述
+
               Text(
                 outfit.description,
-                style: AppTextStyle.title,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: tt.ink),
               ),
-              
-              // 标签（带颜色）
+
               if (outfit.tags.isNotEmpty) ...[
                 const SizedBox(height: AppSpacing.md),
                 Wrap(
@@ -167,10 +164,7 @@ class OutfitDetailPage extends StatelessWidget {
                     return Chip(
                       label: Text(
                         tagName,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: AppColors.warmMuted,
-                        ),
+                        style: TextStyle(fontSize: 12, color: tt.muted),
                       ),
                       backgroundColor: bgColor,
                       padding: EdgeInsets.zero,
@@ -180,7 +174,7 @@ class OutfitDetailPage extends StatelessWidget {
                   }),
                 ),
               ],
-              
+
               const SizedBox(height: AppSpacing.lg),
             ],
           ),
@@ -189,17 +183,15 @@ class OutfitDetailPage extends StatelessWidget {
     );
   }
 
-  /// 构建图片画廊
-  Widget _buildImageGallery(List<String> photoPaths) {
-    if (photoPaths.isEmpty) {
-      return const SizedBox.shrink();
-    }
+  Widget _buildImageGallery(BuildContext context, List<String> photoPaths) {
+    if (photoPaths.isEmpty) return const SizedBox.shrink();
 
     return SizedBox(
       height: 300,
       child: PageView.builder(
         itemCount: photoPaths.length,
         itemBuilder: (context, index) {
+          final tt = context.tt;
           return FutureBuilder<File?>(
             future: ImageService.instance.getImageFile(photoPaths[index]),
             builder: (context, snapshot) {
@@ -207,12 +199,10 @@ class OutfitDetailPage extends StatelessWidget {
                 return Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: AppColors.warmMist,
+                    color: tt.mist,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                  child: const Center(child: CircularProgressIndicator()),
                 );
               }
 
@@ -221,15 +211,11 @@ class OutfitDetailPage extends StatelessWidget {
                 return Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: AppColors.warmMist,
+                    color: tt.mist,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.broken_image,
-                      size: 64,
-                      color: AppColors.warmMuted,
-                    ),
+                  child: Center(
+                    child: Icon(Icons.broken_image, size: 64, color: tt.muted),
                   ),
                 );
               }
@@ -243,18 +229,15 @@ class OutfitDetailPage extends StatelessWidget {
                     width: double.infinity,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
+                      final tt = context.tt;
                       return Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
-                          color: AppColors.warmMist,
+                          color: tt.mist,
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: const Center(
-                          child: Icon(
-                            Icons.broken_image,
-                            size: 64,
-                            color: AppColors.warmMuted,
-                          ),
+                        child: Center(
+                          child: Icon(Icons.broken_image, size: 64, color: tt.muted),
                         ),
                       );
                     },

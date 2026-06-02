@@ -85,6 +85,7 @@
   "homeDateLabel": "{weekday, select, 1{月} 2{火} 3{水} 4{木} 5{金} 6{土} 7{日} other{}}曜日 · {month}月{day}日",
   "filterAll": "すべて",
   "addOutfitTitle": "コーデを追加",
+  "editOutfitTitle": "コーデを編集",
   "addOutfitHeroEyebrow": "今日のコーデ",
   "addOutfitHeroText": "着こなしを記録しよう",
   "addOutfitPhotosSection": "写真",

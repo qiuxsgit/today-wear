@@ -210,6 +210,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get addOutfitTitle => '新增穿搭';
 
   @override
+  String get editOutfitTitle => '编辑穿搭';
+
+  @override
   String get addOutfitHeroEyebrow => '今日穿搭';
 
   @override
@@ -636,6 +639,9 @@ class AppLocalizationsZhCn extends AppLocalizationsZh {
   String get addOutfitTitle => '新增穿搭';
 
   @override
+  String get editOutfitTitle => '编辑穿搭';
+
+  @override
   String get addOutfitHeroEyebrow => '今日穿搭';
 
   @override
@@ -1060,6 +1066,9 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get addOutfitTitle => '新增穿搭';
+
+  @override
+  String get editOutfitTitle => '編輯穿搭';
 
   @override
   String get addOutfitHeroEyebrow => '今日穿搭';
