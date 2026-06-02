@@ -239,7 +239,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  /// 0: 首页 / 1: 日历 / 2: 统计 / 3: 个人
+  /// 0: 首页 / 1: 日历 / 2: 新增 / 3: 统计 / 4: 个人
   int _selectedIndex = 0;
 
   /// 标记是否需要刷新首页数据
@@ -253,11 +253,17 @@ class _MainScreenState extends State<MainScreen> {
           onAddFirstOutfit: _openAddOutfit,
         ),
         const CalendarPage(),
+        const SizedBox.shrink(), // 占位：新增 tab (index 2)，不展示页面
         const StatisticsPage(),
         const ProfilePage(),
       ];
 
   void _onNavigationTap(int index) {
+    // 中间新增 tab：直接打开新增穿搭页，不切换页面
+    if (index == 2) {
+      _openAddOutfit();
+      return;
+    }
     if (index == 0 && _needsRefresh) {
       _homePageKey.currentState?.refreshData();
       setState(() {
@@ -269,7 +275,7 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
-  /// 打开新增穿搭页（FAB 入口）
+  /// 打开新增穿搭页（导航栏新增 tab 入口）
   /// 保存成功后 pop(true)，回调里立即刷新当前页或标记首页需刷新
   Future<void> _openAddOutfit() async {
     final saved = await Navigator.push<bool>(
@@ -293,16 +299,6 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[_selectedIndex],
-      floatingActionButton: FloatingActionButton(
-        onPressed: _openAddOutfit,
-        backgroundColor: AppColors.brandBlue,
-        foregroundColor: Colors.white,
-        elevation: 4,
-        shape: const CircleBorder(),
-        tooltip: '记录穿搭',
-        child: const Icon(Icons.add, size: 28),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: MainNavigation(
         selectedIndex: _selectedIndex,
         onTap: _onNavigationTap,

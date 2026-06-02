@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:today_wear/l10n/app_localizations.dart';
 import '../theme/app_colors.dart';
 
-/// 底部导航栏 V2
+/// 底部导航栏
 ///
-/// 设计变更：
-/// - 移除中间的 "+" destination，改由 Scaffold 外层 FAB 承载
-/// - 4 个 destination：首页 / 日历 / 统计 / 个人
-/// - 选中态使用 brandBlue
+/// 5 个 destination：首页 / 日历 / 新增 / 统计 / 个人
+/// 中间的 "+" tab 直接打开新增穿搭页，不切换页面
+/// 选中态使用 brandBlue
 class MainNavigation extends StatelessWidget {
   final int selectedIndex;
   final ValueChanged<int> onTap;
@@ -71,6 +70,11 @@ class MainNavigation extends StatelessWidget {
             icon: Icon(Icons.calendar_today_outlined),
             selectedIcon: Icon(Icons.calendar_today),
             label: '日历',
+          ),
+          const NavigationDestination(
+            icon: Icon(Icons.add),
+            selectedIcon: Icon(Icons.add),
+            label: '新增',
           ),
           const NavigationDestination(
             icon: Icon(Icons.bar_chart_outlined),
