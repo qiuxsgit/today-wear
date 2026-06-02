@@ -10,6 +10,7 @@ import '../theme/app_text_style.dart';
 import '../theme/app_spacing.dart';
 import '../services/locale_service.dart';
 import '../services/theme_service.dart';
+import 'appearance_theme_page.dart';
 import 'contact_page.dart';
 import 'language_selection_page.dart';
 import 'privacy_policy_page.dart';
@@ -178,10 +179,8 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
   
-  /// 构建深色模式开关
-  Widget _buildDarkModeTile(BuildContext context, AppLocalizations l10n) {
-    final themeService = ThemeService.instance;
-
+  Widget _buildAppearanceTile(BuildContext context) {
+    final presetName = ThemeService.getPresetName(ThemeService.instance.currentPreset);
     return Container(
       margin: const EdgeInsets.only(bottom: AppSpacing.xs),
       decoration: BoxDecoration(
@@ -189,41 +188,22 @@ class _ProfilePageState extends State<ProfilePage> {
         borderRadius: BorderRadius.circular(8),
       ),
       child: ListTile(
-        title: Text(
-          '深色模式',
-          style: AppTextStyle.body.copyWith(
-            fontSize: 16,
-          ),
-        ),
-        trailing: SegmentedButton<ThemeModeType>(
-          segments: const [
-            ButtonSegment(
-              value: ThemeModeType.light,
-              icon: Icon(Icons.light_mode, size: 20),
-            ),
-            ButtonSegment(
-              value: ThemeModeType.system,
-              icon: Icon(Icons.brightness_auto, size: 20),
-            ),
-            ButtonSegment(
-              value: ThemeModeType.dark,
-              icon: Icon(Icons.dark_mode, size: 20),
-            ),
+        title: Text('外觀主題', style: AppTextStyle.body.copyWith(fontSize: 16)),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(presetName, style: AppTextStyle.body.copyWith(color: AppColors.warmMuted)),
+            const SizedBox(width: 4),
+            const Icon(Icons.chevron_right, color: AppColors.warmMuted, size: 20),
           ],
-          selected: {themeService.currentMode},
-          onSelectionChanged: (Set<ThemeModeType> selected) {
-            themeService.setThemeMode(selected.first);
-          },
-          showSelectedIcon: false,
-          emptySelectionAllowed: false,
         ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.md,
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const AppearanceThemePage()),
         ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
         dense: true,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
     );
   }
@@ -278,8 +258,8 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
           const SizedBox(height: AppSpacing.sm),
-          // 深色模式开关
-          _buildDarkModeTile(context, l10n),
+          // 外觀主題入口
+          _buildAppearanceTile(context),
           // 标签管理
           Container(
             margin: const EdgeInsets.only(bottom: AppSpacing.xs),

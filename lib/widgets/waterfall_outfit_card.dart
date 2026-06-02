@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/outfit.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
+import '../theme/app_theme_tokens.dart';
 import '../services/image_service.dart';
 
 /// 瀑布流穿搭卡片
@@ -28,11 +29,11 @@ class WaterfallOutfitCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final brightness = Theme.of(context).brightness;
-    final surface = AppColors.getWarmSurface(brightness);
-    final ink = AppColors.getWarmInk(brightness);
-    final muted = AppColors.getWarmMuted(brightness);
-    final mist = AppColors.getWarmMist(brightness);
+    final tt = context.tt;
+    final surface = tt.surface;
+    final ink = tt.ink;
+    final muted = tt.muted;
+    final mist = tt.mist;
 
     Widget card = Container(
       decoration: BoxDecoration(
@@ -56,7 +57,7 @@ class WaterfallOutfitCard extends StatelessWidget {
             aspectRatio: 3 / 4,
             child: Stack(
               children: [
-                Positioned.fill(child: _buildImage(brightness)),
+                Positioned.fill(child: _buildImage(context)),
                 Positioned(
                   left: 8,
                   top: 8,
@@ -130,8 +131,8 @@ class WaterfallOutfitCard extends StatelessWidget {
     return card;
   }
 
-  Widget _buildImage(Brightness brightness) {
-    final placeholder = _Placeholder(brightness: brightness);
+  Widget _buildImage(BuildContext context) {
+    final placeholder = _Placeholder(mist: context.tt.mist, muted: context.tt.muted);
 
     if (outfit.photoPaths.isEmpty) return placeholder;
 
@@ -151,7 +152,7 @@ class WaterfallOutfitCard extends StatelessWidget {
             width: double.infinity,
             height: double.infinity,
             fit: BoxFit.cover,
-            errorBuilder: (_, __, ___) => placeholder,
+            errorBuilder: (ctx, __, ___) => _Placeholder(mist: ctx.tt.mist, muted: ctx.tt.muted),
           ),
         );
       },
@@ -160,22 +161,17 @@ class WaterfallOutfitCard extends StatelessWidget {
 }
 
 class _Placeholder extends StatelessWidget {
-  final Brightness brightness;
-  const _Placeholder({required this.brightness});
+  final Color mist;
+  final Color muted;
+  const _Placeholder({required this.mist, required this.muted});
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(14),
       child: Container(
-        color: AppColors.getWarmMist(brightness),
-        child: Center(
-          child: Icon(
-            Icons.checkroom_outlined,
-            size: 32,
-            color: AppColors.getWarmMuted(brightness),
-          ),
-        ),
+        color: mist,
+        child: Center(child: Icon(Icons.checkroom_outlined, size: 32, color: muted)),
       ),
     );
   }

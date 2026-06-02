@@ -5,6 +5,7 @@ import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import '../widgets/waterfall_outfit_card.dart';
 import '../widgets/home_topbar.dart';
+import '../theme/app_theme_tokens.dart';
 import '../database/database.dart';
 import '../repositories/outfit_repository.dart';
 import 'outfit_detail_page.dart';
@@ -128,8 +129,9 @@ class HomePageState extends State<HomePage> {
 
   Widget _buildEmptyState() {
     final l10n = AppLocalizations.of(context)!;
+    final tt = context.tt;
     return Scaffold(
-      backgroundColor: AppColors.warmPage,
+      backgroundColor: tt.page,
       body: SafeArea(
         child: Column(
           children: [
@@ -143,20 +145,19 @@ class HomePageState extends State<HomePage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(Icons.checkroom_outlined, size: 64,
-                          color: AppColors.warmMuted.withValues(alpha: 0.5)),
+                          color: tt.muted.withValues(alpha: 0.5)),
                       const SizedBox(height: 24),
                       Text(l10n.homeEmptyMessage,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              fontSize: 16, color: AppColors.warmMuted, height: 1.5)),
+                          style: TextStyle(fontSize: 16, color: tt.muted, height: 1.5)),
                       const SizedBox(height: 32),
                       FilledButton.icon(
                         onPressed: widget.onAddFirstOutfit,
                         icon: const Icon(Icons.add, size: 20),
                         label: Text(l10n.homeAddFirstOutfit),
                         style: FilledButton.styleFrom(
-                          backgroundColor: AppColors.warmInk,
-                          foregroundColor: const Color(0xFFFFFAF4),
+                          backgroundColor: tt.ink,
+                          foregroundColor: tt.surface,
                           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                         ),
                       ),
@@ -177,7 +178,7 @@ class HomePageState extends State<HomePage> {
 
     if (content.isEmpty && _isLoading) {
       return Scaffold(
-        backgroundColor: AppColors.warmPage,
+        backgroundColor: context.tt.page,
         body: SafeArea(
           child: Column(
             children: [
@@ -193,7 +194,7 @@ class HomePageState extends State<HomePage> {
     if (content.isEmpty) return _buildEmptyState();
 
     return Scaffold(
-      backgroundColor: AppColors.warmPage,
+      backgroundColor: context.tt.page,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

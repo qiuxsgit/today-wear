@@ -10,6 +10,7 @@ import 'screens/calendar_page.dart';
 import 'screens/statistics_page.dart';
 import 'screens/profile_page.dart';
 import 'theme/app_colors.dart';
+import 'theme/app_theme_tokens.dart';
 import 'widgets/main_navigation.dart';
 import 'services/locale_service.dart';
 import 'services/theme_service.dart';
@@ -20,6 +21,44 @@ import 'services/image_service.dart';
 export 'services/locale_service.dart';
 // 导出 ThemeService 以便其他文件使用
 export 'services/theme_service.dart';
+
+AppThemeTokens _tokensFor(ThemePresetType preset, Brightness brightness) {
+  final dark = brightness == Brightness.dark;
+  switch (preset) {
+    case ThemePresetType.softWardrobe:
+      return dark ? AppThemeTokens.softWardrobeDark : AppThemeTokens.softWardrobeLight;
+    case ThemePresetType.matcha:
+      return dark ? AppThemeTokens.matchaDark : AppThemeTokens.matchaLight;
+    case ThemePresetType.cityBlue:
+      return dark ? AppThemeTokens.cityBlueDark : AppThemeTokens.cityBlueLight;
+    case ThemePresetType.roseEditorial:
+      return dark ? AppThemeTokens.roseDark : AppThemeTokens.roseLight;
+    case ThemePresetType.nightGallery:
+      return dark ? AppThemeTokens.nightGalleryDark : AppThemeTokens.nightGalleryLight;
+  }
+}
+
+ThemeData _buildTheme(ThemePresetType preset, Brightness brightness) {
+  final tt = _tokensFor(preset, brightness);
+  return ThemeData(
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: tt.ink,
+      brightness: brightness,
+    ).copyWith(
+      primary: tt.ink,
+      surface: tt.surface,
+    ),
+    useMaterial3: true,
+    scaffoldBackgroundColor: tt.page,
+    cardColor: tt.surface,
+    appBarTheme: AppBarTheme(
+      backgroundColor: tt.surface,
+      foregroundColor: tt.ink,
+      elevation: 0,
+    ),
+    extensions: [tt],
+  );
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -133,40 +172,8 @@ class _MyAppState extends State<MyApp> {
           ],
           supportedLocales: LocaleService.supportedLocales,
           themeMode: widget.themeService.themeMode,
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: AppColors.warmInk,
-              brightness: Brightness.light,
-            ).copyWith(
-              primary: AppColors.warmInk,
-              surface: AppColors.warmSurface,
-            ),
-            useMaterial3: true,
-            scaffoldBackgroundColor: AppColors.warmPage,
-            cardColor: AppColors.warmSurface,
-            appBarTheme: const AppBarTheme(
-              backgroundColor: AppColors.warmSurface,
-              foregroundColor: AppColors.warmInk,
-              elevation: 0,
-            ),
-          ),
-          darkTheme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: AppColors.warmInkDark,
-              brightness: Brightness.dark,
-            ).copyWith(
-              primary: AppColors.warmInkDark,
-              surface: AppColors.warmSurfaceDark,
-            ),
-            useMaterial3: true,
-            scaffoldBackgroundColor: AppColors.warmPageDark,
-            cardColor: AppColors.warmSurfaceDark,
-            appBarTheme: const AppBarTheme(
-              backgroundColor: AppColors.warmPageDark,
-              foregroundColor: AppColors.warmInkDark,
-              elevation: 0,
-            ),
-          ),
+          theme:     _buildTheme(widget.themeService.currentPreset, Brightness.light),
+          darkTheme: _buildTheme(widget.themeService.currentPreset, Brightness.dark),
           home: const MainScreen(),
         ),
       ),

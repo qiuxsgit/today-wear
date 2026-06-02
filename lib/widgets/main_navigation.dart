@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:today_wear/l10n/app_localizations.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_theme_tokens.dart';
 
 /// 浮动胶囊式底部导航栏
 ///
@@ -20,8 +21,8 @@ class MainNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final brightness = Theme.of(context).brightness;
-    final surface = AppColors.getWarmSurface(brightness);
+    final tt = context.tt;
+    final surface = tt.surface;
 
     final items = [
       (Icons.home_outlined, Icons.home, l10n.home),
@@ -85,9 +86,9 @@ class _NavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final brightness = Theme.of(context).brightness;
-    final ink = AppColors.getWarmInk(brightness);
-    final muted = AppColors.getWarmMuted(brightness);
+    final tt = context.tt;
+    final ink = tt.ink;
+    final muted = tt.muted;
 
     return Expanded(
       child: GestureDetector(

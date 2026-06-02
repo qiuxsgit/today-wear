@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_text_style.dart';
+import '../theme/app_theme_tokens.dart';
 
 /// 首页顶部标题栏：日期眉题 + 主标题 + 新增按钮
 class HomeTopBar extends StatelessWidget {
@@ -15,10 +16,10 @@ class HomeTopBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final brightness = Theme.of(context).brightness;
-    final ink = AppColors.getWarmInk(brightness);
-    final surface = AppColors.getWarmSurface(brightness);
-    final line = AppColors.getWarmLine(brightness);
+    final tt = context.tt;
+    final ink = tt.ink;
+    final surface = tt.surface;
+    final line = tt.line;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(18, 14, 18, 0),
@@ -31,9 +32,7 @@ class HomeTopBar extends StatelessWidget {
               children: [
                 Text(
                   _weekdayLabel(DateTime.now()),
-                  style: AppTextStyle.eyebrow.copyWith(
-                    color: AppColors.getWarmMuted(brightness),
-                  ),
+                  style: AppTextStyle.eyebrow.copyWith(color: tt.muted),
                 ),
                 const SizedBox(height: 3),
                 Text(
@@ -84,11 +83,11 @@ class _HomeFilterChipsState extends State<HomeFilterChips> {
 
   @override
   Widget build(BuildContext context) {
-    final brightness = Theme.of(context).brightness;
-    final ink = AppColors.getWarmInk(brightness);
-    final surface = AppColors.getWarmSurface(brightness);
-    final line = AppColors.getWarmLine(brightness);
-    final muted = AppColors.getWarmMuted(brightness);
+    final tt = context.tt;
+    final ink = tt.ink;
+    final surface = tt.surface;
+    final line = tt.line;
+    final muted = tt.muted;
 
     return Padding(
       padding: const EdgeInsets.only(top: 14, bottom: 14),

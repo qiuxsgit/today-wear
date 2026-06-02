@@ -5,6 +5,7 @@ import '../repositories/outfit_repository.dart';
 import '../models/outfit.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_text_style.dart';
+import '../theme/app_theme_tokens.dart';
 import '../widgets/calendar_month_card.dart';
 import '../widgets/outfit_record_card.dart';
 import '../services/image_service.dart';
@@ -132,11 +133,11 @@ class _CalendarPageState extends State<CalendarPage> {
 
   @override
   Widget build(BuildContext context) {
-    final brightness = Theme.of(context).brightness;
-    final ink = AppColors.getWarmInk(brightness);
-    final muted = AppColors.getWarmMuted(brightness);
-    final page = AppColors.getWarmPage(brightness);
-    final surface = AppColors.getWarmSurface(brightness);
+    final tt = context.tt;
+    final ink = tt.ink;
+    final muted = tt.muted;
+    final page = tt.page;
+    final surface = tt.surface;
 
     final topTags = _monthlyTagStats.entries.take(3).toList();
     final maxCount = topTags.isEmpty ? 1 : topTags.first.value;
@@ -174,7 +175,7 @@ class _CalendarPageState extends State<CalendarPage> {
                             decoration: BoxDecoration(
                               color: surface,
                               shape: BoxShape.circle,
-                              border: Border.all(color: AppColors.getWarmLine(brightness)),
+                              border: Border.all(color: tt.line),
                             ),
                             child: Icon(Icons.ios_share_outlined, size: 18, color: muted),
                           ),
@@ -211,7 +212,6 @@ class _CalendarPageState extends State<CalendarPage> {
                             child: _StatBox(
                               value: '$_recordedDaysCount',
                               label: '已記錄天數',
-                              brightness: brightness,
                             ),
                           ),
                           const SizedBox(width: 10),
@@ -219,7 +219,6 @@ class _CalendarPageState extends State<CalendarPage> {
                             child: _StatBox(
                               value: '$_uniqueTagsCount',
                               label: '常用標籤數',
-                              brightness: brightness,
                             ),
                           ),
                         ],
@@ -253,7 +252,6 @@ class _CalendarPageState extends State<CalendarPage> {
                             count: count,
                             score: score,
                             photoPath: _tagFirstPhoto[tag],
-                            brightness: brightness,
                           );
                         },
                       ),
@@ -271,24 +269,24 @@ class _CalendarPageState extends State<CalendarPage> {
 class _StatBox extends StatelessWidget {
   final String value;
   final String label;
-  final Brightness brightness;
-  const _StatBox({required this.value, required this.label, required this.brightness});
+  const _StatBox({required this.value, required this.label});
 
   @override
   Widget build(BuildContext context) {
+    final tt = context.tt;
     return Container(
       padding: const EdgeInsets.all(13),
       decoration: BoxDecoration(
-        color: AppColors.getWarmSurface(brightness),
+        color: tt.surface,
         borderRadius: BorderRadius.circular(20),
         boxShadow: const [BoxShadow(color: Color(0x0F554230), blurRadius: 18, offset: Offset(0, 8))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(value, style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: AppColors.getWarmInk(brightness))),
+          Text(value, style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: tt.ink)),
           const SizedBox(height: 4),
-          Text(label, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppColors.getWarmMuted(brightness))),
+          Text(label, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: tt.muted)),
         ],
       ),
     );
@@ -300,41 +298,40 @@ class _RankItem extends StatelessWidget {
   final int count;
   final int score;
   final String? photoPath;
-  final Brightness brightness;
   const _RankItem({
     required this.tagName,
     required this.count,
     required this.score,
     required this.photoPath,
-    required this.brightness,
   });
 
   @override
   Widget build(BuildContext context) {
+    final tt = context.tt;
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: AppColors.getWarmSurface(brightness),
+        color: tt.surface,
         borderRadius: BorderRadius.circular(18),
       ),
       child: Row(
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(14),
-            child: _MiniLook(photoPath: photoPath),
+            child: _MiniLook(photoPath: photoPath, accent: tt.accent),
           ),
           const SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(tagName, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.getWarmInk(brightness))),
+                Text(tagName, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: tt.ink)),
                 const SizedBox(height: 3),
-                Text('搭配 $count 次', style: TextStyle(fontSize: 11, color: AppColors.getWarmMuted(brightness))),
+                Text('搭配 $count 次', style: TextStyle(fontSize: 11, color: tt.muted)),
               ],
             ),
           ),
-          Text('$score', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: AppColors.warmClay)),
+          Text('$score', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: tt.accent)),
         ],
       ),
     );
@@ -343,29 +340,21 @@ class _RankItem extends StatelessWidget {
 
 class _MiniLook extends StatelessWidget {
   final String? photoPath;
-  const _MiniLook({this.photoPath});
+  final Color accent;
+  const _MiniLook({this.photoPath, required this.accent});
 
   @override
   Widget build(BuildContext context) {
+    final gradient = LinearGradient(colors: [accent, Color.lerp(accent, Colors.black, 0.35)!]);
     if (photoPath == null) {
-      return Container(
-        width: 42, height: 42,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(colors: [Color(0xFFC9AA95), Color(0xFF7A6154)]),
-        ),
-      );
+      return Container(width: 42, height: 42, decoration: BoxDecoration(gradient: gradient));
     }
     return FutureBuilder<File?>(
       future: ImageService.instance.getImageFile(photoPath!),
       builder: (_, snap) {
         final file = snap.data;
         if (file == null || !file.existsSync()) {
-          return Container(
-            width: 42, height: 42,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(colors: [Color(0xFFC9AA95), Color(0xFF7A6154)]),
-            ),
-          );
+          return Container(width: 42, height: 42, decoration: BoxDecoration(gradient: gradient));
         }
         return Image.file(file, width: 42, height: 42, fit: BoxFit.cover);
       },
@@ -388,10 +377,10 @@ class _DaySheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final brightness = Theme.of(context).brightness;
-    final surface = AppColors.getWarmSurface(brightness);
-    final ink = AppColors.getWarmInk(brightness);
-    final muted = AppColors.getWarmMuted(brightness);
+    final tt = context.tt;
+    final surface = tt.surface;
+    final ink = tt.ink;
+    final muted = tt.muted;
 
     return Container(
       constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.75),
@@ -403,7 +392,7 @@ class _DaySheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(height: 12),
-          Container(width: 36, height: 4, decoration: BoxDecoration(color: AppColors.getWarmLine(brightness), borderRadius: BorderRadius.circular(2))),
+          Container(width: 36, height: 4, decoration: BoxDecoration(color: tt.line, borderRadius: BorderRadius.circular(2))),
           const SizedBox(height: 16),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),

@@ -5,12 +5,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 enum ThemeModeType {
   /// 跟随系统
   system,
-  
+
   /// 浅色模式
   light,
-  
+
   /// 深色模式
   dark,
+}
+
+/// 主题色盘预设
+enum ThemePresetType {
+  softWardrobe,   // 柔和衣橱（默认）
+  matcha,         // 清爽自然
+  cityBlue,       // 利落现代
+  roseEditorial,  // 柔粉杂志
+  nightGallery,   // 夜间图库
 }
 
 /// 主题管理服务
@@ -26,17 +35,15 @@ class ThemeService extends ChangeNotifier {
   
   static ThemeService get instance => _instance;
   
-  /// SharedPreferences 键名
-  static const String _themeModeKey = 'theme_mode';
-  
-  /// 当前主题模式
-  ThemeModeType _currentMode = ThemeModeType.system;
-  
-  /// 系统当前亮度模式
+  static const String _themeModeKey   = 'theme_mode';
+  static const String _themePresetKey = 'theme_preset';
+
+  ThemeModeType   _currentMode   = ThemeModeType.system;
+  ThemePresetType _currentPreset = ThemePresetType.softWardrobe;
   Brightness _systemBrightness = Brightness.light;
   
-  /// 获取当前主题模式
-  ThemeModeType get currentMode => _currentMode;
+  ThemeModeType   get currentMode   => _currentMode;
+  ThemePresetType get currentPreset => _currentPreset;
   
   /// 获取系统亮度模式
   Brightness get systemBrightness => _systemBrightness;
@@ -61,23 +68,31 @@ class ThemeService extends ChangeNotifier {
     }
   }
   
-  /// 初始化主题服务
   Future<void> init() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final modeIndex = prefs.getInt(_themeModeKey) ?? ThemeModeType.system.index;
-      _currentMode = ThemeModeType.values[modeIndex];
+      final modeIndex   = prefs.getInt(_themeModeKey)   ?? ThemeModeType.system.index;
+      final presetIndex = prefs.getInt(_themePresetKey) ?? ThemePresetType.softWardrobe.index;
+      _currentMode   = ThemeModeType.values[modeIndex];
+      _currentPreset = ThemePresetType.values[presetIndex];
       notifyListeners();
     } catch (e) {
       debugPrint('ThemeService init error: $e');
     }
   }
   
-  /// 设置主题模式
   Future<void> setThemeMode(ThemeModeType mode) async {
     if (_currentMode != mode) {
       _currentMode = mode;
       await _saveThemeMode();
+      notifyListeners();
+    }
+  }
+
+  Future<void> setPreset(ThemePresetType preset) async {
+    if (_currentPreset != preset) {
+      _currentPreset = preset;
+      await _savePreset();
       notifyListeners();
     }
   }
@@ -101,13 +116,21 @@ class ThemeService extends ChangeNotifier {
     }
   }
   
-  /// 保存主题模式到本地存储
   Future<void> _saveThemeMode() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setInt(_themeModeKey, _currentMode.index);
     } catch (e) {
       debugPrint('ThemeService save error: $e');
+    }
+  }
+
+  Future<void> _savePreset() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setInt(_themePresetKey, _currentPreset.index);
+    } catch (e) {
+      debugPrint('ThemeService save preset error: $e');
     }
   }
   
@@ -123,15 +146,31 @@ class ThemeService extends ChangeNotifier {
     }
   }
   
-  /// 获取主题模式图标
   static IconData getModeIcon(ThemeModeType mode) {
     switch (mode) {
-      case ThemeModeType.system:
-        return Icons.brightness_auto;
-      case ThemeModeType.light:
-        return Icons.light_mode;
-      case ThemeModeType.dark:
-        return Icons.dark_mode;
+      case ThemeModeType.system: return Icons.brightness_auto;
+      case ThemeModeType.light:  return Icons.wb_sunny_outlined;
+      case ThemeModeType.dark:   return Icons.dark_mode_outlined;
+    }
+  }
+
+  static String getPresetName(ThemePresetType preset) {
+    switch (preset) {
+      case ThemePresetType.softWardrobe:  return 'Soft Wardrobe';
+      case ThemePresetType.matcha:        return 'Matcha Minimal';
+      case ThemePresetType.cityBlue:      return 'City Blue';
+      case ThemePresetType.roseEditorial: return 'Rose Editorial';
+      case ThemePresetType.nightGallery:  return 'Night Gallery';
+    }
+  }
+
+  static String getPresetDesc(ThemePresetType preset) {
+    switch (preset) {
+      case ThemePresetType.softWardrobe:  return '柔和衣橱 · 預設';
+      case ThemePresetType.matcha:        return '清爽自然 · 日常通勤';
+      case ThemePresetType.cityBlue:      return '利落現代 · 統計日曆';
+      case ThemePresetType.roseEditorial: return '柔粉雜誌 · 漂亮但克制';
+      case ThemePresetType.nightGallery:  return '夜間圖庫 · 沉浸瀏覽';
     }
   }
 }
