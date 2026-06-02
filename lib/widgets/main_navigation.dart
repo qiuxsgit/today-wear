@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:today_wear/l10n/app_localizations.dart';
-import '../theme/app_colors.dart';
 import '../theme/app_theme_tokens.dart';
 
 /// 浮动胶囊式底部导航栏

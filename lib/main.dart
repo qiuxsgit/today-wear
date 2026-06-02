@@ -9,7 +9,6 @@ import 'screens/add_outfit_page.dart';
 import 'screens/calendar_page.dart';
 import 'screens/statistics_page.dart';
 import 'screens/profile_page.dart';
-import 'theme/app_colors.dart';
 import 'theme/app_theme_tokens.dart';
 import 'widgets/main_navigation.dart';
 import 'services/locale_service.dart';

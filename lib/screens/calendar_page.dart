@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../database/database.dart';
 import '../repositories/outfit_repository.dart';
 import '../models/outfit.dart';
-import '../theme/app_colors.dart';
 import '../theme/app_text_style.dart';
 import '../theme/app_theme_tokens.dart';
 import '../widgets/calendar_month_card.dart';

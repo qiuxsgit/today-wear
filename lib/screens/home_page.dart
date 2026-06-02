@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:today_wear/l10n/app_localizations.dart';
 import '../models/outfit.dart';
-import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import '../widgets/waterfall_outfit_card.dart';
 import '../widgets/home_topbar.dart';

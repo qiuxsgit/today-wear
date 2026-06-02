@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import '../theme/app_colors.dart';
 import '../theme/app_theme_tokens.dart';
 
 /// 日历月视图卡片 — 暖色风格
