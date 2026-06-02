@@ -15,7 +15,11 @@ class LanguageSelectionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final localeService = LocaleServiceProvider.of(context);
-    final currentLocale = localeService?.currentLocale;
+    // 若用户尚未手动选择语言，回退到系统语言，确保列表中有勾选项
+    final currentLocale = localeService?.currentLocale ??
+        LocaleService.getSystemLocale(
+          WidgetsBinding.instance.platformDispatcher.locales,
+        );
 
     return Scaffold(
       backgroundColor: AppColors.warmPage,
@@ -40,8 +44,8 @@ class LanguageSelectionPage extends StatelessWidget {
           separatorBuilder: (context, index) => const SizedBox(height: AppSpacing.xs),
           itemBuilder: (context, index) {
             final locale = LocaleService.supportedLocales[index];
-            final isSelected = currentLocale?.languageCode == locale.languageCode &&
-                currentLocale?.countryCode == locale.countryCode;
+            final isSelected = currentLocale.languageCode == locale.languageCode &&
+                currentLocale.countryCode == locale.countryCode;
 
             String languageName;
             switch (locale.languageCode) {
