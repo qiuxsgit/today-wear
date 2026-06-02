@@ -202,4 +202,91 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get nicknameField => 'Nickname';
+
+  @override String get navCalendar => 'Calendar';
+  @override String get navAdd => 'Add';
+  @override String get navStats => 'Stats';
+
+  @override String get homeAppTitle => "Today's Outfit";
+  @override String homeDateLabel(int weekday, int month, int day) {
+    const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return '${days[weekday - 1]}, ${months[month - 1]} $day';
+  }
+  @override String get filterAll => 'All';
+  @override String get filterCommute => 'Commute';
+  @override String get filterDate => 'Date';
+  @override String get filterRainy => 'Rainy';
+  @override String get filterCasual => 'Casual';
+
+  @override String calendarMonthName(int month) {
+    const names = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    return names[month - 1];
+  }
+  @override String get calendarWardrobeReview => 'Wardrobe review';
+  @override String calendarMonthTitle(int month) => '${calendarMonthName(month)} Review';
+  @override String get calendarRecordedDays => 'Recorded Days';
+  @override String get calendarUniqueTags => 'Tags Used';
+  @override String get calendarTopOutfits => 'Most Worn';
+  @override String calendarTagUsedCount(int count) => 'Worn $count time${count == 1 ? '' : 's'}';
+  @override String calendarDaySheetTitle(int month, int day) => '$month/$day Outfits';
+  @override String get calendarNoDayOutfits => 'No outfits recorded for this day';
+
+  @override String get addOutfitTitle => 'New Outfit';
+  @override String get addOutfitHeroEyebrow => "Today's look";
+  @override String get addOutfitHeroText => 'Photos first,\nthen add some notes';
+  @override String get addOutfitPhotosSection => 'Photos';
+  @override String get addOutfitDragHint => 'Long press to reorder';
+  @override String get addOutfitAddPhotoBtn => 'Add Photo';
+  @override String get addOutfitTagsSection => 'Tags';
+  @override String get addOutfitNoTagsHint => 'No tags available';
+  @override String get addOutfitSelectedTagsLabel => 'Selected Tags';
+  @override String get addOutfitNewTagSection => 'New Tag';
+  @override String get addOutfitTagInputHint => 'Tag name';
+  @override String get addOutfitAddTagBtn => 'Add';
+  @override String get addOutfitDescSection => 'Notes';
+  @override String get addOutfitDescHint => 'Describe your outfit...';
+  @override String get addOutfitSaveBtn => "Save Today's Outfit";
+  @override String get addOutfitSaveEditBtn => 'Save Changes';
+  @override String get addOutfitFromGallery => 'From Gallery';
+  @override String get addOutfitTakePhotoOption => 'Take Photo';
+  @override String errLoadData(String e) => 'Failed to load data: $e';
+  @override String errLoadTags(String e) => 'Failed to load tags: $e';
+  @override String warnImageLimit(int max) => 'Max $max photos allowed';
+  @override String warnImageLimitExceeded(int max, int kept) => 'Max $max photos, kept first $kept';
+  @override String errSelectImage(String e) => 'Failed to select image: $e';
+  @override String errTakePhoto(String e) => 'Failed to take photo: $e';
+  @override String get warnTagAlreadyExists => 'Tag already exists';
+  @override String get warnSelectAtLeastOneImage => 'Please select at least one photo';
+  @override String get warnEnterDescription => 'Please enter a description';
+  @override String get successOutfitSaved => 'Saved successfully';
+  @override String errSaveOutfit(String e) => 'Failed to save: $e';
+
+  @override String get statsPageTitle => 'Stats';
+  @override String get statsRefreshTooltip => 'Refresh';
+  @override String get statsTotal => 'Total';
+  @override String get statsMonthly => 'This Month';
+  @override String get statsWeekly => 'This Week';
+  @override String get statsTip => 'Tip';
+  @override String get statsKeepRecording => 'Keep it up!';
+  @override String get statsTagFrequency => 'Tag Frequency';
+  @override String get statsMonthlyTrend => 'Monthly Trend';
+  @override String get statsNoTagData => 'No tag data';
+
+  @override String get editOutfitTooltip => 'Edit';
+
+  @override String get themeModeLight => 'Light';
+  @override String get themeModeAuto => 'Auto';
+  @override String get themeModeDark => 'Dark';
+  @override String get appearanceTitle => 'Appearance';
+  @override String get appearanceDisplayMode => 'Display Mode';
+  @override String get appearanceColorPalette => 'Color Palette';
+  @override String get presetDescSoftWardrobe => 'Soft & warm · Default';
+  @override String get presetDescMatcha => 'Fresh & natural · Daily';
+  @override String get presetDescCityBlue => 'Clean & modern · Urban';
+  @override String get presetDescRose => 'Rose editorial · Elegant';
+  @override String get presetDescNightGallery => 'Night gallery · Immersive';
+  @override String get themeModeNameSystem => 'System';
+  @override String get themeModeNameLight => 'Light Mode';
+  @override String get themeModeNameDark => 'Dark Mode';
 }

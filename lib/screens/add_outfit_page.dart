@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
+import 'package:today_wear/l10n/app_localizations.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_text_style.dart';
 import '../database/database.dart';
@@ -35,6 +36,7 @@ class AddOutfitPage extends StatefulWidget {
 class AddOutfitPageState extends State<AddOutfitPage> {
   late final OutfitRepository _repository;
   late final AppDatabase _db;
+  AppLocalizations get _l10n => AppLocalizations.of(context)!;
   final _descriptionController = TextEditingController();
   final _tagController = TextEditingController();
   final ImagePicker _imagePicker = ImagePicker();
@@ -117,7 +119,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
       setState(() {
         _isLoadingExistingData = false;
       });
-      AppToast.error('加载数据失败：$e');
+      AppToast.error(_l10n.errLoadData(e.toString()));
     }
   }
   
@@ -133,7 +135,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
       setState(() {
         _isLoadingTags = false;
       });
-      AppToast.error('加载标签失败：$e');
+      AppToast.error(_l10n.errLoadTags(e.toString()));
     }
   }
   
@@ -142,7 +144,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
     try {
       // 检查是否已达到最大数量
       if (_selectedImageRefs.length >= maxImages) {
-        AppToast.warning('最多只能选择 $maxImages 张图片');
+        AppToast.warning(_l10n.warnImageLimit(maxImages));
         return;
       }
 
@@ -164,7 +166,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
         
         if (images.length > remainingSlots) {
           images = images.take(remainingSlots).toList();
-          AppToast.warning('最多只能选择 $maxImages 张图片，已保留前 $remainingSlots 张');
+          AppToast.warning(_l10n.warnImageLimitExceeded(maxImages, remainingSlots));
         }
         
         setState(() {
@@ -178,7 +180,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
         });
       }
     } catch (e) {
-      AppToast.error('选择图片失败：$e');
+      AppToast.error(_l10n.errSelectImage(e.toString()));
     }
   }
   
@@ -186,7 +188,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
   Future<void> _takePhoto() async {
     try {
       if (_selectedImageRefs.length >= maxImages) {
-        AppToast.warning('最多只能选择 $maxImages 张图片');
+        AppToast.warning(_l10n.warnImageLimit(maxImages));
         return;
       }
 
@@ -201,7 +203,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
         });
       }
     } catch (e) {
-      AppToast.error('拍照失败：$e');
+      AppToast.error(_l10n.errTakePhoto(e.toString()));
     }
   }
   
@@ -221,7 +223,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
           children: [
             ListTile(
               leading: const Icon(Icons.photo_library),
-              title: const Text('从相册选择'),
+              title: Text(_l10n.addOutfitFromGallery),
               onTap: () {
                 Navigator.pop(context);
                 _pickImagesFromGallery();
@@ -229,7 +231,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
             ),
             ListTile(
               leading: const Icon(Icons.camera_alt),
-              title: const Text('拍照'),
+              title: Text(_l10n.addOutfitTakePhotoOption),
               onTap: () {
                 Navigator.pop(context);
                 _takePhoto();
@@ -299,7 +301,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
     
     if (_selectedTags.contains(tag)) {
       _tagController.clear();
-      AppToast.warning('标签已存在');
+      AppToast.warning(_l10n.warnTagAlreadyExists);
       return;
     }
     
@@ -321,14 +323,14 @@ class AddOutfitPageState extends State<AddOutfitPage> {
     // 验证图片
     if (_selectedImageRefs.isEmpty) {
       if (!mounted) return;
-      AppToast.warning('请至少选择一张图片');
+      AppToast.warning(_l10n.warnSelectAtLeastOneImage);
       return;
     }
     
     // 验证备注
     if (_descriptionController.text.trim().isEmpty) {
       if (!mounted) return;
-      AppToast.warning('请输入备注');
+      AppToast.warning(_l10n.warnEnterDescription);
       return;
     }
     
@@ -347,7 +349,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
       
       if (!mounted) return;
 
-      AppToast.success('保存成功');
+      AppToast.success(_l10n.successOutfitSaved);
       await Future.delayed(const Duration(milliseconds: 1200));
 
       if (!mounted) return;
@@ -359,7 +361,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
       }
     } catch (e) {
       if (!mounted) return;
-      AppToast.error('保存失败：$e');
+      AppToast.error(_l10n.errSaveOutfit(e.toString()));
     } finally {
       if (mounted) {
         setState(() {
@@ -566,7 +568,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
                           ),
                         )
                       : Text(
-                          _isEditMode ? '保存修改' : '保存今日穿搭',
+                          _isEditMode ? _l10n.addOutfitSaveEditBtn : _l10n.addOutfitSaveBtn,
                           style: const TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w700,
@@ -591,10 +593,10 @@ class AddOutfitPageState extends State<AddOutfitPage> {
             icon: Icons.arrow_back_ios_new,
             onTap: () => Navigator.of(context).pop(),
           ),
-          const Expanded(
+          Expanded(
             child: Center(
               child: Text(
-                '新增穿搭',
+                _l10n.addOutfitTitle,
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: AppColors.warmInk),
               ),
             ),
@@ -625,10 +627,10 @@ class AddOutfitPageState extends State<AddOutfitPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('今天的搭配', style: AppTextStyle.eyebrow),
+                Text(_l10n.addOutfitHeroEyebrow, style: AppTextStyle.eyebrow),
                 const SizedBox(height: 8),
-                const Text(
-                  '先放照片，\n再補一點感覺',
+                Text(
+                  _l10n.addOutfitHeroText,
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: AppColors.warmInk, height: 1.3),
                 ),
               ],
@@ -668,12 +670,12 @@ class AddOutfitPageState extends State<AddOutfitPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              '选择图片',
+              _l10n.addOutfitPhotosSection,
               style: AppTextStyle.title,
             ),
             if (_selectedImageRefs.length > 1)
               Text(
-                '长按拖拽排序',
+                _l10n.addOutfitDragHint,
                 style: AppTextStyle.hint.copyWith(fontSize: 12),
               ),
           ],
@@ -709,7 +711,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
                       const Icon(Icons.add, size: 32, color: AppColors.warmMuted),
                       const SizedBox(height: 4),
                       Text(
-                        '添加图片',
+                        _l10n.addOutfitAddPhotoBtn,
                         style: AppTextStyle.body.copyWith(fontSize: 12, color: AppColors.warmMuted),
                       ),
                     ],
@@ -819,7 +821,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '选择标签',
+          _l10n.addOutfitTagsSection,
           style: AppTextStyle.title,
         ),
         const SizedBox(height: 12),
@@ -834,7 +836,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
-              '暂无可用标签',
+              _l10n.addOutfitNoTagsHint,
               style: AppTextStyle.hint,
             ),
           )
@@ -860,7 +862,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
         const SizedBox(height: 16),
         if (_selectedTags.isNotEmpty) ...[
           Text(
-            '已选标签',
+            _l10n.addOutfitSelectedTagsLabel,
             style: AppTextStyle.body.copyWith(
               fontWeight: FontWeight.w600,
             ),
@@ -889,7 +891,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '添加新标签',
+          _l10n.addOutfitNewTagSection,
           style: AppTextStyle.title,
         ),
         const SizedBox(height: 12),
@@ -901,7 +903,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
                 enabled: true,
                 autofocus: false,
                 decoration: InputDecoration(
-                  hintText: '输入标签名称',
+                  hintText: _l10n.addOutfitTagInputHint,
                   hintStyle: AppTextStyle.hint,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
@@ -924,7 +926,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
                 foregroundColor: const Color(0xFFFFFAF4),
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               ),
-              child: const Text('添加'),
+              child: Text(_l10n.addOutfitAddTagBtn),
             ),
           ],
         ),
@@ -938,7 +940,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '备注',
+          _l10n.addOutfitDescSection,
           style: AppTextStyle.title,
         ),
         const SizedBox(height: 12),
@@ -947,7 +949,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
           enabled: true,
           autofocus: false,
           decoration: InputDecoration(
-            hintText: '输入穿搭描述...',
+            hintText: _l10n.addOutfitDescHint,
             hintStyle: AppTextStyle.hint,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),

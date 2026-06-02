@@ -475,6 +475,93 @@ abstract class AppLocalizations {
   /// In zh_CN, this message translates to:
   /// **'昵称'**
   String get nicknameField;
+
+  // ── Navigation ──
+  String get navCalendar;
+  String get navAdd;
+  String get navStats;
+
+  // ── Home ──
+  String get homeAppTitle;
+  String homeDateLabel(int weekday, int month, int day);
+  String get filterAll;
+  String get filterCommute;
+  String get filterDate;
+  String get filterRainy;
+  String get filterCasual;
+
+  // ── Calendar ──
+  String calendarMonthName(int month);
+  String get calendarWardrobeReview;
+  String calendarMonthTitle(int month);
+  String get calendarRecordedDays;
+  String get calendarUniqueTags;
+  String get calendarTopOutfits;
+  String calendarTagUsedCount(int count);
+  String calendarDaySheetTitle(int month, int day);
+  String get calendarNoDayOutfits;
+
+  // ── Add Outfit ──
+  String get addOutfitTitle;
+  String get addOutfitHeroEyebrow;
+  String get addOutfitHeroText;
+  String get addOutfitPhotosSection;
+  String get addOutfitDragHint;
+  String get addOutfitAddPhotoBtn;
+  String get addOutfitTagsSection;
+  String get addOutfitNoTagsHint;
+  String get addOutfitSelectedTagsLabel;
+  String get addOutfitNewTagSection;
+  String get addOutfitTagInputHint;
+  String get addOutfitAddTagBtn;
+  String get addOutfitDescSection;
+  String get addOutfitDescHint;
+  String get addOutfitSaveBtn;
+  String get addOutfitSaveEditBtn;
+  String get addOutfitFromGallery;
+  String get addOutfitTakePhotoOption;
+  String errLoadData(String e);
+  String errLoadTags(String e);
+  String warnImageLimit(int max);
+  String warnImageLimitExceeded(int max, int kept);
+  String errSelectImage(String e);
+  String errTakePhoto(String e);
+  String get warnTagAlreadyExists;
+  String get warnSelectAtLeastOneImage;
+  String get warnEnterDescription;
+  String get successOutfitSaved;
+  String errSaveOutfit(String e);
+
+  // ── Statistics ──
+  String get statsPageTitle;
+  String get statsRefreshTooltip;
+  String get statsTotal;
+  String get statsMonthly;
+  String get statsWeekly;
+  String get statsTip;
+  String get statsKeepRecording;
+  String get statsTagFrequency;
+  String get statsMonthlyTrend;
+  String get statsNoTagData;
+
+  // ── Outfit Detail ──
+  String get editOutfitTooltip;
+
+  // ── Theme ──
+  String get themeModeLight;
+  String get themeModeAuto;
+  String get themeModeDark;
+  String get appearanceTitle;
+  String get appearanceDisplayMode;
+  String get appearanceColorPalette;
+  String get presetDescSoftWardrobe;
+  String get presetDescMatcha;
+  String get presetDescCityBlue;
+  String get presetDescRose;
+  String get presetDescNightGallery;
+  String get themeModeNameSystem;
+  String get themeModeNameLight;
+  String get themeModeNameDark;
 }
 
 class _AppLocalizationsDelegate

@@ -25,9 +25,9 @@ class MainNavigation extends StatelessWidget {
 
     final items = [
       (Icons.home_outlined, Icons.home, l10n.home),
-      (Icons.calendar_today_outlined, Icons.calendar_today, '日曆'),
-      (Icons.add, Icons.add, '新增'),
-      (Icons.bar_chart_outlined, Icons.bar_chart, '統計'),
+      (Icons.calendar_today_outlined, Icons.calendar_today, l10n.navCalendar),
+      (Icons.add, Icons.add, l10n.navAdd),
+      (Icons.bar_chart_outlined, Icons.bar_chart, l10n.navStats),
       (Icons.person_outline, Icons.person, l10n.profile),
     ];
 

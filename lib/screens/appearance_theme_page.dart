@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:today_wear/l10n/app_localizations.dart';
 import '../services/theme_service.dart';
 import '../theme/app_theme_tokens.dart';
 import '../theme/app_text_style.dart';
@@ -84,6 +85,7 @@ class _AppearanceThemePageState extends State<AppearanceThemePage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final tt = context.tt;
     final ink = tt.ink;
     final muted = tt.muted;
@@ -108,7 +110,7 @@ class _AppearanceThemePageState extends State<AppearanceThemePage> {
                   Expanded(
                     child: Center(
                       child: Text(
-                        '外觀主題',
+                        l10n.appearanceTitle,
                         style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: ink),
                       ),
                     ),
@@ -130,7 +132,7 @@ class _AppearanceThemePageState extends State<AppearanceThemePage> {
                   children: [
                     // 顯示模式
                     Text(
-                      '顯示模式',
+                      l10n.appearanceDisplayMode,
                       style: AppTextStyle.eyebrow.copyWith(color: muted),
                     ),
                     const SizedBox(height: 10),
@@ -148,7 +150,7 @@ class _AppearanceThemePageState extends State<AppearanceThemePage> {
 
                     // 主題色盤
                     Text(
-                      '主題色盤',
+                      l10n.appearanceColorPalette,
                       style: AppTextStyle.eyebrow.copyWith(color: muted),
                     ),
                     const SizedBox(height: 10),
@@ -175,6 +177,16 @@ class _AppearanceThemePageState extends State<AppearanceThemePage> {
         ),
       ),
     );
+  }
+}
+
+String _presetDesc(AppLocalizations l10n, ThemePresetType preset) {
+  switch (preset) {
+    case ThemePresetType.softWardrobe:  return l10n.presetDescSoftWardrobe;
+    case ThemePresetType.matcha:        return l10n.presetDescMatcha;
+    case ThemePresetType.cityBlue:      return l10n.presetDescCityBlue;
+    case ThemePresetType.roseEditorial: return l10n.presetDescRose;
+    case ThemePresetType.nightGallery:  return l10n.presetDescNightGallery;
   }
 }
 
@@ -246,7 +258,7 @@ class _ThemeRow extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    ThemeService.getPresetDesc(preset),
+                    _presetDesc(AppLocalizations.of(context)!, preset),
                     style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500, color: tt.muted),
                   ),
                 ],

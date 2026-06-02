@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:today_wear/l10n/app_localizations.dart';
 import '../services/theme_service.dart';
 import '../theme/app_theme_tokens.dart';
 
@@ -37,15 +38,15 @@ class _ThemeModeSelectorState extends State<ThemeModeSelector> {
     ThemeService.instance.setThemeMode(mode);
   }
 
-  static const _segments = [
-    (ThemeModeType.light,  Icons.wb_sunny_outlined, '淺色'),
-    (ThemeModeType.system, Icons.brightness_auto,   '自動'),
-    (ThemeModeType.dark,   Icons.dark_mode_outlined, '深色'),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final mist = context.tt.mist;
+    final segments = [
+      (ThemeModeType.light,  Icons.wb_sunny_outlined,  l10n.themeModeLight),
+      (ThemeModeType.system, Icons.brightness_auto,     l10n.themeModeAuto),
+      (ThemeModeType.dark,   Icons.dark_mode_outlined,  l10n.themeModeDark),
+    ];
 
     return Container(
       padding: const EdgeInsets.all(4),
@@ -54,7 +55,7 @@ class _ThemeModeSelectorState extends State<ThemeModeSelector> {
         borderRadius: BorderRadius.circular(999),
       ),
       child: Row(
-        children: _segments.map((seg) {
+        children: segments.map((seg) {
           final (type, icon, label) = seg;
           final isActive = _mode == type;
           return Expanded(

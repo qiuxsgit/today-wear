@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../database/database.dart';
 import '../repositories/outfit_repository.dart';
 import '../models/outfit.dart';
+import 'package:today_wear/l10n/app_localizations.dart';
 import '../theme/app_text_style.dart';
 import '../theme/app_theme_tokens.dart';
 import '../widgets/calendar_month_card.dart';
@@ -128,10 +129,10 @@ class _CalendarPageState extends State<CalendarPage> {
     );
   }
 
-  static const _monthNames = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final tt = context.tt;
     final ink = tt.ink;
     final muted = tt.muted;
@@ -159,10 +160,10 @@ class _CalendarPageState extends State<CalendarPage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Wardrobe review', style: AppTextStyle.eyebrow.copyWith(color: muted)),
+                                Text(l10n.calendarWardrobeReview, style: AppTextStyle.eyebrow.copyWith(color: muted)),
                                 const SizedBox(height: 3),
                                 Text(
-                                  '${_monthNames[_focusedMonth.month - 1]}回顧',
+                                  l10n.calendarMonthTitle(_focusedMonth.month),
                                   style: AppTextStyle.displayTitle.copyWith(color: ink),
                                 ),
                               ],
@@ -210,14 +211,14 @@ class _CalendarPageState extends State<CalendarPage> {
                           Expanded(
                             child: _StatBox(
                               value: '$_recordedDaysCount',
-                              label: '已記錄天數',
+                              label: l10n.calendarRecordedDays,
                             ),
                           ),
                           const SizedBox(width: 10),
                           Expanded(
                             child: _StatBox(
                               value: '$_uniqueTagsCount',
-                              label: '常用標籤數',
+                              label: l10n.calendarUniqueTags,
                             ),
                           ),
                         ],
@@ -232,7 +233,7 @@ class _CalendarPageState extends State<CalendarPage> {
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(16, 0, 16, 9),
                         child: Text(
-                          '本月最常穿',
+                          l10n.calendarTopOutfits,
                           style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: ink),
                         ),
                       ),
@@ -306,6 +307,7 @@ class _RankItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final tt = context.tt;
     return Container(
       padding: const EdgeInsets.all(10),
@@ -326,7 +328,7 @@ class _RankItem extends StatelessWidget {
               children: [
                 Text(tagName, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: tt.ink)),
                 const SizedBox(height: 3),
-                Text('搭配 $count 次', style: TextStyle(fontSize: 11, color: tt.muted)),
+                Text(l10n.calendarTagUsedCount(count), style: TextStyle(fontSize: 11, color: tt.muted)),
               ],
             ),
           ),
@@ -376,6 +378,7 @@ class _DaySheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final tt = context.tt;
     final surface = tt.surface;
     final ink = tt.ink;
@@ -398,14 +401,14 @@ class _DaySheet extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('${day.month}月${day.day}日穿搭', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: ink)),
+                Text(l10n.calendarDaySheetTitle(day.month, day.day), style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: ink)),
                 if (outfits.isEmpty)
                   GestureDetector(
                     onTap: onAddTap,
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(color: ink, borderRadius: BorderRadius.circular(999)),
-                      child: Text('新增', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: surface)),
+                      child: Text(l10n.navAdd, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: surface)),
                     ),
                   ),
               ],
@@ -415,7 +418,7 @@ class _DaySheet extends StatelessWidget {
           if (outfits.isEmpty)
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
-              child: Text('這天還沒有穿搭記錄', style: TextStyle(color: muted)),
+              child: Text(l10n.calendarNoDayOutfits, style: TextStyle(color: muted)),
             )
           else
             Flexible(

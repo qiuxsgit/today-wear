@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:today_wear/l10n/app_localizations.dart';
 import '../theme/app_text_style.dart';
 import '../theme/app_theme_tokens.dart';
 
@@ -8,17 +9,11 @@ class HomeTopBar extends StatelessWidget {
 
   const HomeTopBar({super.key, this.onAdd});
 
-  String _weekdayLabel(DateTime date) {
-    const days = ['一', '二', '三', '四', '五', '六', '日'];
-    return '週${days[date.weekday - 1]}，${date.month}月${date.day}日';
-  }
-
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final tt = context.tt;
-    final ink = tt.ink;
-    final surface = tt.surface;
-    final line = tt.line;
+    final now = DateTime.now();
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(18, 14, 18, 0),
@@ -30,13 +25,13 @@ class HomeTopBar extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  _weekdayLabel(DateTime.now()),
+                  l10n.homeDateLabel(now.weekday, now.month, now.day),
                   style: AppTextStyle.eyebrow.copyWith(color: tt.muted),
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  '今日穿什麼',
-                  style: AppTextStyle.displayTitle.copyWith(color: ink),
+                  l10n.homeAppTitle,
+                  style: AppTextStyle.displayTitle.copyWith(color: tt.ink),
                 ),
               ],
             ),
@@ -47,18 +42,14 @@ class HomeTopBar extends StatelessWidget {
               width: 42,
               height: 42,
               decoration: BoxDecoration(
-                color: surface,
+                color: tt.surface,
                 shape: BoxShape.circle,
-                border: Border.all(color: line),
+                border: Border.all(color: tt.line),
                 boxShadow: const [
-                  BoxShadow(
-                    color: Color(0x14554230),
-                    blurRadius: 18,
-                    offset: Offset(0, 8),
-                  ),
+                  BoxShadow(color: Color(0x14554230), blurRadius: 18, offset: Offset(0, 8)),
                 ],
               ),
-              child: Icon(Icons.add, size: 20, color: ink),
+              child: Icon(Icons.add, size: 20, color: tt.ink),
             ),
           ),
         ],
@@ -67,7 +58,7 @@ class HomeTopBar extends StatelessWidget {
   }
 }
 
-/// 首页标签筛选栏（视觉效果，暂不过滤数据）
+/// 首页标签筛选栏
 class HomeFilterChips extends StatefulWidget {
   const HomeFilterChips({super.key});
 
@@ -76,17 +67,19 @@ class HomeFilterChips extends StatefulWidget {
 }
 
 class _HomeFilterChipsState extends State<HomeFilterChips> {
-  String _active = '全部';
-
-  static const _labels = ['全部', '通勤', '約會', '雨天', '休閒'];
+  int _activeIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final tt = context.tt;
-    final ink = tt.ink;
-    final surface = tt.surface;
-    final line = tt.line;
-    final muted = tt.muted;
+    final labels = [
+      l10n.filterAll,
+      l10n.filterCommute,
+      l10n.filterDate,
+      l10n.filterRainy,
+      l10n.filterCasual,
+    ];
 
     return Padding(
       padding: const EdgeInsets.only(top: 14, bottom: 14),
@@ -94,31 +87,31 @@ class _HomeFilterChipsState extends State<HomeFilterChips> {
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 18),
         child: Row(
-          children: _labels.map((label) {
-            final isActive = label == _active;
+          children: List.generate(labels.length, (i) {
+            final isActive = i == _activeIndex;
             return Padding(
               padding: const EdgeInsets.only(right: 8),
               child: GestureDetector(
-                onTap: () => setState(() => _active = label),
+                onTap: () => setState(() => _activeIndex = i),
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
-                    color: isActive ? ink : surface,
+                    color: isActive ? tt.ink : tt.surface,
                     borderRadius: BorderRadius.circular(999),
-                    border: isActive ? null : Border.all(color: line),
+                    border: isActive ? null : Border.all(color: tt.line),
                   ),
                   child: Text(
-                    label,
+                    labels[i],
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
-                      color: isActive ? const Color(0xFFFFFAF4) : muted,
+                      color: isActive ? const Color(0xFFFFFAF4) : tt.muted,
                     ),
                   ),
                 ),
               ),
             );
-          }).toList(),
+          }),
         ),
       ),
     );

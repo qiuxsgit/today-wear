@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:today_wear/l10n/app_localizations.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../database/database.dart';
 import '../repositories/outfit_repository.dart';
@@ -236,7 +237,7 @@ class _StatisticsPageState extends State<StatisticsPage>
   
   /// 构建标签使用频率图表
   Widget _buildTagChart() {
-    
+    final l10n = AppLocalizations.of(context)!;
     if (_tagStats.isEmpty) {
       return Container(
         padding: const EdgeInsets.all(AppSpacing.lg),
@@ -249,7 +250,7 @@ class _StatisticsPageState extends State<StatisticsPage>
             ),
             const SizedBox(height: AppSpacing.md),
             Text(
-              '暂无标签数据',
+              l10n.statsNoTagData,
               style: AppTextStyle.body.copyWith(
                 color: AppColors.warmMuted,
               ),
@@ -281,7 +282,7 @@ class _StatisticsPageState extends State<StatisticsPage>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '标签使用频率',
+            l10n.statsTagFrequency,
             style: AppTextStyle.title.copyWith(
               fontSize: 16,
               fontWeight: FontWeight.w600,
@@ -331,7 +332,7 @@ class _StatisticsPageState extends State<StatisticsPage>
   
   /// 构建月度趋势图
   Widget _buildMonthlyTrendChart() {
-    
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
@@ -352,7 +353,7 @@ class _StatisticsPageState extends State<StatisticsPage>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '月度趋势',
+                l10n.statsMonthlyTrend,
                 style: AppTextStyle.title.copyWith(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -524,7 +525,7 @@ class _StatisticsPageState extends State<StatisticsPage>
   
   @override
   Widget build(BuildContext context) {
-    
+    final l10n = AppLocalizations.of(context)!;
     if (_isLoading) {
       return const Scaffold(
         body: Center(
@@ -536,7 +537,7 @@ class _StatisticsPageState extends State<StatisticsPage>
     return Scaffold(
       backgroundColor: AppColors.warmPage,
       appBar: AppBar(
-        title: const Text('统计'),
+        title: Text(l10n.statsPageTitle),
         backgroundColor: AppColors.warmSurface,
         foregroundColor: AppColors.warmInk,
         elevation: 0,
@@ -547,7 +548,7 @@ class _StatisticsPageState extends State<StatisticsPage>
               child: const Icon(Icons.refresh),
             ),
             onPressed: _onRefreshPressed,
-            tooltip: '刷新',
+            tooltip: l10n.statsRefreshTooltip,
           ),
         ],
       ),
@@ -564,7 +565,7 @@ class _StatisticsPageState extends State<StatisticsPage>
                 children: [
                   Expanded(
                     child: _buildStatCard(
-                      title: '总计',
+                      title: l10n.statsTotal,
                       value: '$_totalCount',
                       icon: Icons.checkroom,
                       color: AppColors.warmInk,
@@ -573,7 +574,7 @@ class _StatisticsPageState extends State<StatisticsPage>
                   const SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: _buildStatCard(
-                      title: '本月',
+                      title: l10n.statsMonthly,
                       value: '$_monthlyCount',
                       icon: Icons.calendar_month,
                       color: AppColors.success,
@@ -586,7 +587,7 @@ class _StatisticsPageState extends State<StatisticsPage>
                 children: [
                   Expanded(
                     child: _buildStatCard(
-                      title: '本周',
+                      title: l10n.statsWeekly,
                       value: '$_weeklyCount',
                       icon: Icons.date_range,
                       color: AppColors.warning,
@@ -595,8 +596,8 @@ class _StatisticsPageState extends State<StatisticsPage>
                   const SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: _buildStatCard(
-                      title: '小贴士',
-                      value: '保持记录',
+                      title: l10n.statsTip,
+                      value: l10n.statsKeepRecording,
                       icon: Icons.info_outline,
                       color: AppColors.warmInk,
                       valueIsNumber: false,

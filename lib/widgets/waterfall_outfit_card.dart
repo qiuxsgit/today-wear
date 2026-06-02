@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:today_wear/l10n/app_localizations.dart';
 import '../models/outfit.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_theme_tokens.dart';
@@ -18,17 +19,16 @@ class WaterfallOutfitCard extends StatelessWidget {
     this.onTap,
   });
 
-  String _dateLabel(DateTime date) {
-    final now = DateTime.now();
-    final d = DateTime(date.year, date.month, date.day);
-    final today = DateTime(now.year, now.month, now.day);
-    if (d == today) return '今天';
-    return '${date.month}/${date.day}';
-  }
-
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final tt = context.tt;
+    final now = DateTime.now();
+    final dateOnly = DateTime(outfit.date.year, outfit.date.month, outfit.date.day);
+    final todayOnly = DateTime(now.year, now.month, now.day);
+    final dateLabel = dateOnly == todayOnly
+        ? l10n.today
+        : '${outfit.date.month}/${outfit.date.day}';
     final surface = tt.surface;
     final ink = tt.ink;
     final muted = tt.muted;
@@ -67,7 +67,7 @@ class WaterfallOutfitCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(999),
                     ),
                     child: Text(
-                      _dateLabel(outfit.date),
+                      dateLabel,
                       style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w700,

@@ -109,7 +109,7 @@ class OutfitDetailPage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.edit_outlined),
             onPressed: () => _onEdit(context),
-            tooltip: '编辑',
+            tooltip: l10n.editOutfitTooltip,
           ),
           IconButton(
             icon: const Icon(Icons.delete_outline),
