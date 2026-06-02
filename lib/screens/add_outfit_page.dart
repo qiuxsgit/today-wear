@@ -383,18 +383,21 @@ class AddOutfitPageState extends State<AddOutfitPage> {
       
       if (!mounted) return;
 
-      ScaffoldMessenger.of(context).showSnackBar(
+      final messenger = ScaffoldMessenger.of(context);
+      final snackBarController = messenger.showSnackBar(
         const SnackBar(
           content: Text('保存成功'),
           backgroundColor: AppColors.success,
+          duration: Duration(milliseconds: 1200),
         ),
       );
+      await snackBarController.closed;
+
+      if (!mounted) return;
 
       if (_isEditMode) {
-        // 编辑模式：直接返回上一页，通知数据已保存
         Navigator.pop(context, true);
       } else {
-        // 新建模式：通过回调返回（回调中执行 pop）
         widget.onDataSaved?.call();
       }
     } catch (e) {
