@@ -141,5 +141,7 @@
   "presetDescNightGallery": "Night Gallery",
   "themeModeLight": "Light",
   "themeModeAuto": "Auto",
-  "themeModeDark": "Dark"
+  "themeModeDark": "Dark",
+  "weatherPlaceholderLocation": "City · Sunny",
+  "weatherPlaceholderAdvice": "A light jacket works great"
 }

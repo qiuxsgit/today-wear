@@ -141,5 +141,7 @@
   "presetDescNightGallery": "나이트 갤러리",
   "themeModeLight": "라이트",
   "themeModeAuto": "자동",
-  "themeModeDark": "다크"
+  "themeModeDark": "다크",
+  "weatherPlaceholderLocation": "서울 · 맑음",
+  "weatherPlaceholderAdvice": "가벼운 재킷이 딱 좋아요"
 }

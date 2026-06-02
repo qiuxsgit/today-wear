@@ -141,5 +141,7 @@
   "presetDescNightGallery": "暗夜画廊",
   "themeModeLight": "浅色",
   "themeModeAuto": "跟随系统",
-  "themeModeDark": "深色"
+  "themeModeDark": "深色",
+  "weatherPlaceholderLocation": "北京 · 晴天",
+  "weatherPlaceholderAdvice": "薄外套刚刚好"
 }

@@ -431,4 +431,10 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get themeModeDark => 'ダーク';
+
+  @override
+  String get weatherPlaceholderLocation => '東京 · 晴れ';
+
+  @override
+  String get weatherPlaceholderAdvice => '薄手のジャケットがちょうどいい';
 }

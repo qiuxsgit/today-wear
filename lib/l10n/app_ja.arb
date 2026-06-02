@@ -141,5 +141,7 @@
   "presetDescNightGallery": "ナイトギャラリー",
   "themeModeLight": "ライト",
   "themeModeAuto": "自動",
-  "themeModeDark": "ダーク"
+  "themeModeDark": "ダーク",
+  "weatherPlaceholderLocation": "東京 · 晴れ",
+  "weatherPlaceholderAdvice": "薄手のジャケットがちょうどいい"
 }

@@ -240,6 +240,7 @@ class _WeatherCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.fromLTRB(18, 10, 18, 0),
       child: Container(
@@ -260,12 +261,12 @@ class _WeatherCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '台北 · 晴天',
+                    l10n.weatherPlaceholderLocation,
                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: tt.page.withValues(alpha: 0.8)),
                   ),
                   const SizedBox(height: 3),
                   Text(
-                    '薄外套剛剛好',
+                    l10n.weatherPlaceholderAdvice,
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: tt.page),
                   ),
                 ],

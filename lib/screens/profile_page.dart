@@ -190,7 +190,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
   
-  Widget _buildAppearanceTile(BuildContext context) {
+  Widget _buildAppearanceTile(BuildContext context, AppLocalizations l10n) {
     final tt = context.tt;
     final presetName = ThemeService.getPresetName(ThemeService.instance.currentPreset);
     return SizedBox(
@@ -198,7 +198,7 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Row(
         children: [
           Expanded(
-            child: Text('外觀主題', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: tt.ink)),
+            child: Text(l10n.appearanceTitle, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: tt.ink)),
           ),
           GestureDetector(
             onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AppearanceThemePage())),
@@ -260,7 +260,7 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           Text(l10n.settings, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800, color: tt.ink)),
           const SizedBox(height: 10),
-          _buildSettingsRow(tt, l10n.settings, _buildAppearanceTile(context)),
+          _buildSettingsRow(tt, l10n.settings, _buildAppearanceTile(context, l10n)),
           Divider(height: 1, color: tt.line),
           _buildSettingsNavRow(
             tt: tt,
@@ -297,16 +297,17 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildSettingsRow(AppThemeTokens tt, String _, Widget child) => child;
 
   Widget _buildSettingsNavRow({required AppThemeTokens tt, required String label, required VoidCallback onTap}) {
-    return SizedBox(
-      height: 48,
-      child: Row(
-        children: [
-          Expanded(child: Text(label, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: tt.ink))),
-          GestureDetector(
-            onTap: onTap,
-            child: Icon(Icons.chevron_right, color: tt.muted, size: 18),
-          ),
-        ],
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: SizedBox(
+        height: 48,
+        child: Row(
+          children: [
+            Expanded(child: Text(label, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: tt.ink))),
+            Icon(Icons.chevron_right, color: tt.muted, size: 18),
+          ],
+        ),
       ),
     );
   }

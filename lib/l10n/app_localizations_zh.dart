@@ -431,6 +431,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get themeModeDark => '深色';
+
+  @override
+  String get weatherPlaceholderLocation => '北京 · 晴天';
+
+  @override
+  String get weatherPlaceholderAdvice => '薄外套刚刚好';
 }
 
 /// The translations for Chinese, as used in China (`zh_CN`).
@@ -860,6 +866,12 @@ class AppLocalizationsZhCn extends AppLocalizationsZh {
 
   @override
   String get themeModeDark => '深色';
+
+  @override
+  String get weatherPlaceholderLocation => '北京 · 晴天';
+
+  @override
+  String get weatherPlaceholderAdvice => '薄外套刚刚好';
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
@@ -1289,4 +1301,10 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get themeModeDark => '深色';
+
+  @override
+  String get weatherPlaceholderLocation => '台北 · 晴天';
+
+  @override
+  String get weatherPlaceholderAdvice => '薄外套剛剛好';
 }

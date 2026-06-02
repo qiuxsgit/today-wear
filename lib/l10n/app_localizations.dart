@@ -811,6 +811,18 @@ abstract class AppLocalizations {
   /// In zh_CN, this message translates to:
   /// **'深色'**
   String get themeModeDark;
+
+  /// No description provided for @weatherPlaceholderLocation.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'北京 · 晴天'**
+  String get weatherPlaceholderLocation;
+
+  /// No description provided for @weatherPlaceholderAdvice.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'薄外套刚刚好'**
+  String get weatherPlaceholderAdvice;
 }
 
 class _AppLocalizationsDelegate
