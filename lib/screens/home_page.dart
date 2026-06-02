@@ -29,7 +29,7 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   /// 当前加载的数据
-  List<Outfit> _loadedOutfits = [];
+  final List<Outfit> _loadedOutfits = [];
   
   /// 是否正在加载
   bool _isLoading = false;
@@ -144,7 +144,10 @@ class HomePageState extends State<HomePage> {
               final deleted = await Navigator.push<bool>(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => OutfitDetailPage(outfit: outfit),
+                  builder: (context) => OutfitDetailPage(
+                    outfit: outfit,
+                    onOutfitChanged: refreshData,
+                  ),
                 ),
               );
               if (deleted == true && mounted) {

@@ -110,7 +110,10 @@ class _CalendarPageState extends State<CalendarPage> {
   Future<void> _openOutfitDetail(Outfit outfit) async {
     final deleted = await Navigator.push<bool>(
       context,
-      MaterialPageRoute(builder: (_) => OutfitDetailPage(outfit: outfit)),
+      MaterialPageRoute(builder: (_) => OutfitDetailPage(
+        outfit: outfit,
+        onOutfitChanged: _loadMonthlyStats,
+      )),
     );
     if (deleted == true) {
       _loadMonthlyStats();

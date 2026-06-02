@@ -18,9 +18,13 @@ class OutfitDetailPage extends StatelessWidget {
   /// 穿搭数据
   final Outfit outfit;
 
+  /// 数据变更回调（编辑保存或删除后触发，用于通知上一页刷新）
+  final VoidCallback? onOutfitChanged;
+
   const OutfitDetailPage({
     super.key,
     required this.outfit,
+    this.onOutfitChanged,
   });
   
   /// 格式化日期显示
@@ -79,9 +83,12 @@ class OutfitDetailPage extends StatelessWidget {
         builder: (context) => AddOutfitPage(outfit: outfit),
       ),
     );
-    // 如果编辑后删除了，返回 true
-    if (result == true && context.mounted) {
-      Navigator.pop(context, true);
+    if (result == true) {
+      // 编辑保存成功 → 先通知上一页刷新，再关闭详情页
+      onOutfitChanged?.call();
+      if (context.mounted) {
+        Navigator.pop(context, true);
+      }
     }
   }
 

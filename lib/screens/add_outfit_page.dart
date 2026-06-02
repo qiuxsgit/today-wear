@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:image_picker/image_picker.dart';
 import 'package:today_wear/l10n/app_localizations.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
@@ -50,9 +49,9 @@ class AddOutfitPageState extends State<AddOutfitPage> {
   int? _editingOutfitId;
   
   /// 已选择的图片文件（新建模式）或现有图片路径（编辑模式）
-  /// 编辑模式下，字符串格式为 "path:<relativePath>" 或 "file:<tempPath>"
+  /// 编辑模式下，字符串格式为 `path:relativePath` 或 `file:tempPath`
   List<String> _selectedImageRefs = [];
-  List<File> _tempImageFiles = []; // 临时文件引用
+  final List<File> _tempImageFiles = []; // 临时文件引用
 
   /// 图片文件缓存，避免 FutureBuilder 在 rebuild 时重复加载
   final Map<String, File?> _imageFileCache = {};
@@ -593,7 +592,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
                 color: AppColors.bgPrimary,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: Colors.black.withValues(alpha: 0.05),
                     blurRadius: 10,
                     offset: const Offset(0, -2),
                   ),
@@ -683,7 +682,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
                     color: AppColors.bgSecondary,
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
-                      color: AppColors.textSecondary.withOpacity(0.3),
+                      color: AppColors.textSecondary.withValues(alpha: 0.3),
                       width: 1,
                     ),
                   ),
