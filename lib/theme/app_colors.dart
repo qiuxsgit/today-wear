@@ -158,17 +158,17 @@ class AppColors {
   // ========== Warm Redesign Tokens ==========
 
   static const Color warmInk      = Color(0xFF25221F);
-  static const Color warmInkDark  = Color(0xFFECE6DF);
+  static const Color warmInkDark  = Color(0xFFF4EFE7);
   static const Color warmMuted    = Color(0xFF7C746D);
-  static const Color warmMutedDark= Color(0xFF9C9189);
-  static const Color warmLine     = Color(0xFFECE6DF);
-  static const Color warmLineDark = Color(0xFF3A3530);
+  static const Color warmMutedDark= Color(0xFFB8AEA4);
+  static const Color warmLine     = Color(0xFFE8DDD0);
+  static const Color warmLineDark = Color(0xFF403A34);
   static const Color warmPage     = Color(0xFFFBF8F3);
-  static const Color warmPageDark = Color(0xFF1C1917);
+  static const Color warmPageDark = Color(0xFF171513);
   static const Color warmSurface  = Color(0xFFFFFDF9);
-  static const Color warmSurfaceDark = Color(0xFF252220);
-  static const Color warmMist     = Color(0xFFF4EFE7);
-  static const Color warmMistDark = Color(0xFF2E2A25);
+  static const Color warmSurfaceDark = Color(0xFF24211E);
+  static const Color warmMist     = Color(0xFFEFE7DC);
+  static const Color warmMistDark = Color(0xFF3A332D);
   static const Color warmSage     = Color(0xFF7D9A88);
   static const Color warmClay     = Color(0xFFC78363);
   static const Color warmRose     = Color(0xFFD7A0A6);
