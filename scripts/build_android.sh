@@ -15,6 +15,10 @@ BUILD_MODE="release"
 fi
 done
 
+# 设置 Java 21
+export JAVA_HOME=$(/usr/libexec/java_home -v 21)
+echo "Using Java version: $JAVA_HOME"
+
 echo "🚀 构建模式: $BUILD_MODE"
 
 BUILD_NUMBER=$(date +%m%d%H%M)
