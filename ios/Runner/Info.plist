@@ -32,6 +32,8 @@
 	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>需要访问相册以选择穿搭照片</string>
+	<key>NSUserNotificationUsageDescription</key>
+	<string>用于发送每日穿搭提醒通知</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

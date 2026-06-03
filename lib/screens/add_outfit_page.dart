@@ -11,6 +11,7 @@ import '../repositories/outfit_repository.dart';
 import '../models/outfit.dart';
 import '../theme/tag_colors.dart';
 import '../services/image_service.dart';
+import '../services/notification_service.dart';
 import '../widgets/app_toast.dart';
 
 /// 添加/编辑穿搭页面
@@ -77,6 +78,18 @@ class AddOutfitPageState extends State<AddOutfitPage> {
       _loadExistingData();
     } else {
       _loadAvailableTags();
+    }
+
+    // 处理通知快捷操作（拍照/选图）
+    if (!_isEditMode && NotificationService.hasPendingQuickAction) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final action = NotificationService.consumePendingAction();
+        if (action == 'camera') {
+          _takePhoto();
+        } else if (action == 'gallery') {
+          _pickImagesFromGallery();
+        }
+      });
     }
   }
   

@@ -437,6 +437,77 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get weatherPlaceholderAdvice => '薄外套刚刚好';
+
+  @override
+  String get reminderTitle => '每日提醒';
+
+  @override
+  String reminderEnabledCount(Object count) {
+    return '已开启 $count 个';
+  }
+
+  @override
+  String get reminderEmptyMessage => '设置提醒，不再忘记记录穿搭';
+
+  @override
+  String get reminderAddBtn => '添加提醒';
+
+  @override
+  String get reminderTimeLabel => '提醒时间';
+
+  @override
+  String get reminderWeekdaysLabel => '重复日期';
+
+  @override
+  String get reminderWeekdaysEveryday => '每天';
+
+  @override
+  String get reminderSkipLabel => '当天已记录则跳过';
+
+  @override
+  String get reminderSkipHint => '如果今天已经记录过穿搭，将不会发送提醒';
+
+  @override
+  String get reminderAddTitle => '新增提醒';
+
+  @override
+  String get reminderEditTitle => '编辑提醒';
+
+  @override
+  String get reminderDelete => '删除提醒';
+
+  @override
+  String get reminderDeleteConfirm => '确定删除此提醒吗？';
+
+  @override
+  String get reminderSave => '保存';
+
+  @override
+  String get reminderDayMon => '周一';
+
+  @override
+  String get reminderDayTue => '周二';
+
+  @override
+  String get reminderDayWed => '周三';
+
+  @override
+  String get reminderDayThu => '周四';
+
+  @override
+  String get reminderDayFri => '周五';
+
+  @override
+  String get reminderDaySat => '周六';
+
+  @override
+  String get reminderDaySun => '周日';
+
+  @override
+  String get reminderNotificationTitle => '今日穿搭';
+
+  @override
+  String get reminderNotificationBody => '别忘了记录今天的穿搭哦～';
 }
 
 /// The translations for Chinese, as used in China (`zh_CN`).
@@ -872,6 +943,77 @@ class AppLocalizationsZhCn extends AppLocalizationsZh {
 
   @override
   String get weatherPlaceholderAdvice => '薄外套刚刚好';
+
+  @override
+  String get reminderTitle => '每日提醒';
+
+  @override
+  String reminderEnabledCount(Object count) {
+    return '已开启 $count 个';
+  }
+
+  @override
+  String get reminderEmptyMessage => '设置提醒，不再忘记记录穿搭';
+
+  @override
+  String get reminderAddBtn => '添加提醒';
+
+  @override
+  String get reminderTimeLabel => '提醒时间';
+
+  @override
+  String get reminderWeekdaysLabel => '重复日期';
+
+  @override
+  String get reminderWeekdaysEveryday => '每天';
+
+  @override
+  String get reminderSkipLabel => '当天已记录则跳过';
+
+  @override
+  String get reminderSkipHint => '如果今天已经记录过穿搭，将不会发送提醒';
+
+  @override
+  String get reminderAddTitle => '新增提醒';
+
+  @override
+  String get reminderEditTitle => '编辑提醒';
+
+  @override
+  String get reminderDelete => '删除提醒';
+
+  @override
+  String get reminderDeleteConfirm => '确定删除此提醒吗？';
+
+  @override
+  String get reminderSave => '保存';
+
+  @override
+  String get reminderDayMon => '周一';
+
+  @override
+  String get reminderDayTue => '周二';
+
+  @override
+  String get reminderDayWed => '周三';
+
+  @override
+  String get reminderDayThu => '周四';
+
+  @override
+  String get reminderDayFri => '周五';
+
+  @override
+  String get reminderDaySat => '周六';
+
+  @override
+  String get reminderDaySun => '周日';
+
+  @override
+  String get reminderNotificationTitle => '今日穿搭';
+
+  @override
+  String get reminderNotificationBody => '别忘了记录今天的穿搭哦～';
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
@@ -1307,4 +1449,75 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get weatherPlaceholderAdvice => '薄外套剛剛好';
+
+  @override
+  String get reminderTitle => '每日提醒';
+
+  @override
+  String reminderEnabledCount(Object count) {
+    return '已開啟 $count 個';
+  }
+
+  @override
+  String get reminderEmptyMessage => '設定提醒，不再忘記記錄穿搭';
+
+  @override
+  String get reminderAddBtn => '新增提醒';
+
+  @override
+  String get reminderTimeLabel => '提醒時間';
+
+  @override
+  String get reminderWeekdaysLabel => '重複日期';
+
+  @override
+  String get reminderWeekdaysEveryday => '每天';
+
+  @override
+  String get reminderSkipLabel => '當天已記錄則跳過';
+
+  @override
+  String get reminderSkipHint => '如果今天已經記錄過穿搭，將不會發送提醒';
+
+  @override
+  String get reminderAddTitle => '新增提醒';
+
+  @override
+  String get reminderEditTitle => '編輯提醒';
+
+  @override
+  String get reminderDelete => '刪除提醒';
+
+  @override
+  String get reminderDeleteConfirm => '確定刪除此提醒嗎？';
+
+  @override
+  String get reminderSave => '儲存';
+
+  @override
+  String get reminderDayMon => '週一';
+
+  @override
+  String get reminderDayTue => '週二';
+
+  @override
+  String get reminderDayWed => '週三';
+
+  @override
+  String get reminderDayThu => '週四';
+
+  @override
+  String get reminderDayFri => '週五';
+
+  @override
+  String get reminderDaySat => '週六';
+
+  @override
+  String get reminderDaySun => '週日';
+
+  @override
+  String get reminderNotificationTitle => '今日穿搭';
+
+  @override
+  String get reminderNotificationBody => '別忘了記錄今天的穿搭哦～';
 }

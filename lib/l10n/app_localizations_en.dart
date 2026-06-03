@@ -440,4 +440,77 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get weatherPlaceholderAdvice => 'A light jacket works great';
+
+  @override
+  String get reminderTitle => 'Daily Reminder';
+
+  @override
+  String reminderEnabledCount(Object count) {
+    return '$count enabled';
+  }
+
+  @override
+  String get reminderEmptyMessage =>
+      'Set a reminder to never miss recording your outfit';
+
+  @override
+  String get reminderAddBtn => 'Add Reminder';
+
+  @override
+  String get reminderTimeLabel => 'Time';
+
+  @override
+  String get reminderWeekdaysLabel => 'Repeat Days';
+
+  @override
+  String get reminderWeekdaysEveryday => 'Everyday';
+
+  @override
+  String get reminderSkipLabel => 'Skip if already recorded today';
+
+  @override
+  String get reminderSkipHint => 'No notification if already recorded today';
+
+  @override
+  String get reminderAddTitle => 'New Reminder';
+
+  @override
+  String get reminderEditTitle => 'Edit Reminder';
+
+  @override
+  String get reminderDelete => 'Delete Reminder';
+
+  @override
+  String get reminderDeleteConfirm => 'Delete this reminder?';
+
+  @override
+  String get reminderSave => 'Save';
+
+  @override
+  String get reminderDayMon => 'Mon';
+
+  @override
+  String get reminderDayTue => 'Tue';
+
+  @override
+  String get reminderDayWed => 'Wed';
+
+  @override
+  String get reminderDayThu => 'Thu';
+
+  @override
+  String get reminderDayFri => 'Fri';
+
+  @override
+  String get reminderDaySat => 'Sat';
+
+  @override
+  String get reminderDaySun => 'Sun';
+
+  @override
+  String get reminderNotificationTitle => 'Today\'s Outfit';
+
+  @override
+  String get reminderNotificationBody =>
+      'Don\'t forget to record your outfit today~';
 }

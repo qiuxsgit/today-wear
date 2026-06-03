@@ -437,4 +437,75 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get weatherPlaceholderAdvice => '薄手のジャケットがちょうどいい';
+
+  @override
+  String get reminderTitle => '毎日リマインダー';
+
+  @override
+  String reminderEnabledCount(Object count) {
+    return '$count 件オン';
+  }
+
+  @override
+  String get reminderEmptyMessage => 'リマインダーを設定して、毎日のコーデを忘れずに記録しましょう';
+
+  @override
+  String get reminderAddBtn => 'リマインダーを追加';
+
+  @override
+  String get reminderTimeLabel => '時間';
+
+  @override
+  String get reminderWeekdaysLabel => '繰り返し曜日';
+
+  @override
+  String get reminderWeekdaysEveryday => '毎日';
+
+  @override
+  String get reminderSkipLabel => '本日記録済みの場合はスキップ';
+
+  @override
+  String get reminderSkipHint => '本日すでにコーディネートを記録している場合、通知は送信されません';
+
+  @override
+  String get reminderAddTitle => '新規リマインダー';
+
+  @override
+  String get reminderEditTitle => 'リマインダーを編集';
+
+  @override
+  String get reminderDelete => 'リマインダーを削除';
+
+  @override
+  String get reminderDeleteConfirm => 'このリマインダーを削除しますか？';
+
+  @override
+  String get reminderSave => '保存';
+
+  @override
+  String get reminderDayMon => '月';
+
+  @override
+  String get reminderDayTue => '火';
+
+  @override
+  String get reminderDayWed => '水';
+
+  @override
+  String get reminderDayThu => '木';
+
+  @override
+  String get reminderDayFri => '金';
+
+  @override
+  String get reminderDaySat => '土';
+
+  @override
+  String get reminderDaySun => '日';
+
+  @override
+  String get reminderNotificationTitle => '今日のコーデ';
+
+  @override
+  String get reminderNotificationBody => '今日のコーディネートを記録しましょう～';
 }

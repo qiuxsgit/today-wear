@@ -143,5 +143,33 @@
   "themeModeAuto": "Auto",
   "themeModeDark": "Dark",
   "weatherPlaceholderLocation": "City · Sunny",
-  "weatherPlaceholderAdvice": "A light jacket works great"
+  "weatherPlaceholderAdvice": "A light jacket works great",
+  "reminderTitle": "Daily Reminder",
+  "reminderEnabledCount": "{count} enabled",
+  "@reminderEnabledCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "reminderEmptyMessage": "Set a reminder to never miss recording your outfit",
+  "reminderAddBtn": "Add Reminder",
+  "reminderTimeLabel": "Time",
+  "reminderWeekdaysLabel": "Repeat Days",
+  "reminderWeekdaysEveryday": "Everyday",
+  "reminderSkipLabel": "Skip if already recorded today",
+  "reminderSkipHint": "No notification if already recorded today",
+  "reminderAddTitle": "New Reminder",
+  "reminderEditTitle": "Edit Reminder",
+  "reminderDelete": "Delete Reminder",
+  "reminderDeleteConfirm": "Delete this reminder?",
+  "reminderSave": "Save",
+  "reminderDayMon": "Mon",
+  "reminderDayTue": "Tue",
+  "reminderDayWed": "Wed",
+  "reminderDayThu": "Thu",
+  "reminderDayFri": "Fri",
+  "reminderDaySat": "Sat",
+  "reminderDaySun": "Sun",
+  "reminderNotificationTitle": "Today's Outfit",
+  "reminderNotificationBody": "Don't forget to record your outfit today~"
 }

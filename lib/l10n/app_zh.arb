@@ -143,5 +143,33 @@
   "themeModeAuto": "跟随系统",
   "themeModeDark": "深色",
   "weatherPlaceholderLocation": "北京 · 晴天",
-  "weatherPlaceholderAdvice": "薄外套刚刚好"
+  "weatherPlaceholderAdvice": "薄外套刚刚好",
+  "reminderTitle": "每日提醒",
+  "reminderEnabledCount": "已开启 {count} 个",
+  "@reminderEnabledCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "reminderEmptyMessage": "设置提醒，不再忘记记录穿搭",
+  "reminderAddBtn": "添加提醒",
+  "reminderTimeLabel": "提醒时间",
+  "reminderWeekdaysLabel": "重复日期",
+  "reminderWeekdaysEveryday": "每天",
+  "reminderSkipLabel": "当天已记录则跳过",
+  "reminderSkipHint": "如果今天已经记录过穿搭，将不会发送提醒",
+  "reminderAddTitle": "新增提醒",
+  "reminderEditTitle": "编辑提醒",
+  "reminderDelete": "删除提醒",
+  "reminderDeleteConfirm": "确定删除此提醒吗？",
+  "reminderSave": "保存",
+  "reminderDayMon": "周一",
+  "reminderDayTue": "周二",
+  "reminderDayWed": "周三",
+  "reminderDayThu": "周四",
+  "reminderDayFri": "周五",
+  "reminderDaySat": "周六",
+  "reminderDaySun": "周日",
+  "reminderNotificationTitle": "今日穿搭",
+  "reminderNotificationBody": "别忘了记录今天的穿搭哦～"
 }

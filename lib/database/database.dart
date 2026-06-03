@@ -7,7 +7,6 @@ import 'tables.dart';
 import 'daos/outfit_dao.dart';
 import 'daos/tag_dao.dart';
 import 'daos/image_dao.dart';
-
 part 'database.g.dart';
 
 /// 数据库类

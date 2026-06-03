@@ -823,6 +823,144 @@ abstract class AppLocalizations {
   /// In zh_CN, this message translates to:
   /// **'薄外套刚刚好'**
   String get weatherPlaceholderAdvice;
+
+  /// No description provided for @reminderTitle.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'每日提醒'**
+  String get reminderTitle;
+
+  /// No description provided for @reminderEnabledCount.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'已开启 {count} 个'**
+  String reminderEnabledCount(Object count);
+
+  /// No description provided for @reminderEmptyMessage.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'设置提醒，不再忘记记录穿搭'**
+  String get reminderEmptyMessage;
+
+  /// No description provided for @reminderAddBtn.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'添加提醒'**
+  String get reminderAddBtn;
+
+  /// No description provided for @reminderTimeLabel.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'提醒时间'**
+  String get reminderTimeLabel;
+
+  /// No description provided for @reminderWeekdaysLabel.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'重复日期'**
+  String get reminderWeekdaysLabel;
+
+  /// No description provided for @reminderWeekdaysEveryday.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'每天'**
+  String get reminderWeekdaysEveryday;
+
+  /// No description provided for @reminderSkipLabel.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'当天已记录则跳过'**
+  String get reminderSkipLabel;
+
+  /// No description provided for @reminderSkipHint.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'如果今天已经记录过穿搭，将不会发送提醒'**
+  String get reminderSkipHint;
+
+  /// No description provided for @reminderAddTitle.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'新增提醒'**
+  String get reminderAddTitle;
+
+  /// No description provided for @reminderEditTitle.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'编辑提醒'**
+  String get reminderEditTitle;
+
+  /// No description provided for @reminderDelete.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'删除提醒'**
+  String get reminderDelete;
+
+  /// No description provided for @reminderDeleteConfirm.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'确定删除此提醒吗？'**
+  String get reminderDeleteConfirm;
+
+  /// No description provided for @reminderSave.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'保存'**
+  String get reminderSave;
+
+  /// No description provided for @reminderDayMon.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'周一'**
+  String get reminderDayMon;
+
+  /// No description provided for @reminderDayTue.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'周二'**
+  String get reminderDayTue;
+
+  /// No description provided for @reminderDayWed.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'周三'**
+  String get reminderDayWed;
+
+  /// No description provided for @reminderDayThu.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'周四'**
+  String get reminderDayThu;
+
+  /// No description provided for @reminderDayFri.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'周五'**
+  String get reminderDayFri;
+
+  /// No description provided for @reminderDaySat.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'周六'**
+  String get reminderDaySat;
+
+  /// No description provided for @reminderDaySun.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'周日'**
+  String get reminderDaySun;
+
+  /// No description provided for @reminderNotificationTitle.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'今日穿搭'**
+  String get reminderNotificationTitle;
+
+  /// No description provided for @reminderNotificationBody.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'别忘了记录今天的穿搭哦～'**
+  String get reminderNotificationBody;
 }
 
 class _AppLocalizationsDelegate

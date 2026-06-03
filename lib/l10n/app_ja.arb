@@ -143,5 +143,33 @@
   "themeModeAuto": "自動",
   "themeModeDark": "ダーク",
   "weatherPlaceholderLocation": "東京 · 晴れ",
-  "weatherPlaceholderAdvice": "薄手のジャケットがちょうどいい"
+  "weatherPlaceholderAdvice": "薄手のジャケットがちょうどいい",
+  "reminderTitle": "毎日リマインダー",
+  "reminderEnabledCount": "{count} 件オン",
+  "@reminderEnabledCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "reminderEmptyMessage": "リマインダーを設定して、毎日のコーデを忘れずに記録しましょう",
+  "reminderAddBtn": "リマインダーを追加",
+  "reminderTimeLabel": "時間",
+  "reminderWeekdaysLabel": "繰り返し曜日",
+  "reminderWeekdaysEveryday": "毎日",
+  "reminderSkipLabel": "本日記録済みの場合はスキップ",
+  "reminderSkipHint": "本日すでにコーディネートを記録している場合、通知は送信されません",
+  "reminderAddTitle": "新規リマインダー",
+  "reminderEditTitle": "リマインダーを編集",
+  "reminderDelete": "リマインダーを削除",
+  "reminderDeleteConfirm": "このリマインダーを削除しますか？",
+  "reminderSave": "保存",
+  "reminderDayMon": "月",
+  "reminderDayTue": "火",
+  "reminderDayWed": "水",
+  "reminderDayThu": "木",
+  "reminderDayFri": "金",
+  "reminderDaySat": "土",
+  "reminderDaySun": "日",
+  "reminderNotificationTitle": "今日のコーデ",
+  "reminderNotificationBody": "今日のコーディネートを記録しましょう～"
 }

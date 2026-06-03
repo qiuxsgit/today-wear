@@ -437,4 +437,75 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get weatherPlaceholderAdvice => '가벼운 재킷이 딱 좋아요';
+
+  @override
+  String get reminderTitle => '매일 알림';
+
+  @override
+  String reminderEnabledCount(Object count) {
+    return '$count개 켜짐';
+  }
+
+  @override
+  String get reminderEmptyMessage => '알림을 설정하여 매일의 코디를 잊지 않고 기록하세요';
+
+  @override
+  String get reminderAddBtn => '알림 추가';
+
+  @override
+  String get reminderTimeLabel => '시간';
+
+  @override
+  String get reminderWeekdaysLabel => '반복 요일';
+
+  @override
+  String get reminderWeekdaysEveryday => '매일';
+
+  @override
+  String get reminderSkipLabel => '오늘 이미 기록했으면 건너뛰기';
+
+  @override
+  String get reminderSkipHint => '오늘 이미 코디를 기록한 경우 알림이 전송되지 않습니다';
+
+  @override
+  String get reminderAddTitle => '새 알림';
+
+  @override
+  String get reminderEditTitle => '알림 편집';
+
+  @override
+  String get reminderDelete => '알림 삭제';
+
+  @override
+  String get reminderDeleteConfirm => '이 알림을 삭제하시겠습니까?';
+
+  @override
+  String get reminderSave => '저장';
+
+  @override
+  String get reminderDayMon => '월';
+
+  @override
+  String get reminderDayTue => '화';
+
+  @override
+  String get reminderDayWed => '수';
+
+  @override
+  String get reminderDayThu => '목';
+
+  @override
+  String get reminderDayFri => '금';
+
+  @override
+  String get reminderDaySat => '토';
+
+  @override
+  String get reminderDaySun => '일';
+
+  @override
+  String get reminderNotificationTitle => '오늘의 코디';
+
+  @override
+  String get reminderNotificationBody => '오늘의 코디를 기록하는 것을 잊지 마세요~';
 }

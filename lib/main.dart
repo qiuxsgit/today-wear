@@ -13,6 +13,7 @@ import 'theme/app_theme_tokens.dart';
 import 'widgets/main_navigation.dart';
 import 'services/locale_service.dart';
 import 'services/theme_service.dart';
+import 'services/notification_service.dart';
 import 'database/database.dart';
 import 'services/image_service.dart';
 
@@ -75,6 +76,11 @@ void main() async {
   
   // 初始化图片目录
   await ImageService.instance.ensureImageDirectoriesExist();
+
+  // 初始化通知服务
+  final notificationService = NotificationService.instance;
+  await notificationService.init();
+  await notificationService.rescheduleAll();
   
   // macOS 专用调试配置：将窗口设置为手机比例（iPhone 14/15: 390 × 844）
   if (Platform.isMacOS) {
@@ -96,6 +102,7 @@ void main() async {
   runApp(MyApp(
     localeService: localeService,
     themeService: themeService,
+    notificationService: notificationService,
   ));
 }
 
@@ -103,11 +110,13 @@ void main() async {
 class MyApp extends StatefulWidget {
   final LocaleService localeService;
   final ThemeService themeService;
-  
+  final NotificationService notificationService;
+
   const MyApp({
     super.key,
     required this.localeService,
     required this.themeService,
+    required this.notificationService,
   });
 
   @override
@@ -161,6 +170,7 @@ class _MyAppState extends State<MyApp> {
         localeService: widget.localeService,
         child: MaterialApp(
           title: '今日穿什麼',
+          navigatorKey: widget.notificationService.navigatorKey,
           locale: locale,
           scrollBehavior: const _TightBounceScrollBehavior(),
           localizationsDelegates: const [
@@ -293,6 +303,8 @@ class _MainScreenState extends State<MainScreen> {
       ),
     );
     if (saved != true || !mounted) return;
+    // 穿搭保存后重新调度通知（可能会因为 skipIfRecorded 跳过今天）
+    NotificationService.instance.rescheduleAll();
     if (_selectedIndex == 0) {
       _homePageKey.currentState?.refreshData();
       _needsRefresh = false;

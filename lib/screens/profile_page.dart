@@ -15,8 +15,10 @@ import 'contact_page.dart';
 import 'language_selection_page.dart';
 import 'privacy_policy_page.dart';
 import 'profile_edit_page.dart';
+import 'reminder_list_page.dart';
 import 'tag_management_page.dart';
 import 'terms_of_service_page.dart';
+import '../repositories/reminder_repository.dart';
 
 /// 个人/设置页面
 ///
@@ -30,16 +32,30 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   UserProfile? _profile;
+  int _reminderCount = 0;
 
   @override
   void initState() {
     super.initState();
     _loadProfile();
+    _loadReminderCount();
   }
 
   Future<void> _loadProfile() async {
     final p = await ProfileService.load();
     if (mounted) setState(() => _profile = p);
+  }
+
+  Future<void> _loadReminderCount() async {
+    final count = await ReminderRepository().getEnabledCount();
+    if (mounted) setState(() => _reminderCount = count);
+  }
+
+  void _openReminderList() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const ReminderListPage()),
+    ).then((_) => _loadReminderCount());
   }
 
   void _openProfileEdit() {
@@ -262,6 +278,25 @@ class _ProfilePageState extends State<ProfilePage> {
             tt: tt,
             label: l10n.tagManagement,
             onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TagManagementPage())),
+          ),
+          Divider(height: 1, color: tt.line),
+          GestureDetector(
+            onTap: _openReminderList,
+            behavior: HitTestBehavior.opaque,
+            child: SizedBox(
+              height: 48,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(l10n.reminderTitle, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: tt.ink)),
+                  ),
+                  if (_reminderCount > 0)
+                    Text(l10n.reminderEnabledCount(_reminderCount), style: TextStyle(fontSize: 13, color: tt.muted)),
+                  const SizedBox(width: 4),
+                  Icon(Icons.chevron_right, color: tt.muted, size: 18),
+                ],
+              ),
+            ),
           ),
           Divider(height: 1, color: tt.line),
           GestureDetector(
