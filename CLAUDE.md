@@ -21,38 +21,46 @@ flutter run
 export JAVA_HOME=$(/usr/libexec/java_home -v 17)
 flutter run
 
-# Generate Drift database code (after modifying tables.dart)
+# macOS debug window is pre-configured to 390×844 (iPhone proportions) via window_manager
+
+# Generate Drift database code (after modifying tables.dart or daos)
 flutter pub run build_runner build
 
 # Clean and regenerate
 flutter pub run build_runner build --delete-conflicting-outputs
+
+# Static analysis — must pass with zero warnings/errors/hints before marking any task done
+flutter analyze
 ```
 
 ## Architecture
 
 ```
 lib/
-├── main.dart                 # App entry, MaterialApp config
+├── main.dart                 # App entry, theme/locale/notification init, MainScreen (5-tab nav)
 ├── database/                 # Drift SQLite database
-│   ├── database.dart         # DB connection, migration
+│   ├── database.dart         # Singleton AppDatabase, schema migrations (schemaVersion=2)
 │   ├── tables.dart           # Table definitions
-│   └── daos/                 # Data Access Objects
-├── models/                   # Data models (Outfit, UserProfile)
-├── repositories/             # Data layer abstraction
-├── screens/                  # Page widgets
+│   └── daos/                 # OutfitDao, TagDao, ImageDao (+ generated .g.dart)
+├── models/                   # Outfit, UserProfile, Reminder
+├── repositories/             # OutfitRepository, ReminderRepository
+├── screens/                  # Page widgets (one per file)
 ├── widgets/                  # Reusable UI components
-├── services/                 # Business logic (ImageService, LocaleService)
-├── theme/                    # AppColors, AppSpacing, AppTextStyle
+├── services/                 # ImageService, LocaleService, ThemeService, NotificationService, ProfileService
+├── theme/                    # AppThemeTokens, AppSpacing, AppTextStyle, TagColors
 └── l10n/                     # i18n (zh, en, ja, ko)
 ```
 
 ### Data Flow
 - **Database**: Drift ORM with SQLite, singleton `AppDatabase`
 - **Tables**: `Outfits`, `Tags`, `OutfitTags` (many-to-many), `OutfitImages`
-- **Repository**: `OutfitRepository` wraps all DB operations
-- **Services**: `ImageService` handles image storage/compression, `LocaleService` for i18n
+- **Repositories**: `OutfitRepository` wraps DB operations; `ReminderRepository` for local notifications
+- **Services**: `ImageService` (image storage/compression), `LocaleService` (i18n), `ThemeService` (theme preset + dark mode), `NotificationService` (local push reminders)
 
-## Code Standards (from .cursor/rules/)
+### Navigation
+`MainScreen` in `main.dart` hosts a 5-tab `Scaffold` with `extendBody: true`. Tab index 2 (center "add" button) does not swap pages — it pushes `AddOutfitPage` modally. After saving, it calls `NotificationService.rescheduleAll()` and refreshes home data.
+
+## Code Standards
 
 ### Naming
 - Files: `snake_case.dart`
@@ -64,43 +72,69 @@ lib/
 - Max 300 lines per file
 - One Widget per file
 - Named parameters for 3+ arguments
-- No hardcoded colors - use `AppColors`
-- No magic numbers - use `AppSpacing`
+- No hardcoded colors — use `context.tt`
+- No magic numbers — use `AppSpacing`
 - Use `debugPrint()` not `print()`
+
+### Bottom Navigation Padding (critical)
+The root `Scaffold` uses `extendBody: true` so content flows behind the floating tab bar. All pages must reserve space at the bottom:
+
+```dart
+// Scrollable (ListView / CustomScrollView / SingleChildScrollView):
+padding: EdgeInsets.only(bottom: 72 + MediaQuery.of(context).padding.bottom)
+
+// Non-scrollable (Column etc.) — add at the very end:
+SizedBox(height: 72 + MediaQuery.of(context).padding.bottom)
+```
+
+Tab bar = 58px container + 14px bottom padding = 72px total.
 
 ### State Management
 - MVP stage: `StatefulWidget` + `ValueNotifier`/`ChangeNotifier`
 - No Riverpod/Bloc/Redux during MVP
+- State logic must not live inside `build()`
 
 ### Null Safety
 - Prefer `late`/`required` over `!` force unwrap
-- Document any `!` usage
+- Document any `!` usage with a comment
 
-## Color System
+### Navigation
+All routes are pushed via `Navigator.push`/`Navigator.pop` — no named routes yet. Do not add string-based routing without discussion.
 
-All colors defined in `lib/theme/app_colors.dart`:
+## Theme Token System
 
-| Name | Hex | Usage |
-|------|-----|-------|
-| `primary` | #1A1A1A | Buttons, selected state, brand |
-| `bgPrimary` | #FAFAFA | Page background |
-| `bgSecondary` | #F5F5F5 | Cards, list items |
-| `textPrimary` | #2F2F2F | Titles, important text |
-| `textSecondary` | #7A7A7A | Descriptions, timestamps |
-| `success` | #8FAE9E | Success feedback |
-| `warning` | #D6A77A | Warnings |
-| `error` | #C97C7C | Errors, delete |
+Colors are **not** hardcoded — access them via `context.tt` (a `BuildContext` extension defined in `app_theme_tokens.dart`):
 
-**Forbidden**: #000000, #FFFFFF, neon colors, gradients, shadows > 12% opacity.
+```dart
+final tt = context.tt;
+color: tt.ink       // primary text / buttons
+color: tt.page      // page background
+color: tt.surface   // card background
+color: tt.accent    // highlights / date boxes
+color: tt.mist      // chip / tag backgrounds
+color: tt.muted     // secondary text
+color: tt.line      // dividers / borders
+```
+
+`AppThemeTokens` is a `ThemeExtension` injected via `ThemeData.extensions`. There are **5 presets × 2 modes = 10 token sets** (e.g. `AppThemeTokens.softWardrobeLight`). `ThemeService` (singleton) persists the active preset and mode to `SharedPreferences`.
+
+**Forbidden**: hardcoded hex values in widgets, pure black `#000000`, pure white `#FFFFFF`, neon/gradient colors, shadow opacity > 12%.
 
 ## Key Dependencies
 
-- `drift` + `drift_flutter` - SQLite ORM
-- `image_picker` - Camera/gallery access
-- `flutter_cache_manager` - Image caching
-- `reorderable_grid_view` - Draggable grid for image ordering
-- `shared_preferences` - Simple key-value storage
-- `intl` + `flutter_localizations` - i18n support
+- `drift` + `drift_flutter` — SQLite ORM (requires code-gen via `build_runner`)
+- `image_picker` — Camera/gallery access
+- `flutter_cache_manager` — Image caching
+- `reorderable_grid_view` — Draggable grid for image ordering
+- `shared_preferences` — Persists locale, theme mode, theme preset
+- `intl` + `flutter_localizations` — i18n support
+- `flutter_local_notifications` + `timezone` — Local push reminders
+- `table_calendar` — Calendar view
+- `fl_chart` — Statistics charts
+- `window_manager` — macOS debug window sizing
+- `url_launcher` — External links / email on contact page
+
+Do not introduce new packages without explaining the reason first.
 
 ## AI 协作规范
 
