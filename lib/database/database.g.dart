@@ -75,6 +75,27 @@ class $OutfitsTable extends Outfits with TableInfo<$OutfitsTable, OutfitData> {
     requiredDuringInsert: false,
     defaultValue: const Constant(0),
   );
+  static const VerificationMeta _serverIdMeta = const VerificationMeta(
+    'serverId',
+  );
+  @override
+  late final GeneratedColumn<int> serverId = GeneratedColumn<int>(
+    'server_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _dirtyMeta = const VerificationMeta('dirty');
+  @override
+  late final GeneratedColumn<int> dirty = GeneratedColumn<int>(
+    'dirty',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(1),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -83,6 +104,8 @@ class $OutfitsTable extends Outfits with TableInfo<$OutfitsTable, OutfitData> {
     createdAt,
     updatedAt,
     isDeleted,
+    serverId,
+    dirty,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -140,6 +163,18 @@ class $OutfitsTable extends Outfits with TableInfo<$OutfitsTable, OutfitData> {
         isDeleted.isAcceptableOrUnknown(data['is_deleted']!, _isDeletedMeta),
       );
     }
+    if (data.containsKey('server_id')) {
+      context.handle(
+        _serverIdMeta,
+        serverId.isAcceptableOrUnknown(data['server_id']!, _serverIdMeta),
+      );
+    }
+    if (data.containsKey('dirty')) {
+      context.handle(
+        _dirtyMeta,
+        dirty.isAcceptableOrUnknown(data['dirty']!, _dirtyMeta),
+      );
+    }
     return context;
   }
 
@@ -173,6 +208,14 @@ class $OutfitsTable extends Outfits with TableInfo<$OutfitsTable, OutfitData> {
         DriftSqlType.int,
         data['${effectivePrefix}is_deleted'],
       )!,
+      serverId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_id'],
+      ),
+      dirty: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}dirty'],
+      )!,
     );
   }
 
@@ -189,6 +232,12 @@ class OutfitData extends DataClass implements Insertable<OutfitData> {
   final int createdAt;
   final int updatedAt;
   final int isDeleted;
+
+  /// 服务端 id（云同步用）。null = 尚未同步到服务端
+  final int? serverId;
+
+  /// 是否有未推送到服务端的本地改动。1 = 需要推送
+  final int dirty;
   const OutfitData({
     required this.id,
     required this.date,
@@ -196,6 +245,8 @@ class OutfitData extends DataClass implements Insertable<OutfitData> {
     required this.createdAt,
     required this.updatedAt,
     required this.isDeleted,
+    this.serverId,
+    required this.dirty,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -206,6 +257,10 @@ class OutfitData extends DataClass implements Insertable<OutfitData> {
     map['created_at'] = Variable<int>(createdAt);
     map['updated_at'] = Variable<int>(updatedAt);
     map['is_deleted'] = Variable<int>(isDeleted);
+    if (!nullToAbsent || serverId != null) {
+      map['server_id'] = Variable<int>(serverId);
+    }
+    map['dirty'] = Variable<int>(dirty);
     return map;
   }
 
@@ -217,6 +272,10 @@ class OutfitData extends DataClass implements Insertable<OutfitData> {
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
       isDeleted: Value(isDeleted),
+      serverId: serverId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverId),
+      dirty: Value(dirty),
     );
   }
 
@@ -232,6 +291,8 @@ class OutfitData extends DataClass implements Insertable<OutfitData> {
       createdAt: serializer.fromJson<int>(json['createdAt']),
       updatedAt: serializer.fromJson<int>(json['updatedAt']),
       isDeleted: serializer.fromJson<int>(json['isDeleted']),
+      serverId: serializer.fromJson<int?>(json['serverId']),
+      dirty: serializer.fromJson<int>(json['dirty']),
     );
   }
   @override
@@ -244,6 +305,8 @@ class OutfitData extends DataClass implements Insertable<OutfitData> {
       'createdAt': serializer.toJson<int>(createdAt),
       'updatedAt': serializer.toJson<int>(updatedAt),
       'isDeleted': serializer.toJson<int>(isDeleted),
+      'serverId': serializer.toJson<int?>(serverId),
+      'dirty': serializer.toJson<int>(dirty),
     };
   }
 
@@ -254,6 +317,8 @@ class OutfitData extends DataClass implements Insertable<OutfitData> {
     int? createdAt,
     int? updatedAt,
     int? isDeleted,
+    Value<int?> serverId = const Value.absent(),
+    int? dirty,
   }) => OutfitData(
     id: id ?? this.id,
     date: date ?? this.date,
@@ -261,6 +326,8 @@ class OutfitData extends DataClass implements Insertable<OutfitData> {
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
     isDeleted: isDeleted ?? this.isDeleted,
+    serverId: serverId.present ? serverId.value : this.serverId,
+    dirty: dirty ?? this.dirty,
   );
   OutfitData copyWithCompanion(OutfitsCompanion data) {
     return OutfitData(
@@ -272,6 +339,8 @@ class OutfitData extends DataClass implements Insertable<OutfitData> {
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
       isDeleted: data.isDeleted.present ? data.isDeleted.value : this.isDeleted,
+      serverId: data.serverId.present ? data.serverId.value : this.serverId,
+      dirty: data.dirty.present ? data.dirty.value : this.dirty,
     );
   }
 
@@ -283,14 +352,24 @@ class OutfitData extends DataClass implements Insertable<OutfitData> {
           ..write('description: $description, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
-          ..write('isDeleted: $isDeleted')
+          ..write('isDeleted: $isDeleted, ')
+          ..write('serverId: $serverId, ')
+          ..write('dirty: $dirty')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, date, description, createdAt, updatedAt, isDeleted);
+  int get hashCode => Object.hash(
+    id,
+    date,
+    description,
+    createdAt,
+    updatedAt,
+    isDeleted,
+    serverId,
+    dirty,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -300,7 +379,9 @@ class OutfitData extends DataClass implements Insertable<OutfitData> {
           other.description == this.description &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
-          other.isDeleted == this.isDeleted);
+          other.isDeleted == this.isDeleted &&
+          other.serverId == this.serverId &&
+          other.dirty == this.dirty);
 }
 
 class OutfitsCompanion extends UpdateCompanion<OutfitData> {
@@ -310,6 +391,8 @@ class OutfitsCompanion extends UpdateCompanion<OutfitData> {
   final Value<int> createdAt;
   final Value<int> updatedAt;
   final Value<int> isDeleted;
+  final Value<int?> serverId;
+  final Value<int> dirty;
   const OutfitsCompanion({
     this.id = const Value.absent(),
     this.date = const Value.absent(),
@@ -317,6 +400,8 @@ class OutfitsCompanion extends UpdateCompanion<OutfitData> {
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.isDeleted = const Value.absent(),
+    this.serverId = const Value.absent(),
+    this.dirty = const Value.absent(),
   });
   OutfitsCompanion.insert({
     this.id = const Value.absent(),
@@ -325,6 +410,8 @@ class OutfitsCompanion extends UpdateCompanion<OutfitData> {
     required int createdAt,
     required int updatedAt,
     this.isDeleted = const Value.absent(),
+    this.serverId = const Value.absent(),
+    this.dirty = const Value.absent(),
   }) : date = Value(date),
        description = Value(description),
        createdAt = Value(createdAt),
@@ -336,6 +423,8 @@ class OutfitsCompanion extends UpdateCompanion<OutfitData> {
     Expression<int>? createdAt,
     Expression<int>? updatedAt,
     Expression<int>? isDeleted,
+    Expression<int>? serverId,
+    Expression<int>? dirty,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -344,6 +433,8 @@ class OutfitsCompanion extends UpdateCompanion<OutfitData> {
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
       if (isDeleted != null) 'is_deleted': isDeleted,
+      if (serverId != null) 'server_id': serverId,
+      if (dirty != null) 'dirty': dirty,
     });
   }
 
@@ -354,6 +445,8 @@ class OutfitsCompanion extends UpdateCompanion<OutfitData> {
     Value<int>? createdAt,
     Value<int>? updatedAt,
     Value<int>? isDeleted,
+    Value<int?>? serverId,
+    Value<int>? dirty,
   }) {
     return OutfitsCompanion(
       id: id ?? this.id,
@@ -362,6 +455,8 @@ class OutfitsCompanion extends UpdateCompanion<OutfitData> {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       isDeleted: isDeleted ?? this.isDeleted,
+      serverId: serverId ?? this.serverId,
+      dirty: dirty ?? this.dirty,
     );
   }
 
@@ -386,6 +481,12 @@ class OutfitsCompanion extends UpdateCompanion<OutfitData> {
     if (isDeleted.present) {
       map['is_deleted'] = Variable<int>(isDeleted.value);
     }
+    if (serverId.present) {
+      map['server_id'] = Variable<int>(serverId.value);
+    }
+    if (dirty.present) {
+      map['dirty'] = Variable<int>(dirty.value);
+    }
     return map;
   }
 
@@ -397,7 +498,9 @@ class OutfitsCompanion extends UpdateCompanion<OutfitData> {
           ..write('description: $description, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
-          ..write('isDeleted: $isDeleted')
+          ..write('isDeleted: $isDeleted, ')
+          ..write('serverId: $serverId, ')
+          ..write('dirty: $dirty')
           ..write(')'))
         .toString();
   }
@@ -441,8 +544,29 @@ class $TagsTable extends Tags with TableInfo<$TagsTable, TagData> {
     requiredDuringInsert: false,
     defaultValue: const Constant('#E8F5E9'),
   );
+  static const VerificationMeta _serverIdMeta = const VerificationMeta(
+    'serverId',
+  );
   @override
-  List<GeneratedColumn> get $columns => [id, name, color];
+  late final GeneratedColumn<int> serverId = GeneratedColumn<int>(
+    'server_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _dirtyMeta = const VerificationMeta('dirty');
+  @override
+  late final GeneratedColumn<int> dirty = GeneratedColumn<int>(
+    'dirty',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(1),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, name, color, serverId, dirty];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -472,6 +596,18 @@ class $TagsTable extends Tags with TableInfo<$TagsTable, TagData> {
         color.isAcceptableOrUnknown(data['color']!, _colorMeta),
       );
     }
+    if (data.containsKey('server_id')) {
+      context.handle(
+        _serverIdMeta,
+        serverId.isAcceptableOrUnknown(data['server_id']!, _serverIdMeta),
+      );
+    }
+    if (data.containsKey('dirty')) {
+      context.handle(
+        _dirtyMeta,
+        dirty.isAcceptableOrUnknown(data['dirty']!, _dirtyMeta),
+      );
+    }
     return context;
   }
 
@@ -493,6 +629,14 @@ class $TagsTable extends Tags with TableInfo<$TagsTable, TagData> {
         DriftSqlType.string,
         data['${effectivePrefix}color'],
       ),
+      serverId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_id'],
+      ),
+      dirty: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}dirty'],
+      )!,
     );
   }
 
@@ -508,7 +652,19 @@ class TagData extends DataClass implements Insertable<TagData> {
 
   /// 标签颜色，存 hex 如 #E8F5E9，可为空（旧数据兼容），读取时用默认色
   final String? color;
-  const TagData({required this.id, required this.name, this.color});
+
+  /// 服务端 id（云同步用）。null = 尚未同步到服务端
+  final int? serverId;
+
+  /// 是否有未推送到服务端的本地改动。1 = 需要推送
+  final int dirty;
+  const TagData({
+    required this.id,
+    required this.name,
+    this.color,
+    this.serverId,
+    required this.dirty,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -517,6 +673,10 @@ class TagData extends DataClass implements Insertable<TagData> {
     if (!nullToAbsent || color != null) {
       map['color'] = Variable<String>(color);
     }
+    if (!nullToAbsent || serverId != null) {
+      map['server_id'] = Variable<int>(serverId);
+    }
+    map['dirty'] = Variable<int>(dirty);
     return map;
   }
 
@@ -527,6 +687,10 @@ class TagData extends DataClass implements Insertable<TagData> {
       color: color == null && nullToAbsent
           ? const Value.absent()
           : Value(color),
+      serverId: serverId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverId),
+      dirty: Value(dirty),
     );
   }
 
@@ -539,6 +703,8 @@ class TagData extends DataClass implements Insertable<TagData> {
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       color: serializer.fromJson<String?>(json['color']),
+      serverId: serializer.fromJson<int?>(json['serverId']),
+      dirty: serializer.fromJson<int>(json['dirty']),
     );
   }
   @override
@@ -548,6 +714,8 @@ class TagData extends DataClass implements Insertable<TagData> {
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
       'color': serializer.toJson<String?>(color),
+      'serverId': serializer.toJson<int?>(serverId),
+      'dirty': serializer.toJson<int>(dirty),
     };
   }
 
@@ -555,16 +723,22 @@ class TagData extends DataClass implements Insertable<TagData> {
     int? id,
     String? name,
     Value<String?> color = const Value.absent(),
+    Value<int?> serverId = const Value.absent(),
+    int? dirty,
   }) => TagData(
     id: id ?? this.id,
     name: name ?? this.name,
     color: color.present ? color.value : this.color,
+    serverId: serverId.present ? serverId.value : this.serverId,
+    dirty: dirty ?? this.dirty,
   );
   TagData copyWithCompanion(TagsCompanion data) {
     return TagData(
       id: data.id.present ? data.id.value : this.id,
       name: data.name.present ? data.name.value : this.name,
       color: data.color.present ? data.color.value : this.color,
+      serverId: data.serverId.present ? data.serverId.value : this.serverId,
+      dirty: data.dirty.present ? data.dirty.value : this.dirty,
     );
   }
 
@@ -573,45 +747,59 @@ class TagData extends DataClass implements Insertable<TagData> {
     return (StringBuffer('TagData(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('color: $color')
+          ..write('color: $color, ')
+          ..write('serverId: $serverId, ')
+          ..write('dirty: $dirty')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, name, color);
+  int get hashCode => Object.hash(id, name, color, serverId, dirty);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is TagData &&
           other.id == this.id &&
           other.name == this.name &&
-          other.color == this.color);
+          other.color == this.color &&
+          other.serverId == this.serverId &&
+          other.dirty == this.dirty);
 }
 
 class TagsCompanion extends UpdateCompanion<TagData> {
   final Value<int> id;
   final Value<String> name;
   final Value<String?> color;
+  final Value<int?> serverId;
+  final Value<int> dirty;
   const TagsCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.color = const Value.absent(),
+    this.serverId = const Value.absent(),
+    this.dirty = const Value.absent(),
   });
   TagsCompanion.insert({
     this.id = const Value.absent(),
     required String name,
     this.color = const Value.absent(),
+    this.serverId = const Value.absent(),
+    this.dirty = const Value.absent(),
   }) : name = Value(name);
   static Insertable<TagData> custom({
     Expression<int>? id,
     Expression<String>? name,
     Expression<String>? color,
+    Expression<int>? serverId,
+    Expression<int>? dirty,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
       if (color != null) 'color': color,
+      if (serverId != null) 'server_id': serverId,
+      if (dirty != null) 'dirty': dirty,
     });
   }
 
@@ -619,11 +807,15 @@ class TagsCompanion extends UpdateCompanion<TagData> {
     Value<int>? id,
     Value<String>? name,
     Value<String?>? color,
+    Value<int?>? serverId,
+    Value<int>? dirty,
   }) {
     return TagsCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       color: color ?? this.color,
+      serverId: serverId ?? this.serverId,
+      dirty: dirty ?? this.dirty,
     );
   }
 
@@ -639,6 +831,12 @@ class TagsCompanion extends UpdateCompanion<TagData> {
     if (color.present) {
       map['color'] = Variable<String>(color.value);
     }
+    if (serverId.present) {
+      map['server_id'] = Variable<int>(serverId.value);
+    }
+    if (dirty.present) {
+      map['dirty'] = Variable<int>(dirty.value);
+    }
     return map;
   }
 
@@ -647,7 +845,9 @@ class TagsCompanion extends UpdateCompanion<TagData> {
     return (StringBuffer('TagsCompanion(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('color: $color')
+          ..write('color: $color, ')
+          ..write('serverId: $serverId, ')
+          ..write('dirty: $dirty')
           ..write(')'))
         .toString();
   }
@@ -917,8 +1117,25 @@ class $OutfitImagesTable extends OutfitImages
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _serverImageIdMeta = const VerificationMeta(
+    'serverImageId',
+  );
   @override
-  List<GeneratedColumn> get $columns => [id, outfitId, imagePath, displayOrder];
+  late final GeneratedColumn<int> serverImageId = GeneratedColumn<int>(
+    'server_image_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    outfitId,
+    imagePath,
+    displayOrder,
+    serverImageId,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -961,6 +1178,15 @@ class $OutfitImagesTable extends OutfitImages
     } else if (isInserting) {
       context.missing(_displayOrderMeta);
     }
+    if (data.containsKey('server_image_id')) {
+      context.handle(
+        _serverImageIdMeta,
+        serverImageId.isAcceptableOrUnknown(
+          data['server_image_id']!,
+          _serverImageIdMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -986,6 +1212,10 @@ class $OutfitImagesTable extends OutfitImages
         DriftSqlType.int,
         data['${effectivePrefix}display_order'],
       )!,
+      serverImageId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}server_image_id'],
+      ),
     );
   }
 
@@ -1000,11 +1230,15 @@ class OutfitImageData extends DataClass implements Insertable<OutfitImageData> {
   final int outfitId;
   final String imagePath;
   final int displayOrder;
+
+  /// GFS 服务端图片 id（云同步用）。null = 尚未上传到 GFS
+  final int? serverImageId;
   const OutfitImageData({
     required this.id,
     required this.outfitId,
     required this.imagePath,
     required this.displayOrder,
+    this.serverImageId,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1013,6 +1247,9 @@ class OutfitImageData extends DataClass implements Insertable<OutfitImageData> {
     map['outfit_id'] = Variable<int>(outfitId);
     map['image_path'] = Variable<String>(imagePath);
     map['display_order'] = Variable<int>(displayOrder);
+    if (!nullToAbsent || serverImageId != null) {
+      map['server_image_id'] = Variable<int>(serverImageId);
+    }
     return map;
   }
 
@@ -1022,6 +1259,9 @@ class OutfitImageData extends DataClass implements Insertable<OutfitImageData> {
       outfitId: Value(outfitId),
       imagePath: Value(imagePath),
       displayOrder: Value(displayOrder),
+      serverImageId: serverImageId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(serverImageId),
     );
   }
 
@@ -1035,6 +1275,7 @@ class OutfitImageData extends DataClass implements Insertable<OutfitImageData> {
       outfitId: serializer.fromJson<int>(json['outfitId']),
       imagePath: serializer.fromJson<String>(json['imagePath']),
       displayOrder: serializer.fromJson<int>(json['displayOrder']),
+      serverImageId: serializer.fromJson<int?>(json['serverImageId']),
     );
   }
   @override
@@ -1045,6 +1286,7 @@ class OutfitImageData extends DataClass implements Insertable<OutfitImageData> {
       'outfitId': serializer.toJson<int>(outfitId),
       'imagePath': serializer.toJson<String>(imagePath),
       'displayOrder': serializer.toJson<int>(displayOrder),
+      'serverImageId': serializer.toJson<int?>(serverImageId),
     };
   }
 
@@ -1053,11 +1295,15 @@ class OutfitImageData extends DataClass implements Insertable<OutfitImageData> {
     int? outfitId,
     String? imagePath,
     int? displayOrder,
+    Value<int?> serverImageId = const Value.absent(),
   }) => OutfitImageData(
     id: id ?? this.id,
     outfitId: outfitId ?? this.outfitId,
     imagePath: imagePath ?? this.imagePath,
     displayOrder: displayOrder ?? this.displayOrder,
+    serverImageId: serverImageId.present
+        ? serverImageId.value
+        : this.serverImageId,
   );
   OutfitImageData copyWithCompanion(OutfitImagesCompanion data) {
     return OutfitImageData(
@@ -1067,6 +1313,9 @@ class OutfitImageData extends DataClass implements Insertable<OutfitImageData> {
       displayOrder: data.displayOrder.present
           ? data.displayOrder.value
           : this.displayOrder,
+      serverImageId: data.serverImageId.present
+          ? data.serverImageId.value
+          : this.serverImageId,
     );
   }
 
@@ -1076,13 +1325,15 @@ class OutfitImageData extends DataClass implements Insertable<OutfitImageData> {
           ..write('id: $id, ')
           ..write('outfitId: $outfitId, ')
           ..write('imagePath: $imagePath, ')
-          ..write('displayOrder: $displayOrder')
+          ..write('displayOrder: $displayOrder, ')
+          ..write('serverImageId: $serverImageId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, outfitId, imagePath, displayOrder);
+  int get hashCode =>
+      Object.hash(id, outfitId, imagePath, displayOrder, serverImageId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1090,7 +1341,8 @@ class OutfitImageData extends DataClass implements Insertable<OutfitImageData> {
           other.id == this.id &&
           other.outfitId == this.outfitId &&
           other.imagePath == this.imagePath &&
-          other.displayOrder == this.displayOrder);
+          other.displayOrder == this.displayOrder &&
+          other.serverImageId == this.serverImageId);
 }
 
 class OutfitImagesCompanion extends UpdateCompanion<OutfitImageData> {
@@ -1098,17 +1350,20 @@ class OutfitImagesCompanion extends UpdateCompanion<OutfitImageData> {
   final Value<int> outfitId;
   final Value<String> imagePath;
   final Value<int> displayOrder;
+  final Value<int?> serverImageId;
   const OutfitImagesCompanion({
     this.id = const Value.absent(),
     this.outfitId = const Value.absent(),
     this.imagePath = const Value.absent(),
     this.displayOrder = const Value.absent(),
+    this.serverImageId = const Value.absent(),
   });
   OutfitImagesCompanion.insert({
     this.id = const Value.absent(),
     required int outfitId,
     required String imagePath,
     required int displayOrder,
+    this.serverImageId = const Value.absent(),
   }) : outfitId = Value(outfitId),
        imagePath = Value(imagePath),
        displayOrder = Value(displayOrder);
@@ -1117,12 +1372,14 @@ class OutfitImagesCompanion extends UpdateCompanion<OutfitImageData> {
     Expression<int>? outfitId,
     Expression<String>? imagePath,
     Expression<int>? displayOrder,
+    Expression<int>? serverImageId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (outfitId != null) 'outfit_id': outfitId,
       if (imagePath != null) 'image_path': imagePath,
       if (displayOrder != null) 'display_order': displayOrder,
+      if (serverImageId != null) 'server_image_id': serverImageId,
     });
   }
 
@@ -1131,12 +1388,14 @@ class OutfitImagesCompanion extends UpdateCompanion<OutfitImageData> {
     Value<int>? outfitId,
     Value<String>? imagePath,
     Value<int>? displayOrder,
+    Value<int?>? serverImageId,
   }) {
     return OutfitImagesCompanion(
       id: id ?? this.id,
       outfitId: outfitId ?? this.outfitId,
       imagePath: imagePath ?? this.imagePath,
       displayOrder: displayOrder ?? this.displayOrder,
+      serverImageId: serverImageId ?? this.serverImageId,
     );
   }
 
@@ -1155,6 +1414,9 @@ class OutfitImagesCompanion extends UpdateCompanion<OutfitImageData> {
     if (displayOrder.present) {
       map['display_order'] = Variable<int>(displayOrder.value);
     }
+    if (serverImageId.present) {
+      map['server_image_id'] = Variable<int>(serverImageId.value);
+    }
     return map;
   }
 
@@ -1164,7 +1426,8 @@ class OutfitImagesCompanion extends UpdateCompanion<OutfitImageData> {
           ..write('id: $id, ')
           ..write('outfitId: $outfitId, ')
           ..write('imagePath: $imagePath, ')
-          ..write('displayOrder: $displayOrder')
+          ..write('displayOrder: $displayOrder, ')
+          ..write('serverImageId: $serverImageId')
           ..write(')'))
         .toString();
   }
@@ -1200,6 +1463,8 @@ typedef $$OutfitsTableCreateCompanionBuilder =
       required int createdAt,
       required int updatedAt,
       Value<int> isDeleted,
+      Value<int?> serverId,
+      Value<int> dirty,
     });
 typedef $$OutfitsTableUpdateCompanionBuilder =
     OutfitsCompanion Function({
@@ -1209,6 +1474,8 @@ typedef $$OutfitsTableUpdateCompanionBuilder =
       Value<int> createdAt,
       Value<int> updatedAt,
       Value<int> isDeleted,
+      Value<int?> serverId,
+      Value<int> dirty,
     });
 
 class $$OutfitsTableFilterComposer
@@ -1247,6 +1514,16 @@ class $$OutfitsTableFilterComposer
 
   ColumnFilters<int> get isDeleted => $composableBuilder(
     column: $table.isDeleted,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverId => $composableBuilder(
+    column: $table.serverId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get dirty => $composableBuilder(
+    column: $table.dirty,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -1289,6 +1566,16 @@ class $$OutfitsTableOrderingComposer
     column: $table.isDeleted,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<int> get serverId => $composableBuilder(
+    column: $table.serverId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get dirty => $composableBuilder(
+    column: $table.dirty,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$OutfitsTableAnnotationComposer
@@ -1319,6 +1606,12 @@ class $$OutfitsTableAnnotationComposer
 
   GeneratedColumn<int> get isDeleted =>
       $composableBuilder(column: $table.isDeleted, builder: (column) => column);
+
+  GeneratedColumn<int> get serverId =>
+      $composableBuilder(column: $table.serverId, builder: (column) => column);
+
+  GeneratedColumn<int> get dirty =>
+      $composableBuilder(column: $table.dirty, builder: (column) => column);
 }
 
 class $$OutfitsTableTableManager
@@ -1358,6 +1651,8 @@ class $$OutfitsTableTableManager
                 Value<int> createdAt = const Value.absent(),
                 Value<int> updatedAt = const Value.absent(),
                 Value<int> isDeleted = const Value.absent(),
+                Value<int?> serverId = const Value.absent(),
+                Value<int> dirty = const Value.absent(),
               }) => OutfitsCompanion(
                 id: id,
                 date: date,
@@ -1365,6 +1660,8 @@ class $$OutfitsTableTableManager
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 isDeleted: isDeleted,
+                serverId: serverId,
+                dirty: dirty,
               ),
           createCompanionCallback:
               ({
@@ -1374,6 +1671,8 @@ class $$OutfitsTableTableManager
                 required int createdAt,
                 required int updatedAt,
                 Value<int> isDeleted = const Value.absent(),
+                Value<int?> serverId = const Value.absent(),
+                Value<int> dirty = const Value.absent(),
               }) => OutfitsCompanion.insert(
                 id: id,
                 date: date,
@@ -1381,6 +1680,8 @@ class $$OutfitsTableTableManager
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 isDeleted: isDeleted,
+                serverId: serverId,
+                dirty: dirty,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
@@ -1409,12 +1710,16 @@ typedef $$TagsTableCreateCompanionBuilder =
       Value<int> id,
       required String name,
       Value<String?> color,
+      Value<int?> serverId,
+      Value<int> dirty,
     });
 typedef $$TagsTableUpdateCompanionBuilder =
     TagsCompanion Function({
       Value<int> id,
       Value<String> name,
       Value<String?> color,
+      Value<int?> serverId,
+      Value<int> dirty,
     });
 
 class $$TagsTableFilterComposer extends Composer<_$AppDatabase, $TagsTable> {
@@ -1437,6 +1742,16 @@ class $$TagsTableFilterComposer extends Composer<_$AppDatabase, $TagsTable> {
 
   ColumnFilters<String> get color => $composableBuilder(
     column: $table.color,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverId => $composableBuilder(
+    column: $table.serverId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get dirty => $composableBuilder(
+    column: $table.dirty,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -1463,6 +1778,16 @@ class $$TagsTableOrderingComposer extends Composer<_$AppDatabase, $TagsTable> {
     column: $table.color,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<int> get serverId => $composableBuilder(
+    column: $table.serverId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get dirty => $composableBuilder(
+    column: $table.dirty,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$TagsTableAnnotationComposer
@@ -1482,6 +1807,12 @@ class $$TagsTableAnnotationComposer
 
   GeneratedColumn<String> get color =>
       $composableBuilder(column: $table.color, builder: (column) => column);
+
+  GeneratedColumn<int> get serverId =>
+      $composableBuilder(column: $table.serverId, builder: (column) => column);
+
+  GeneratedColumn<int> get dirty =>
+      $composableBuilder(column: $table.dirty, builder: (column) => column);
 }
 
 class $$TagsTableTableManager
@@ -1515,13 +1846,29 @@ class $$TagsTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<String?> color = const Value.absent(),
-              }) => TagsCompanion(id: id, name: name, color: color),
+                Value<int?> serverId = const Value.absent(),
+                Value<int> dirty = const Value.absent(),
+              }) => TagsCompanion(
+                id: id,
+                name: name,
+                color: color,
+                serverId: serverId,
+                dirty: dirty,
+              ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
                 required String name,
                 Value<String?> color = const Value.absent(),
-              }) => TagsCompanion.insert(id: id, name: name, color: color),
+                Value<int?> serverId = const Value.absent(),
+                Value<int> dirty = const Value.absent(),
+              }) => TagsCompanion.insert(
+                id: id,
+                name: name,
+                color: color,
+                serverId: serverId,
+                dirty: dirty,
+              ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
@@ -1690,6 +2037,7 @@ typedef $$OutfitImagesTableCreateCompanionBuilder =
       required int outfitId,
       required String imagePath,
       required int displayOrder,
+      Value<int?> serverImageId,
     });
 typedef $$OutfitImagesTableUpdateCompanionBuilder =
     OutfitImagesCompanion Function({
@@ -1697,6 +2045,7 @@ typedef $$OutfitImagesTableUpdateCompanionBuilder =
       Value<int> outfitId,
       Value<String> imagePath,
       Value<int> displayOrder,
+      Value<int?> serverImageId,
     });
 
 class $$OutfitImagesTableFilterComposer
@@ -1725,6 +2074,11 @@ class $$OutfitImagesTableFilterComposer
 
   ColumnFilters<int> get displayOrder => $composableBuilder(
     column: $table.displayOrder,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get serverImageId => $composableBuilder(
+    column: $table.serverImageId,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -1757,6 +2111,11 @@ class $$OutfitImagesTableOrderingComposer
     column: $table.displayOrder,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<int> get serverImageId => $composableBuilder(
+    column: $table.serverImageId,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$OutfitImagesTableAnnotationComposer
@@ -1779,6 +2138,11 @@ class $$OutfitImagesTableAnnotationComposer
 
   GeneratedColumn<int> get displayOrder => $composableBuilder(
     column: $table.displayOrder,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get serverImageId => $composableBuilder(
+    column: $table.serverImageId,
     builder: (column) => column,
   );
 }
@@ -1818,11 +2182,13 @@ class $$OutfitImagesTableTableManager
                 Value<int> outfitId = const Value.absent(),
                 Value<String> imagePath = const Value.absent(),
                 Value<int> displayOrder = const Value.absent(),
+                Value<int?> serverImageId = const Value.absent(),
               }) => OutfitImagesCompanion(
                 id: id,
                 outfitId: outfitId,
                 imagePath: imagePath,
                 displayOrder: displayOrder,
+                serverImageId: serverImageId,
               ),
           createCompanionCallback:
               ({
@@ -1830,11 +2196,13 @@ class $$OutfitImagesTableTableManager
                 required int outfitId,
                 required String imagePath,
                 required int displayOrder,
+                Value<int?> serverImageId = const Value.absent(),
               }) => OutfitImagesCompanion.insert(
                 id: id,
                 outfitId: outfitId,
                 imagePath: imagePath,
                 displayOrder: displayOrder,
+                serverImageId: serverImageId,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))

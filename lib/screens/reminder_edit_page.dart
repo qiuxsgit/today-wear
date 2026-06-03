@@ -105,6 +105,7 @@ class _ReminderEditPageState extends State<ReminderEditPage> {
 
     if (confirmed == true && mounted) {
       await _repository.delete(widget.reminder!.id);
+      if (!mounted) return;
       Navigator.pop(context, true);
     }
   }

@@ -58,27 +58,95 @@ class OutfitDao extends DatabaseAccessor<AppDatabase> with _$OutfitDaoMixin {
     return await into(outfits).insert(outfit);
   }
 
-  /// 更新 outfit
-  Future<bool> updateOutfit(OutfitData outfit) async {
-    final companion = OutfitsCompanion(
-      id: Value(outfit.id),
-      date: Value(outfit.date),
-      description: Value(outfit.description),
-      createdAt: Value(outfit.createdAt),
+  /// 更新 outfit 内容（保留 createdAt / serverId / isDeleted，标记 dirty 待同步）
+  Future<bool> updateOutfitContent(int id, int dateMs, String description) async {
+    final result = await (update(outfits)..where((tbl) => tbl.id.equals(id)))
+        .write(OutfitsCompanion(
+      date: Value(dateMs),
+      description: Value(description),
       updatedAt: Value(DateTime.now().millisecondsSinceEpoch),
-    );
-
-    return await update(outfits).replace(companion);
+      dirty: const Value(1),
+    ));
+    return result > 0;
   }
 
-  /// 软删除 outfit
+  /// 软删除 outfit（标记 dirty 待同步）
   Future<bool> deleteOutfit(int id) async {
     final result = await (update(outfits)..where((tbl) => tbl.id.equals(id)))
         .write(OutfitsCompanion(
       isDeleted: const Value(1),
       updatedAt: Value(DateTime.now().millisecondsSinceEpoch),
+      dirty: const Value(1),
     ));
     return result > 0;
+  }
+
+  // --- 云同步辅助 ---------------------------------------------------------
+
+  /// 获取所有待推送（dirty=1）的 outfit，含已软删的（删除也需推送）
+  Future<List<OutfitData>> getDirtyOutfits() async {
+    return await (select(outfits)..where((tbl) => tbl.dirty.equals(1))).get();
+  }
+
+  /// 按服务端 id 查找本地 outfit（不过滤软删）
+  Future<OutfitData?> getOutfitByServerId(int serverId) async {
+    return await (select(outfits)..where((tbl) => tbl.serverId.equals(serverId)))
+        .getSingleOrNull();
+  }
+
+  /// 按本地 id 查找（不过滤软删，供同步使用）
+  Future<OutfitData?> getOutfitByIdRaw(int id) async {
+    return await (select(outfits)..where((tbl) => tbl.id.equals(id)))
+        .getSingleOrNull();
+  }
+
+  /// 标记 outfit 已同步：清 dirty，可选回填 serverId
+  Future<void> markOutfitSynced(int id, {int? serverId}) async {
+    await (update(outfits)..where((tbl) => tbl.id.equals(id))).write(
+      OutfitsCompanion(
+        dirty: const Value(0),
+        serverId: serverId != null ? Value(serverId) : const Value.absent(),
+      ),
+    );
+  }
+
+  /// 从远端插入一条新 outfit（已带 serverId，dirty=0）
+  Future<int> insertRemoteOutfit({
+    required int serverId,
+    required int dateMs,
+    required String description,
+    required int createdAtMs,
+    required int updatedAtMs,
+    required bool isDeleted,
+  }) async {
+    return await into(outfits).insert(OutfitsCompanion.insert(
+      date: dateMs,
+      description: description,
+      createdAt: createdAtMs,
+      updatedAt: updatedAtMs,
+      isDeleted: Value(isDeleted ? 1 : 0),
+      serverId: Value(serverId),
+      dirty: const Value(0),
+    ));
+  }
+
+  /// 用远端数据覆盖本地 outfit（last-write-wins，dirty=0）
+  Future<void> updateOutfitFromRemote(
+    int localId, {
+    required int dateMs,
+    required String description,
+    required int updatedAtMs,
+    required bool isDeleted,
+  }) async {
+    await (update(outfits)..where((tbl) => tbl.id.equals(localId))).write(
+      OutfitsCompanion(
+        date: Value(dateMs),
+        description: Value(description),
+        updatedAt: Value(updatedAtMs),
+        isDeleted: Value(isDeleted ? 1 : 0),
+        dirty: const Value(0),
+      ),
+    );
   }
 
   /// 永久删除 outfit（物理删除）

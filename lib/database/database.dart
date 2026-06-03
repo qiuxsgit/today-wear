@@ -24,7 +24,7 @@ class AppDatabase extends _$AppDatabase {
   }
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration {
@@ -34,6 +34,7 @@ class AppDatabase extends _$AppDatabase {
         // 创建索引
         await customStatement('CREATE INDEX IF NOT EXISTS idx_outfits_date ON outfits(date)');
         await customStatement('CREATE INDEX IF NOT EXISTS idx_outfits_is_deleted ON outfits(is_deleted)');
+        await customStatement('CREATE INDEX IF NOT EXISTS idx_outfits_server_id ON outfits(server_id)');
         await customStatement('CREATE INDEX IF NOT EXISTS idx_outfit_tags_outfit_id ON outfit_tags(outfit_id)');
         await customStatement('CREATE INDEX IF NOT EXISTS idx_outfit_tags_tag_id ON outfit_tags(tag_id)');
         await customStatement('CREATE INDEX IF NOT EXISTS idx_outfit_images_outfit_id ON outfit_images(outfit_id)');
@@ -43,6 +44,15 @@ class AppDatabase extends _$AppDatabase {
           await customStatement(
             "ALTER TABLE tags ADD COLUMN color TEXT DEFAULT '#E8F5E9'",
           );
+        }
+        if (from < 3) {
+          // 云同步元数据。存量行 dirty=1 → 首次同步全量推送
+          await customStatement('ALTER TABLE outfits ADD COLUMN server_id INTEGER');
+          await customStatement('ALTER TABLE outfits ADD COLUMN dirty INTEGER NOT NULL DEFAULT 1');
+          await customStatement('ALTER TABLE tags ADD COLUMN server_id INTEGER');
+          await customStatement('ALTER TABLE tags ADD COLUMN dirty INTEGER NOT NULL DEFAULT 1');
+          await customStatement('ALTER TABLE outfit_images ADD COLUMN server_image_id INTEGER');
+          await customStatement('CREATE INDEX IF NOT EXISTS idx_outfits_server_id ON outfits(server_id)');
         }
       },
     );

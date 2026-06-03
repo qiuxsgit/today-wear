@@ -9,6 +9,12 @@ class Outfits extends Table {
   IntColumn get createdAt => integer()(); // Unix 时间戳
   IntColumn get updatedAt => integer()(); // Unix 时间戳
   IntColumn get isDeleted => integer().withDefault(const Constant(0))(); // 0/1
+
+  /// 服务端 id（云同步用）。null = 尚未同步到服务端
+  IntColumn get serverId => integer().nullable()();
+
+  /// 是否有未推送到服务端的本地改动。1 = 需要推送
+  IntColumn get dirty => integer().withDefault(const Constant(1))();
 }
 
 /// Tags 表
@@ -18,13 +24,19 @@ class Tags extends Table {
   TextColumn get name => text().unique()();
   /// 标签颜色，存 hex 如 #E8F5E9，可为空（旧数据兼容），读取时用默认色
   TextColumn get color => text().nullable().withDefault(const Constant('#E8F5E9'))();
+
+  /// 服务端 id（云同步用）。null = 尚未同步到服务端
+  IntColumn get serverId => integer().nullable()();
+
+  /// 是否有未推送到服务端的本地改动。1 = 需要推送
+  IntColumn get dirty => integer().withDefault(const Constant(1))();
 }
 
 /// OutfitTags 关联表（多对多）
 class OutfitTags extends Table {
   IntColumn get outfitId => integer()();
   IntColumn get tagId => integer()();
-  
+
   @override
   Set<Column> get primaryKey => {outfitId, tagId};
 }
@@ -36,4 +48,7 @@ class OutfitImages extends Table {
   IntColumn get outfitId => integer()();
   TextColumn get imagePath => text()(); // 相对路径，如 images/20260128/123_0.jpg
   IntColumn get displayOrder => integer()(); // 显示顺序
+
+  /// GFS 服务端图片 id（云同步用）。null = 尚未上传到 GFS
+  IntColumn get serverImageId => integer().nullable()();
 }

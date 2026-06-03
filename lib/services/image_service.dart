@@ -99,6 +99,29 @@ class ImageService {
     }
   }
 
+  /// 保存下载到的图片字节到本地（云同步拉取远端图片用）
+  /// 返回相对路径，如 images/20260128/123_0.jpg
+  Future<String> saveImageBytes(List<int> bytes, int outfitId, int index, DateTime date) async {
+    final imageDir = await getImageDirectory(date);
+    final fileName = '${outfitId}_$index.jpg';
+    final targetFile = File(p.join(imageDir.path, fileName));
+    await targetFile.writeAsBytes(bytes);
+    final relativeDir = getImageDirectoryRelativePath(date);
+    return p.join(relativeDir, fileName);
+  }
+
+  /// 保存下载到的头像字节（覆盖 profile/avatar.jpg）
+  Future<String> saveProfileAvatarBytes(List<int> bytes) async {
+    final appDir = await _getAppDataDirectory();
+    final profileDir = Directory(p.join(appDir.path, 'profile'));
+    if (!await profileDir.exists()) {
+      await profileDir.create(recursive: true);
+    }
+    final targetFile = File(p.join(profileDir.path, 'avatar.jpg'));
+    await targetFile.writeAsBytes(bytes);
+    return p.join('profile', 'avatar.jpg');
+  }
+
   /// 根据相对路径获取完整路径的 File 对象
   Future<File?> getImageFile(String relativePath) async {
     final appDir = await _getAppDataDirectory();

@@ -37,19 +37,28 @@ flutter analyze
 
 ```
 lib/
-├── main.dart                 # App entry, theme/locale/notification init, MainScreen (5-tab nav)
+├── main.dart                 # App entry, theme/locale/notification/session init, MainScreen (5-tab nav)
+├── api/                      # REST 客户端：ApiClient(信封/Bearer/异常) + auth/user/outfit/tag/media API + GfsUploader
 ├── database/                 # Drift SQLite database
-│   ├── database.dart         # Singleton AppDatabase, schema migrations (schemaVersion=2)
-│   ├── tables.dart           # Table definitions
+│   ├── database.dart         # Singleton AppDatabase, schema migrations (schemaVersion=3)
+│   ├── tables.dart           # Table definitions (含云同步列 serverId/dirty/serverImageId)
 │   └── daos/                 # OutfitDao, TagDao, ImageDao (+ generated .g.dart)
 ├── models/                   # Outfit, UserProfile, Reminder
 ├── repositories/             # OutfitRepository, ReminderRepository
 ├── screens/                  # Page widgets (one per file)
 ├── widgets/                  # Reusable UI components
-├── services/                 # ImageService, LocaleService, ThemeService, NotificationService, ProfileService
+├── services/                 # ImageService, LocaleService, ThemeService, NotificationService, ProfileService,
+│                             # SessionService(会话), SyncService(云同步引擎), ProfileSync(资料同步)
 ├── theme/                    # AppThemeTokens, AppSpacing, AppTextStyle, TagColors
 └── l10n/                     # i18n (zh, en, ja, ko)
 ```
+
+### Cloud Sync（可选账号）
+离线优先：本地 SQLite 是源真相，未登录全功能可用。登录后 `SyncService` 推送脏数据
+（`dirty=1`）/ 拉取远端增量（`since` + `serverId` 映射），冲突 last-write-wins（updatedAt 毫秒）。
+图片经 `/media/upload-token` 直传 GFS，拉取时下载到本地按本地文件渲染。API 基地址在
+`lib/api/api_config.dart`（默认测试环境，`--dart-define=API_BASE_URL=` 覆盖）。服务端契约见
+`today-wear-server/docs/api.md`。
 
 ### Data Flow
 - **Database**: Drift ORM with SQLite, singleton `AppDatabase`

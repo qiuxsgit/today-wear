@@ -16,6 +16,8 @@ import 'services/theme_service.dart';
 import 'services/notification_service.dart';
 import 'database/database.dart';
 import 'services/image_service.dart';
+import 'services/session_service.dart';
+import 'services/sync_service.dart';
 
 // 导出 LocaleServiceProvider 以便其他文件使用
 export 'services/locale_service.dart';
@@ -73,7 +75,14 @@ void main() async {
   
   // 初始化数据库（创建单例）
   AppDatabase();
-  
+
+  // 初始化会话服务（恢复登录态 + 注入 ApiClient token）
+  await SessionService.instance.init();
+
+  // 恢复同步元数据，并机会性触发一次后台同步（未登录时内部直接跳过）
+  await SyncService.instance.loadMeta();
+  SyncService.instance.syncInBackground();
+
   // 初始化图片目录
   await ImageService.instance.ensureImageDirectoriesExist();
 
@@ -123,21 +132,31 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     // 监听语言变化
     widget.localeService.addListener(_onLocaleChanged);
     // 监听主题变化
     widget.themeService.addListener(_onThemeChanged);
   }
-  
+
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     widget.localeService.removeListener(_onLocaleChanged);
     widget.themeService.removeListener(_onThemeChanged);
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // 回到前台时机会性触发云同步（未登录/未开启时内部直接跳过）
+    if (state == AppLifecycleState.resumed) {
+      SyncService.instance.syncInBackground();
+    }
   }
   
   void _onLocaleChanged() {
@@ -305,6 +324,8 @@ class _MainScreenState extends State<MainScreen> {
     if (saved != true || !mounted) return;
     // 穿搭保存后重新调度通知（可能会因为 skipIfRecorded 跳过今天）
     NotificationService.instance.rescheduleAll();
+    // 机会性触发云同步推送
+    SyncService.instance.syncInBackground();
     if (_selectedIndex == 0) {
       _homePageKey.currentState?.refreshData();
       _needsRefresh = false;

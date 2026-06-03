@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:today_wear/l10n/app_localizations.dart';
 import 'package:today_wear/database/database.dart';
+import '../api/tag_api.dart';
+import '../services/session_service.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_text_style.dart';
@@ -111,7 +113,14 @@ class _TagEditModalState extends State<TagEditModal> {
     );
 
     if (confirmed != true || !mounted) return;
+    final serverId = widget.tag.serverId;
     await _tagDao.deleteTagAndRemoveFromAllOutfits(widget.tag.id);
+    // 已登录且该标签已上云时，同步删除服务端标签（避免下次拉取又复活）
+    if (serverId != null && SessionService.instance.isLoggedIn) {
+      TagApi().delete(serverId).catchError((e) {
+        debugPrint('Tag delete sync failed: $e');
+      });
+    }
     if (!mounted) return;
     Navigator.pop(context, true);
   }

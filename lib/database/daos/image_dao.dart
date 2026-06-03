@@ -62,4 +62,27 @@ class ImageDao extends DatabaseAccessor<AppDatabase> with _$ImageDaoMixin {
           ..where((tbl) => tbl.outfitId.equals(outfitId) & tbl.imagePath.equals(imagePath)))
         .go();
   }
+
+  // --- 云同步辅助 ---------------------------------------------------------
+
+  /// 回填某图片的 GFS 服务端 id
+  Future<void> setServerImageId(int imageId, int serverImageId) async {
+    await (update(outfitImages)..where((tbl) => tbl.id.equals(imageId)))
+        .write(OutfitImagesCompanion(serverImageId: Value(serverImageId)));
+  }
+
+  /// 插入一条远端图片记录（已下载到本地，带 serverImageId）
+  Future<int> insertRemoteImage({
+    required int outfitId,
+    required String imagePath,
+    required int displayOrder,
+    required int serverImageId,
+  }) async {
+    return await into(outfitImages).insert(OutfitImagesCompanion.insert(
+      outfitId: outfitId,
+      imagePath: imagePath,
+      displayOrder: displayOrder,
+      serverImageId: Value(serverImageId),
+    ));
+  }
 }

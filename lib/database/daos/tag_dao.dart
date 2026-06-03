@@ -44,6 +44,7 @@ class TagDao extends DatabaseAccessor<AppDatabase> with _$TagDaoMixin {
     final companion = TagsCompanion(
       name: Value(trimmed),
       color: newColor != null ? Value(newColor) : const Value.absent(),
+      dirty: const Value(1),
     );
     final result = await (update(tags)..where((tbl) => tbl.id.equals(tagId)))
         .write(companion);
@@ -67,7 +68,67 @@ class TagDao extends DatabaseAccessor<AppDatabase> with _$TagDaoMixin {
       color: Value(TagColors.defaultColorHex),
     );
     final id = await into(tags).insert(companion);
-    return TagData(id: id, name: name, color: TagColors.defaultColorHex);
+    return TagData(
+      id: id,
+      name: name,
+      color: TagColors.defaultColorHex,
+      serverId: null,
+      dirty: 1,
+    );
+  }
+
+  // --- 云同步辅助 ---------------------------------------------------------
+
+  /// 获取所有待推送（dirty=1）的标签
+  Future<List<TagData>> getDirtyTags() async {
+    return await (select(tags)..where((tbl) => tbl.dirty.equals(1))).get();
+  }
+
+  /// 按服务端 id 查找标签
+  Future<TagData?> getTagByServerId(int serverId) async {
+    return await (select(tags)..where((tbl) => tbl.serverId.equals(serverId)))
+        .getSingleOrNull();
+  }
+
+  /// 标记标签已同步：清 dirty，可选回填 serverId
+  Future<void> markTagSynced(int id, {int? serverId}) async {
+    await (update(tags)..where((tbl) => tbl.id.equals(id))).write(
+      TagsCompanion(
+        dirty: const Value(0),
+        serverId: serverId != null ? Value(serverId) : const Value.absent(),
+      ),
+    );
+  }
+
+  /// 回填某标签的 serverId（按本地 id）
+  Future<void> setTagServerId(int id, int serverId) async {
+    await (update(tags)..where((tbl) => tbl.id.equals(id)))
+        .write(TagsCompanion(serverId: Value(serverId)));
+  }
+
+  /// 从远端插入或更新标签（按 name 匹配，dirty=0）
+  Future<void> upsertRemoteTag({
+    required int serverId,
+    required String name,
+    required String color,
+  }) async {
+    final existing = await getTagByName(name);
+    if (existing != null) {
+      await (update(tags)..where((tbl) => tbl.id.equals(existing.id))).write(
+        TagsCompanion(
+          color: Value(color),
+          serverId: Value(serverId),
+          dirty: const Value(0),
+        ),
+      );
+    } else {
+      await into(tags).insert(TagsCompanion.insert(
+        name: name,
+        color: Value(color),
+        serverId: Value(serverId),
+        dirty: const Value(0),
+      ));
+    }
   }
 
   /// 插入 tag

@@ -47,6 +47,9 @@ dependencies:
   # 应用信息（版本号等）
   package_info_plus: ^8.0.0
   
+  # 网络请求（云同步 / 账号 / 图片直传）
+  http: ^1.2.0
+
   # 数据库
   drift: ^2.30.1
   drift_flutter: ^0.2.8

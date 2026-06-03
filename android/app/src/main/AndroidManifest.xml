@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 网络权限（云同步 / 图片上传下载） -->
+    <uses-permission android:name="android.permission.INTERNET" />
     <!-- 相机权限 -->
     <uses-permission android:name="android.permission.CAMERA" />
     <!-- 相册权限 -->

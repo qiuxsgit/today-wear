@@ -164,21 +164,17 @@ class OutfitRepository {
       return outfitId;
     } else {
       // 更新
-      // 获取现有记录以保留 createdAt
+      // 确认记录存在
       final existing = await _db.outfitDao.getOutfitById(outfit.id);
       if (existing == null) {
         throw Exception('Outfit not found: ${outfit.id}');
       }
-      
-      final outfitData = OutfitData(
-        id: outfit.id,
-        date: outfit.date.millisecondsSinceEpoch,
-        description: outfit.description,
-        createdAt: existing.createdAt, // 保留原有创建时间
-        updatedAt: nowTimestamp,
-        isDeleted: existing.isDeleted,
+
+      await _db.outfitDao.updateOutfitContent(
+        outfit.id,
+        outfit.date.millisecondsSinceEpoch,
+        outfit.description,
       );
-      await _db.outfitDao.updateOutfit(outfitData);
 
       // 更新 tags
       await _saveTagsForOutfit(outfit.id, outfit.tags);

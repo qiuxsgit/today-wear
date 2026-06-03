@@ -10,6 +10,8 @@ import '../theme/app_theme_tokens.dart';
 import '../theme/app_spacing.dart';
 import '../services/locale_service.dart';
 import '../services/theme_service.dart';
+import '../services/session_service.dart';
+import 'account_sync_page.dart';
 import 'appearance_theme_page.dart';
 import 'contact_page.dart';
 import 'language_selection_page.dart';
@@ -310,6 +312,37 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Text(l10n.language, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: tt.ink)),
                   ),
                   Text(currentLanguageName, style: TextStyle(fontSize: 13, color: tt.muted)),
+                  const SizedBox(width: 4),
+                  Icon(Icons.chevron_right, color: tt.muted, size: 18),
+                ],
+              ),
+            ),
+          ),
+          Divider(height: 1, color: tt.line),
+          GestureDetector(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const AccountSyncPage()),
+            ).then((_) {
+              if (mounted) setState(() {});
+            }),
+            behavior: HitTestBehavior.opaque,
+            child: SizedBox(
+              height: 48,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text('账户与云同步', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: tt.ink)),
+                  ),
+                  Flexible(
+                    child: Text(
+                      SessionService.instance.isLoggedIn
+                          ? (SessionService.instance.email ?? '')
+                          : '未登录',
+                      style: TextStyle(fontSize: 13, color: tt.muted),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
                   const SizedBox(width: 4),
                   Icon(Icons.chevron_right, color: tt.muted, size: 18),
                 ],

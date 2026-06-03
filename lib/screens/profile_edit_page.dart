@@ -5,6 +5,8 @@ import 'package:image_picker/image_picker.dart';
 import '../models/user_profile.dart';
 import '../services/profile_service.dart';
 import '../services/image_service.dart';
+import '../services/profile_sync.dart';
+import '../services/session_service.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_text_style.dart';
 import '../theme/app_spacing.dart';
@@ -103,6 +105,13 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
     );
 
     await ProfileService.save(profile);
+
+    // 已登录时后台推送资料到云端（失败不阻塞本地保存）
+    if (SessionService.instance.isLoggedIn) {
+      ProfileSync.instance.push(profile).catchError((e) {
+        debugPrint('Profile push failed: $e');
+      });
+    }
 
     if (!mounted) return;
     AppToast.success(AppLocalizations.of(context)!.profileSaved);
