@@ -59,7 +59,7 @@ if ! $NO_BUILD; then
   # ====== 4. 构建 iOS App ======
 
   echo "🏗️ 构建 iOS App..."
-  flutter build ios --release || {
+  flutter build ios --release --build-number=$(date +%Y%m%d%H%M) || {
     echo "❌ 构建失败"
     exit 1
   }

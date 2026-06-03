@@ -18,10 +18,10 @@ done
 echo "🚀 构建模式: $BUILD_MODE"
 
 if [ "$BUILD_MODE" == "release" ]; then
-flutter build apk --release
+flutter build apk --release --build-number=$(date +%Y%m%d%H%M)
 APK_PATH="build/app/outputs/flutter-apk/app-release.apk"
 else
-flutter build apk --debug
+flutter build apk --debug --build-number=$(date +%Y%m%d%H%M)
 APK_PATH="build/app/outputs/flutter-apk/app-debug.apk"
 fi
 
