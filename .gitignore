@@ -59,7 +59,8 @@ ios/Flutter/Flutter.podspec
 ios/Flutter/App.framework
 
 # Xcode
-*.xcworkspace
+# 注意：Runner.xcworkspace 本体是构建必需的工程文件，必须签入；只忽略用户状态
+**/xcuserdata/
 *.xcuserstate
 *.xcuserdatad
 *.xcbkptlist
