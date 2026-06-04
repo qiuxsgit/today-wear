@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:today_wear/l10n/app_localizations.dart';
 
 import '../services/profile_sync.dart';
+import '../services/purchase_service.dart';
 import '../services/session_service.dart';
 import '../services/sync_service.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_theme_tokens.dart';
 import '../widgets/app_toast.dart';
+import '../widgets/pro_status_card.dart';
 import 'auth_page.dart';
 import 'device_sessions_page.dart';
 
@@ -29,6 +32,8 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
     _session.addListener(_onChanged);
     _sync.addListener(_onChanged);
     _sync.loadMeta();
+    // 进入页面时按服务端真相刷新 Pro 状态（未登录内部直接跳过）
+    PurchaseService.instance.refreshServerStatus();
   }
 
   @override
@@ -57,46 +62,63 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
   }
 
   Future<void> _logout() async {
+    final l10n = AppLocalizations.of(context)!;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('退出登录'),
-        content: const Text('退出后云同步将停止，本地数据保留。确定退出吗？'),
+        title: Text(l10n.accountLogout),
+        content: Text(l10n.accountLogoutDialogContent),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('取消')),
-          TextButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('退出')),
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(l10n.cancel)),
+          TextButton(
+              onPressed: () => Navigator.pop(ctx, true), child: Text(l10n.accountLogoutConfirm)),
         ],
       ),
     );
     if (confirmed != true) return;
     await _session.logout();
-    if (mounted) AppToast.success('已退出登录');
+    if (mounted) AppToast.success(l10n.accountLoggedOutToast);
   }
 
-  String _syncStatusText() {
+  String _syncErrorText(AppLocalizations l10n) {
+    switch (_sync.lastError) {
+      case SyncError.premiumRequired:
+        return l10n.syncErrPremiumRequired;
+      case SyncError.network:
+        return l10n.errNetwork;
+      case SyncError.server:
+        return _sync.lastErrorMessage ?? l10n.syncErrGeneric;
+      case SyncError.unknown:
+      case null:
+        return l10n.syncErrGeneric;
+    }
+  }
+
+  String _syncStatusText(AppLocalizations l10n) {
     switch (_sync.status) {
       case SyncStatus.syncing:
-        return '同步中…';
+        return l10n.syncStatusSyncing;
       case SyncStatus.error:
-        return _sync.lastError ?? '同步失败';
+        return _syncErrorText(l10n);
       case SyncStatus.idle:
-        if (_sync.lastSyncedMs == 0) return '尚未同步';
+        if (_sync.lastSyncedMs == 0) return l10n.syncStatusNever;
         final t = DateTime.fromMillisecondsSinceEpoch(_sync.lastSyncedMs);
-        return '上次同步 ${t.month}/${t.day} '
-            '${t.hour.toString().padLeft(2, '0')}:${t.minute.toString().padLeft(2, '0')}';
+        return l10n.syncStatusLast('${t.month}/${t.day} '
+            '${t.hour.toString().padLeft(2, '0')}:${t.minute.toString().padLeft(2, '0')}');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final tt = context.tt;
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: tt.page,
       appBar: AppBar(
         backgroundColor: tt.page,
         elevation: 0,
         scrolledUnderElevation: 0,
-        title: Text('账户与云同步',
+        title: Text(l10n.accountSyncTitle,
             style: TextStyle(color: tt.ink, fontWeight: FontWeight.w800, fontSize: 18)),
         iconTheme: IconThemeData(color: tt.ink),
       ),
@@ -107,22 +129,23 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
           top: AppSpacing.md,
           bottom: 72 + MediaQuery.of(context).padding.bottom,
         ),
-        children: _session.isLoggedIn ? _loggedInChildren(tt) : _loggedOutChildren(tt),
+        children:
+            _session.isLoggedIn ? _loggedInChildren(tt, l10n) : _loggedOutChildren(tt, l10n),
       ),
     );
   }
 
-  List<Widget> _loggedOutChildren(AppThemeTokens tt) {
+  List<Widget> _loggedOutChildren(AppThemeTokens tt, AppLocalizations l10n) {
     return [
       _card(tt, [
         Icon(Icons.cloud_outlined, size: 44, color: tt.muted),
         const SizedBox(height: 12),
-        Text('云同步未开启',
+        Text(l10n.accountCloudOff,
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800, color: tt.ink)),
         const SizedBox(height: 8),
         Text(
-          '登录后可将穿搭、标签与资料同步到云端，换设备也能找回。\n不登录不影响任何本地功能。',
+          l10n.accountCloudIntro,
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 13, color: tt.muted, height: 1.5),
         ),
@@ -138,7 +161,7 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
               elevation: 0,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             ),
-            child: const Text('登录', style: TextStyle(fontWeight: FontWeight.w800)),
+            child: Text(l10n.authLoginTitle, style: const TextStyle(fontWeight: FontWeight.w800)),
           ),
         ),
         const SizedBox(height: 10),
@@ -152,14 +175,17 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
               side: BorderSide(color: tt.line),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             ),
-            child: const Text('注册新账号', style: TextStyle(fontWeight: FontWeight.w700)),
+            child: Text(l10n.accountRegisterNewBtn,
+                style: const TextStyle(fontWeight: FontWeight.w700)),
           ),
         ),
       ]),
+      const SizedBox(height: AppSpacing.lg),
+      const ProStatusCard(),
     ];
   }
 
-  List<Widget> _loggedInChildren(AppThemeTokens tt) {
+  List<Widget> _loggedInChildren(AppThemeTokens tt, AppLocalizations l10n) {
     return [
       // 账号卡
       _card(tt, [
@@ -174,7 +200,7 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
                   Text(_session.email ?? '',
                       style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: tt.ink)),
                   const SizedBox(height: 2),
-                  Text('已登录', style: TextStyle(fontSize: 12, color: tt.muted)),
+                  Text(l10n.accountLoggedIn, style: TextStyle(fontSize: 12, color: tt.muted)),
                 ],
               ),
             ),
@@ -182,19 +208,22 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
         ),
         const SizedBox(height: 8),
         Divider(height: 1, color: tt.line),
-        _navRow(tt, '登录设备管理', () {
+        _navRow(tt, l10n.accountDeviceManagement, () {
           Navigator.push(context, MaterialPageRoute(builder: (_) => const DeviceSessionsPage()));
         }),
         Divider(height: 1, color: tt.line),
-        _navRow(tt, '退出登录', _logout, danger: true),
+        _navRow(tt, l10n.accountLogout, _logout, danger: true),
       ], crossAxisAlignment: CrossAxisAlignment.start),
+      const SizedBox(height: AppSpacing.lg),
+      // Pro 卡
+      const ProStatusCard(),
       const SizedBox(height: AppSpacing.lg),
       // 同步卡
       _card(tt, [
         Row(
           children: [
             Expanded(
-              child: Text('云同步',
+              child: Text(l10n.accountCloudSyncLabel,
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: tt.ink)),
             ),
             Switch(
@@ -222,10 +251,29 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
               ),
             const SizedBox(width: 8),
             Expanded(
-              child: Text(_syncStatusText(), style: TextStyle(fontSize: 13, color: tt.muted)),
+              child: Text(_syncStatusText(l10n), style: TextStyle(fontSize: 13, color: tt.muted)),
             ),
           ],
         ),
+        // 同步被会员门控挡下时，就地给出开通入口
+        if (_sync.status == SyncStatus.error &&
+            _sync.lastError == SyncError.premiumRequired) ...[
+          const SizedBox(height: 10),
+          SizedBox(
+            width: double.infinity,
+            height: 44,
+            child: OutlinedButton(
+              onPressed: () => presentProPaywallFlow(context),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: tt.ink,
+                side: BorderSide(color: tt.line),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+              ),
+              child: Text(l10n.proSubscribeBtn,
+                  style: const TextStyle(fontWeight: FontWeight.w700)),
+            ),
+          ),
+        ],
         const SizedBox(height: 14),
         SizedBox(
           width: double.infinity,
@@ -240,7 +288,7 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
               elevation: 0,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             ),
-            child: Text(_sync.isSyncing ? '同步中…' : '立即同步',
+            child: Text(_sync.isSyncing ? l10n.syncStatusSyncing : l10n.syncNowBtn,
                 style: const TextStyle(fontWeight: FontWeight.w800)),
           ),
         ),

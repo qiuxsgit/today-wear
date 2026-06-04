@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ import 'services/theme_service.dart';
 import 'services/notification_service.dart';
 import 'database/database.dart';
 import 'services/image_service.dart';
+import 'services/purchase_service.dart';
 import 'services/session_service.dart';
 import 'services/sync_service.dart';
 
@@ -82,6 +84,9 @@ void main() async {
   // 恢复同步元数据，并机会性触发一次后台同步（未登录时内部直接跳过）
   await SyncService.instance.loadMeta();
   SyncService.instance.syncInBackground();
+
+  // 初始化订阅服务（RevenueCat；不支持的平台/失败时自动降级，不阻塞启动）
+  unawaited(PurchaseService.instance.init());
 
   // 初始化图片目录
   await ImageService.instance.ensureImageDirectoriesExist();

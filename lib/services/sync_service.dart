@@ -14,6 +14,21 @@ import 'session_service.dart';
 
 enum SyncStatus { idle, syncing, error }
 
+/// 同步失败原因（Service 层不持有 BuildContext，由 UI 层映射 l10n 文案）
+enum SyncError {
+  /// 需要会员订阅
+  premiumRequired,
+
+  /// 网络层错误（无法连接、超时）
+  network,
+
+  /// 服务端返回了已本地化的错误信息（见 [SyncService.lastErrorMessage]）
+  server,
+
+  /// 其它未知错误
+  unknown,
+}
+
 /// 云同步引擎
 ///
 /// 离线优先：本地 SQLite 为源真相。登录且开启同步时，推送本地脏数据、拉取远端增量。
@@ -34,12 +49,16 @@ class SyncService extends ChangeNotifier {
   final ImageService _images = ImageService.instance;
 
   SyncStatus _status = SyncStatus.idle;
-  String? _lastError;
+  SyncError? _lastError;
+  String? _lastErrorMessage;
   int _lastSyncedMs = 0;
   bool _running = false;
 
   SyncStatus get status => _status;
-  String? get lastError => _lastError;
+  SyncError? get lastError => _lastError;
+
+  /// [SyncError.server] 时服务端返回的（已本地化的）错误信息
+  String? get lastErrorMessage => _lastErrorMessage;
   int get lastSyncedMs => _lastSyncedMs;
   bool get isSyncing => _status == SyncStatus.syncing;
 
@@ -73,20 +92,27 @@ class SyncService extends ChangeNotifier {
       await prefs.setInt(_kLastSyncedMs, _lastSyncedMs);
       _setStatus(SyncStatus.idle, error: null);
     } on PremiumRequiredException {
-      _setStatus(SyncStatus.error, error: '云同步需要会员订阅');
+      _setStatus(SyncStatus.error, error: SyncError.premiumRequired);
+    } on NetworkException {
+      _setStatus(SyncStatus.error, error: SyncError.network);
     } on ApiException catch (e) {
-      _setStatus(SyncStatus.error, error: e.message);
+      _setStatus(
+        SyncStatus.error,
+        error: e.message.isNotEmpty ? SyncError.server : SyncError.unknown,
+        message: e.message,
+      );
     } catch (e) {
       debugPrint('SyncService error: $e');
-      _setStatus(SyncStatus.error, error: '同步失败，请稍后重试');
+      _setStatus(SyncStatus.error, error: SyncError.unknown);
     } finally {
       _running = false;
     }
   }
 
-  void _setStatus(SyncStatus s, {required String? error}) {
+  void _setStatus(SyncStatus s, {required SyncError? error, String? message}) {
     _status = s;
     _lastError = error;
+    _lastErrorMessage = (message != null && message.isNotEmpty) ? message : null;
     notifyListeners();
   }
 
