@@ -60,15 +60,20 @@ class HomeTopBar extends StatelessWidget {
 }
 
 /// 首页标签筛选栏（动态读取数据库中已有的标签）
+///
+/// 受控组件：选中状态由 [activeTag] 决定（null 表示"全部"），
+/// 点击时通过 [onFilterChanged] 通知父级。
 class HomeFilterChips extends StatefulWidget {
-  const HomeFilterChips({super.key});
+  final String? activeTag;
+  final ValueChanged<String?>? onFilterChanged;
+
+  const HomeFilterChips({super.key, this.activeTag, this.onFilterChanged});
 
   @override
   State<HomeFilterChips> createState() => _HomeFilterChipsState();
 }
 
 class _HomeFilterChipsState extends State<HomeFilterChips> {
-  int _activeIndex = 0;
   List<String> _tagNames = [];
 
   @override
@@ -99,11 +104,12 @@ class _HomeFilterChipsState extends State<HomeFilterChips> {
         padding: const EdgeInsets.symmetric(horizontal: 18),
         child: Row(
           children: List.generate(labels.length, (i) {
-            final isActive = i == _activeIndex;
+            final tagName = i == 0 ? null : _tagNames[i - 1];
+            final isActive = tagName == widget.activeTag;
             return Padding(
               padding: const EdgeInsets.only(right: 8),
               child: GestureDetector(
-                onTap: () => setState(() => _activeIndex = i),
+                onTap: () => widget.onFilterChanged?.call(tagName),
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(

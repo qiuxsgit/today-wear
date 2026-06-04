@@ -1,8 +1,7 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import '../models/outfit.dart';
-import '../services/image_service.dart';
 import '../theme/app_colors.dart';
+import 'outfit_image.dart';
 
 /// 穿搭记录卡片
 ///
@@ -57,9 +56,7 @@ class OutfitRecordCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _Cover(
-                  path: outfit.photoPaths.isNotEmpty
-                      ? outfit.photoPaths.first
-                      : null,
+                  photo: outfit.photos.isNotEmpty ? outfit.photos.first : null,
                 ),
                 const SizedBox(width: 12),
                 Expanded(child: _Info(outfit: outfit, title: _title, time: _timeLabel)),
@@ -120,7 +117,7 @@ class _Info extends StatelessWidget {
                 color: AppColors.warmMuted,
               ),
             ),
-            if (outfit.photoPaths.length > 1) ...[
+            if (outfit.photos.length > 1) ...[
               const SizedBox(width: 10),
               const Icon(
                 Icons.photo_library_outlined,
@@ -129,7 +126,7 @@ class _Info extends StatelessWidget {
               ),
               const SizedBox(width: 3),
               Text(
-                '${outfit.photoPaths.length}',
+                '${outfit.photos.length}',
                 style: const TextStyle(
                   fontSize: 12,
                   color: AppColors.warmMuted,
@@ -168,8 +165,8 @@ class _Info extends StatelessWidget {
 }
 
 class _Cover extends StatelessWidget {
-  final String? path;
-  const _Cover({this.path});
+  final OutfitPhoto? photo;
+  const _Cover({this.photo});
 
   static const double _size = 72;
   static const double _radius = 12;
@@ -190,29 +187,11 @@ class _Cover extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (path == null) return _placeholder;
+    final photo = this.photo;
+    if (photo == null) return _placeholder;
     return ClipRRect(
       borderRadius: BorderRadius.circular(_radius),
-      child: FutureBuilder<File?>(
-        future: ImageService.instance.getImageFile(path!),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Container(
-              width: _size,
-              height: _size,
-              color: AppColors.warmMist,
-            );
-          }
-          final file = snapshot.data;
-          if (file == null || !file.existsSync()) return _placeholder;
-          return Image.file(
-            file,
-            width: _size,
-            height: _size,
-            fit: BoxFit.cover,
-          );
-        },
-      ),
+      child: OutfitImage(photo: photo, width: _size, height: _size),
     );
   }
 }

@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:today_wear/l10n/app_localizations.dart';
 import '../models/outfit.dart';
@@ -6,15 +5,16 @@ import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_theme_tokens.dart';
 import '../theme/tag_colors.dart';
-import '../services/image_service.dart';
 import '../database/database.dart';
 import '../repositories/outfit_repository.dart';
+import '../services/image_download_service.dart';
+import '../widgets/outfit_image.dart';
 import 'add_outfit_page.dart';
 
 /// 穿搭详情页
 ///
 /// 显示穿搭基本信息，支持删除和编辑记录
-class OutfitDetailPage extends StatelessWidget {
+class OutfitDetailPage extends StatefulWidget {
   /// 穿搭数据
   final Outfit outfit;
 
@@ -26,6 +26,21 @@ class OutfitDetailPage extends StatelessWidget {
     required this.outfit,
     this.onOutfitChanged,
   });
+
+  @override
+  State<OutfitDetailPage> createState() => _OutfitDetailPageState();
+}
+
+class _OutfitDetailPageState extends State<OutfitDetailPage> {
+  Outfit get outfit => widget.outfit;
+
+  @override
+  void initState() {
+    super.initState();
+    // 进入详情即预下载整条穿搭的全部图片（PageView 只构建可见页，
+    // 不预下载的话后面几张要等翻页才开始下，编辑页也拿不到文件）
+    ImageDownloadService.instance.ensureAllDownloaded(outfit.photos);
+  }
 
   /// 格式化日期显示
   String _formatDate(BuildContext context, DateTime date) {
@@ -84,7 +99,7 @@ class OutfitDetailPage extends StatelessWidget {
       ),
     );
     if (result == true) {
-      onOutfitChanged?.call();
+      widget.onOutfitChanged?.call();
       if (context.mounted) {
         Navigator.pop(context);
       }
@@ -128,8 +143,8 @@ class OutfitDetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (outfit.photoPaths.isNotEmpty)
-                _buildImageGallery(context, outfit.photoPaths)
+              if (outfit.photos.isNotEmpty)
+                _buildImageGallery(context, outfit.photos)
               else
                 Container(
                   width: double.infinity,
@@ -183,68 +198,24 @@ class OutfitDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _buildImageGallery(BuildContext context, List<String> photoPaths) {
-    if (photoPaths.isEmpty) return const SizedBox.shrink();
+  Widget _buildImageGallery(BuildContext context, List<OutfitPhoto> photos) {
+    if (photos.isEmpty) return const SizedBox.shrink();
 
     return SizedBox(
       height: 300,
       child: PageView.builder(
-        itemCount: photoPaths.length,
+        itemCount: photos.length,
         itemBuilder: (context, index) {
-          final tt = context.tt;
-          return FutureBuilder<File?>(
-            future: ImageService.instance.getImageFile(photoPaths[index]),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: tt.mist,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Center(child: CircularProgressIndicator()),
-                );
-              }
-
-              final file = snapshot.data;
-              if (file == null || !file.existsSync()) {
-                return Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: tt.mist,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Center(
-                    child: Icon(Icons.broken_image, size: 64, color: tt.muted),
-                  ),
-                );
-              }
-
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.file(
-                    file,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      final tt = context.tt;
-                      return Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: tt.mist,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Center(
-                          child: Icon(Icons.broken_image, size: 64, color: tt.muted),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              );
-            },
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: OutfitImage(
+                photo: photos[index],
+                width: double.infinity,
+                height: double.infinity,
+              ),
+            ),
           );
         },
       ),

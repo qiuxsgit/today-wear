@@ -1,19 +1,34 @@
+/// Outfit 的一张图片
+///
+/// 本地新拍的图：有 [localPath] 无 [serverImageId]；
+/// 云端拉取未下载的图：有 [serverImageId] 无 [localPath]；
+/// 下载完成 / 上传完成后两者都有。
+class OutfitPhoto {
+  /// 本地相对路径（如 images/20260128/123_0.jpg），未下载时为 null
+  final String? localPath;
+
+  /// 云端 GFS 图片 id，未上传时为 null
+  final int? serverImageId;
+
+  const OutfitPhoto({this.localPath, this.serverImageId});
+}
+
 /// Outfit 数据模型
-/// 
+///
 /// 表示一条穿搭记录
 class Outfit {
   /// 唯一标识符（数据库自增 ID）
   final int id;
-  
+
   /// 日期
   final DateTime date;
-  
-  /// 照片路径列表（相对路径，如 images/20260128/123_0.jpg）
-  final List<String> photoPaths;
-  
+
+  /// 照片列表（按显示顺序）
+  final List<OutfitPhoto> photos;
+
   /// 穿搭描述
   final String description;
-  
+
   /// 标签列表（如：天气、场合等）
   final List<String> tags;
 
@@ -23,11 +38,18 @@ class Outfit {
   const Outfit({
     required this.id,
     required this.date,
-    this.photoPaths = const [],
+    this.photos = const [],
     required this.description,
     this.tags = const [],
     this.tagColors = const [],
   });
+
+  /// 已下载到本地的图片相对路径（仅含 localPath 非空的图片，
+  /// 供只能处理本地文件的场景使用，如编辑页）
+  List<String> get photoPaths => [
+        for (final p in photos)
+          if (p.localPath != null) p.localPath!,
+      ];
   
   /// 生成模拟数据（已废弃，请使用数据库）
   /// 

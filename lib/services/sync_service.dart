@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/api_exception.dart';
@@ -18,7 +17,8 @@ enum SyncStatus { idle, syncing, error }
 /// 云同步引擎
 ///
 /// 离线优先：本地 SQLite 为源真相。登录且开启同步时，推送本地脏数据、拉取远端增量。
-/// 冲突采用 last-write-wins（按 updatedAt 毫秒）。图片随穿搭一起上云/下载到本地。
+/// 冲突采用 last-write-wins（按 updatedAt 毫秒）。图片上传随穿搭推送；拉取只落
+/// 图片元数据（serverImageId），字节由 OutfitImage 组件首次展示时懒加载下载。
 class SyncService extends ChangeNotifier {
   SyncService._();
   static final SyncService instance = SyncService._();
@@ -32,7 +32,6 @@ class SyncService extends ChangeNotifier {
   final MediaApi _mediaApi = MediaApi();
   final GfsUploader _uploader = GfsUploader.instance;
   final ImageService _images = ImageService.instance;
-  final http.Client _http = http.Client();
 
   SyncStatus _status = SyncStatus.idle;
   String? _lastError;
@@ -190,7 +189,9 @@ class SyncService extends ChangeNotifier {
         ids.add(img.serverImageId!);
         continue;
       }
-      final file = await _images.getImageFile(img.imagePath);
+      final path = img.imagePath;
+      if (path == null) continue; // 云端图未下载且无 serverImageId（异常态），跳过
+      final file = await _images.getImageFile(path);
       if (file == null) continue; // 本地文件缺失，跳过
       final policy = await _mediaApi.uploadToken(usage: 'outfit');
       final serverImageId = await _uploader.upload(file, policy);
@@ -242,7 +243,7 @@ class SyncService extends ChangeNotifier {
         isDeleted: false,
       );
       await _applyRemoteTags(newId, ro.tags);
-      await _downloadImages(newId, ro.date, ro.imageIds, ro.imageUrls);
+      await _applyRemoteImages(newId, ro.imageIds);
       return;
     }
 
@@ -260,14 +261,15 @@ class SyncService extends ChangeNotifier {
     );
     await _applyRemoteTags(local.id, ro.tags);
 
-    // 图片集合变化时重新下载
+    // 图片集合变化时重建元数据行（字节由组件懒加载）
     final localImages = await _db.imageDao.getImagesByOutfitId(local.id);
     final localServerIds = localImages.map((e) => e.serverImageId).toList();
     if (!_sameIds(localServerIds, ro.imageIds)) {
-      final paths = localImages.map((e) => e.imagePath).toList();
+      final paths =
+          localImages.map((e) => e.imagePath).whereType<String>().toList();
       await _images.deleteOutfitImages(paths);
       await _db.imageDao.deleteImagesByOutfitId(local.id);
-      await _downloadImages(local.id, ro.date, ro.imageIds, ro.imageUrls);
+      await _applyRemoteImages(local.id, ro.imageIds);
     }
   }
 
@@ -281,38 +283,16 @@ class SyncService extends ChangeNotifier {
     await _db.tagDao.setOutfitTags(localOutfitId, localTagIds);
   }
 
-  /// 下载远端图片到本地磁盘（让现有 UI 无改动地按本地文件渲染）
-  Future<void> _downloadImages(
-    int localOutfitId,
-    int dateMs,
-    List<int> imageIds,
-    List<String> imageUrls,
-  ) async {
-    final date = DateTime.fromMillisecondsSinceEpoch(dateMs);
+  /// 写入远端图片元数据行（imagePath 为 null）。
+  /// 图片字节不在同步期下载，由 OutfitImage 组件首次展示时懒加载。
+  Future<void> _applyRemoteImages(int localOutfitId, List<int> imageIds) async {
     for (int i = 0; i < imageIds.length; i++) {
-      if (i >= imageUrls.length) break; // 无对应读 URL（GFS 未配置等）
-      final url = imageUrls[i];
-      if (url.isEmpty) continue;
-      final bytes = await _download(url);
-      if (bytes == null) continue;
-      final path = await _images.saveImageBytes(bytes, localOutfitId, i, date);
       await _db.imageDao.insertRemoteImage(
         outfitId: localOutfitId,
-        imagePath: path,
         displayOrder: i,
         serverImageId: imageIds[i],
       );
     }
-  }
-
-  Future<List<int>?> _download(String url) async {
-    try {
-      final res = await _http.get(Uri.parse(url)).timeout(const Duration(seconds: 30));
-      if (res.statusCode >= 200 && res.statusCode < 300) return res.bodyBytes;
-    } catch (e) {
-      debugPrint('SyncService image download failed: $e');
-    }
-    return null;
   }
 
   bool _sameIds(List<int?> a, List<int> b) {

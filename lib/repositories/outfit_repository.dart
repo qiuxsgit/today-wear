@@ -40,8 +40,12 @@ class OutfitRepository {
     return await _loadOutfitsWithRelations(outfitRecords);
   }
 
-  /// 根据标签筛选
-  Future<List<models.Outfit>> getOutfitsByTag(String tagName) async {
+  /// 根据标签筛选（分页，排序与 getAllOutfits 一致：按日期倒序）
+  Future<List<models.Outfit>> getOutfitsByTag(
+    String tagName, {
+    int? limit,
+    int? offset,
+  }) async {
     // 先找到 tag
     final tag = await _db.tagDao.getTagByName(tagName);
     if (tag == null) {
@@ -58,13 +62,17 @@ class OutfitRepository {
     }
 
     final outfitIds = outfitTags.map((ot) => ot.outfitId).toList();
-    
+
     // 查询这些 outfits
-    final outfitRecords = await (_db.select(_db.outfits)
-          ..where((tbl) =>
-              tbl.id.isIn(outfitIds) & tbl.isDeleted.equals(0))
-          ..orderBy([(tbl) => OrderingTerm.desc(tbl.date)]))
-        .get();
+    final query = _db.select(_db.outfits)
+      ..where((tbl) => tbl.id.isIn(outfitIds) & tbl.isDeleted.equals(0))
+      ..orderBy([(tbl) => OrderingTerm.desc(tbl.date)]);
+
+    if (limit != null) {
+      query.limit(limit, offset: offset ?? 0);
+    }
+
+    final outfitRecords = await query.get();
 
     return await _loadOutfitsWithRelations(outfitRecords);
   }
@@ -181,9 +189,10 @@ class OutfitRepository {
 
       // 如果提供了新图片，替换旧图片
       if (imageFiles != null) {
-        // 删除旧图片
+        // 删除旧图片（未下载的云端图无本地文件，仅删行）
         final oldImages = await _db.imageDao.getImagesByOutfitId(outfit.id);
-        final oldPaths = oldImages.map((img) => img.imagePath).toList();
+        final oldPaths =
+            oldImages.map((img) => img.imagePath).whereType<String>().toList();
         await _imageService.deleteOutfitImages(oldPaths);
         await _db.imageDao.deleteImagesByOutfitId(outfit.id);
 
@@ -204,9 +213,10 @@ class OutfitRepository {
 
   /// 永久删除 outfit（物理删除，包括图片文件）
   Future<bool> permanentlyDeleteOutfit(int id) async {
-    // 删除图片文件
+    // 删除图片文件（未下载的云端图无本地文件，仅删行）
     final images = await _db.imageDao.getImagesByOutfitId(id);
-    final imagePaths = images.map((img) => img.imagePath).toList();
+    final imagePaths =
+        images.map((img) => img.imagePath).whereType<String>().toList();
     await _imageService.deleteOutfitImages(imagePaths);
 
     // 删除数据库记录
@@ -244,7 +254,7 @@ class OutfitRepository {
       imageCompanions.add(
         OutfitImagesCompanion.insert(
           outfitId: outfitId,
-          imagePath: relativePath,
+          imagePath: Value(relativePath),
           displayOrder: i,
         ),
       );
@@ -264,9 +274,14 @@ class OutfitRepository {
         .map((t) => t.color ?? TagColors.defaultColorHex)
         .toList();
 
-    // 加载图片
+    // 加载图片（云端拉取未下载的图 localPath 为 null）
     final imageRecords = await _db.imageDao.getImagesByOutfitId(outfitId);
-    final photoPaths = imageRecords.map((img) => img.imagePath).toList();
+    final photos = imageRecords
+        .map((img) => models.OutfitPhoto(
+              localPath: img.imagePath,
+              serverImageId: img.serverImageId,
+            ))
+        .toList();
 
     return models.Outfit(
       id: outfitId,
@@ -274,7 +289,7 @@ class OutfitRepository {
       description: outfitRecord.description,
       tags: tags,
       tagColors: tagColors,
-      photoPaths: photoPaths,
+      photos: photos,
     );
   }
 
@@ -327,7 +342,7 @@ class OutfitRepository {
       imageCompanions.add(
         OutfitImagesCompanion.insert(
           outfitId: outfitId,
-          imagePath: relativePath,
+          imagePath: Value(relativePath),
           displayOrder: startIndex + i,
         ),
       );

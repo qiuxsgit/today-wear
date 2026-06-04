@@ -29,6 +29,9 @@ class HomePageState extends State<HomePage> {
   final ScrollController _scrollController = ScrollController();
   late final OutfitRepository _repository;
 
+  /// 当前标签筛选（null 表示"全部"）
+  String? _activeTag;
+
   @override
   void initState() {
     super.initState();
@@ -52,6 +55,12 @@ class HomePageState extends State<HomePage> {
     _loadMoreData();
   }
 
+  void _onFilterChanged(String? tagName) {
+    if (tagName == _activeTag) return;
+    _activeTag = tagName;
+    refreshData();
+  }
+
   void _onScroll() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200) {
@@ -63,10 +72,17 @@ class HomePageState extends State<HomePage> {
     if (_isLoading || !_hasMore) return;
     setState(() => _isLoading = true);
     try {
-      final newOutfits = await _repository.getAllOutfits(
-        limit: _pageSize,
-        offset: _loadedOutfits.length,
-      );
+      final activeTag = _activeTag;
+      final newOutfits = activeTag == null
+          ? await _repository.getAllOutfits(
+              limit: _pageSize,
+              offset: _loadedOutfits.length,
+            )
+          : await _repository.getOutfitsByTag(
+              activeTag,
+              limit: _pageSize,
+              offset: _loadedOutfits.length,
+            );
       if (!mounted) return;
       setState(() {
         if (newOutfits.isEmpty) {
@@ -136,7 +152,7 @@ class HomePageState extends State<HomePage> {
           children: [
             HomeTopBar(onAdd: widget.onAddFirstOutfit),
             _WeatherCard(tt: tt),
-            const HomeFilterChips(),
+            HomeFilterChips(activeTag: _activeTag, onFilterChanged: _onFilterChanged),
             Expanded(
               child: Center(
                 child: Padding(
@@ -185,7 +201,7 @@ class HomePageState extends State<HomePage> {
             children: [
               HomeTopBar(onAdd: widget.onAddFirstOutfit),
               _WeatherCard(tt: tt),
-              const HomeFilterChips(),
+              HomeFilterChips(activeTag: _activeTag, onFilterChanged: _onFilterChanged),
               const Expanded(child: Center(child: CircularProgressIndicator())),
             ],
           ),
@@ -204,7 +220,7 @@ class HomePageState extends State<HomePage> {
           children: [
             HomeTopBar(onAdd: widget.onAddFirstOutfit),
             _WeatherCard(tt: tt),
-            const HomeFilterChips(),
+            HomeFilterChips(activeTag: _activeTag, onFilterChanged: _onFilterChanged),
             Expanded(
               child: SingleChildScrollView(
                 controller: _scrollController,

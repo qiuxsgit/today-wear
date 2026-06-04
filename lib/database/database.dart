@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:drift/drift.dart';
+import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:drift/native.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
@@ -13,10 +14,14 @@ part 'database.g.dart';
 @DriftDatabase(tables: [Outfits, Tags, OutfitTags, OutfitImages], daos: [OutfitDao, TagDao, ImageDao])
 class AppDatabase extends _$AppDatabase {
   AppDatabase._internal() : super(_openConnection());
-  
+
+  /// 测试用构造（注入内存数据库等自定义执行器，不影响单例）
+  @visibleForTesting
+  AppDatabase.forTesting(super.e);
+
   /// 单例实例
   static AppDatabase? _instance;
-  
+
   /// 获取数据库实例
   factory AppDatabase() {
     _instance ??= AppDatabase._internal();
@@ -24,7 +29,7 @@ class AppDatabase extends _$AppDatabase {
   }
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration {
@@ -53,6 +58,12 @@ class AppDatabase extends _$AppDatabase {
           await customStatement('ALTER TABLE tags ADD COLUMN dirty INTEGER NOT NULL DEFAULT 1');
           await customStatement('ALTER TABLE outfit_images ADD COLUMN server_image_id INTEGER');
           await customStatement('CREATE INDEX IF NOT EXISTS idx_outfits_server_id ON outfits(server_id)');
+        }
+        if (from < 4) {
+          // image_path 改为可空（云端拉取的图片懒加载，下载前无本地路径）。
+          // SQLite 不能直接改列约束，由 drift 重建表并迁移数据。
+          // ignore: experimental_member_use
+          await m.alterTable(TableMigration(outfitImages));
         }
       },
     );

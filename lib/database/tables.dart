@@ -46,7 +46,10 @@ class OutfitTags extends Table {
 class OutfitImages extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get outfitId => integer()();
-  TextColumn get imagePath => text()(); // 相对路径，如 images/20260128/123_0.jpg
+
+  /// 本地相对路径，如 images/20260128/123_0.jpg。
+  /// null = 云端拉取的记录，图片尚未下载到本地（懒加载时回填）
+  TextColumn get imagePath => text().nullable()();
   IntColumn get displayOrder => integer()(); // 显示顺序
 
   /// GFS 服务端图片 id（云同步用）。null = 尚未上传到 GFS

@@ -44,4 +44,20 @@ class MediaApi {
     final data = await _client.post('/media/upload-token', body: {'usage': usage});
     return UploadPolicy.fromJson((data as Map).cast<String, dynamic>());
   }
+
+  /// 按图片 id 批量换取签名读 URL（懒加载下载用，单次最多 100 个）。
+  /// 返回 serverImageId → URL 映射；未出现在结果中的 id 视为不可用。
+  Future<Map<int, String>> imageUrls(List<int> ids) async {
+    final data = await _client.get(
+      '/media/image-urls',
+      query: {'ids': ids.join(',')},
+    );
+    final urls =
+        ((data as Map)['urls'] as Map?)?.cast<String, dynamic>() ?? const {};
+    return {
+      for (final e in urls.entries)
+        if (int.tryParse(e.key) != null && e.value is String)
+          int.parse(e.key): e.value as String,
+    };
+  }
 }

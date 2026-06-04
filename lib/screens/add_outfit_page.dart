@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:drift/drift.dart' as drift show Value;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
@@ -10,6 +11,7 @@ import '../database/database.dart';
 import '../repositories/outfit_repository.dart';
 import '../models/outfit.dart';
 import '../theme/tag_colors.dart';
+import '../services/image_download_service.dart';
 import '../services/image_service.dart';
 import '../services/notification_service.dart';
 import '../widgets/app_toast.dart';
@@ -115,12 +117,20 @@ class AddOutfitPageState extends State<AddOutfitPage> {
       
       _descriptionController.text = outfit.description;
       _selectedTags = List.from(outfit.tags);
-      
-      // 加载现有图片路径
-      _selectedImageRefs = outfit.photoPaths.map((path) => "path:$path").toList();
+
+      // 编辑前确保云端图全部下载到本地（下载完成会回填 imagePath）
+      await ImageDownloadService.instance.ensureAllDownloaded(outfit.photos);
+
+      // 从数据库重新读取最新图片路径（含刚下载回填的；下载失败的仍为
+      // null，不进编辑列表，保存时也不会删除其记录）
+      final imageRecords =
+          await _db.imageDao.getImagesByOutfitId(outfit.id);
+      final paths =
+          imageRecords.map((img) => img.imagePath).whereType<String>().toList();
+      _selectedImageRefs = paths.map((path) => "path:$path").toList();
 
       // 预加载图片文件到缓存，避免 FutureBuilder 在 rebuild 时重复加载
-      for (final path in outfit.photoPaths) {
+      for (final path in paths) {
         _imageFileCache["path:$path"] = await ImageService.instance.getImageFile(path);
       }
 
@@ -404,9 +414,8 @@ class AddOutfitPageState extends State<AddOutfitPage> {
       description: _descriptionController.text.trim(),
       tags: _selectedTags,
       tagColors: List.filled(_selectedTags.length, TagColors.defaultColorHex),
-      photoPaths: [],
     );
-    
+
     await _repository.saveOutfit(outfit, imageFiles: imageFiles);
   }
   
@@ -433,10 +442,13 @@ class AddOutfitPageState extends State<AddOutfitPage> {
     final existingImages = await _db.imageDao.getImagesByOutfitId(_editingOutfitId!);
     final existingPathSet = existingPaths.toSet();
     
-    // 删除不在新列表中的图片（文件和数据库记录）
+    // 删除不在新列表中的图片（文件和数据库记录）。
+    // 未下载的云端图（imagePath 为 null）不会出现在编辑列表里，保留不删。
     for (final img in existingImages) {
-      if (!existingPathSet.contains(img.imagePath)) {
-        await _repository.removeImageFromOutfit(_editingOutfitId!, img.imagePath);
+      final path = img.imagePath;
+      if (path == null) continue;
+      if (!existingPathSet.contains(path)) {
+        await _repository.removeImageFromOutfit(_editingOutfitId!, path);
       }
     }
     
@@ -481,7 +493,7 @@ class AddOutfitPageState extends State<AddOutfitPage> {
           imageCompanions.add(
             OutfitImagesCompanion.insert(
               outfitId: _editingOutfitId!,
-              imagePath: relativePath,
+              imagePath: drift.Value(relativePath),
               displayOrder: order,
             ),
           );
@@ -502,9 +514,8 @@ class AddOutfitPageState extends State<AddOutfitPage> {
       description: _descriptionController.text.trim(),
       tags: _selectedTags,
       tagColors: List.filled(_selectedTags.length, TagColors.defaultColorHex),
-      photoPaths: [],
     );
-    
+
     await _repository.saveOutfit(outfit);
   }
   

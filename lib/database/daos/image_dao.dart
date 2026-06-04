@@ -71,18 +71,33 @@ class ImageDao extends DatabaseAccessor<AppDatabase> with _$ImageDaoMixin {
         .write(OutfitImagesCompanion(serverImageId: Value(serverImageId)));
   }
 
-  /// 插入一条远端图片记录（已下载到本地，带 serverImageId）
+  /// 插入一条远端图片记录（仅元数据，imagePath 为 null 表示尚未下载）
   Future<int> insertRemoteImage({
     required int outfitId,
-    required String imagePath,
+    String? imagePath,
     required int displayOrder,
     required int serverImageId,
   }) async {
     return await into(outfitImages).insert(OutfitImagesCompanion.insert(
       outfitId: outfitId,
-      imagePath: imagePath,
+      imagePath: Value(imagePath),
       displayOrder: displayOrder,
       serverImageId: Value(serverImageId),
     ));
+  }
+
+  /// 按 GFS 服务端图片 id 查找图片记录（懒加载下载用）
+  Future<OutfitImageData?> getImageByServerId(int serverImageId) async {
+    return await (select(outfitImages)
+          ..where((tbl) => tbl.serverImageId.equals(serverImageId))
+          ..limit(1))
+        .getSingleOrNull();
+  }
+
+  /// 懒加载下载完成后，按 serverImageId 回填本地路径
+  Future<void> setImagePathByServerId(int serverImageId, String imagePath) async {
+    await (update(outfitImages)
+          ..where((tbl) => tbl.serverImageId.equals(serverImageId)))
+        .write(OutfitImagesCompanion(imagePath: Value(imagePath)));
   }
 }

@@ -1102,9 +1102,9 @@ class $OutfitImagesTable extends OutfitImages
   late final GeneratedColumn<String> imagePath = GeneratedColumn<String>(
     'image_path',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.string,
-    requiredDuringInsert: true,
+    requiredDuringInsert: false,
   );
   static const VerificationMeta _displayOrderMeta = const VerificationMeta(
     'displayOrder',
@@ -1164,8 +1164,6 @@ class $OutfitImagesTable extends OutfitImages
         _imagePathMeta,
         imagePath.isAcceptableOrUnknown(data['image_path']!, _imagePathMeta),
       );
-    } else if (isInserting) {
-      context.missing(_imagePathMeta);
     }
     if (data.containsKey('display_order')) {
       context.handle(
@@ -1207,7 +1205,7 @@ class $OutfitImagesTable extends OutfitImages
       imagePath: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}image_path'],
-      )!,
+      ),
       displayOrder: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}display_order'],
@@ -1228,7 +1226,10 @@ class $OutfitImagesTable extends OutfitImages
 class OutfitImageData extends DataClass implements Insertable<OutfitImageData> {
   final int id;
   final int outfitId;
-  final String imagePath;
+
+  /// 本地相对路径，如 images/20260128/123_0.jpg。
+  /// null = 云端拉取的记录，图片尚未下载到本地（懒加载时回填）
+  final String? imagePath;
   final int displayOrder;
 
   /// GFS 服务端图片 id（云同步用）。null = 尚未上传到 GFS
@@ -1236,7 +1237,7 @@ class OutfitImageData extends DataClass implements Insertable<OutfitImageData> {
   const OutfitImageData({
     required this.id,
     required this.outfitId,
-    required this.imagePath,
+    this.imagePath,
     required this.displayOrder,
     this.serverImageId,
   });
@@ -1245,7 +1246,9 @@ class OutfitImageData extends DataClass implements Insertable<OutfitImageData> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['outfit_id'] = Variable<int>(outfitId);
-    map['image_path'] = Variable<String>(imagePath);
+    if (!nullToAbsent || imagePath != null) {
+      map['image_path'] = Variable<String>(imagePath);
+    }
     map['display_order'] = Variable<int>(displayOrder);
     if (!nullToAbsent || serverImageId != null) {
       map['server_image_id'] = Variable<int>(serverImageId);
@@ -1257,7 +1260,9 @@ class OutfitImageData extends DataClass implements Insertable<OutfitImageData> {
     return OutfitImagesCompanion(
       id: Value(id),
       outfitId: Value(outfitId),
-      imagePath: Value(imagePath),
+      imagePath: imagePath == null && nullToAbsent
+          ? const Value.absent()
+          : Value(imagePath),
       displayOrder: Value(displayOrder),
       serverImageId: serverImageId == null && nullToAbsent
           ? const Value.absent()
@@ -1273,7 +1278,7 @@ class OutfitImageData extends DataClass implements Insertable<OutfitImageData> {
     return OutfitImageData(
       id: serializer.fromJson<int>(json['id']),
       outfitId: serializer.fromJson<int>(json['outfitId']),
-      imagePath: serializer.fromJson<String>(json['imagePath']),
+      imagePath: serializer.fromJson<String?>(json['imagePath']),
       displayOrder: serializer.fromJson<int>(json['displayOrder']),
       serverImageId: serializer.fromJson<int?>(json['serverImageId']),
     );
@@ -1284,7 +1289,7 @@ class OutfitImageData extends DataClass implements Insertable<OutfitImageData> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'outfitId': serializer.toJson<int>(outfitId),
-      'imagePath': serializer.toJson<String>(imagePath),
+      'imagePath': serializer.toJson<String?>(imagePath),
       'displayOrder': serializer.toJson<int>(displayOrder),
       'serverImageId': serializer.toJson<int?>(serverImageId),
     };
@@ -1293,13 +1298,13 @@ class OutfitImageData extends DataClass implements Insertable<OutfitImageData> {
   OutfitImageData copyWith({
     int? id,
     int? outfitId,
-    String? imagePath,
+    Value<String?> imagePath = const Value.absent(),
     int? displayOrder,
     Value<int?> serverImageId = const Value.absent(),
   }) => OutfitImageData(
     id: id ?? this.id,
     outfitId: outfitId ?? this.outfitId,
-    imagePath: imagePath ?? this.imagePath,
+    imagePath: imagePath.present ? imagePath.value : this.imagePath,
     displayOrder: displayOrder ?? this.displayOrder,
     serverImageId: serverImageId.present
         ? serverImageId.value
@@ -1348,7 +1353,7 @@ class OutfitImageData extends DataClass implements Insertable<OutfitImageData> {
 class OutfitImagesCompanion extends UpdateCompanion<OutfitImageData> {
   final Value<int> id;
   final Value<int> outfitId;
-  final Value<String> imagePath;
+  final Value<String?> imagePath;
   final Value<int> displayOrder;
   final Value<int?> serverImageId;
   const OutfitImagesCompanion({
@@ -1361,11 +1366,10 @@ class OutfitImagesCompanion extends UpdateCompanion<OutfitImageData> {
   OutfitImagesCompanion.insert({
     this.id = const Value.absent(),
     required int outfitId,
-    required String imagePath,
+    this.imagePath = const Value.absent(),
     required int displayOrder,
     this.serverImageId = const Value.absent(),
   }) : outfitId = Value(outfitId),
-       imagePath = Value(imagePath),
        displayOrder = Value(displayOrder);
   static Insertable<OutfitImageData> custom({
     Expression<int>? id,
@@ -1386,7 +1390,7 @@ class OutfitImagesCompanion extends UpdateCompanion<OutfitImageData> {
   OutfitImagesCompanion copyWith({
     Value<int>? id,
     Value<int>? outfitId,
-    Value<String>? imagePath,
+    Value<String?>? imagePath,
     Value<int>? displayOrder,
     Value<int?>? serverImageId,
   }) {
@@ -2035,7 +2039,7 @@ typedef $$OutfitImagesTableCreateCompanionBuilder =
     OutfitImagesCompanion Function({
       Value<int> id,
       required int outfitId,
-      required String imagePath,
+      Value<String?> imagePath,
       required int displayOrder,
       Value<int?> serverImageId,
     });
@@ -2043,7 +2047,7 @@ typedef $$OutfitImagesTableUpdateCompanionBuilder =
     OutfitImagesCompanion Function({
       Value<int> id,
       Value<int> outfitId,
-      Value<String> imagePath,
+      Value<String?> imagePath,
       Value<int> displayOrder,
       Value<int?> serverImageId,
     });
@@ -2180,7 +2184,7 @@ class $$OutfitImagesTableTableManager
               ({
                 Value<int> id = const Value.absent(),
                 Value<int> outfitId = const Value.absent(),
-                Value<String> imagePath = const Value.absent(),
+                Value<String?> imagePath = const Value.absent(),
                 Value<int> displayOrder = const Value.absent(),
                 Value<int?> serverImageId = const Value.absent(),
               }) => OutfitImagesCompanion(
@@ -2194,7 +2198,7 @@ class $$OutfitImagesTableTableManager
               ({
                 Value<int> id = const Value.absent(),
                 required int outfitId,
-                required String imagePath,
+                Value<String?> imagePath = const Value.absent(),
                 required int displayOrder,
                 Value<int?> serverImageId = const Value.absent(),
               }) => OutfitImagesCompanion.insert(

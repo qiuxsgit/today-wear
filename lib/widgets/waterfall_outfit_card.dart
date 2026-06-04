@@ -1,10 +1,9 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:today_wear/l10n/app_localizations.dart';
 import '../models/outfit.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_theme_tokens.dart';
-import '../services/image_service.dart';
+import 'outfit_image.dart';
 
 /// 瀑布流穿搭卡片
 ///
@@ -131,30 +130,17 @@ class WaterfallOutfitCard extends StatelessWidget {
   }
 
   Widget _buildImage(BuildContext context) {
-    final placeholder = _Placeholder(mist: context.tt.mist, muted: context.tt.muted);
+    if (outfit.photos.isEmpty) {
+      return _Placeholder(mist: context.tt.mist, muted: context.tt.muted);
+    }
 
-    if (outfit.photoPaths.isEmpty) return placeholder;
-
-    return FutureBuilder<File?>(
-      future: ImageService.instance.getImageFile(outfit.photoPaths.first),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return placeholder;
-        }
-        final file = snapshot.data;
-        if (file == null || !file.existsSync()) return placeholder;
-
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(14),
-          child: Image.file(
-            file,
-            width: double.infinity,
-            height: double.infinity,
-            fit: BoxFit.cover,
-            errorBuilder: (ctx, _, _) => _Placeholder(mist: ctx.tt.mist, muted: ctx.tt.muted),
-          ),
-        );
-      },
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(14),
+      child: OutfitImage(
+        photo: outfit.photos.first,
+        width: double.infinity,
+        height: double.infinity,
+      ),
     );
   }
 }
