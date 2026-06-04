@@ -287,14 +287,14 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Row(
                 children: [
                   Expanded(
-                    child: Text('账户与云同步', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: tt.ink)),
+                    child: Text(l10n.accountSyncTitle, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: tt.ink)),
                   ),
                   ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 170),
                     child: Text(
                       SessionService.instance.isLoggedIn
                           ? (SessionService.instance.email ?? '')
-                          : '未登录',
+                          : l10n.accountNotLoggedIn,
                       style: TextStyle(fontSize: 13, color: tt.muted),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,

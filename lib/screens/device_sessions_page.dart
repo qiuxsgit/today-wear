@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:today_wear/l10n/app_localizations.dart';
 
 import '../api/api_exception.dart';
 import '../api/user_api.dart';
+import '../l10n/api_error_l10n.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_theme_tokens.dart';
 import '../widgets/app_toast.dart';
@@ -17,7 +19,9 @@ class DeviceSessionsPage extends StatefulWidget {
 class _DeviceSessionsPageState extends State<DeviceSessionsPage> {
   final _userApi = UserApi();
   List<RemoteSession>? _sessions;
-  String? _error;
+
+  /// 加载失败的异常，build 时映射 l10n 文案（initState 阶段拿不到 l10n）
+  Object? _error;
 
   @override
   void initState() {
@@ -33,51 +37,54 @@ class _DeviceSessionsPageState extends State<DeviceSessionsPage> {
     try {
       final list = await _userApi.listSessions();
       if (mounted) setState(() => _sessions = list);
-    } on ApiException catch (e) {
-      if (mounted) setState(() => _error = e.message);
-    } catch (_) {
-      if (mounted) setState(() => _error = '加载失败，请稍后重试');
+    } catch (e) {
+      if (mounted) setState(() => _error = e);
     }
   }
 
   Future<void> _kick(RemoteSession s) async {
+    final l10n = AppLocalizations.of(context)!;
     try {
       await _userApi.deleteSession(s.sessionId);
-      AppToast.success('已移除该设备');
+      AppToast.success(l10n.deviceRemoved);
       await _load();
     } on ApiException catch (e) {
-      AppToast.error(e.message);
+      AppToast.error(localizedApiError(l10n, e));
     } catch (_) {
-      AppToast.error('操作失败，请稍后重试');
+      AppToast.error(l10n.errGeneric);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final tt = context.tt;
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: tt.page,
       appBar: AppBar(
         backgroundColor: tt.page,
         elevation: 0,
         scrolledUnderElevation: 0,
-        title: Text('登录设备',
+        title: Text(l10n.deviceSessionsTitle,
             style: TextStyle(color: tt.ink, fontWeight: FontWeight.w800, fontSize: 18)),
         iconTheme: IconThemeData(color: tt.ink),
       ),
-      body: _buildBody(tt),
+      body: _buildBody(tt, l10n),
     );
   }
 
-  Widget _buildBody(AppThemeTokens tt) {
-    if (_error != null) {
+  Widget _buildBody(AppThemeTokens tt, AppLocalizations l10n) {
+    final error = _error;
+    if (error != null) {
+      final text =
+          error is ApiException ? localizedApiError(l10n, error) : l10n.errLoadFailed;
       return Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(_error!, style: TextStyle(color: tt.muted)),
+            Text(text, style: TextStyle(color: tt.muted)),
             const SizedBox(height: 12),
-            TextButton(onPressed: _load, child: const Text('重试')),
+            TextButton(onPressed: _load, child: Text(l10n.retry)),
           ],
         ),
       );
@@ -87,7 +94,7 @@ class _DeviceSessionsPageState extends State<DeviceSessionsPage> {
       return Center(child: CircularProgressIndicator(color: tt.muted));
     }
     if (sessions.isEmpty) {
-      return Center(child: Text('暂无活跃会话', style: TextStyle(color: tt.muted)));
+      return Center(child: Text(l10n.deviceSessionsEmpty, style: TextStyle(color: tt.muted)));
     }
     return ListView.separated(
       padding: EdgeInsets.only(
@@ -98,11 +105,11 @@ class _DeviceSessionsPageState extends State<DeviceSessionsPage> {
       ),
       itemCount: sessions.length,
       separatorBuilder: (_, _) => const SizedBox(height: 10),
-      itemBuilder: (context, i) => _sessionCard(tt, sessions[i]),
+      itemBuilder: (context, i) => _sessionCard(tt, l10n, sessions[i]),
     );
   }
 
-  Widget _sessionCard(AppThemeTokens tt, RemoteSession s) {
+  Widget _sessionCard(AppThemeTokens tt, AppLocalizations l10n, RemoteSession s) {
     final subtitle = [
       if (s.appVersion.isNotEmpty) 'v${s.appVersion}',
       if (s.ip.isNotEmpty) s.ip,
@@ -150,7 +157,7 @@ class _DeviceSessionsPageState extends State<DeviceSessionsPage> {
                           color: tt.mist,
                           borderRadius: BorderRadius.circular(6),
                         ),
-                        child: Text('本机',
+                        child: Text(l10n.deviceCurrentBadge,
                             style: TextStyle(fontSize: 10, color: tt.ink)),
                       ),
                     ],
@@ -166,7 +173,7 @@ class _DeviceSessionsPageState extends State<DeviceSessionsPage> {
           if (!s.current)
             IconButton(
               icon: Icon(Icons.logout, size: 20, color: tt.muted),
-              tooltip: '移除该设备',
+              tooltip: l10n.deviceRemoveTooltip,
               onPressed: () => _kick(s),
             ),
         ],

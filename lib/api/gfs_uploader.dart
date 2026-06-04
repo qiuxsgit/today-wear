@@ -39,20 +39,16 @@ class GfsUploader {
       final streamed = await _http.send(req).timeout(ApiConfig.timeout);
       res = await http.Response.fromStream(streamed);
     } on TimeoutException {
-      throw const NetworkException(message: '图片上传超时');
+      throw const NetworkException(code: 'timeout');
     } on SocketException {
-      throw const NetworkException(message: '图片上传失败，请检查网络');
+      throw const NetworkException();
     } on http.ClientException {
-      throw const NetworkException(message: '图片上传失败');
+      throw const NetworkException();
     }
 
     if (res.statusCode < 200 || res.statusCode >= 300) {
       if (kDebugMode) debugPrint('[GFS] upload ${res.statusCode}: ${res.body}');
-      throw ApiException(
-        status: res.statusCode,
-        code: 'gfs_upload_failed',
-        message: '图片上传失败 (${res.statusCode})',
-      );
+      throw ApiException(status: res.statusCode, code: 'gfs_upload_failed');
     }
 
     dynamic decoded;
@@ -66,13 +62,8 @@ class GfsUploader {
       // 业务失败：code != 0
       final code = decoded['code'];
       if (code is num && code.toInt() != 0) {
-        final msg = decoded['msg']?.toString() ?? 'code $code';
         if (kDebugMode) debugPrint('[GFS] upload 业务失败: ${res.body}');
-        throw ApiException(
-          status: res.statusCode,
-          code: 'gfs_upload_failed',
-          message: '图片上传失败：$msg',
-        );
+        throw ApiException(status: res.statusCode, code: 'gfs_upload_failed');
       }
       // 文件 id 固定在 data.val
       final data = decoded['data'];
@@ -83,11 +74,7 @@ class GfsUploader {
     }
 
     if (kDebugMode) debugPrint('[GFS] 未能从响应解析 image id，原始响应: ${res.body}');
-    throw ApiException(
-      status: res.statusCode,
-      code: 'gfs_upload_parse',
-      message: '图片上传成功但未能解析图片 id',
-    );
+    throw ApiException(status: res.statusCode, code: 'gfs_upload_parse');
   }
 
   int? _asInt(dynamic v) {

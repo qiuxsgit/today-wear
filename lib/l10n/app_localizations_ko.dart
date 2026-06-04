@@ -508,4 +508,219 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get reminderNotificationBody => '오늘의 코디를 기록하는 것을 잊지 마세요~';
+
+  @override
+  String get authLoginTitle => '로그인';
+
+  @override
+  String get authRegisterTitle => '계정 만들기';
+
+  @override
+  String get authLoginHeadline => '로그인하고 코디를 동기화하세요';
+
+  @override
+  String get authRegisterHeadline => '계정을 만들어 클라우드 동기화를 시작하세요';
+
+  @override
+  String get authOfflineNote =>
+      '클라우드 동기화는 선택 기능입니다. 로그인하지 않아도 모든 기록 기능을 오프라인으로 사용할 수 있어요.';
+
+  @override
+  String get authEmailLabel => '이메일';
+
+  @override
+  String get authPasswordLabel => '비밀번호';
+
+  @override
+  String get authPasswordHint => '8자 이상';
+
+  @override
+  String get authEmailInvalid => '올바른 이메일 주소를 입력해 주세요';
+
+  @override
+  String get authPasswordTooShort => '비밀번호는 8자 이상이어야 합니다';
+
+  @override
+  String get authLoginSuccess => '로그인 완료';
+
+  @override
+  String get authRegisterSuccess => '가입 완료';
+
+  @override
+  String get authRegisterBtn => '가입하기';
+
+  @override
+  String get authSwitchToLogin => '이미 계정이 있나요? 로그인';
+
+  @override
+  String get authSwitchToRegister => '계정이 없나요? 가입하기';
+
+  @override
+  String get accountSyncTitle => '계정 및 클라우드 동기화';
+
+  @override
+  String get accountNotLoggedIn => '로그인 안 함';
+
+  @override
+  String get accountCloudOff => '클라우드 동기화가 꺼져 있어요';
+
+  @override
+  String get accountCloudIntro =>
+      '로그인하면 코디·태그·프로필을 클라우드에 동기화하고 기기를 바꿔도 복원할 수 있어요.\n로그인하지 않아도 모든 로컬 기능을 사용할 수 있습니다.';
+
+  @override
+  String get accountRegisterNewBtn => '새 계정 만들기';
+
+  @override
+  String get accountLoggedIn => '로그인됨';
+
+  @override
+  String get accountDeviceManagement => '로그인 기기 관리';
+
+  @override
+  String get accountLogout => '로그아웃';
+
+  @override
+  String get accountLogoutDialogContent =>
+      '로그아웃하면 클라우드 동기화가 중지되며 로컬 데이터는 유지됩니다. 로그아웃할까요?';
+
+  @override
+  String get accountLogoutConfirm => '로그아웃';
+
+  @override
+  String get accountLoggedOutToast => '로그아웃되었습니다';
+
+  @override
+  String get accountCloudSyncLabel => '클라우드 동기화';
+
+  @override
+  String get syncStatusSyncing => '동기화 중…';
+
+  @override
+  String get syncStatusNever => '아직 동기화하지 않았어요';
+
+  @override
+  String syncStatusLast(String time) {
+    return '마지막 동기화 $time';
+  }
+
+  @override
+  String get syncNowBtn => '지금 동기화';
+
+  @override
+  String get syncErrPremiumRequired => '클라우드 동기화는 프리미엄 구독이 필요합니다';
+
+  @override
+  String get syncErrGeneric => '동기화에 실패했습니다. 잠시 후 다시 시도해 주세요';
+
+  @override
+  String get deviceSessionsTitle => '로그인 기기';
+
+  @override
+  String get deviceSessionsEmpty => '활성 세션이 없습니다';
+
+  @override
+  String get deviceRemoved => '기기를 제거했습니다';
+
+  @override
+  String get deviceRemoveTooltip => '기기 제거';
+
+  @override
+  String get deviceCurrentBadge => '현재 기기';
+
+  @override
+  String get retry => '다시 시도';
+
+  @override
+  String get errNetwork => '네트워크 연결에 실패했습니다. 네트워크를 확인한 후 다시 시도해 주세요';
+
+  @override
+  String get errRequestTimeout => '요청 시간이 초과되었습니다. 잠시 후 다시 시도해 주세요';
+
+  @override
+  String get errSessionExpired => '로그인이 만료되었습니다. 다시 로그인해 주세요';
+
+  @override
+  String get errPremiumRequired => '이 기능은 프리미엄이 필요합니다';
+
+  @override
+  String get errGeneric => '작업에 실패했습니다. 잠시 후 다시 시도해 주세요';
+
+  @override
+  String get errLoadFailed => '불러오기에 실패했습니다. 잠시 후 다시 시도해 주세요';
+
+  @override
+  String get errUploadFailed => '이미지 업로드에 실패했습니다. 네트워크를 확인해 주세요';
+
+  @override
+  String get proTitle => '오늘의 코디 Pro';
+
+  @override
+  String get proIntro => '클라우드 동기화 해제: 코디·태그·프로필을 여러 기기에 백업하세요.';
+
+  @override
+  String get proSubscribeBtn => 'Pro 업그레이드';
+
+  @override
+  String get proRestoreBtn => '구매 복원';
+
+  @override
+  String get proActiveBadge => '활성';
+
+  @override
+  String proExpiresAt(String date) {
+    return '$date 만료';
+  }
+
+  @override
+  String get proLifetime => '평생 이용권';
+
+  @override
+  String get proManageBtn => '구독 관리';
+
+  @override
+  String get proPurchaseSuccess => 'Pro가 활성화되었습니다';
+
+  @override
+  String get proRestoreSuccess => '구매를 복원했습니다';
+
+  @override
+  String get proNothingToRestore => '복원할 구매가 없습니다';
+
+  @override
+  String get proPurchaseFailed => '구매에 실패했습니다. 잠시 후 다시 시도해 주세요';
+
+  @override
+  String get proAlreadyActive => '이미 Pro 회원입니다';
+
+  @override
+  String get proSyncPending => '구매 완료, 적용 중…';
+
+  @override
+  String get proUnsupportedPlatform => 'iPhone 또는 Android 기기에서 구매해 주세요';
+
+  @override
+  String get proLoginFirst => 'Pro 구매는 로그인이 필요합니다';
+
+  @override
+  String get proMonthlyLabel => '월간 구독';
+
+  @override
+  String get proYearlyLabel => '연간 구독';
+
+  @override
+  String get proLifetimeLabel => '평생 소장';
+
+  @override
+  String get proPaywallLoadFailed => '상품을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요';
+
+  @override
+  String get proPaymentPending => '결제 확인 중입니다. 완료되면 자동으로 적용됩니다';
+
+  @override
+  String get proSubscriptionNote =>
+      '구독은 자동 갱신되며 스토어의 구독 설정에서 언제든지 해지할 수 있습니다. 평생 소장은 1회 결제입니다.';
+
+  @override
+  String get proPurchaseCta => '계속하기';
 }

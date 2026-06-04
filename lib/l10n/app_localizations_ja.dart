@@ -508,4 +508,219 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get reminderNotificationBody => '今日のコーディネートを記録しましょう～';
+
+  @override
+  String get authLoginTitle => 'ログイン';
+
+  @override
+  String get authRegisterTitle => 'アカウント登録';
+
+  @override
+  String get authLoginHeadline => 'ログインしてコーデを同期';
+
+  @override
+  String get authRegisterHeadline => 'アカウントを作成してクラウド同期を開始';
+
+  @override
+  String get authOfflineNote =>
+      'クラウド同期は任意の機能です。ログインしなくてもすべての記録機能をオフラインで利用できます。';
+
+  @override
+  String get authEmailLabel => 'メールアドレス';
+
+  @override
+  String get authPasswordLabel => 'パスワード';
+
+  @override
+  String get authPasswordHint => '8文字以上';
+
+  @override
+  String get authEmailInvalid => '有効なメールアドレスを入力してください';
+
+  @override
+  String get authPasswordTooShort => 'パスワードは8文字以上にしてください';
+
+  @override
+  String get authLoginSuccess => 'ログインしました';
+
+  @override
+  String get authRegisterSuccess => '登録しました';
+
+  @override
+  String get authRegisterBtn => '登録';
+
+  @override
+  String get authSwitchToLogin => 'アカウントをお持ちの方はログイン';
+
+  @override
+  String get authSwitchToRegister => 'アカウントがない方は登録';
+
+  @override
+  String get accountSyncTitle => 'アカウントとクラウド同期';
+
+  @override
+  String get accountNotLoggedIn => '未ログイン';
+
+  @override
+  String get accountCloudOff => 'クラウド同期はオフです';
+
+  @override
+  String get accountCloudIntro =>
+      'ログインするとコーデ・タグ・プロフィールをクラウドに同期でき、機種変更後も復元できます。\nログインしなくてもローカル機能はすべて使えます。';
+
+  @override
+  String get accountRegisterNewBtn => '新規アカウント登録';
+
+  @override
+  String get accountLoggedIn => 'ログイン中';
+
+  @override
+  String get accountDeviceManagement => 'ログイン端末の管理';
+
+  @override
+  String get accountLogout => 'ログアウト';
+
+  @override
+  String get accountLogoutDialogContent =>
+      'ログアウトするとクラウド同期は停止しますが、ローカルデータは保持されます。ログアウトしますか？';
+
+  @override
+  String get accountLogoutConfirm => 'ログアウト';
+
+  @override
+  String get accountLoggedOutToast => 'ログアウトしました';
+
+  @override
+  String get accountCloudSyncLabel => 'クラウド同期';
+
+  @override
+  String get syncStatusSyncing => '同期中…';
+
+  @override
+  String get syncStatusNever => 'まだ同期していません';
+
+  @override
+  String syncStatusLast(String time) {
+    return '最終同期 $time';
+  }
+
+  @override
+  String get syncNowBtn => '今すぐ同期';
+
+  @override
+  String get syncErrPremiumRequired => 'クラウド同期にはプレミアム会員が必要です';
+
+  @override
+  String get syncErrGeneric => '同期に失敗しました。しばらくしてからもう一度お試しください';
+
+  @override
+  String get deviceSessionsTitle => 'ログイン端末';
+
+  @override
+  String get deviceSessionsEmpty => 'アクティブなセッションはありません';
+
+  @override
+  String get deviceRemoved => 'この端末を削除しました';
+
+  @override
+  String get deviceRemoveTooltip => 'この端末を削除';
+
+  @override
+  String get deviceCurrentBadge => 'この端末';
+
+  @override
+  String get retry => '再試行';
+
+  @override
+  String get errNetwork => 'ネットワークに接続できません。接続を確認してもう一度お試しください';
+
+  @override
+  String get errRequestTimeout => 'リクエストがタイムアウトしました。しばらくしてからもう一度お試しください';
+
+  @override
+  String get errSessionExpired => 'ログインの有効期限が切れました。再度ログインしてください';
+
+  @override
+  String get errPremiumRequired => 'この機能にはプレミアム会員が必要です';
+
+  @override
+  String get errGeneric => '操作に失敗しました。しばらくしてからもう一度お試しください';
+
+  @override
+  String get errLoadFailed => '読み込みに失敗しました。しばらくしてからもう一度お試しください';
+
+  @override
+  String get errUploadFailed => '画像のアップロードに失敗しました。ネットワークを確認してください';
+
+  @override
+  String get proTitle => '今日のコーデ Pro';
+
+  @override
+  String get proIntro => 'クラウド同期を解放：コーデ・タグ・プロフィールを複数端末にバックアップ。';
+
+  @override
+  String get proSubscribeBtn => 'Pro にアップグレード';
+
+  @override
+  String get proRestoreBtn => '購入を復元';
+
+  @override
+  String get proActiveBadge => '有効';
+
+  @override
+  String proExpiresAt(String date) {
+    return '$date まで有効';
+  }
+
+  @override
+  String get proLifetime => '永久ライセンス';
+
+  @override
+  String get proManageBtn => 'サブスクリプションを管理';
+
+  @override
+  String get proPurchaseSuccess => 'Pro が有効になりました';
+
+  @override
+  String get proRestoreSuccess => '購入を復元しました';
+
+  @override
+  String get proNothingToRestore => '復元できる購入はありません';
+
+  @override
+  String get proPurchaseFailed => '購入に失敗しました。しばらくしてからもう一度お試しください';
+
+  @override
+  String get proAlreadyActive => 'すでに Pro 会員です';
+
+  @override
+  String get proSyncPending => '購入済み、反映中です…';
+
+  @override
+  String get proUnsupportedPlatform => 'iPhone または Android 端末でご購入ください';
+
+  @override
+  String get proLoginFirst => 'Pro の購入にはログインが必要です';
+
+  @override
+  String get proMonthlyLabel => '月額プラン';
+
+  @override
+  String get proYearlyLabel => '年額プラン';
+
+  @override
+  String get proLifetimeLabel => '買い切り';
+
+  @override
+  String get proPaywallLoadFailed => '商品を読み込めませんでした。しばらくしてからもう一度お試しください';
+
+  @override
+  String get proPaymentPending => '支払い確認中です。完了後に自動で有効になります';
+
+  @override
+  String get proSubscriptionNote =>
+      'サブスクリプションは自動更新されます。ストアのサブスクリプション設定からいつでも解約できます。買い切りは一回限りのお支払いです。';
+
+  @override
+  String get proPurchaseCta => '購入する';
 }

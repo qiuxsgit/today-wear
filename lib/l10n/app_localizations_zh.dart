@@ -508,6 +508,217 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get reminderNotificationBody => '别忘了记录今天的穿搭哦～';
+
+  @override
+  String get authLoginTitle => '登录';
+
+  @override
+  String get authRegisterTitle => '注册账号';
+
+  @override
+  String get authLoginHeadline => '登录以同步你的穿搭';
+
+  @override
+  String get authRegisterHeadline => '创建账号以开启云同步';
+
+  @override
+  String get authOfflineNote => '云同步为可选功能，不登录也能离线使用全部记录功能。';
+
+  @override
+  String get authEmailLabel => '邮箱';
+
+  @override
+  String get authPasswordLabel => '密码';
+
+  @override
+  String get authPasswordHint => '至少 8 位';
+
+  @override
+  String get authEmailInvalid => '请输入有效的邮箱地址';
+
+  @override
+  String get authPasswordTooShort => '密码至少 8 位';
+
+  @override
+  String get authLoginSuccess => '登录成功';
+
+  @override
+  String get authRegisterSuccess => '注册成功';
+
+  @override
+  String get authRegisterBtn => '注册';
+
+  @override
+  String get authSwitchToLogin => '已有账号？去登录';
+
+  @override
+  String get authSwitchToRegister => '还没有账号？去注册';
+
+  @override
+  String get accountSyncTitle => '账户与云同步';
+
+  @override
+  String get accountNotLoggedIn => '未登录';
+
+  @override
+  String get accountCloudOff => '云同步未开启';
+
+  @override
+  String get accountCloudIntro => '登录后可将穿搭、标签与资料同步到云端，换设备也能找回。\n不登录不影响任何本地功能。';
+
+  @override
+  String get accountRegisterNewBtn => '注册新账号';
+
+  @override
+  String get accountLoggedIn => '已登录';
+
+  @override
+  String get accountDeviceManagement => '登录设备管理';
+
+  @override
+  String get accountLogout => '退出登录';
+
+  @override
+  String get accountLogoutDialogContent => '退出后云同步将停止，本地数据保留。确定退出吗？';
+
+  @override
+  String get accountLogoutConfirm => '退出';
+
+  @override
+  String get accountLoggedOutToast => '已退出登录';
+
+  @override
+  String get accountCloudSyncLabel => '云同步';
+
+  @override
+  String get syncStatusSyncing => '同步中…';
+
+  @override
+  String get syncStatusNever => '尚未同步';
+
+  @override
+  String syncStatusLast(String time) {
+    return '上次同步 $time';
+  }
+
+  @override
+  String get syncNowBtn => '立即同步';
+
+  @override
+  String get syncErrPremiumRequired => '云同步需要会员订阅';
+
+  @override
+  String get syncErrGeneric => '同步失败，请稍后重试';
+
+  @override
+  String get deviceSessionsTitle => '登录设备';
+
+  @override
+  String get deviceSessionsEmpty => '暂无活跃会话';
+
+  @override
+  String get deviceRemoved => '已移除该设备';
+
+  @override
+  String get deviceRemoveTooltip => '移除该设备';
+
+  @override
+  String get deviceCurrentBadge => '本机';
+
+  @override
+  String get retry => '重试';
+
+  @override
+  String get errNetwork => '网络连接失败，请检查网络后重试';
+
+  @override
+  String get errRequestTimeout => '请求超时，请稍后重试';
+
+  @override
+  String get errSessionExpired => '登录已失效，请重新登录';
+
+  @override
+  String get errPremiumRequired => '此功能需要会员';
+
+  @override
+  String get errGeneric => '操作失败，请稍后重试';
+
+  @override
+  String get errLoadFailed => '加载失败，请稍后重试';
+
+  @override
+  String get errUploadFailed => '图片上传失败，请检查网络';
+
+  @override
+  String get proTitle => '今天穿什么 Pro';
+
+  @override
+  String get proIntro => '解锁云同步：穿搭、标签与资料多设备备份，换机不丢。';
+
+  @override
+  String get proSubscribeBtn => '开通 Pro';
+
+  @override
+  String get proRestoreBtn => '恢复购买';
+
+  @override
+  String get proActiveBadge => '已开通';
+
+  @override
+  String proExpiresAt(String date) {
+    return '$date 到期';
+  }
+
+  @override
+  String get proLifetime => '永久有效';
+
+  @override
+  String get proManageBtn => '管理订阅';
+
+  @override
+  String get proPurchaseSuccess => 'Pro 已开通';
+
+  @override
+  String get proRestoreSuccess => '购买已恢复';
+
+  @override
+  String get proNothingToRestore => '没有可恢复的购买';
+
+  @override
+  String get proPurchaseFailed => '购买失败，请稍后重试';
+
+  @override
+  String get proAlreadyActive => '你已是 Pro 会员';
+
+  @override
+  String get proSyncPending => '已购买，正在生效…';
+
+  @override
+  String get proUnsupportedPlatform => '请在 iPhone 或 Android 手机上购买';
+
+  @override
+  String get proLoginFirst => '请先登录账号再开通 Pro';
+
+  @override
+  String get proMonthlyLabel => '月度订阅';
+
+  @override
+  String get proYearlyLabel => '年度订阅';
+
+  @override
+  String get proLifetimeLabel => '永久买断';
+
+  @override
+  String get proPaywallLoadFailed => '无法加载商品，请稍后重试';
+
+  @override
+  String get proPaymentPending => '支付待确认，完成后自动生效';
+
+  @override
+  String get proSubscriptionNote => '订阅自动续费，可随时在系统订阅管理中取消；买断为一次性付费。';
+
+  @override
+  String get proPurchaseCta => '立即开通';
 }
 
 /// The translations for Chinese, as used in China (`zh_CN`).
@@ -1014,6 +1225,217 @@ class AppLocalizationsZhCn extends AppLocalizationsZh {
 
   @override
   String get reminderNotificationBody => '别忘了记录今天的穿搭哦～';
+
+  @override
+  String get authLoginTitle => '登录';
+
+  @override
+  String get authRegisterTitle => '注册账号';
+
+  @override
+  String get authLoginHeadline => '登录以同步你的穿搭';
+
+  @override
+  String get authRegisterHeadline => '创建账号以开启云同步';
+
+  @override
+  String get authOfflineNote => '云同步为可选功能，不登录也能离线使用全部记录功能。';
+
+  @override
+  String get authEmailLabel => '邮箱';
+
+  @override
+  String get authPasswordLabel => '密码';
+
+  @override
+  String get authPasswordHint => '至少 8 位';
+
+  @override
+  String get authEmailInvalid => '请输入有效的邮箱地址';
+
+  @override
+  String get authPasswordTooShort => '密码至少 8 位';
+
+  @override
+  String get authLoginSuccess => '登录成功';
+
+  @override
+  String get authRegisterSuccess => '注册成功';
+
+  @override
+  String get authRegisterBtn => '注册';
+
+  @override
+  String get authSwitchToLogin => '已有账号？去登录';
+
+  @override
+  String get authSwitchToRegister => '还没有账号？去注册';
+
+  @override
+  String get accountSyncTitle => '账户与云同步';
+
+  @override
+  String get accountNotLoggedIn => '未登录';
+
+  @override
+  String get accountCloudOff => '云同步未开启';
+
+  @override
+  String get accountCloudIntro => '登录后可将穿搭、标签与资料同步到云端，换设备也能找回。\n不登录不影响任何本地功能。';
+
+  @override
+  String get accountRegisterNewBtn => '注册新账号';
+
+  @override
+  String get accountLoggedIn => '已登录';
+
+  @override
+  String get accountDeviceManagement => '登录设备管理';
+
+  @override
+  String get accountLogout => '退出登录';
+
+  @override
+  String get accountLogoutDialogContent => '退出后云同步将停止，本地数据保留。确定退出吗？';
+
+  @override
+  String get accountLogoutConfirm => '退出';
+
+  @override
+  String get accountLoggedOutToast => '已退出登录';
+
+  @override
+  String get accountCloudSyncLabel => '云同步';
+
+  @override
+  String get syncStatusSyncing => '同步中…';
+
+  @override
+  String get syncStatusNever => '尚未同步';
+
+  @override
+  String syncStatusLast(String time) {
+    return '上次同步 $time';
+  }
+
+  @override
+  String get syncNowBtn => '立即同步';
+
+  @override
+  String get syncErrPremiumRequired => '云同步需要会员订阅';
+
+  @override
+  String get syncErrGeneric => '同步失败，请稍后重试';
+
+  @override
+  String get deviceSessionsTitle => '登录设备';
+
+  @override
+  String get deviceSessionsEmpty => '暂无活跃会话';
+
+  @override
+  String get deviceRemoved => '已移除该设备';
+
+  @override
+  String get deviceRemoveTooltip => '移除该设备';
+
+  @override
+  String get deviceCurrentBadge => '本机';
+
+  @override
+  String get retry => '重试';
+
+  @override
+  String get errNetwork => '网络连接失败，请检查网络后重试';
+
+  @override
+  String get errRequestTimeout => '请求超时，请稍后重试';
+
+  @override
+  String get errSessionExpired => '登录已失效，请重新登录';
+
+  @override
+  String get errPremiumRequired => '此功能需要会员';
+
+  @override
+  String get errGeneric => '操作失败，请稍后重试';
+
+  @override
+  String get errLoadFailed => '加载失败，请稍后重试';
+
+  @override
+  String get errUploadFailed => '图片上传失败，请检查网络';
+
+  @override
+  String get proTitle => '今天穿什么 Pro';
+
+  @override
+  String get proIntro => '解锁云同步：穿搭、标签与资料多设备备份，换机不丢。';
+
+  @override
+  String get proSubscribeBtn => '开通 Pro';
+
+  @override
+  String get proRestoreBtn => '恢复购买';
+
+  @override
+  String get proActiveBadge => '已开通';
+
+  @override
+  String proExpiresAt(String date) {
+    return '$date 到期';
+  }
+
+  @override
+  String get proLifetime => '永久有效';
+
+  @override
+  String get proManageBtn => '管理订阅';
+
+  @override
+  String get proPurchaseSuccess => 'Pro 已开通';
+
+  @override
+  String get proRestoreSuccess => '购买已恢复';
+
+  @override
+  String get proNothingToRestore => '没有可恢复的购买';
+
+  @override
+  String get proPurchaseFailed => '购买失败，请稍后重试';
+
+  @override
+  String get proAlreadyActive => '你已是 Pro 会员';
+
+  @override
+  String get proSyncPending => '已购买，正在生效…';
+
+  @override
+  String get proUnsupportedPlatform => '请在 iPhone 或 Android 手机上购买';
+
+  @override
+  String get proLoginFirst => '请先登录账号再开通 Pro';
+
+  @override
+  String get proMonthlyLabel => '月度订阅';
+
+  @override
+  String get proYearlyLabel => '年度订阅';
+
+  @override
+  String get proLifetimeLabel => '永久买断';
+
+  @override
+  String get proPaywallLoadFailed => '无法加载商品，请稍后重试';
+
+  @override
+  String get proPaymentPending => '支付待确认，完成后自动生效';
+
+  @override
+  String get proSubscriptionNote => '订阅自动续费，可随时在系统订阅管理中取消；买断为一次性付费。';
+
+  @override
+  String get proPurchaseCta => '立即开通';
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
@@ -1520,4 +1942,215 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get reminderNotificationBody => '別忘了記錄今天的穿搭哦～';
+
+  @override
+  String get authLoginTitle => '登入';
+
+  @override
+  String get authRegisterTitle => '註冊帳號';
+
+  @override
+  String get authLoginHeadline => '登入以同步你的穿搭';
+
+  @override
+  String get authRegisterHeadline => '建立帳號以開啟雲端同步';
+
+  @override
+  String get authOfflineNote => '雲端同步為可選功能，不登入也能離線使用全部記錄功能。';
+
+  @override
+  String get authEmailLabel => '電子郵件';
+
+  @override
+  String get authPasswordLabel => '密碼';
+
+  @override
+  String get authPasswordHint => '至少 8 位';
+
+  @override
+  String get authEmailInvalid => '請輸入有效的電子郵件地址';
+
+  @override
+  String get authPasswordTooShort => '密碼至少 8 位';
+
+  @override
+  String get authLoginSuccess => '登入成功';
+
+  @override
+  String get authRegisterSuccess => '註冊成功';
+
+  @override
+  String get authRegisterBtn => '註冊';
+
+  @override
+  String get authSwitchToLogin => '已有帳號？去登入';
+
+  @override
+  String get authSwitchToRegister => '還沒有帳號？去註冊';
+
+  @override
+  String get accountSyncTitle => '帳戶與雲端同步';
+
+  @override
+  String get accountNotLoggedIn => '未登入';
+
+  @override
+  String get accountCloudOff => '雲端同步未開啟';
+
+  @override
+  String get accountCloudIntro => '登入後可將穿搭、標籤與資料同步到雲端，換裝置也能找回。\n不登入不影響任何本地功能。';
+
+  @override
+  String get accountRegisterNewBtn => '註冊新帳號';
+
+  @override
+  String get accountLoggedIn => '已登入';
+
+  @override
+  String get accountDeviceManagement => '登入裝置管理';
+
+  @override
+  String get accountLogout => '登出';
+
+  @override
+  String get accountLogoutDialogContent => '登出後雲端同步將停止，本地資料保留。確定登出嗎？';
+
+  @override
+  String get accountLogoutConfirm => '登出';
+
+  @override
+  String get accountLoggedOutToast => '已登出';
+
+  @override
+  String get accountCloudSyncLabel => '雲端同步';
+
+  @override
+  String get syncStatusSyncing => '同步中…';
+
+  @override
+  String get syncStatusNever => '尚未同步';
+
+  @override
+  String syncStatusLast(String time) {
+    return '上次同步 $time';
+  }
+
+  @override
+  String get syncNowBtn => '立即同步';
+
+  @override
+  String get syncErrPremiumRequired => '雲端同步需要會員訂閱';
+
+  @override
+  String get syncErrGeneric => '同步失敗，請稍後再試';
+
+  @override
+  String get deviceSessionsTitle => '登入裝置';
+
+  @override
+  String get deviceSessionsEmpty => '暫無活躍工作階段';
+
+  @override
+  String get deviceRemoved => '已移除該裝置';
+
+  @override
+  String get deviceRemoveTooltip => '移除該裝置';
+
+  @override
+  String get deviceCurrentBadge => '本機';
+
+  @override
+  String get retry => '重試';
+
+  @override
+  String get errNetwork => '網路連線失敗，請檢查網路後再試';
+
+  @override
+  String get errRequestTimeout => '請求逾時，請稍後再試';
+
+  @override
+  String get errSessionExpired => '登入已失效，請重新登入';
+
+  @override
+  String get errPremiumRequired => '此功能需要會員';
+
+  @override
+  String get errGeneric => '操作失敗，請稍後再試';
+
+  @override
+  String get errLoadFailed => '載入失敗，請稍後再試';
+
+  @override
+  String get errUploadFailed => '圖片上傳失敗，請檢查網路';
+
+  @override
+  String get proTitle => '今天穿什麼 Pro';
+
+  @override
+  String get proIntro => '解鎖雲端同步：穿搭、標籤與資料多裝置備份，換機不丟。';
+
+  @override
+  String get proSubscribeBtn => '開通 Pro';
+
+  @override
+  String get proRestoreBtn => '恢復購買';
+
+  @override
+  String get proActiveBadge => '已開通';
+
+  @override
+  String proExpiresAt(String date) {
+    return '$date 到期';
+  }
+
+  @override
+  String get proLifetime => '永久有效';
+
+  @override
+  String get proManageBtn => '管理訂閱';
+
+  @override
+  String get proPurchaseSuccess => 'Pro 已開通';
+
+  @override
+  String get proRestoreSuccess => '購買已恢復';
+
+  @override
+  String get proNothingToRestore => '沒有可恢復的購買';
+
+  @override
+  String get proPurchaseFailed => '購買失敗，請稍後再試';
+
+  @override
+  String get proAlreadyActive => '你已是 Pro 會員';
+
+  @override
+  String get proSyncPending => '已購買，正在生效…';
+
+  @override
+  String get proUnsupportedPlatform => '請在 iPhone 或 Android 手機上購買';
+
+  @override
+  String get proLoginFirst => '請先登入帳號再開通 Pro';
+
+  @override
+  String get proMonthlyLabel => '月度訂閱';
+
+  @override
+  String get proYearlyLabel => '年度訂閱';
+
+  @override
+  String get proLifetimeLabel => '永久買斷';
+
+  @override
+  String get proPaywallLoadFailed => '無法載入商品，請稍後再試';
+
+  @override
+  String get proPaymentPending => '支付待確認，完成後自動生效';
+
+  @override
+  String get proSubscriptionNote => '訂閱自動續費，可隨時在系統訂閱管理中取消；買斷為一次性付費。';
+
+  @override
+  String get proPurchaseCta => '立即開通';
 }

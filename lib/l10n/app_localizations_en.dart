@@ -513,4 +513,226 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get reminderNotificationBody =>
       'Don\'t forget to record your outfit today~';
+
+  @override
+  String get authLoginTitle => 'Log In';
+
+  @override
+  String get authRegisterTitle => 'Create Account';
+
+  @override
+  String get authLoginHeadline => 'Log in to sync your outfits';
+
+  @override
+  String get authRegisterHeadline => 'Create an account to enable cloud sync';
+
+  @override
+  String get authOfflineNote =>
+      'Cloud sync is optional — all recording features work offline without an account.';
+
+  @override
+  String get authEmailLabel => 'Email';
+
+  @override
+  String get authPasswordLabel => 'Password';
+
+  @override
+  String get authPasswordHint => 'At least 8 characters';
+
+  @override
+  String get authEmailInvalid => 'Please enter a valid email address';
+
+  @override
+  String get authPasswordTooShort => 'Password must be at least 8 characters';
+
+  @override
+  String get authLoginSuccess => 'Logged in';
+
+  @override
+  String get authRegisterSuccess => 'Account created';
+
+  @override
+  String get authRegisterBtn => 'Sign Up';
+
+  @override
+  String get authSwitchToLogin => 'Already have an account? Log in';
+
+  @override
+  String get authSwitchToRegister => 'No account yet? Sign up';
+
+  @override
+  String get accountSyncTitle => 'Account & Cloud Sync';
+
+  @override
+  String get accountNotLoggedIn => 'Not logged in';
+
+  @override
+  String get accountCloudOff => 'Cloud sync is off';
+
+  @override
+  String get accountCloudIntro =>
+      'Log in to sync outfits, tags and profile to the cloud, and restore them on a new device.\nEverything still works locally without an account.';
+
+  @override
+  String get accountRegisterNewBtn => 'Create New Account';
+
+  @override
+  String get accountLoggedIn => 'Logged in';
+
+  @override
+  String get accountDeviceManagement => 'Manage Devices';
+
+  @override
+  String get accountLogout => 'Log Out';
+
+  @override
+  String get accountLogoutDialogContent =>
+      'Cloud sync will stop after logging out; local data is kept. Log out?';
+
+  @override
+  String get accountLogoutConfirm => 'Log Out';
+
+  @override
+  String get accountLoggedOutToast => 'Logged out';
+
+  @override
+  String get accountCloudSyncLabel => 'Cloud Sync';
+
+  @override
+  String get syncStatusSyncing => 'Syncing…';
+
+  @override
+  String get syncStatusNever => 'Not synced yet';
+
+  @override
+  String syncStatusLast(String time) {
+    return 'Last synced $time';
+  }
+
+  @override
+  String get syncNowBtn => 'Sync Now';
+
+  @override
+  String get syncErrPremiumRequired =>
+      'Cloud sync requires a premium subscription';
+
+  @override
+  String get syncErrGeneric => 'Sync failed, please try again later';
+
+  @override
+  String get deviceSessionsTitle => 'Devices';
+
+  @override
+  String get deviceSessionsEmpty => 'No active sessions';
+
+  @override
+  String get deviceRemoved => 'Device removed';
+
+  @override
+  String get deviceRemoveTooltip => 'Remove this device';
+
+  @override
+  String get deviceCurrentBadge => 'This device';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get errNetwork =>
+      'Network error, please check your connection and try again';
+
+  @override
+  String get errRequestTimeout => 'Request timed out, please try again later';
+
+  @override
+  String get errSessionExpired => 'Session expired, please log in again';
+
+  @override
+  String get errPremiumRequired => 'This feature requires premium';
+
+  @override
+  String get errGeneric => 'Operation failed, please try again later';
+
+  @override
+  String get errLoadFailed => 'Failed to load, please try again later';
+
+  @override
+  String get errUploadFailed =>
+      'Image upload failed, please check your network';
+
+  @override
+  String get proTitle => 'Today Wear Pro';
+
+  @override
+  String get proIntro =>
+      'Unlock cloud sync: back up outfits, tags and profile across devices.';
+
+  @override
+  String get proSubscribeBtn => 'Upgrade to Pro';
+
+  @override
+  String get proRestoreBtn => 'Restore Purchases';
+
+  @override
+  String get proActiveBadge => 'Active';
+
+  @override
+  String proExpiresAt(String date) {
+    return 'Expires $date';
+  }
+
+  @override
+  String get proLifetime => 'Lifetime';
+
+  @override
+  String get proManageBtn => 'Manage Subscription';
+
+  @override
+  String get proPurchaseSuccess => 'Pro activated';
+
+  @override
+  String get proRestoreSuccess => 'Purchases restored';
+
+  @override
+  String get proNothingToRestore => 'No purchases to restore';
+
+  @override
+  String get proPurchaseFailed => 'Purchase failed, please try again later';
+
+  @override
+  String get proAlreadyActive => 'You already have Pro';
+
+  @override
+  String get proSyncPending => 'Purchased — activating…';
+
+  @override
+  String get proUnsupportedPlatform =>
+      'Please purchase on your iPhone or Android device';
+
+  @override
+  String get proLoginFirst => 'Please log in before upgrading to Pro';
+
+  @override
+  String get proMonthlyLabel => 'Monthly';
+
+  @override
+  String get proYearlyLabel => 'Yearly';
+
+  @override
+  String get proLifetimeLabel => 'Lifetime';
+
+  @override
+  String get proPaywallLoadFailed =>
+      'Couldn\'t load products, please try again later';
+
+  @override
+  String get proPaymentPending =>
+      'Payment pending — Pro activates once it completes';
+
+  @override
+  String get proSubscriptionNote =>
+      'Subscriptions auto-renew and can be cancelled anytime in your store\'s subscription settings; Lifetime is a one-time purchase.';
+
+  @override
+  String get proPurchaseCta => 'Continue';
 }

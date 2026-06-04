@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:today_wear/l10n/app_localizations.dart';
 
 import '../api/api_exception.dart';
+import '../l10n/api_error_l10n.dart';
 import '../services/session_service.dart';
 import '../theme/app_theme_tokens.dart';
 import '../widgets/app_toast.dart';
@@ -37,15 +39,16 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   Future<void> _submit() async {
+    final l10n = AppLocalizations.of(context)!;
     final email = _emailController.text.trim();
     final password = _passwordController.text;
 
     if (!_validEmail(email)) {
-      AppToast.warning('请输入有效的邮箱地址');
+      AppToast.warning(l10n.authEmailInvalid);
       return;
     }
     if (password.length < 8) {
-      AppToast.warning('密码至少 8 位');
+      AppToast.warning(l10n.authPasswordTooShort);
       return;
     }
 
@@ -57,12 +60,12 @@ class _AuthPageState extends State<AuthPage> {
         await SessionService.instance.login(email, password);
       }
       if (!mounted) return;
-      AppToast.success(_isRegister ? '注册成功' : '登录成功');
+      AppToast.success(_isRegister ? l10n.authRegisterSuccess : l10n.authLoginSuccess);
       Navigator.of(context).pop(true);
     } on ApiException catch (e) {
-      if (mounted) AppToast.error(e.message);
+      if (mounted) AppToast.error(localizedApiError(l10n, e));
     } catch (e) {
-      if (mounted) AppToast.error('操作失败，请稍后重试');
+      if (mounted) AppToast.error(l10n.errGeneric);
     } finally {
       if (mounted) setState(() => _submitting = false);
     }
@@ -71,13 +74,14 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     final tt = context.tt;
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: tt.page,
       appBar: AppBar(
         backgroundColor: tt.page,
         elevation: 0,
         scrolledUnderElevation: 0,
-        title: Text(_isRegister ? '注册账号' : '登录',
+        title: Text(_isRegister ? l10n.authRegisterTitle : l10n.authLoginTitle,
             style: TextStyle(color: tt.ink, fontWeight: FontWeight.w800, fontSize: 18)),
         iconTheme: IconThemeData(color: tt.ink),
       ),
@@ -86,19 +90,19 @@ class _AuthPageState extends State<AuthPage> {
           padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
           children: [
             Text(
-              _isRegister ? '创建账号以开启云同步' : '登录以同步你的穿搭',
+              _isRegister ? l10n.authRegisterHeadline : l10n.authLoginHeadline,
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: tt.ink),
             ),
             const SizedBox(height: 8),
             Text(
-              '云同步为可选功能，不登录也能离线使用全部记录功能。',
+              l10n.authOfflineNote,
               style: TextStyle(fontSize: 13, color: tt.muted, height: 1.4),
             ),
             const SizedBox(height: 24),
             _buildField(
               tt,
               controller: _emailController,
-              label: '邮箱',
+              label: l10n.authEmailLabel,
               hint: 'you@example.com',
               keyboardType: TextInputType.emailAddress,
             ),
@@ -106,8 +110,8 @@ class _AuthPageState extends State<AuthPage> {
             _buildField(
               tt,
               controller: _passwordController,
-              label: '密码',
-              hint: '至少 8 位',
+              label: l10n.authPasswordLabel,
+              hint: l10n.authPasswordHint,
               obscure: _obscure,
               suffix: IconButton(
                 icon: Icon(_obscure ? Icons.visibility_off_outlined : Icons.visibility_outlined,
@@ -116,7 +120,7 @@ class _AuthPageState extends State<AuthPage> {
               ),
             ),
             const SizedBox(height: 28),
-            _buildPrimaryButton(tt),
+            _buildPrimaryButton(tt, l10n),
             const SizedBox(height: 16),
             Center(
               child: TextButton(
@@ -124,7 +128,7 @@ class _AuthPageState extends State<AuthPage> {
                     ? null
                     : () => setState(() => _isRegister = !_isRegister),
                 child: Text(
-                  _isRegister ? '已有账号？去登录' : '还没有账号？去注册',
+                  _isRegister ? l10n.authSwitchToLogin : l10n.authSwitchToRegister,
                   style: TextStyle(color: tt.ink, fontWeight: FontWeight.w600),
                 ),
               ),
@@ -180,7 +184,7 @@ class _AuthPageState extends State<AuthPage> {
     );
   }
 
-  Widget _buildPrimaryButton(AppThemeTokens tt) {
+  Widget _buildPrimaryButton(AppThemeTokens tt, AppLocalizations l10n) {
     return SizedBox(
       height: 52,
       child: ElevatedButton(
@@ -197,7 +201,7 @@ class _AuthPageState extends State<AuthPage> {
                 height: 22,
                 child: CircularProgressIndicator(strokeWidth: 2.4, color: tt.page),
               )
-            : Text(_isRegister ? '注册' : '登录',
+            : Text(_isRegister ? l10n.authRegisterBtn : l10n.authLoginTitle,
                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
       ),
     );

@@ -74,7 +74,7 @@ class ApiClient {
     try {
       res = await run().timeout(ApiConfig.timeout);
     } on TimeoutException {
-      throw const NetworkException(message: '请求超时，请稍后重试');
+      throw const NetworkException(code: 'timeout');
     } on SocketException {
       throw const NetworkException();
     } on http.ClientException {
@@ -98,9 +98,9 @@ class ApiClient {
       return envelope?['data'];
     }
 
-    // 错误：从信封提取 code/message，缺失则用兜底
+    // 错误：从信封提取 code/message；message 缺失时留空，由 UI 层按 code 映射 l10n
     String code = 'error';
-    String message = 'HTTP ${res.statusCode}';
+    String message = '';
     final err = envelope?['error'];
     if (err is Map<String, dynamic>) {
       code = (err['code'] as String?) ?? code;
