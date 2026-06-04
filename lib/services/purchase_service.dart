@@ -33,8 +33,8 @@ class PurchaseService extends ChangeNotifier {
   PurchaseService._();
   static final PurchaseService instance = PurchaseService._();
 
-  /// RevenueCat entitlement 标识
-  static const String entitlementId = '今天穿什么 Pro';
+  /// RevenueCat entitlement 标识（Dashboard 上「今天穿什么 Pro」的 API identifier）
+  static const String entitlementId = 'today_wear_pro';
 
   /// 客户端 SDK public key；上线时 --dart-define 覆盖为 appl_/goog_ key
   static const String _apiKey = String.fromEnvironment(
