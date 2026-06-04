@@ -274,6 +274,39 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           Text(l10n.settings, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800, color: tt.ink)),
           const SizedBox(height: 10),
+          GestureDetector(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const AccountSyncPage()),
+            ).then((_) {
+              if (mounted) setState(() {});
+            }),
+            behavior: HitTestBehavior.opaque,
+            child: SizedBox(
+              height: 48,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text('账户与云同步', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: tt.ink)),
+                  ),
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 170),
+                    child: Text(
+                      SessionService.instance.isLoggedIn
+                          ? (SessionService.instance.email ?? '')
+                          : '未登录',
+                      style: TextStyle(fontSize: 13, color: tt.muted),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  Icon(Icons.chevron_right, color: tt.muted, size: 18),
+                ],
+              ),
+            ),
+          ),
+          Divider(height: 1, color: tt.line),
           _buildSettingsRow(tt, l10n.settings, _buildAppearanceTile(context, l10n)),
           Divider(height: 1, color: tt.line),
           _buildSettingsNavRow(
@@ -312,37 +345,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Text(l10n.language, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: tt.ink)),
                   ),
                   Text(currentLanguageName, style: TextStyle(fontSize: 13, color: tt.muted)),
-                  const SizedBox(width: 4),
-                  Icon(Icons.chevron_right, color: tt.muted, size: 18),
-                ],
-              ),
-            ),
-          ),
-          Divider(height: 1, color: tt.line),
-          GestureDetector(
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const AccountSyncPage()),
-            ).then((_) {
-              if (mounted) setState(() {});
-            }),
-            behavior: HitTestBehavior.opaque,
-            child: SizedBox(
-              height: 48,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text('账户与云同步', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: tt.ink)),
-                  ),
-                  Flexible(
-                    child: Text(
-                      SessionService.instance.isLoggedIn
-                          ? (SessionService.instance.email ?? '')
-                          : '未登录',
-                      style: TextStyle(fontSize: 13, color: tt.muted),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
                   const SizedBox(width: 4),
                   Icon(Icons.chevron_right, color: tt.muted, size: 18),
                 ],
