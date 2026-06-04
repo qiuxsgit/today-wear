@@ -13,18 +13,15 @@ import 'media_api.dart';
 ///
 /// 契约：`POST {gfsHost}/v1/upload`，multipart/form-data：
 ///   file + appId/policy/signature/timestamp/nonce/expire（来自 [UploadPolicy]）。
-/// 响应携带 bigint 文件 id（= image_id）。不同部署的字段名可能不同，这里在
-/// 常见键名中鲁棒查找；首次联调若解析失败，会把原始响应打到日志便于核对。
+/// 响应（2026-06 联调确认）：
+///   { "code": 0, "msg": "操作成功",
+///     "data": { "objectInfo": {...}, "val": 22856 } }
+/// `data.val` 即文件 id（= image_id）；`code != 0` 表示失败，`msg` 为原因。
 class GfsUploader {
   GfsUploader._();
   static final GfsUploader instance = GfsUploader._();
 
   final http.Client _http = http.Client();
-
-  /// 候选的文件 id 字段名（按优先级）
-  static const List<String> _idKeys = [
-    'fileId', 'file_id', 'id', 'imageId', 'image_id', 'fid',
-  ];
 
   Future<int> upload(File file, UploadPolicy p) async {
     final uri = Uri.parse('${p.gfsHost}/v1/upload');
@@ -62,13 +59,28 @@ class GfsUploader {
     try {
       decoded = jsonDecode(utf8.decode(res.bodyBytes));
     } catch (_) {
-      // 也许直接返回纯数字 id
-      final asInt = int.tryParse(res.body.trim());
-      if (asInt != null) return asInt;
+      decoded = null;
     }
 
-    final id = _findId(decoded);
-    if (id != null) return id;
+    if (decoded is Map) {
+      // 业务失败：code != 0
+      final code = decoded['code'];
+      if (code is num && code.toInt() != 0) {
+        final msg = decoded['msg']?.toString() ?? 'code $code';
+        if (kDebugMode) debugPrint('[GFS] upload 业务失败: ${res.body}');
+        throw ApiException(
+          status: res.statusCode,
+          code: 'gfs_upload_failed',
+          message: '图片上传失败：$msg',
+        );
+      }
+      // 文件 id 固定在 data.val
+      final data = decoded['data'];
+      if (data is Map) {
+        final id = _asInt(data['val']);
+        if (id != null) return id;
+      }
+    }
 
     if (kDebugMode) debugPrint('[GFS] 未能从响应解析 image id，原始响应: ${res.body}');
     throw ApiException(
@@ -76,27 +88,6 @@ class GfsUploader {
       code: 'gfs_upload_parse',
       message: '图片上传成功但未能解析图片 id',
     );
-  }
-
-  /// 递归在 JSON 中查找首个 id-like 整数
-  int? _findId(dynamic node) {
-    if (node is Map) {
-      for (final key in _idKeys) {
-        final v = node[key];
-        final id = _asInt(v);
-        if (id != null) return id;
-      }
-      for (final v in node.values) {
-        final id = _findId(v);
-        if (id != null) return id;
-      }
-    } else if (node is List) {
-      for (final v in node) {
-        final id = _findId(v);
-        if (id != null) return id;
-      }
-    }
-    return null;
   }
 
   int? _asInt(dynamic v) {
