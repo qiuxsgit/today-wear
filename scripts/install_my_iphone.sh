@@ -3,14 +3,15 @@
 # ====== 配置区 ======
 
 DEVICE_ID="00008101-001035DA3EE1001E"
-BRANCH="main"
 NO_BUILD=false
+LOCAL=false
 
 # ====== 参数解析 ======
 
 for arg in "$@"; do
   case $arg in
     --no-build) NO_BUILD=true ;;
+    --local)    LOCAL=true ;;
     *) echo "未知参数：$arg"; exit 1 ;;
   esac
 done
@@ -18,6 +19,8 @@ done
 START_TIME=$(date +%s)
 if $NO_BUILD; then
   echo "🚀 开始安装 iOS App（仅安装模式，跳过构建）..."
+elif $LOCAL; then
+  echo "🚀 开始更新 iOS App（本地模式，跳过拉取代码）..."
 else
   echo "🚀 开始更新 iOS App（build + install 模式）..."
 fi
@@ -25,16 +28,22 @@ echo "   开始时间：$(date '+%Y-%m-%d %H:%M:%S')"
 
 if ! $NO_BUILD; then
 
-  # ====== 1. 拉代码 ======
+  # ====== 1. 拉代码（--local 跳过） ======
 
-  echo "📥 拉取最新代码..."
-  git fetch origin
-
-  git checkout $BRANCH 2>/dev/null
-  git pull origin $BRANCH || {
-    echo "❌ git pull 失败"
-    exit 1
-  }
+  if $LOCAL; then
+    echo "📥 本地模式：跳过拉取代码，使用当前工作区（分支：$(git branch --show-current)）"
+  else
+    BRANCH=$(git branch --show-current)
+    if [ -z "$BRANCH" ]; then
+      echo "❌ 当前处于 detached HEAD，无法确定分支；请先 checkout 到分支或使用 --local"
+      exit 1
+    fi
+    echo "📥 拉取最新代码（当前分支：$BRANCH）..."
+    git pull origin "$BRANCH" || {
+      echo "❌ git pull 失败"
+      exit 1
+    }
+  fi
 
   # ====== 2. Flutter 依赖 ======
 
