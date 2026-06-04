@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:today_wear/l10n/app_localizations.dart';
+import '../api/user_api.dart';
+import '../services/session_service.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_text_style.dart';
 import '../theme/app_spacing.dart';
@@ -36,6 +38,14 @@ class LanguageSelectionPage extends StatelessWidget {
         onChanged: (value) {
           if (value != null && localeService != null) {
             localeService.setLocale(value);
+            // 已登录时后台同步语言偏好到服务端（失败不打扰用户）
+            if (SessionService.instance.isLoggedIn) {
+              UserApi()
+                  .updateLanguage(LocaleService.toApiTag(value))
+                  .catchError((e) {
+                debugPrint('Language sync failed: $e');
+              });
+            }
           }
         },
         child: ListView.separated(

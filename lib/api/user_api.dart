@@ -108,4 +108,8 @@ class UserApi {
 
   Future<void> deleteSession(String sessionId) =>
       _client.delete('/users/me/sessions/$sessionId');
+
+  /// 修改语言偏好（服务端即时刷新所有在线会话）
+  Future<void> updateLanguage(String language) =>
+      _client.put('/users/me/language', body: {'language': language});
 }

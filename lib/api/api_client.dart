@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
+import '../services/locale_service.dart';
 import 'api_config.dart';
 import 'api_exception.dart';
 
@@ -37,7 +38,10 @@ class ApiClient {
   }
 
   Map<String, String> _headers({bool json = true}) {
-    final h = <String, String>{};
+    final h = <String, String>{
+      // 服务端按此本地化提示语（登录前/401 阶段的兜底语言来源）
+      'Accept-Language': LocaleService.apiLanguageTag,
+    };
     if (json) h['Content-Type'] = 'application/json';
     final token = tokenProvider?.call();
     if (token != null && token.isNotEmpty) {

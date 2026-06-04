@@ -38,9 +38,30 @@ class LocaleService extends ChangeNotifier {
   
   /// 当前语言
   Locale? _currentLocale;
-  
+
   /// 获取当前语言
   Locale? get currentLocale => _currentLocale;
+
+  /// 当前语言的 API 标签（zh-CN/zh-TW/en/ja/ko），供网络层无 context 读取。
+  /// 由 init() / setLocale() 维护，与服务端语言协商约定一致。
+  static String apiLanguageTag = 'zh-TW';
+
+  /// Locale → 服务端语言标签映射
+  static String toApiTag(Locale? locale) {
+    if (locale == null) return 'zh-TW';
+    switch (locale.languageCode) {
+      case 'zh':
+        return locale.countryCode == 'CN' ? 'zh-CN' : 'zh-TW';
+      case 'en':
+        return 'en';
+      case 'ja':
+        return 'ja';
+      case 'ko':
+        return 'ko';
+      default:
+        return 'zh-TW';
+    }
+  }
   
   /// 初始化语言服务
   ///
@@ -65,6 +86,7 @@ class LocaleService extends ChangeNotifier {
           : systemLocale.languageCode;
       await prefs.setString(_localeKey, localeStr);
     }
+    apiLanguageTag = toApiTag(_currentLocale);
     notifyListeners();
   }
   
@@ -77,6 +99,7 @@ class LocaleService extends ChangeNotifier {
     }
     
     _currentLocale = locale;
+    apiLanguageTag = toApiTag(locale);
     notifyListeners();
     
     // 持久化保存

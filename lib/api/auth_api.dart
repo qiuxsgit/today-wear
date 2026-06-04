@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:package_info_plus/package_info_plus.dart';
 
+import '../services/locale_service.dart';
 import 'api_client.dart';
 
 /// 登录/注册返回的会话结果
@@ -55,6 +56,7 @@ class AuthApi {
     final data = await _client.post('/auth/register', body: {
       'email': email,
       'password': password,
+      'language': LocaleService.apiLanguageTag, // 持久化为用户语言偏好
       'device': await _device(),
     });
     return AuthResult.fromData((data as Map).cast<String, dynamic>());
@@ -64,6 +66,7 @@ class AuthApi {
     final data = await _client.post('/auth/login', body: {
       'email': email,
       'password': password,
+      'language': LocaleService.apiLanguageTag, // 覆盖并持久化用户语言偏好
       'device': await _device(),
     });
     return AuthResult.fromData((data as Map).cast<String, dynamic>());
