@@ -67,8 +67,11 @@ if ! $NO_BUILD; then
 
   # ====== 4. 构建 iOS App ======
 
-  echo "🏗️ 构建 iOS App..."
-  flutter build ios --release --build-number=$(date +%Y%m%d%H%M) || {
+  echo "🏗️ 构建 iOS App（支付通道已关闭：DISABLE_PURCHASES=true）..."
+  # 个人真机测试包：显式关闭支付通道（内置 Test Store key 在 release 下会被
+  # RevenueCat 原生层 fatal）。正式发版不走本脚本，不带此开关 → 误带测试 key
+  # 会直接起不来，不会静默发出免费版。
+  flutter build ios --release --dart-define=DISABLE_PURCHASES=true --build-number=$(date +%Y%m%d%H%M) || {
     echo "❌ 构建失败"
     exit 1
   }
