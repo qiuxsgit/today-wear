@@ -5,6 +5,10 @@ import '../database/database.dart';
 import '../repositories/outfit_repository.dart';
 import '../theme/app_theme_tokens.dart';
 
+/// 标签使用百分比：该标签次数 ÷ 全部标签总次数（四舍五入取整，总数为 0 时为 0）
+int tagUsagePercent(int count, int totalCount) =>
+    totalCount > 0 ? (count / totalCount * 100).round() : 0;
+
 /// 統計頁面
 ///
 /// 主卡：漸層背景 + 圓形進度環
@@ -281,6 +285,8 @@ class _StatisticsPageState extends State<StatisticsPage>
     final sorted = _tagStats.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
     final topTags = sorted.take(6).toList();
     final maxCount = topTags.isEmpty ? 1 : topTags.first.value;
+    // 百分比 = 該標籤次數 ÷ 全部標籤總次數；進度條寬度按最大值歸一化保持視覺對比
+    final totalCount = _tagStats.values.fold(0, (s, c) => s + c);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -291,8 +297,8 @@ class _StatisticsPageState extends State<StatisticsPage>
         ),
         const SizedBox(height: 12),
         ...topTags.map((entry) {
-          final pct = maxCount > 0 ? (entry.value / maxCount) : 0.0;
-          final pctInt = (pct * 100).round();
+          final barPct = maxCount > 0 ? (entry.value / maxCount) : 0.0;
+          final pctInt = tagUsagePercent(entry.value, totalCount);
           return Padding(
             padding: const EdgeInsets.only(bottom: 13),
             child: Column(
@@ -306,7 +312,7 @@ class _StatisticsPageState extends State<StatisticsPage>
                   ],
                 ),
                 const SizedBox(height: 6),
-                _TagProgressBar(progress: pct, tt: tt),
+                _TagProgressBar(progress: barPct, tt: tt),
               ],
             ),
           );
