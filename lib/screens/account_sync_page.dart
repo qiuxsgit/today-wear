@@ -255,9 +255,10 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
             ),
           ],
         ),
-        // 同步被会员门控挡下时，就地给出开通入口
+        // 同步被会员门控挡下时，就地给出开通入口（支付通道关闭时隐藏）
         if (_sync.status == SyncStatus.error &&
-            _sync.lastError == SyncError.premiumRequired) ...[
+            _sync.lastError == SyncError.premiumRequired &&
+            PurchaseService.instance.isConfigured) ...[
           const SizedBox(height: 10),
           SizedBox(
             width: double.infinity,

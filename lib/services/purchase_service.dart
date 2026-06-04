@@ -70,9 +70,16 @@ class PurchaseService extends ChangeNotifier {
   /// 已购买但服务端尚未点亮（refresh 失败），UI 显示「正在生效」+ 重试
   bool get syncPending => _syncPending;
 
+  /// Test Store key（`test_`）在 release 构建中会被 RevenueCat 原生层直接
+  /// fatal（防带上线），且崩在原生层无法 catch。release + 测试 key 时跳过
+  /// 配置 = 临时关闭支付通道（真机日常测试场景）；正式 key 经
+  /// `--dart-define=REVENUECAT_API_KEY=appl_/goog_` 注入后自动启用。
+  bool get _keyUsableInThisBuild =>
+      _apiKey.isNotEmpty && !(kReleaseMode && _apiKey.startsWith('test_'));
+
   /// 启动时初始化 SDK 并绑定会话。失败只降级、不影响 App 其它功能。
   Future<void> init() async {
-    if (!isSupported) return;
+    if (!isSupported || !_keyUsableInThisBuild) return;
     try {
       final session = SessionService.instance;
       final config = PurchasesConfiguration(_apiKey);
