@@ -32,6 +32,9 @@ Future<void> presentProPaywallFlow(BuildContext context) async {
     context,
     MaterialPageRoute(builder: (_) => const PaywallPage()),
   );
+  // 从付费墙返回后按服务端真相再刷一次（覆盖取消购买但状态已被
+  // webhook 改变等场景）
+  await PurchaseService.instance.refreshServerStatus();
 }
 
 void _toastOutcome(AppLocalizations l10n, PaywallOutcome outcome) {
@@ -76,6 +79,8 @@ class _ProStatusCardState extends State<ProStatusCard> {
   void initState() {
     super.initState();
     _purchase.addListener(_onChanged);
+    // 卡片挂载（页面进入）即按服务端真相刷新一次（未登录内部跳过）
+    _purchase.refreshServerStatus();
   }
 
   @override
