@@ -10,6 +10,7 @@ import '../repositories/outfit_repository.dart';
 import '../services/sync_service.dart';
 import '../widgets/app_toast.dart';
 import '../widgets/sync_error_text.dart';
+import '../widgets/home_weather_card.dart';
 import 'outfit_detail_page.dart';
 
 const double _listCardSpacing = 20.0;
@@ -72,6 +73,8 @@ class HomePageState extends State<HomePage> {
       final l10n = AppLocalizations.of(context)!;
       AppToast.warning(syncErrorText(sync.lastError, sync.lastErrorMessage, l10n));
     }
+    // refreshData 是 void：指示器先收起、内容稍后到位；
+    // _loadMoreData 有 _isLoading 过渡态保护，本地 SQLite 延迟极短，可接受。
     refreshData();
   }
 
@@ -171,7 +174,7 @@ class HomePageState extends State<HomePage> {
         child: Column(
           children: [
             HomeTopBar(onAdd: widget.onAddFirstOutfit),
-            _WeatherCard(tt: tt),
+            HomeWeatherCard(tt: tt),
             HomeFilterChips(
               activeTag: _activeTag,
               onFilterChanged: _onFilterChanged,
@@ -235,7 +238,7 @@ class HomePageState extends State<HomePage> {
           child: Column(
             children: [
               HomeTopBar(onAdd: widget.onAddFirstOutfit),
-              _WeatherCard(tt: tt),
+              HomeWeatherCard(tt: tt),
               HomeFilterChips(
                 activeTag: _activeTag,
                 onFilterChanged: _onFilterChanged,
@@ -258,7 +261,7 @@ class HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             HomeTopBar(onAdd: widget.onAddFirstOutfit),
-            _WeatherCard(tt: tt),
+            HomeWeatherCard(tt: tt),
             HomeFilterChips(
               activeTag: _activeTag,
               onFilterChanged: _onFilterChanged,
@@ -289,55 +292,6 @@ class HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _WeatherCard extends StatelessWidget {
-  final AppThemeTokens tt;
-  const _WeatherCard({required this.tt});
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(18, 10, 18, 0),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: const Alignment(-0.77, -0.64),
-            end: const Alignment(0.77, 0.64),
-            colors: [tt.ink, tt.accent2],
-          ),
-          borderRadius: BorderRadius.circular(24),
-          boxShadow: const [BoxShadow(color: Color(0x12554230), blurRadius: 28, offset: Offset(0, 12))],
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    l10n.weatherPlaceholderLocation,
-                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: tt.page.withValues(alpha: 0.8)),
-                  ),
-                  const SizedBox(height: 3),
-                  Text(
-                    l10n.weatherPlaceholderAdvice,
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: tt.page),
-                  ),
-                ],
-              ),
-            ),
-            Text(
-              '24°',
-              style: TextStyle(fontSize: 38, fontWeight: FontWeight.w300, color: tt.page),
             ),
           ],
         ),
