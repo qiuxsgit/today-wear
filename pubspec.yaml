@@ -74,6 +74,9 @@ dependencies:
   # 打开链接 / 邮箱
   url_launcher: ^6.2.5
 
+  # 调起 APK 系统安装器（apk 渠道应用内更新）
+  open_filex: ^4.5.0
+
   # App 内打开服务端托管的隐私政策/用户协议页
   webview_flutter: ^4.10.0
   
