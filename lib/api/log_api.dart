@@ -9,9 +9,11 @@ class LogApi {
   final ApiClient _client;
   LogApi([ApiClient? client]) : _client = client ?? ApiClient.instance;
 
-  /// 签发日志文件 GFS 直传策略（保存在 `<user_id>/log/` 下）
-  Future<UploadPolicy> uploadToken() async {
-    final data = await _client.post('/logs/upload-token');
+  /// 签发日志文件 GFS 直传策略
+  /// （保存为 `<user_id>/log/<邮箱>_<logDate>_<HHmmss>.log.gz`）
+  Future<UploadPolicy> uploadToken({required String logDate}) async {
+    final data =
+        await _client.post('/logs/upload-token', body: {'log_date': logDate});
     return UploadPolicy.fromJson((data as Map).cast<String, dynamic>());
   }
 

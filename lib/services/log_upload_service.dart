@@ -32,7 +32,7 @@ class LogUploadService {
       final bytes = await logFile.readAsBytes();
       await gzFile.writeAsBytes(gzip.encode(bytes), flush: true);
 
-      final policy = await _api.uploadToken();
+      final policy = await _api.uploadToken(logDate: logDate);
       final fileId = await GfsUploader.instance.upload(gzFile, policy);
 
       final id = await _api.report(
