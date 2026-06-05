@@ -20,3 +20,10 @@ flutter analyze
 （清会话跳登录）。`invalid_credentials` 是业务校验失败（登录密码错、删除账号二次
 确认密码错），**不得**清当前会话。改动 401 处理前先跑
 `test/account_deletion_test.dart` 的守卫断言。
+
+## Color 转 hex
+
+Color 取 RGB 用 `toARGB32()`（Flutter 3.27+），`.value` 已废弃：
+
+✅ `(c.toARGB32() & 0xFFFFFF).toRadixString(16).padLeft(6, '0')`
+❌ `c.value.toRadixString(16)`
