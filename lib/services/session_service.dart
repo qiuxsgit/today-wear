@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/api_client.dart';
 import '../api/auth_api.dart';
+import 'log_service.dart';
 
 /// 会话/账号状态服务
 ///
@@ -51,11 +52,13 @@ class SessionService extends ChangeNotifier {
   Future<void> register(String email, String password) async {
     final res = await _authApi.register(email, password);
     await _apply(res);
+    LogService.instance.info('Session', 'register ok user_id=$_userId');
   }
 
   Future<void> login(String email, String password) async {
     final res = await _authApi.login(email, password);
     await _apply(res);
+    LogService.instance.info('Session', 'login ok user_id=$_userId');
   }
 
   /// 退出当前设备登录（尽力通知服务端，失败也清本地）
@@ -64,6 +67,7 @@ class SessionService extends ChangeNotifier {
       await _authApi.logout();
     } catch (_) {}
     await _clear();
+    LogService.instance.info('Session', 'logout');
   }
 
   /// 退出全部设备
@@ -72,6 +76,7 @@ class SessionService extends ChangeNotifier {
       await _authApi.logoutAll();
     } catch (_) {}
     await _clear();
+    LogService.instance.info('Session', 'logout all');
   }
 
   Future<void> changePassword(String oldPassword, String newPassword) async {
@@ -114,6 +119,7 @@ class SessionService extends ChangeNotifier {
   /// ApiClient 收到 401 时回调：token 失效，清本地会话（不发网络请求）。
   void _handleUnauthorized() {
     debugPrint('SessionService: session expired (401), clearing local session');
+    LogService.instance.warn('Session', 'session expired (401), local session cleared');
     _sessionId = null;
     _userId = null;
     _email = null;

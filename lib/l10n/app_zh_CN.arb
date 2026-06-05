@@ -350,5 +350,14 @@
   "proPaywallLoadFailed": "无法加载商品，请稍后重试",
   "proPaymentPending": "支付待确认，完成后自动生效",
   "proSubscriptionNote": "订阅自动续费，可随时在系统订阅管理中取消；买断为一次性付费。",
-  "proPurchaseCta": "立即开通"
+  "proPurchaseCta": "立即开通",
+  "logUpload": "日志上传",
+  "logUploadEmpty": "暂无日志文件",
+  "logUploadConfirmTitle": "上传日志",
+  "logUploadConfirmMessage": "将上传该日志文件用于问题排查",
+  "logUploadRemarkHint": "描述遇到的问题（可选）",
+  "logUploadAction": "上传",
+  "logUploadSuccess": "日志上传成功",
+  "logUploadFailed": "日志上传失败",
+  "logUploadLoginRequired": "请先登录后再上传日志"
 }

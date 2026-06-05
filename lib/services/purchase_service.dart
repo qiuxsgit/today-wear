@@ -7,6 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../api/purchase_api.dart';
 import '../api/user_api.dart';
+import 'log_service.dart';
 import 'session_service.dart';
 
 /// 购买 / 恢复购买的结果（UI 层映射 l10n 文案）
@@ -137,22 +138,27 @@ class PurchaseService extends ChangeNotifier {
       final result = await Purchases.purchase(PurchaseParams.package(package));
       _onCustomerInfo(result.customerInfo);
       await _syncWithServer();
+      LogService.instance.info('Purchase', 'purchase ok');
       return PaywallOutcome.purchased;
     } on PlatformException catch (e) {
       switch (PurchasesErrorHelper.getErrorCode(e)) {
         case PurchasesErrorCode.purchaseCancelledError:
+          LogService.instance.info('Purchase', 'purchase cancelled');
           return PaywallOutcome.cancelled;
         case PurchasesErrorCode.paymentPendingError:
+          LogService.instance.warn('Purchase', 'purchase payment pending');
           return PaywallOutcome.paymentPending;
         case PurchasesErrorCode.productAlreadyPurchasedError:
           await _syncWithServer();
           return PaywallOutcome.alreadyPro;
         default:
           debugPrint('PurchaseService purchase error: $e');
+          LogService.instance.error('Purchase', 'purchase failed', e);
           return PaywallOutcome.failed;
       }
     } catch (e) {
       debugPrint('PurchaseService purchase error: $e');
+      LogService.instance.error('Purchase', 'purchase failed', e);
       return PaywallOutcome.failed;
     }
   }
@@ -201,9 +207,12 @@ class PurchaseService extends ChangeNotifier {
       _isPremium = status.isPremium;
       _premiumExpiresAt = status.premiumExpiresAt;
       _syncPending = false;
+      LogService.instance
+          .info('Purchase', 'server sync ok premium=$_isPremium');
       notifyListeners();
     } catch (e) {
       debugPrint('PurchaseService syncWithServer error: $e');
+      LogService.instance.warn('Purchase', 'server sync pending: $e');
       _syncPending = true;
       notifyListeners();
     }

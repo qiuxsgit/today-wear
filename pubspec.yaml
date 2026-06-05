@@ -46,6 +46,7 @@ dependencies:
   
   # 应用信息（版本号等）
   package_info_plus: ^8.0.0
+  device_info_plus: ^11.0.0
   
   # 网络请求（云同步 / 账号 / 图片直传）
   http: ^1.2.0

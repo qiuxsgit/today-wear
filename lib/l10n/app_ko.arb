@@ -254,5 +254,14 @@
   "proPaywallLoadFailed": "상품을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요",
   "proPaymentPending": "결제 확인 중입니다. 완료되면 자동으로 적용됩니다",
   "proSubscriptionNote": "구독은 자동 갱신되며 스토어의 구독 설정에서 언제든지 해지할 수 있습니다. 평생 소장은 1회 결제입니다.",
-  "proPurchaseCta": "계속하기"
+  "proPurchaseCta": "계속하기",
+  "logUpload": "로그 업로드",
+  "logUploadEmpty": "로그 파일이 없습니다",
+  "logUploadConfirmTitle": "로그 업로드",
+  "logUploadConfirmMessage": "문제 해결을 위해 이 로그 파일을 업로드합니다",
+  "logUploadRemarkHint": "겪은 문제를 설명해 주세요 (선택)",
+  "logUploadAction": "업로드",
+  "logUploadSuccess": "로그를 업로드했습니다",
+  "logUploadFailed": "로그 업로드에 실패했습니다",
+  "logUploadLoginRequired": "로그를 업로드하려면 먼저 로그인하세요"
 }

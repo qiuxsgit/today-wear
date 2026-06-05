@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
+import '../services/log_service.dart';
 import 'api_config.dart';
 import 'api_exception.dart';
 import 'media_api.dart';
@@ -39,15 +40,19 @@ class GfsUploader {
       final streamed = await _http.send(req).timeout(ApiConfig.timeout);
       res = await http.Response.fromStream(streamed);
     } on TimeoutException {
+      LogService.instance.error('Gfs', 'upload -> timeout');
       throw const NetworkException(code: 'timeout');
     } on SocketException {
+      LogService.instance.error('Gfs', 'upload -> network error');
       throw const NetworkException();
     } on http.ClientException {
+      LogService.instance.error('Gfs', 'upload -> network error');
       throw const NetworkException();
     }
 
     if (res.statusCode < 200 || res.statusCode >= 300) {
       if (kDebugMode) debugPrint('[GFS] upload ${res.statusCode}: ${res.body}');
+      LogService.instance.error('Gfs', 'upload -> ${res.statusCode}');
       throw ApiException(status: res.statusCode, code: 'gfs_upload_failed');
     }
 
@@ -63,17 +68,22 @@ class GfsUploader {
       final code = decoded['code'];
       if (code is num && code.toInt() != 0) {
         if (kDebugMode) debugPrint('[GFS] upload 业务失败: ${res.body}');
+        LogService.instance.error('Gfs', 'upload -> biz failed code=$code');
         throw ApiException(status: res.statusCode, code: 'gfs_upload_failed');
       }
       // 文件 id 固定在 data.val
       final data = decoded['data'];
       if (data is Map) {
         final id = _asInt(data['val']);
-        if (id != null) return id;
+        if (id != null) {
+          LogService.instance.info('Gfs', 'upload ok file_id=$id');
+          return id;
+        }
       }
     }
 
     if (kDebugMode) debugPrint('[GFS] 未能从响应解析 image id，原始响应: ${res.body}');
+    LogService.instance.error('Gfs', 'upload -> parse failed');
     throw ApiException(status: res.statusCode, code: 'gfs_upload_parse');
   }
 

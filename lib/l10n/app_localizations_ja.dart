@@ -723,4 +723,31 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get proPurchaseCta => '購入する';
+
+  @override
+  String get logUpload => 'ログアップロード';
+
+  @override
+  String get logUploadEmpty => 'ログファイルはまだありません';
+
+  @override
+  String get logUploadConfirmTitle => 'ログをアップロード';
+
+  @override
+  String get logUploadConfirmMessage => 'このログファイルを問題調査のためにアップロードします';
+
+  @override
+  String get logUploadRemarkHint => '問題の内容を入力（任意）';
+
+  @override
+  String get logUploadAction => 'アップロード';
+
+  @override
+  String get logUploadSuccess => 'ログをアップロードしました';
+
+  @override
+  String get logUploadFailed => 'ログのアップロードに失敗しました';
+
+  @override
+  String get logUploadLoginRequired => 'ログをアップロードするにはログインしてください';
 }

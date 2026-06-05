@@ -254,5 +254,14 @@
   "proPaywallLoadFailed": "無法載入商品，請稍後再試",
   "proPaymentPending": "支付待確認，完成後自動生效",
   "proSubscriptionNote": "訂閱自動續費，可隨時在系統訂閱管理中取消；買斷為一次性付費。",
-  "proPurchaseCta": "立即開通"
+  "proPurchaseCta": "立即開通",
+  "logUpload": "日誌上傳",
+  "logUploadEmpty": "暫無日誌檔案",
+  "logUploadConfirmTitle": "上傳日誌",
+  "logUploadConfirmMessage": "將上傳該日誌檔案用於問題排查",
+  "logUploadRemarkHint": "描述遇到的問題（可選）",
+  "logUploadAction": "上傳",
+  "logUploadSuccess": "日誌上傳成功",
+  "logUploadFailed": "日誌上傳失敗",
+  "logUploadLoginRequired": "請先登入後再上傳日誌"
 }

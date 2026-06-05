@@ -10,6 +10,7 @@ import '../api/tag_api.dart';
 import '../api/gfs_uploader.dart';
 import '../database/database.dart';
 import 'image_service.dart';
+import 'log_service.dart';
 import 'session_service.dart';
 
 enum SyncStatus { idle, syncing, error }
@@ -80,6 +81,7 @@ class SyncService extends ChangeNotifier {
     if (_running) return;
     _running = true;
     _setStatus(SyncStatus.syncing, error: null);
+    LogService.instance.info('Sync', 'sync start');
 
     try {
       await _pushTags();
@@ -91,18 +93,23 @@ class SyncService extends ChangeNotifier {
       _lastSyncedMs = DateTime.now().millisecondsSinceEpoch;
       await prefs.setInt(_kLastSyncedMs, _lastSyncedMs);
       _setStatus(SyncStatus.idle, error: null);
+      LogService.instance.info('Sync', 'sync done');
     } on PremiumRequiredException {
+      LogService.instance.warn('Sync', 'sync failed: premium required');
       _setStatus(SyncStatus.error, error: SyncError.premiumRequired);
     } on NetworkException {
+      LogService.instance.warn('Sync', 'sync failed: network');
       _setStatus(SyncStatus.error, error: SyncError.network);
     } on ApiException catch (e) {
+      LogService.instance.error('Sync', 'sync failed: ${e.code}');
       _setStatus(
         SyncStatus.error,
         error: e.message.isNotEmpty ? SyncError.server : SyncError.unknown,
         message: e.message,
       );
-    } catch (e) {
+    } catch (e, stack) {
       debugPrint('SyncService error: $e');
+      LogService.instance.error('Sync', 'sync failed', e, stack);
       _setStatus(SyncStatus.error, error: SyncError.unknown);
     } finally {
       _running = false;

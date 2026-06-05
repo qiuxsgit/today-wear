@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 import '../services/locale_service.dart';
+import '../services/log_service.dart';
 import 'api_config.dart';
 import 'api_exception.dart';
 
@@ -50,34 +51,45 @@ class ApiClient {
     return h;
   }
 
-  Future<dynamic> get(String path, {Map<String, dynamic>? query}) =>
-      _send(() => _http.get(_uri(path, query), headers: _headers(json: false)));
+  Future<dynamic> get(String path, {Map<String, dynamic>? query}) => _send(
+      'GET', path, () => _http.get(_uri(path, query), headers: _headers(json: false)));
 
-  Future<dynamic> post(String path, {Object? body}) => _send(() => _http.post(
-        _uri(path),
-        headers: _headers(),
-        body: body == null ? null : jsonEncode(body),
-      ));
+  Future<dynamic> post(String path, {Object? body}) =>
+      _send('POST', path, () => _http.post(
+            _uri(path),
+            headers: _headers(),
+            body: body == null ? null : jsonEncode(body),
+          ));
 
-  Future<dynamic> put(String path, {Object? body}) => _send(() => _http.put(
-        _uri(path),
-        headers: _headers(),
-        body: body == null ? null : jsonEncode(body),
-      ));
+  Future<dynamic> put(String path, {Object? body}) =>
+      _send('PUT', path, () => _http.put(
+            _uri(path),
+            headers: _headers(),
+            body: body == null ? null : jsonEncode(body),
+          ));
 
-  Future<dynamic> delete(String path) =>
-      _send(() => _http.delete(_uri(path), headers: _headers(json: false)));
+  Future<dynamic> delete(String path) => _send('DELETE', path,
+      () => _http.delete(_uri(path), headers: _headers(json: false)));
 
   /// 执行请求并解析信封，统一异常处理。
-  Future<dynamic> _send(Future<http.Response> Function() run) async {
+  /// 每次请求记录 method + path + 状态码 + 耗时（不记录 header 与请求/响应体）。
+  Future<dynamic> _send(
+      String method, String path, Future<http.Response> Function() run) async {
+    final watch = Stopwatch()..start();
     http.Response res;
     try {
       res = await run().timeout(ApiConfig.timeout);
     } on TimeoutException {
+      LogService.instance
+          .error('Api', '$method $path -> timeout (${watch.elapsedMilliseconds}ms)');
       throw const NetworkException(code: 'timeout');
     } on SocketException {
+      LogService.instance
+          .error('Api', '$method $path -> network error (${watch.elapsedMilliseconds}ms)');
       throw const NetworkException();
     } on http.ClientException {
+      LogService.instance
+          .error('Api', '$method $path -> network error (${watch.elapsedMilliseconds}ms)');
       throw const NetworkException();
     }
 
@@ -95,6 +107,8 @@ class ApiClient {
     }
 
     if (res.statusCode >= 200 && res.statusCode < 300) {
+      LogService.instance.info('Api',
+          '$method $path -> ${res.statusCode} (${watch.elapsedMilliseconds}ms)');
       return envelope?['data'];
     }
 
@@ -108,6 +122,8 @@ class ApiClient {
     } else if (err is String) {
       message = err;
     }
+    LogService.instance.error('Api',
+        '$method $path -> ${res.statusCode} (${watch.elapsedMilliseconds}ms) code=$code');
 
     switch (res.statusCode) {
       case 401:

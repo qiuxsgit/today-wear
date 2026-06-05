@@ -254,5 +254,14 @@
   "proPaywallLoadFailed": "商品を読み込めませんでした。しばらくしてからもう一度お試しください",
   "proPaymentPending": "支払い確認中です。完了後に自動で有効になります",
   "proSubscriptionNote": "サブスクリプションは自動更新されます。ストアのサブスクリプション設定からいつでも解約できます。買い切りは一回限りのお支払いです。",
-  "proPurchaseCta": "購入する"
+  "proPurchaseCta": "購入する",
+  "logUpload": "ログアップロード",
+  "logUploadEmpty": "ログファイルはまだありません",
+  "logUploadConfirmTitle": "ログをアップロード",
+  "logUploadConfirmMessage": "このログファイルを問題調査のためにアップロードします",
+  "logUploadRemarkHint": "問題の内容を入力（任意）",
+  "logUploadAction": "アップロード",
+  "logUploadSuccess": "ログをアップロードしました",
+  "logUploadFailed": "ログのアップロードに失敗しました",
+  "logUploadLoginRequired": "ログをアップロードするにはログインしてください"
 }

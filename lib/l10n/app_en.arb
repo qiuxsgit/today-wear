@@ -254,5 +254,14 @@
   "proPaywallLoadFailed": "Couldn't load products, please try again later",
   "proPaymentPending": "Payment pending — Pro activates once it completes",
   "proSubscriptionNote": "Subscriptions auto-renew and can be cancelled anytime in your store's subscription settings; Lifetime is a one-time purchase.",
-  "proPurchaseCta": "Continue"
+  "proPurchaseCta": "Continue",
+  "logUpload": "Log Upload",
+  "logUploadEmpty": "No log files yet",
+  "logUploadConfirmTitle": "Upload Log",
+  "logUploadConfirmMessage": "This log file will be uploaded for troubleshooting",
+  "logUploadRemarkHint": "Describe the problem (optional)",
+  "logUploadAction": "Upload",
+  "logUploadSuccess": "Log uploaded",
+  "logUploadFailed": "Log upload failed",
+  "logUploadLoginRequired": "Please sign in before uploading logs"
 }

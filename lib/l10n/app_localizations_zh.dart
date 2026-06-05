@@ -719,6 +719,33 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get proPurchaseCta => '立即开通';
+
+  @override
+  String get logUpload => '日誌上傳';
+
+  @override
+  String get logUploadEmpty => '暫無日誌檔案';
+
+  @override
+  String get logUploadConfirmTitle => '上傳日誌';
+
+  @override
+  String get logUploadConfirmMessage => '將上傳該日誌檔案用於問題排查';
+
+  @override
+  String get logUploadRemarkHint => '描述遇到的問題（可選）';
+
+  @override
+  String get logUploadAction => '上傳';
+
+  @override
+  String get logUploadSuccess => '日誌上傳成功';
+
+  @override
+  String get logUploadFailed => '日誌上傳失敗';
+
+  @override
+  String get logUploadLoginRequired => '請先登入後再上傳日誌';
 }
 
 /// The translations for Chinese, as used in China (`zh_CN`).
@@ -1436,6 +1463,33 @@ class AppLocalizationsZhCn extends AppLocalizationsZh {
 
   @override
   String get proPurchaseCta => '立即开通';
+
+  @override
+  String get logUpload => '日志上传';
+
+  @override
+  String get logUploadEmpty => '暂无日志文件';
+
+  @override
+  String get logUploadConfirmTitle => '上传日志';
+
+  @override
+  String get logUploadConfirmMessage => '将上传该日志文件用于问题排查';
+
+  @override
+  String get logUploadRemarkHint => '描述遇到的问题（可选）';
+
+  @override
+  String get logUploadAction => '上传';
+
+  @override
+  String get logUploadSuccess => '日志上传成功';
+
+  @override
+  String get logUploadFailed => '日志上传失败';
+
+  @override
+  String get logUploadLoginRequired => '请先登录后再上传日志';
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
@@ -2153,4 +2207,31 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get proPurchaseCta => '立即開通';
+
+  @override
+  String get logUpload => '日誌上傳';
+
+  @override
+  String get logUploadEmpty => '暫無日誌檔案';
+
+  @override
+  String get logUploadConfirmTitle => '上傳日誌';
+
+  @override
+  String get logUploadConfirmMessage => '將上傳該日誌檔案用於問題排查';
+
+  @override
+  String get logUploadRemarkHint => '描述遇到的問題（可選）';
+
+  @override
+  String get logUploadAction => '上傳';
+
+  @override
+  String get logUploadSuccess => '日誌上傳成功';
+
+  @override
+  String get logUploadFailed => '日誌上傳失敗';
+
+  @override
+  String get logUploadLoginRequired => '請先登入後再上傳日誌';
 }

@@ -723,4 +723,31 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get proPurchaseCta => '계속하기';
+
+  @override
+  String get logUpload => '로그 업로드';
+
+  @override
+  String get logUploadEmpty => '로그 파일이 없습니다';
+
+  @override
+  String get logUploadConfirmTitle => '로그 업로드';
+
+  @override
+  String get logUploadConfirmMessage => '문제 해결을 위해 이 로그 파일을 업로드합니다';
+
+  @override
+  String get logUploadRemarkHint => '겪은 문제를 설명해 주세요 (선택)';
+
+  @override
+  String get logUploadAction => '업로드';
+
+  @override
+  String get logUploadSuccess => '로그를 업로드했습니다';
+
+  @override
+  String get logUploadFailed => '로그 업로드에 실패했습니다';
+
+  @override
+  String get logUploadLoginRequired => '로그를 업로드하려면 먼저 로그인하세요';
 }

@@ -735,4 +735,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get proPurchaseCta => 'Continue';
+
+  @override
+  String get logUpload => 'Log Upload';
+
+  @override
+  String get logUploadEmpty => 'No log files yet';
+
+  @override
+  String get logUploadConfirmTitle => 'Upload Log';
+
+  @override
+  String get logUploadConfirmMessage =>
+      'This log file will be uploaded for troubleshooting';
+
+  @override
+  String get logUploadRemarkHint => 'Describe the problem (optional)';
+
+  @override
+  String get logUploadAction => 'Upload';
+
+  @override
+  String get logUploadSuccess => 'Log uploaded';
+
+  @override
+  String get logUploadFailed => 'Log upload failed';
+
+  @override
+  String get logUploadLoginRequired => 'Please sign in before uploading logs';
 }

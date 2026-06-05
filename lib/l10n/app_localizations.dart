@@ -1375,6 +1375,60 @@ abstract class AppLocalizations {
   /// In zh_CN, this message translates to:
   /// **'立即开通'**
   String get proPurchaseCta;
+
+  /// No description provided for @logUpload.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'日志上传'**
+  String get logUpload;
+
+  /// No description provided for @logUploadEmpty.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'暂无日志文件'**
+  String get logUploadEmpty;
+
+  /// No description provided for @logUploadConfirmTitle.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'上传日志'**
+  String get logUploadConfirmTitle;
+
+  /// No description provided for @logUploadConfirmMessage.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'将上传该日志文件用于问题排查'**
+  String get logUploadConfirmMessage;
+
+  /// No description provided for @logUploadRemarkHint.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'描述遇到的问题（可选）'**
+  String get logUploadRemarkHint;
+
+  /// No description provided for @logUploadAction.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'上传'**
+  String get logUploadAction;
+
+  /// No description provided for @logUploadSuccess.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'日志上传成功'**
+  String get logUploadSuccess;
+
+  /// No description provided for @logUploadFailed.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'日志上传失败'**
+  String get logUploadFailed;
+
+  /// No description provided for @logUploadLoginRequired.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'请先登录后再上传日志'**
+  String get logUploadLoginRequired;
 }
 
 class _AppLocalizationsDelegate

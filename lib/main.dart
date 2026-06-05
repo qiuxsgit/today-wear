@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
+import 'dart:ui' show PlatformDispatcher;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:window_manager/window_manager.dart';
@@ -13,6 +14,7 @@ import 'screens/profile_page.dart';
 import 'theme/app_theme_tokens.dart';
 import 'widgets/main_navigation.dart';
 import 'services/locale_service.dart';
+import 'services/log_service.dart';
 import 'services/theme_service.dart';
 import 'services/notification_service.dart';
 import 'database/database.dart';
@@ -66,7 +68,11 @@ ThemeData _buildTheme(ThemePresetType preset, Brightness brightness) {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
+  // 最先初始化日志服务，保证能记录后续初始化过程的错误
+  await LogService.instance.init();
+  _installErrorLogging();
+
   // 初始化语言服务
   final localeService = LocaleService();
   await localeService.init();
@@ -118,6 +124,24 @@ void main() async {
     themeService: themeService,
     notificationService: notificationService,
   ));
+}
+
+/// 把未捕获异常接入日志：记录后转交原 handler，不改变现有崩溃行为
+void _installErrorLogging() {
+  final previousOnError = FlutterError.onError;
+  FlutterError.onError = (details) {
+    LogService.instance.error(
+      'Crash',
+      'FlutterError: ${details.exceptionAsString()}',
+      null,
+      details.stack,
+    );
+    previousOnError?.call(details);
+  };
+  PlatformDispatcher.instance.onError = (error, stack) {
+    LogService.instance.error('Crash', 'Uncaught', error, stack);
+    return false; // 维持框架默认处理
+  };
 }
 
 /// App 根组件
