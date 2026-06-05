@@ -8,11 +8,12 @@ import '../services/profile_sync.dart';
 import '../services/purchase_service.dart';
 import '../services/session_service.dart';
 import '../services/sync_service.dart';
-import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_theme_tokens.dart';
+import '../widgets/account_logged_out_card.dart';
 import '../widgets/app_toast.dart';
-import '../widgets/pro_status_card.dart';
+import '../widgets/delete_account_dialog.dart';
+import '../widgets/sync_status_card.dart';
 import 'auth_page.dart';
 import 'device_sessions_page.dart';
 
@@ -86,43 +87,10 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
 
   Future<void> _deleteAccount() async {
     final l10n = AppLocalizations.of(context)!;
-    final controller = TextEditingController();
-    final password = await showDialog<String>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(l10n.accountDeleteDialogTitle),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(l10n.accountDeleteDialogContent),
-              const SizedBox(height: 16),
-              TextField(
-                controller: controller,
-                obscureText: true,
-                autofocus: true,
-                decoration: InputDecoration(hintText: l10n.accountDeletePasswordHint),
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: Text(l10n.cancel),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, controller.text),
-            style: TextButton.styleFrom(foregroundColor: AppColors.error),
-            child: Text(l10n.accountDeleteConfirm),
-          ),
-        ],
-      ),
-    );
+    final password = await DeleteAccountDialog.show(context);
     if (password == null || !mounted) return;
     if (password.isEmpty) {
-      AppToast.warning(AppLocalizations.of(context)!.accountDeletePasswordRequired);
+      AppToast.warning(l10n.accountDeletePasswordRequired);
       return;
     }
     try {
@@ -137,34 +105,6 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
     } on ApiException catch (e) {
       if (!mounted) return;
       AppToast.warning(localizedApiError(AppLocalizations.of(context)!, e));
-    }
-  }
-
-  String _syncErrorText(AppLocalizations l10n) {
-    switch (_sync.lastError) {
-      case SyncError.premiumRequired:
-        return l10n.syncErrPremiumRequired;
-      case SyncError.network:
-        return l10n.errNetwork;
-      case SyncError.server:
-        return _sync.lastErrorMessage ?? l10n.syncErrGeneric;
-      case SyncError.unknown:
-      case null:
-        return l10n.syncErrGeneric;
-    }
-  }
-
-  String _syncStatusText(AppLocalizations l10n) {
-    switch (_sync.status) {
-      case SyncStatus.syncing:
-        return l10n.syncStatusSyncing;
-      case SyncStatus.error:
-        return _syncErrorText(l10n);
-      case SyncStatus.idle:
-        if (_sync.lastSyncedMs == 0) return l10n.syncStatusNever;
-        final t = DateTime.fromMillisecondsSinceEpoch(_sync.lastSyncedMs);
-        return l10n.syncStatusLast('${t.month}/${t.day} '
-            '${t.hour.toString().padLeft(2, '0')}:${t.minute.toString().padLeft(2, '0')}');
     }
   }
 
@@ -190,58 +130,17 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
           bottom: 72 + MediaQuery.of(context).padding.bottom,
         ),
         children:
-            _session.isLoggedIn ? _loggedInChildren(tt, l10n) : _loggedOutChildren(tt, l10n),
+            _session.isLoggedIn ? _loggedInChildren(tt, l10n) : _loggedOutChildren(),
       ),
     );
   }
 
-  List<Widget> _loggedOutChildren(AppThemeTokens tt, AppLocalizations l10n) {
+  List<Widget> _loggedOutChildren() {
     return [
-      _card(tt, [
-        Icon(Icons.cloud_outlined, size: 44, color: tt.muted),
-        const SizedBox(height: 12),
-        Text(l10n.accountCloudOff,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800, color: tt.ink)),
-        const SizedBox(height: 8),
-        Text(
-          l10n.accountCloudIntro,
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 13, color: tt.muted, height: 1.5),
-        ),
-        const SizedBox(height: 20),
-        SizedBox(
-          width: double.infinity,
-          height: 48,
-          child: ElevatedButton(
-            onPressed: () => _openAuth(),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: tt.ink,
-              foregroundColor: tt.page,
-              elevation: 0,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-            ),
-            child: Text(l10n.authLoginTitle, style: const TextStyle(fontWeight: FontWeight.w800)),
-          ),
-        ),
-        const SizedBox(height: 10),
-        SizedBox(
-          width: double.infinity,
-          height: 48,
-          child: OutlinedButton(
-            onPressed: () => _openAuth(register: true),
-            style: OutlinedButton.styleFrom(
-              foregroundColor: tt.ink,
-              side: BorderSide(color: tt.line),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-            ),
-            child: Text(l10n.accountRegisterNewBtn,
-                style: const TextStyle(fontWeight: FontWeight.w700)),
-          ),
-        ),
-      ]),
-      const SizedBox(height: AppSpacing.lg),
-      const ProStatusCard(),
+      AccountLoggedOutCard(
+        onLogin: () => _openAuth(),
+        onRegister: () => _openAuth(register: true),
+      ),
     ];
   }
 
@@ -277,85 +176,8 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
         _navRow(tt, l10n.accountDelete, _deleteAccount, danger: true),
       ], crossAxisAlignment: CrossAxisAlignment.start),
       const SizedBox(height: AppSpacing.lg),
-      // Pro 卡
-      const ProStatusCard(),
-      const SizedBox(height: AppSpacing.lg),
-      // 同步卡
-      _card(tt, [
-        Row(
-          children: [
-            Expanded(
-              child: Text(l10n.accountCloudSyncLabel,
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: tt.ink)),
-            ),
-            Switch(
-              value: _session.syncEnabled,
-              activeThumbColor: tt.ink,
-              onChanged: (v) => _session.setSyncEnabled(v),
-            ),
-          ],
-        ),
-        Divider(height: 1, color: tt.line),
-        const SizedBox(height: 12),
-        Row(
-          children: [
-            if (_sync.isSyncing)
-              SizedBox(
-                width: 14,
-                height: 14,
-                child: CircularProgressIndicator(strokeWidth: 2, color: tt.muted),
-              )
-            else
-              Icon(
-                _sync.status == SyncStatus.error ? Icons.error_outline : Icons.check_circle_outline,
-                size: 16,
-                color: _sync.status == SyncStatus.error ? Colors.redAccent : tt.muted,
-              ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(_syncStatusText(l10n), style: TextStyle(fontSize: 13, color: tt.muted)),
-            ),
-          ],
-        ),
-        // 同步被会员门控挡下时，就地给出开通入口（支付通道关闭时隐藏）
-        if (_sync.status == SyncStatus.error &&
-            _sync.lastError == SyncError.premiumRequired &&
-            PurchaseService.instance.isConfigured) ...[
-          const SizedBox(height: 10),
-          SizedBox(
-            width: double.infinity,
-            height: 44,
-            child: OutlinedButton(
-              onPressed: () => presentProPaywallFlow(context),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: tt.ink,
-                side: BorderSide(color: tt.line),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-              ),
-              child: Text(l10n.proSubscribeBtn,
-                  style: const TextStyle(fontWeight: FontWeight.w700)),
-            ),
-          ),
-        ],
-        const SizedBox(height: 14),
-        SizedBox(
-          width: double.infinity,
-          height: 46,
-          child: ElevatedButton(
-            onPressed: (!_session.syncEnabled || _sync.isSyncing)
-                ? null
-                : () => _sync.syncNow(),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: tt.ink,
-              foregroundColor: tt.page,
-              elevation: 0,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-            ),
-            child: Text(_sync.isSyncing ? l10n.syncStatusSyncing : l10n.syncNowBtn,
-                style: const TextStyle(fontWeight: FontWeight.w800)),
-          ),
-        ),
-      ], crossAxisAlignment: CrossAxisAlignment.start),
+      // Pro 卡 + 同步卡
+      const SyncSection(),
     ];
   }
 
