@@ -8,6 +8,21 @@ import '../theme/app_spacing.dart';
 import '../theme/app_theme_tokens.dart';
 import 'pro_status_card.dart';
 
+/// SyncError → 用户可见文案（供同步状态卡与首页下拉刷新等处复用）
+String syncErrorText(SyncError? error, String? serverMessage, AppLocalizations l10n) {
+  switch (error) {
+    case SyncError.premiumRequired:
+      return l10n.syncErrPremiumRequired;
+    case SyncError.network:
+      return l10n.errNetwork;
+    case SyncError.server:
+      return serverMessage ?? l10n.syncErrGeneric;
+    case SyncError.unknown:
+    case null:
+      return l10n.syncErrGeneric;
+  }
+}
+
 /// 云同步状态卡片（已登录时显示）
 ///
 /// 展示同步开关、同步状态/错误文案、"立即同步"按钮。
@@ -15,26 +30,12 @@ import 'pro_status_card.dart';
 class SyncStatusCard extends StatelessWidget {
   const SyncStatusCard({super.key});
 
-  String _syncErrorText(SyncService sync, AppLocalizations l10n) {
-    switch (sync.lastError) {
-      case SyncError.premiumRequired:
-        return l10n.syncErrPremiumRequired;
-      case SyncError.network:
-        return l10n.errNetwork;
-      case SyncError.server:
-        return sync.lastErrorMessage ?? l10n.syncErrGeneric;
-      case SyncError.unknown:
-      case null:
-        return l10n.syncErrGeneric;
-    }
-  }
-
   String _syncStatusText(SyncService sync, AppLocalizations l10n) {
     switch (sync.status) {
       case SyncStatus.syncing:
         return l10n.syncStatusSyncing;
       case SyncStatus.error:
-        return _syncErrorText(sync, l10n);
+        return syncErrorText(sync.lastError, sync.lastErrorMessage, l10n);
       case SyncStatus.idle:
         if (sync.lastSyncedMs == 0) return l10n.syncStatusNever;
         final t = DateTime.fromMillisecondsSinceEpoch(sync.lastSyncedMs);
