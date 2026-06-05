@@ -85,10 +85,12 @@ dependencies:
 
   # 日历视图
   table_calendar: ^3.0.9
-  
+
   # 图表绘制
   fl_chart: ^0.66.0
   purchases_flutter: ^10.2.1
+
+  # 设备定位（首页天气）
   geolocator: ^14.0.2
 dev_dependencies:
   flutter_test:
