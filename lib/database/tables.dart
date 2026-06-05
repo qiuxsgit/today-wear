@@ -15,6 +15,9 @@ class Outfits extends Table {
 
   /// 是否有未推送到服务端的本地改动。1 = 需要推送
   IntColumn get dirty => integer().withDefault(const Constant(1))();
+
+  /// 服务端乐观锁版本号。0 = 未知，首次读校验必拉新回填
+  IntColumn get ver => integer().withDefault(const Constant(0))();
 }
 
 /// Tags 表
@@ -30,6 +33,9 @@ class Tags extends Table {
 
   /// 是否有未推送到服务端的本地改动。1 = 需要推送
   IntColumn get dirty => integer().withDefault(const Constant(1))();
+
+  /// 服务端乐观锁版本号。0 = 未知，首次读校验必拉新回填
+  IntColumn get ver => integer().withDefault(const Constant(0))();
 }
 
 /// OutfitTags 关联表（多对多）

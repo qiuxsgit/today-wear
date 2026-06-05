@@ -87,6 +87,7 @@ class TagDao extends DatabaseAccessor<AppDatabase> with _$TagDaoMixin {
       color: TagColors.defaultColorHex,
       serverId: null,
       dirty: 1,
+      ver: 0,
     );
   }
 

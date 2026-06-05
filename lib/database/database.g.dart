@@ -96,6 +96,16 @@ class $OutfitsTable extends Outfits with TableInfo<$OutfitsTable, OutfitData> {
     requiredDuringInsert: false,
     defaultValue: const Constant(1),
   );
+  static const VerificationMeta _verMeta = const VerificationMeta('ver');
+  @override
+  late final GeneratedColumn<int> ver = GeneratedColumn<int>(
+    'ver',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -106,6 +116,7 @@ class $OutfitsTable extends Outfits with TableInfo<$OutfitsTable, OutfitData> {
     isDeleted,
     serverId,
     dirty,
+    ver,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -175,6 +186,12 @@ class $OutfitsTable extends Outfits with TableInfo<$OutfitsTable, OutfitData> {
         dirty.isAcceptableOrUnknown(data['dirty']!, _dirtyMeta),
       );
     }
+    if (data.containsKey('ver')) {
+      context.handle(
+        _verMeta,
+        ver.isAcceptableOrUnknown(data['ver']!, _verMeta),
+      );
+    }
     return context;
   }
 
@@ -216,6 +233,10 @@ class $OutfitsTable extends Outfits with TableInfo<$OutfitsTable, OutfitData> {
         DriftSqlType.int,
         data['${effectivePrefix}dirty'],
       )!,
+      ver: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}ver'],
+      )!,
     );
   }
 
@@ -238,6 +259,9 @@ class OutfitData extends DataClass implements Insertable<OutfitData> {
 
   /// 是否有未推送到服务端的本地改动。1 = 需要推送
   final int dirty;
+
+  /// 服务端乐观锁版本号。0 = 未知，首次读校验必拉新回填
+  final int ver;
   const OutfitData({
     required this.id,
     required this.date,
@@ -247,6 +271,7 @@ class OutfitData extends DataClass implements Insertable<OutfitData> {
     required this.isDeleted,
     this.serverId,
     required this.dirty,
+    required this.ver,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -261,6 +286,7 @@ class OutfitData extends DataClass implements Insertable<OutfitData> {
       map['server_id'] = Variable<int>(serverId);
     }
     map['dirty'] = Variable<int>(dirty);
+    map['ver'] = Variable<int>(ver);
     return map;
   }
 
@@ -276,6 +302,7 @@ class OutfitData extends DataClass implements Insertable<OutfitData> {
           ? const Value.absent()
           : Value(serverId),
       dirty: Value(dirty),
+      ver: Value(ver),
     );
   }
 
@@ -293,6 +320,7 @@ class OutfitData extends DataClass implements Insertable<OutfitData> {
       isDeleted: serializer.fromJson<int>(json['isDeleted']),
       serverId: serializer.fromJson<int?>(json['serverId']),
       dirty: serializer.fromJson<int>(json['dirty']),
+      ver: serializer.fromJson<int>(json['ver']),
     );
   }
   @override
@@ -307,6 +335,7 @@ class OutfitData extends DataClass implements Insertable<OutfitData> {
       'isDeleted': serializer.toJson<int>(isDeleted),
       'serverId': serializer.toJson<int?>(serverId),
       'dirty': serializer.toJson<int>(dirty),
+      'ver': serializer.toJson<int>(ver),
     };
   }
 
@@ -319,6 +348,7 @@ class OutfitData extends DataClass implements Insertable<OutfitData> {
     int? isDeleted,
     Value<int?> serverId = const Value.absent(),
     int? dirty,
+    int? ver,
   }) => OutfitData(
     id: id ?? this.id,
     date: date ?? this.date,
@@ -328,6 +358,7 @@ class OutfitData extends DataClass implements Insertable<OutfitData> {
     isDeleted: isDeleted ?? this.isDeleted,
     serverId: serverId.present ? serverId.value : this.serverId,
     dirty: dirty ?? this.dirty,
+    ver: ver ?? this.ver,
   );
   OutfitData copyWithCompanion(OutfitsCompanion data) {
     return OutfitData(
@@ -341,6 +372,7 @@ class OutfitData extends DataClass implements Insertable<OutfitData> {
       isDeleted: data.isDeleted.present ? data.isDeleted.value : this.isDeleted,
       serverId: data.serverId.present ? data.serverId.value : this.serverId,
       dirty: data.dirty.present ? data.dirty.value : this.dirty,
+      ver: data.ver.present ? data.ver.value : this.ver,
     );
   }
 
@@ -354,7 +386,8 @@ class OutfitData extends DataClass implements Insertable<OutfitData> {
           ..write('updatedAt: $updatedAt, ')
           ..write('isDeleted: $isDeleted, ')
           ..write('serverId: $serverId, ')
-          ..write('dirty: $dirty')
+          ..write('dirty: $dirty, ')
+          ..write('ver: $ver')
           ..write(')'))
         .toString();
   }
@@ -369,6 +402,7 @@ class OutfitData extends DataClass implements Insertable<OutfitData> {
     isDeleted,
     serverId,
     dirty,
+    ver,
   );
   @override
   bool operator ==(Object other) =>
@@ -381,7 +415,8 @@ class OutfitData extends DataClass implements Insertable<OutfitData> {
           other.updatedAt == this.updatedAt &&
           other.isDeleted == this.isDeleted &&
           other.serverId == this.serverId &&
-          other.dirty == this.dirty);
+          other.dirty == this.dirty &&
+          other.ver == this.ver);
 }
 
 class OutfitsCompanion extends UpdateCompanion<OutfitData> {
@@ -393,6 +428,7 @@ class OutfitsCompanion extends UpdateCompanion<OutfitData> {
   final Value<int> isDeleted;
   final Value<int?> serverId;
   final Value<int> dirty;
+  final Value<int> ver;
   const OutfitsCompanion({
     this.id = const Value.absent(),
     this.date = const Value.absent(),
@@ -402,6 +438,7 @@ class OutfitsCompanion extends UpdateCompanion<OutfitData> {
     this.isDeleted = const Value.absent(),
     this.serverId = const Value.absent(),
     this.dirty = const Value.absent(),
+    this.ver = const Value.absent(),
   });
   OutfitsCompanion.insert({
     this.id = const Value.absent(),
@@ -412,6 +449,7 @@ class OutfitsCompanion extends UpdateCompanion<OutfitData> {
     this.isDeleted = const Value.absent(),
     this.serverId = const Value.absent(),
     this.dirty = const Value.absent(),
+    this.ver = const Value.absent(),
   }) : date = Value(date),
        description = Value(description),
        createdAt = Value(createdAt),
@@ -425,6 +463,7 @@ class OutfitsCompanion extends UpdateCompanion<OutfitData> {
     Expression<int>? isDeleted,
     Expression<int>? serverId,
     Expression<int>? dirty,
+    Expression<int>? ver,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -435,6 +474,7 @@ class OutfitsCompanion extends UpdateCompanion<OutfitData> {
       if (isDeleted != null) 'is_deleted': isDeleted,
       if (serverId != null) 'server_id': serverId,
       if (dirty != null) 'dirty': dirty,
+      if (ver != null) 'ver': ver,
     });
   }
 
@@ -447,6 +487,7 @@ class OutfitsCompanion extends UpdateCompanion<OutfitData> {
     Value<int>? isDeleted,
     Value<int?>? serverId,
     Value<int>? dirty,
+    Value<int>? ver,
   }) {
     return OutfitsCompanion(
       id: id ?? this.id,
@@ -457,6 +498,7 @@ class OutfitsCompanion extends UpdateCompanion<OutfitData> {
       isDeleted: isDeleted ?? this.isDeleted,
       serverId: serverId ?? this.serverId,
       dirty: dirty ?? this.dirty,
+      ver: ver ?? this.ver,
     );
   }
 
@@ -487,6 +529,9 @@ class OutfitsCompanion extends UpdateCompanion<OutfitData> {
     if (dirty.present) {
       map['dirty'] = Variable<int>(dirty.value);
     }
+    if (ver.present) {
+      map['ver'] = Variable<int>(ver.value);
+    }
     return map;
   }
 
@@ -500,7 +545,8 @@ class OutfitsCompanion extends UpdateCompanion<OutfitData> {
           ..write('updatedAt: $updatedAt, ')
           ..write('isDeleted: $isDeleted, ')
           ..write('serverId: $serverId, ')
-          ..write('dirty: $dirty')
+          ..write('dirty: $dirty, ')
+          ..write('ver: $ver')
           ..write(')'))
         .toString();
   }
@@ -565,8 +611,18 @@ class $TagsTable extends Tags with TableInfo<$TagsTable, TagData> {
     requiredDuringInsert: false,
     defaultValue: const Constant(1),
   );
+  static const VerificationMeta _verMeta = const VerificationMeta('ver');
   @override
-  List<GeneratedColumn> get $columns => [id, name, color, serverId, dirty];
+  late final GeneratedColumn<int> ver = GeneratedColumn<int>(
+    'ver',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, name, color, serverId, dirty, ver];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -608,6 +664,12 @@ class $TagsTable extends Tags with TableInfo<$TagsTable, TagData> {
         dirty.isAcceptableOrUnknown(data['dirty']!, _dirtyMeta),
       );
     }
+    if (data.containsKey('ver')) {
+      context.handle(
+        _verMeta,
+        ver.isAcceptableOrUnknown(data['ver']!, _verMeta),
+      );
+    }
     return context;
   }
 
@@ -637,6 +699,10 @@ class $TagsTable extends Tags with TableInfo<$TagsTable, TagData> {
         DriftSqlType.int,
         data['${effectivePrefix}dirty'],
       )!,
+      ver: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}ver'],
+      )!,
     );
   }
 
@@ -658,12 +724,16 @@ class TagData extends DataClass implements Insertable<TagData> {
 
   /// 是否有未推送到服务端的本地改动。1 = 需要推送
   final int dirty;
+
+  /// 服务端乐观锁版本号。0 = 未知，首次读校验必拉新回填
+  final int ver;
   const TagData({
     required this.id,
     required this.name,
     this.color,
     this.serverId,
     required this.dirty,
+    required this.ver,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -677,6 +747,7 @@ class TagData extends DataClass implements Insertable<TagData> {
       map['server_id'] = Variable<int>(serverId);
     }
     map['dirty'] = Variable<int>(dirty);
+    map['ver'] = Variable<int>(ver);
     return map;
   }
 
@@ -691,6 +762,7 @@ class TagData extends DataClass implements Insertable<TagData> {
           ? const Value.absent()
           : Value(serverId),
       dirty: Value(dirty),
+      ver: Value(ver),
     );
   }
 
@@ -705,6 +777,7 @@ class TagData extends DataClass implements Insertable<TagData> {
       color: serializer.fromJson<String?>(json['color']),
       serverId: serializer.fromJson<int?>(json['serverId']),
       dirty: serializer.fromJson<int>(json['dirty']),
+      ver: serializer.fromJson<int>(json['ver']),
     );
   }
   @override
@@ -716,6 +789,7 @@ class TagData extends DataClass implements Insertable<TagData> {
       'color': serializer.toJson<String?>(color),
       'serverId': serializer.toJson<int?>(serverId),
       'dirty': serializer.toJson<int>(dirty),
+      'ver': serializer.toJson<int>(ver),
     };
   }
 
@@ -725,12 +799,14 @@ class TagData extends DataClass implements Insertable<TagData> {
     Value<String?> color = const Value.absent(),
     Value<int?> serverId = const Value.absent(),
     int? dirty,
+    int? ver,
   }) => TagData(
     id: id ?? this.id,
     name: name ?? this.name,
     color: color.present ? color.value : this.color,
     serverId: serverId.present ? serverId.value : this.serverId,
     dirty: dirty ?? this.dirty,
+    ver: ver ?? this.ver,
   );
   TagData copyWithCompanion(TagsCompanion data) {
     return TagData(
@@ -739,6 +815,7 @@ class TagData extends DataClass implements Insertable<TagData> {
       color: data.color.present ? data.color.value : this.color,
       serverId: data.serverId.present ? data.serverId.value : this.serverId,
       dirty: data.dirty.present ? data.dirty.value : this.dirty,
+      ver: data.ver.present ? data.ver.value : this.ver,
     );
   }
 
@@ -749,13 +826,14 @@ class TagData extends DataClass implements Insertable<TagData> {
           ..write('name: $name, ')
           ..write('color: $color, ')
           ..write('serverId: $serverId, ')
-          ..write('dirty: $dirty')
+          ..write('dirty: $dirty, ')
+          ..write('ver: $ver')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, name, color, serverId, dirty);
+  int get hashCode => Object.hash(id, name, color, serverId, dirty, ver);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -764,7 +842,8 @@ class TagData extends DataClass implements Insertable<TagData> {
           other.name == this.name &&
           other.color == this.color &&
           other.serverId == this.serverId &&
-          other.dirty == this.dirty);
+          other.dirty == this.dirty &&
+          other.ver == this.ver);
 }
 
 class TagsCompanion extends UpdateCompanion<TagData> {
@@ -773,12 +852,14 @@ class TagsCompanion extends UpdateCompanion<TagData> {
   final Value<String?> color;
   final Value<int?> serverId;
   final Value<int> dirty;
+  final Value<int> ver;
   const TagsCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.color = const Value.absent(),
     this.serverId = const Value.absent(),
     this.dirty = const Value.absent(),
+    this.ver = const Value.absent(),
   });
   TagsCompanion.insert({
     this.id = const Value.absent(),
@@ -786,6 +867,7 @@ class TagsCompanion extends UpdateCompanion<TagData> {
     this.color = const Value.absent(),
     this.serverId = const Value.absent(),
     this.dirty = const Value.absent(),
+    this.ver = const Value.absent(),
   }) : name = Value(name);
   static Insertable<TagData> custom({
     Expression<int>? id,
@@ -793,6 +875,7 @@ class TagsCompanion extends UpdateCompanion<TagData> {
     Expression<String>? color,
     Expression<int>? serverId,
     Expression<int>? dirty,
+    Expression<int>? ver,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -800,6 +883,7 @@ class TagsCompanion extends UpdateCompanion<TagData> {
       if (color != null) 'color': color,
       if (serverId != null) 'server_id': serverId,
       if (dirty != null) 'dirty': dirty,
+      if (ver != null) 'ver': ver,
     });
   }
 
@@ -809,6 +893,7 @@ class TagsCompanion extends UpdateCompanion<TagData> {
     Value<String?>? color,
     Value<int?>? serverId,
     Value<int>? dirty,
+    Value<int>? ver,
   }) {
     return TagsCompanion(
       id: id ?? this.id,
@@ -816,6 +901,7 @@ class TagsCompanion extends UpdateCompanion<TagData> {
       color: color ?? this.color,
       serverId: serverId ?? this.serverId,
       dirty: dirty ?? this.dirty,
+      ver: ver ?? this.ver,
     );
   }
 
@@ -837,6 +923,9 @@ class TagsCompanion extends UpdateCompanion<TagData> {
     if (dirty.present) {
       map['dirty'] = Variable<int>(dirty.value);
     }
+    if (ver.present) {
+      map['ver'] = Variable<int>(ver.value);
+    }
     return map;
   }
 
@@ -847,7 +936,8 @@ class TagsCompanion extends UpdateCompanion<TagData> {
           ..write('name: $name, ')
           ..write('color: $color, ')
           ..write('serverId: $serverId, ')
-          ..write('dirty: $dirty')
+          ..write('dirty: $dirty, ')
+          ..write('ver: $ver')
           ..write(')'))
         .toString();
   }
@@ -1469,6 +1559,7 @@ typedef $$OutfitsTableCreateCompanionBuilder =
       Value<int> isDeleted,
       Value<int?> serverId,
       Value<int> dirty,
+      Value<int> ver,
     });
 typedef $$OutfitsTableUpdateCompanionBuilder =
     OutfitsCompanion Function({
@@ -1480,6 +1571,7 @@ typedef $$OutfitsTableUpdateCompanionBuilder =
       Value<int> isDeleted,
       Value<int?> serverId,
       Value<int> dirty,
+      Value<int> ver,
     });
 
 class $$OutfitsTableFilterComposer
@@ -1528,6 +1620,11 @@ class $$OutfitsTableFilterComposer
 
   ColumnFilters<int> get dirty => $composableBuilder(
     column: $table.dirty,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get ver => $composableBuilder(
+    column: $table.ver,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -1580,6 +1677,11 @@ class $$OutfitsTableOrderingComposer
     column: $table.dirty,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<int> get ver => $composableBuilder(
+    column: $table.ver,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$OutfitsTableAnnotationComposer
@@ -1616,6 +1718,9 @@ class $$OutfitsTableAnnotationComposer
 
   GeneratedColumn<int> get dirty =>
       $composableBuilder(column: $table.dirty, builder: (column) => column);
+
+  GeneratedColumn<int> get ver =>
+      $composableBuilder(column: $table.ver, builder: (column) => column);
 }
 
 class $$OutfitsTableTableManager
@@ -1657,6 +1762,7 @@ class $$OutfitsTableTableManager
                 Value<int> isDeleted = const Value.absent(),
                 Value<int?> serverId = const Value.absent(),
                 Value<int> dirty = const Value.absent(),
+                Value<int> ver = const Value.absent(),
               }) => OutfitsCompanion(
                 id: id,
                 date: date,
@@ -1666,6 +1772,7 @@ class $$OutfitsTableTableManager
                 isDeleted: isDeleted,
                 serverId: serverId,
                 dirty: dirty,
+                ver: ver,
               ),
           createCompanionCallback:
               ({
@@ -1677,6 +1784,7 @@ class $$OutfitsTableTableManager
                 Value<int> isDeleted = const Value.absent(),
                 Value<int?> serverId = const Value.absent(),
                 Value<int> dirty = const Value.absent(),
+                Value<int> ver = const Value.absent(),
               }) => OutfitsCompanion.insert(
                 id: id,
                 date: date,
@@ -1686,6 +1794,7 @@ class $$OutfitsTableTableManager
                 isDeleted: isDeleted,
                 serverId: serverId,
                 dirty: dirty,
+                ver: ver,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
@@ -1716,6 +1825,7 @@ typedef $$TagsTableCreateCompanionBuilder =
       Value<String?> color,
       Value<int?> serverId,
       Value<int> dirty,
+      Value<int> ver,
     });
 typedef $$TagsTableUpdateCompanionBuilder =
     TagsCompanion Function({
@@ -1724,6 +1834,7 @@ typedef $$TagsTableUpdateCompanionBuilder =
       Value<String?> color,
       Value<int?> serverId,
       Value<int> dirty,
+      Value<int> ver,
     });
 
 class $$TagsTableFilterComposer extends Composer<_$AppDatabase, $TagsTable> {
@@ -1756,6 +1867,11 @@ class $$TagsTableFilterComposer extends Composer<_$AppDatabase, $TagsTable> {
 
   ColumnFilters<int> get dirty => $composableBuilder(
     column: $table.dirty,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get ver => $composableBuilder(
+    column: $table.ver,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -1792,6 +1908,11 @@ class $$TagsTableOrderingComposer extends Composer<_$AppDatabase, $TagsTable> {
     column: $table.dirty,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<int> get ver => $composableBuilder(
+    column: $table.ver,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$TagsTableAnnotationComposer
@@ -1817,6 +1938,9 @@ class $$TagsTableAnnotationComposer
 
   GeneratedColumn<int> get dirty =>
       $composableBuilder(column: $table.dirty, builder: (column) => column);
+
+  GeneratedColumn<int> get ver =>
+      $composableBuilder(column: $table.ver, builder: (column) => column);
 }
 
 class $$TagsTableTableManager
@@ -1852,12 +1976,14 @@ class $$TagsTableTableManager
                 Value<String?> color = const Value.absent(),
                 Value<int?> serverId = const Value.absent(),
                 Value<int> dirty = const Value.absent(),
+                Value<int> ver = const Value.absent(),
               }) => TagsCompanion(
                 id: id,
                 name: name,
                 color: color,
                 serverId: serverId,
                 dirty: dirty,
+                ver: ver,
               ),
           createCompanionCallback:
               ({
@@ -1866,12 +1992,14 @@ class $$TagsTableTableManager
                 Value<String?> color = const Value.absent(),
                 Value<int?> serverId = const Value.absent(),
                 Value<int> dirty = const Value.absent(),
+                Value<int> ver = const Value.absent(),
               }) => TagsCompanion.insert(
                 id: id,
                 name: name,
                 color: color,
                 serverId: serverId,
                 dirty: dirty,
+                ver: ver,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))

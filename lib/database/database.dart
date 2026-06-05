@@ -29,7 +29,7 @@ class AppDatabase extends _$AppDatabase {
   }
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration {
@@ -64,6 +64,11 @@ class AppDatabase extends _$AppDatabase {
           // SQLite 不能直接改列约束，由 drift 重建表并迁移数据。
           // ignore: experimental_member_use
           await m.alterTable(TableMigration(outfitImages));
+        }
+        if (from < 5) {
+          // 记录级乐观锁版本号。存量行 ver=0 < 服务端任何 ver → 首次读校验自动拉新回填
+          await customStatement('ALTER TABLE outfits ADD COLUMN ver INTEGER NOT NULL DEFAULT 0');
+          await customStatement('ALTER TABLE tags ADD COLUMN ver INTEGER NOT NULL DEFAULT 0');
         }
       },
     );
