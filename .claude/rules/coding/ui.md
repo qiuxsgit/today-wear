@@ -62,3 +62,17 @@ color: tt.line      // 分割线 / 边框
 `AppThemeTokens` 是经 `ThemeData.extensions` 注入的 `ThemeExtension`，
 共 5 预设 × 2 模式 = 10 套 token（如 `AppThemeTokens.softWardrobeLight`）；
 `ThemeService`（单例）将当前预设与模式持久化到 SharedPreferences。
+
+## Toast 统一封装
+
+全局提示一律走 `AppToast`（`widgets/app_toast.dart`），显示位置为屏幕中央
+（`ToastGravity.CENTER`），Android / iOS 表现一致。
+
+✅ 正确：
+```dart
+AppToast.success(l10n.saveSuccess);
+```
+
+❌ 禁止：
+- 直接调用 `Fluttertoast.showToast` 或 `ScaffoldMessenger.showSnackBar`
+- 改用 `ToastGravity.TOP`（会遮挡标题栏）
