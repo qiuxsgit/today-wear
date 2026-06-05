@@ -159,6 +159,15 @@ class OutfitDao extends DatabaseAccessor<AppDatabase> with _$OutfitDaoMixin {
     return result > 0;
   }
 
+  /// 账号删除后调用：服务端数据已清空，serverId 全部失效。
+  /// 置回"本地未同步"状态，换新账号登录时整体重新推送。
+  Future<void> resetSyncMetadata() async {
+    await update(outfits).write(const OutfitsCompanion(
+      serverId: Value(null),
+      dirty: Value(1),
+    ));
+  }
+
   /// 获取统计信息（某年某月的记录数）
   Future<int> getOutfitCountByMonth(int year, int month) async {
     final startDate = DateTime(year, month, 1);

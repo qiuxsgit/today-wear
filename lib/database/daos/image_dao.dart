@@ -86,6 +86,13 @@ class ImageDao extends DatabaseAccessor<AppDatabase> with _$ImageDaoMixin {
     ));
   }
 
+  /// 账号删除后调用：清空服务端图片 id 映射（图片文件本地保留）。
+  Future<void> resetServerImageIds() async {
+    await update(outfitImages).write(const OutfitImagesCompanion(
+      serverImageId: Value(null),
+    ));
+  }
+
   /// 按 GFS 服务端图片 id 查找图片记录（懒加载下载用）
   Future<OutfitImageData?> getImageByServerId(int serverImageId) async {
     return await (select(outfitImages)

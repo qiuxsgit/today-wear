@@ -131,6 +131,15 @@ class TagDao extends DatabaseAccessor<AppDatabase> with _$TagDaoMixin {
     }
   }
 
+  /// 账号删除后调用：服务端数据已清空，serverId 全部失效。
+  /// 置回"本地未同步"状态，换新账号登录时整体重新推送。
+  Future<void> resetSyncMetadata() async {
+    await update(tags).write(const TagsCompanion(
+      serverId: Value(null),
+      dirty: Value(1),
+    ));
+  }
+
   /// 插入 tag
   Future<int> insertTag(TagsCompanion tag) async {
     return await into(tags).insert(tag);
