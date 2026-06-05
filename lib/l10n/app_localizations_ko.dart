@@ -59,7 +59,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get version => '버전';
 
   @override
-  String get appVersion => '1.0.0';
+  String get appVersion => '0.0.1';
 
   @override
   String get privacyPolicy => '개인정보 보호정책';
@@ -772,9 +772,6 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get accountDeleteSuccess => '계정이 삭제되었습니다';
-
-  @override
-  String get checkUpdate => '업데이트 확인';
 
   @override
   String get alreadyLatestVersion => '이미 최신 버전입니다';

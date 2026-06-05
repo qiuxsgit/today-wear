@@ -203,7 +203,7 @@ abstract class AppLocalizations {
   /// No description provided for @appVersion.
   ///
   /// In zh_CN, this message translates to:
-  /// **'1.0.0'**
+  /// **'0.0.1'**
   String get appVersion;
 
   /// No description provided for @privacyPolicy.
@@ -1471,12 +1471,6 @@ abstract class AppLocalizations {
   /// In zh_CN, this message translates to:
   /// **'账号已删除'**
   String get accountDeleteSuccess;
-
-  /// No description provided for @checkUpdate.
-  ///
-  /// In zh_CN, this message translates to:
-  /// **'检查更新'**
-  String get checkUpdate;
 
   /// No description provided for @alreadyLatestVersion.
   ///

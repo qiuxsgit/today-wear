@@ -59,7 +59,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get version => '版本';
 
   @override
-  String get appVersion => '1.0.0';
+  String get appVersion => '0.0.1';
 
   @override
   String get privacyPolicy => '隐私政策';
@@ -770,9 +770,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get accountDeleteSuccess => '账号已删除';
 
   @override
-  String get checkUpdate => '检查更新';
-
-  @override
   String get alreadyLatestVersion => '已是最新版本';
 
   @override
@@ -852,7 +849,7 @@ class AppLocalizationsZhCn extends AppLocalizationsZh {
   String get version => '版本';
 
   @override
-  String get appVersion => '1.0.0';
+  String get appVersion => '0.0.1';
 
   @override
   String get privacyPolicy => '隐私政策';
@@ -1563,9 +1560,6 @@ class AppLocalizationsZhCn extends AppLocalizationsZh {
   String get accountDeleteSuccess => '账号已删除';
 
   @override
-  String get checkUpdate => '检查更新';
-
-  @override
   String get alreadyLatestVersion => '已是最新版本';
 
   @override
@@ -1645,7 +1639,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get version => '版本';
 
   @override
-  String get appVersion => '1.0.0';
+  String get appVersion => '0.0.1';
 
   @override
   String get privacyPolicy => '隱私政策';
@@ -2354,9 +2348,6 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get accountDeleteSuccess => '帳號已刪除';
-
-  @override
-  String get checkUpdate => '檢查更新';
 
   @override
   String get alreadyLatestVersion => '已是最新版本';

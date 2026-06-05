@@ -398,9 +398,13 @@ class _ProfilePageState extends State<ProfilePage> {
       )))),
       (l10n.contact, null, true, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ContactPage()))),
       (l10n.logUpload, null, true, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const LogUploadPage()))),
-      if (DistChannel.resolve() != null)
-        (l10n.checkUpdate, null as String?, true, () => _onCheckUpdate(context, l10n)),
-      (l10n.version, version ?? l10n.appVersion, false, null as VoidCallback?),
+      // 版本号行即检查更新入口（仅支持的平台可点）
+      (
+        l10n.version,
+        version ?? l10n.appVersion,
+        false,
+        DistChannel.resolve() != null ? () => _onCheckUpdate(context, l10n) : null,
+      ),
     ];
 
     return Container(

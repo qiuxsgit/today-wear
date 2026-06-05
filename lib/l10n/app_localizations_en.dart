@@ -59,7 +59,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get version => 'Version';
 
   @override
-  String get appVersion => '1.0.0';
+  String get appVersion => '0.0.1';
 
   @override
   String get privacyPolicy => 'Privacy Policy';
@@ -785,9 +785,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accountDeleteSuccess => 'Account deleted';
-
-  @override
-  String get checkUpdate => 'Check for Updates';
 
   @override
   String get alreadyLatestVersion => 'You\'re on the latest version';
