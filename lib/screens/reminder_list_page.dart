@@ -257,23 +257,27 @@ class _RoundBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tt = context.tt;
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 42,
-        height: 42,
-        decoration: BoxDecoration(
-          color: tt.surface,
-          shape: BoxShape.circle,
-          border: Border.all(color: tt.line),
-          boxShadow: const [
-            BoxShadow(
-                color: Color(0x14554230),
-                blurRadius: 18,
-                offset: Offset(0, 8)),
-          ],
+    // AppBar 的 leading/actions 会施加紧约束把子组件撑满，
+    // 外层包 Center 释放约束，保证 42×42 尺寸生效（与外观页 _CircleBtn 一致）
+    return Center(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          width: 42,
+          height: 42,
+          decoration: BoxDecoration(
+            color: tt.surface,
+            shape: BoxShape.circle,
+            border: Border.all(color: tt.line),
+            boxShadow: const [
+              BoxShadow(
+                  color: Color(0x14554230),
+                  blurRadius: 18,
+                  offset: Offset(0, 8)),
+            ],
+          ),
+          child: Icon(icon, size: 18, color: tt.ink),
         ),
-        child: Icon(icon, size: 18, color: tt.ink),
       ),
     );
   }
