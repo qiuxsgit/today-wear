@@ -89,6 +89,7 @@ dependencies:
   # 图表绘制
   fl_chart: ^0.66.0
   purchases_flutter: ^10.2.1
+  geolocator: ^14.0.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

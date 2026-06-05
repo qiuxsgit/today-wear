@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- 网络权限（云同步 / 图片上传下载） -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 粗略定位（城市级，首页天气） -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- 相机权限 -->
     <uses-permission android:name="android.permission.CAMERA" />
     <!-- 相册权限 -->
