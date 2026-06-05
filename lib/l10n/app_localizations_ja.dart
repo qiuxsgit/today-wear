@@ -104,6 +104,31 @@ class AppLocalizationsJa extends AppLocalizations {
   String get tagDeleteConfirm => 'このタグを削除しますか？';
 
   @override
+  String get verConflictTitle => 'データの競合';
+
+  @override
+  String get verConflictMessage =>
+      'このデータは他の端末で更新され、この端末の未同期の変更と競合しています。どちらを保持しますか？';
+
+  @override
+  String get verKeepLocal => 'この端末を保持';
+
+  @override
+  String get verUseCloud => 'クラウドを使用';
+
+  @override
+  String get verRemoteDeletedTitle => 'クラウドで削除済み';
+
+  @override
+  String get verRemoteDeletedMessage => 'このデータは他の端末で削除されました。';
+
+  @override
+  String get verRestore => '復元';
+
+  @override
+  String get verAcceptDelete => '削除を受け入れる';
+
+  @override
   String tagDeleteConfirmInUse(int count) {
     return 'このタグは $count 件のコーデで使用されています。削除するとそれらから外れます。削除しますか？';
   }

@@ -41,6 +41,14 @@
   "tagEdit": "タグを編集",
   "tagAdd": "タグを追加",
   "tagDeleteConfirm": "このタグを削除しますか？",
+  "verConflictTitle": "データの競合",
+  "verConflictMessage": "このデータは他の端末で更新され、この端末の未同期の変更と競合しています。どちらを保持しますか？",
+  "verKeepLocal": "この端末を保持",
+  "verUseCloud": "クラウドを使用",
+  "verRemoteDeletedTitle": "クラウドで削除済み",
+  "verRemoteDeletedMessage": "このデータは他の端末で削除されました。",
+  "verRestore": "復元",
+  "verAcceptDelete": "削除を受け入れる",
   "tagDeleteConfirmInUse": "このタグは {count} 件のコーデで使用されています。削除するとそれらから外れます。削除しますか？",
   "@tagDeleteConfirmInUse": {
     "placeholders": {

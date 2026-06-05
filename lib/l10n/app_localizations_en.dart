@@ -105,6 +105,32 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tagDeleteConfirm => 'Are you sure you want to delete this tag?';
 
   @override
+  String get verConflictTitle => 'Data Conflict';
+
+  @override
+  String get verConflictMessage =>
+      'This record was updated on another device and conflicts with unsynced changes on this one. Which version do you want to keep?';
+
+  @override
+  String get verKeepLocal => 'Keep This Device';
+
+  @override
+  String get verUseCloud => 'Use Cloud';
+
+  @override
+  String get verRemoteDeletedTitle => 'Deleted in Cloud';
+
+  @override
+  String get verRemoteDeletedMessage =>
+      'This record was deleted on another device.';
+
+  @override
+  String get verRestore => 'Restore';
+
+  @override
+  String get verAcceptDelete => 'Accept Deletion';
+
+  @override
   String tagDeleteConfirmInUse(int count) {
     return 'This tag is used by $count outfit(s). Deleting will remove it from those outfits. Continue?';
   }

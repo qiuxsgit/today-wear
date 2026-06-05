@@ -41,6 +41,14 @@
   "tagEdit": "编辑标签",
   "tagAdd": "新增标签",
   "tagDeleteConfirm": "确定要删除该标签吗？",
+  "verConflictTitle": "数据冲突",
+  "verConflictMessage": "这条记录在其他设备上有更新，与本机未同步的修改冲突。保留哪个版本？",
+  "verKeepLocal": "保留本机",
+  "verUseCloud": "用云端",
+  "verRemoteDeletedTitle": "云端已删除",
+  "verRemoteDeletedMessage": "这条记录已在其他设备上删除。",
+  "verRestore": "恢复",
+  "verAcceptDelete": "接受删除",
   "tagDeleteConfirmInUse": "该标签已被 {count} 条穿搭使用，删除将从这些穿搭中移除该标签。确定删除吗？",
   "@tagDeleteConfirmInUse": {
     "placeholders": {

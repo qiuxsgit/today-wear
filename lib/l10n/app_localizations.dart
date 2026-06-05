@@ -290,6 +290,54 @@ abstract class AppLocalizations {
   /// **'确定要删除该标签吗？'**
   String get tagDeleteConfirm;
 
+  /// No description provided for @verConflictTitle.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'数据冲突'**
+  String get verConflictTitle;
+
+  /// No description provided for @verConflictMessage.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'这条记录在其他设备上有更新，与本机未同步的修改冲突。保留哪个版本？'**
+  String get verConflictMessage;
+
+  /// No description provided for @verKeepLocal.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'保留本机'**
+  String get verKeepLocal;
+
+  /// No description provided for @verUseCloud.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'用云端'**
+  String get verUseCloud;
+
+  /// No description provided for @verRemoteDeletedTitle.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'云端已删除'**
+  String get verRemoteDeletedTitle;
+
+  /// No description provided for @verRemoteDeletedMessage.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'这条记录已在其他设备上删除。'**
+  String get verRemoteDeletedMessage;
+
+  /// No description provided for @verRestore.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'恢复'**
+  String get verRestore;
+
+  /// No description provided for @verAcceptDelete.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'接受删除'**
+  String get verAcceptDelete;
+
   /// No description provided for @tagDeleteConfirmInUse.
   ///
   /// In zh_CN, this message translates to:

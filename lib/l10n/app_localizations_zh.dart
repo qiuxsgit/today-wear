@@ -104,6 +104,30 @@ class AppLocalizationsZh extends AppLocalizations {
   String get tagDeleteConfirm => '确定要删除该标签吗？';
 
   @override
+  String get verConflictTitle => '数据冲突';
+
+  @override
+  String get verConflictMessage => '这条记录在其他设备上有更新，与本机未同步的修改冲突。保留哪个版本？';
+
+  @override
+  String get verKeepLocal => '保留本机';
+
+  @override
+  String get verUseCloud => '用云端';
+
+  @override
+  String get verRemoteDeletedTitle => '云端已删除';
+
+  @override
+  String get verRemoteDeletedMessage => '这条记录已在其他设备上删除。';
+
+  @override
+  String get verRestore => '恢复';
+
+  @override
+  String get verAcceptDelete => '接受删除';
+
+  @override
   String tagDeleteConfirmInUse(int count) {
     return '该标签已被 $count 条穿搭使用，删除将从这些穿搭中移除该标签。确定删除吗？';
   }
@@ -897,6 +921,30 @@ class AppLocalizationsZhCn extends AppLocalizationsZh {
   String get tagDeleteConfirm => '确定要删除该标签吗？';
 
   @override
+  String get verConflictTitle => '数据冲突';
+
+  @override
+  String get verConflictMessage => '这条记录在其他设备上有更新，与本机未同步的修改冲突。保留哪个版本？';
+
+  @override
+  String get verKeepLocal => '保留本机';
+
+  @override
+  String get verUseCloud => '用云端';
+
+  @override
+  String get verRemoteDeletedTitle => '云端已删除';
+
+  @override
+  String get verRemoteDeletedMessage => '这条记录已在其他设备上删除。';
+
+  @override
+  String get verRestore => '恢复';
+
+  @override
+  String get verAcceptDelete => '接受删除';
+
+  @override
   String tagDeleteConfirmInUse(int count) {
     return '该标签已被 $count 条穿搭使用，删除将从这些穿搭中移除该标签。确定删除吗？';
   }
@@ -1688,6 +1736,30 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get tagDeleteConfirm => '確定要刪除該標籤嗎？';
+
+  @override
+  String get verConflictTitle => '資料衝突';
+
+  @override
+  String get verConflictMessage => '這條記錄在其他裝置上有更新，與本機未同步的修改衝突。保留哪個版本？';
+
+  @override
+  String get verKeepLocal => '保留本機';
+
+  @override
+  String get verUseCloud => '用雲端';
+
+  @override
+  String get verRemoteDeletedTitle => '雲端已刪除';
+
+  @override
+  String get verRemoteDeletedMessage => '這條記錄已在其他裝置上刪除。';
+
+  @override
+  String get verRestore => '復原';
+
+  @override
+  String get verAcceptDelete => '接受刪除';
 
   @override
   String tagDeleteConfirmInUse(int count) {

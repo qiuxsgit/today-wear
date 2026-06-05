@@ -41,6 +41,14 @@
   "tagEdit": "編輯標籤",
   "tagAdd": "新增標籤",
   "tagDeleteConfirm": "確定要刪除該標籤嗎？",
+  "verConflictTitle": "資料衝突",
+  "verConflictMessage": "這條記錄在其他裝置上有更新，與本機未同步的修改衝突。保留哪個版本？",
+  "verKeepLocal": "保留本機",
+  "verUseCloud": "用雲端",
+  "verRemoteDeletedTitle": "雲端已刪除",
+  "verRemoteDeletedMessage": "這條記錄已在其他裝置上刪除。",
+  "verRestore": "復原",
+  "verAcceptDelete": "接受刪除",
   "tagDeleteConfirmInUse": "該標籤已被 {count} 條穿搭使用，刪除將從這些穿搭中移除該標籤。確定刪除嗎？",
   "@tagDeleteConfirmInUse": {
     "placeholders": {

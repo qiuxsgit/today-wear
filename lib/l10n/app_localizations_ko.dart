@@ -104,6 +104,31 @@ class AppLocalizationsKo extends AppLocalizations {
   String get tagDeleteConfirm => '이 태그를 삭제하시겠습니까?';
 
   @override
+  String get verConflictTitle => '데이터 충돌';
+
+  @override
+  String get verConflictMessage =>
+      '이 기록이 다른 기기에서 업데이트되어 이 기기의 동기화되지 않은 변경 사항과 충돌합니다. 어느 버전을 유지하시겠습니까?';
+
+  @override
+  String get verKeepLocal => '이 기기 유지';
+
+  @override
+  String get verUseCloud => '클라우드 사용';
+
+  @override
+  String get verRemoteDeletedTitle => '클라우드에서 삭제됨';
+
+  @override
+  String get verRemoteDeletedMessage => '이 기록은 다른 기기에서 삭제되었습니다.';
+
+  @override
+  String get verRestore => '복원';
+
+  @override
+  String get verAcceptDelete => '삭제 수락';
+
+  @override
   String tagDeleteConfirmInUse(int count) {
     return '이 태그는 $count개의 코디에서 사용 중입니다. 삭제하면 해당 코디에서 제거됩니다. 삭제하시겠습니까?';
   }
