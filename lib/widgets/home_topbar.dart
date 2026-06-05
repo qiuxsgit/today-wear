@@ -86,6 +86,8 @@ class HomeFilterChips extends StatefulWidget {
 
 class _HomeFilterChipsState extends State<HomeFilterChips> {
   List<String> _tagNames = [];
+  /// _loadTags 调用序号——旧调用晚返回时作废，防并发覆写
+  int _loadSeq = 0;
 
   @override
   void initState() {
@@ -100,9 +102,10 @@ class _HomeFilterChipsState extends State<HomeFilterChips> {
   }
 
   Future<void> _loadTags() async {
+    final seq = ++_loadSeq;
     final db = AppDatabase();
     final tags = await db.tagDao.getAllTags();
-    if (!mounted) return;
+    if (!mounted || seq != _loadSeq) return; // 已有更新的调用，本次作废
     setState(() {
       _tagNames = tags.map((t) => t.name).toList();
     });
