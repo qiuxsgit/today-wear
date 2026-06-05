@@ -7,21 +7,7 @@ import '../services/sync_service.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_theme_tokens.dart';
 import 'pro_status_card.dart';
-
-/// SyncError → 用户可见文案（供同步状态卡与首页下拉刷新等处复用）
-String syncErrorText(SyncError? error, String? serverMessage, AppLocalizations l10n) {
-  switch (error) {
-    case SyncError.premiumRequired:
-      return l10n.syncErrPremiumRequired;
-    case SyncError.network:
-      return l10n.errNetwork;
-    case SyncError.server:
-      return serverMessage ?? l10n.syncErrGeneric;
-    case SyncError.unknown:
-    case null:
-      return l10n.syncErrGeneric;
-  }
-}
+import 'sync_error_text.dart';
 
 /// 云同步状态卡片（已登录时显示）
 ///

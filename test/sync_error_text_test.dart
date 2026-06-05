@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:today_wear/l10n/app_localizations.dart';
 import 'package:today_wear/services/sync_service.dart';
-import 'package:today_wear/widgets/sync_status_card.dart';
+import 'package:today_wear/widgets/sync_error_text.dart';
 
 void main() {
   late AppLocalizations l10n;
@@ -30,8 +30,11 @@ void main() {
       expect(syncErrorText(SyncError.server, null, l10n), l10n.syncErrGeneric);
     });
 
-    test('unknown 与 null 回落通用错误', () {
+    test('unknown 回落通用错误', () {
       expect(syncErrorText(SyncError.unknown, null, l10n), l10n.syncErrGeneric);
+    });
+
+    test('null 回落通用错误', () {
       expect(syncErrorText(null, null, l10n), l10n.syncErrGeneric);
     });
   });
