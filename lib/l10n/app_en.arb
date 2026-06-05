@@ -270,5 +270,14 @@
   "accountDeletePasswordHint": "Enter password to confirm",
   "accountDeletePasswordRequired": "Please enter your password",
   "accountDeleteConfirm": "Delete Permanently",
-  "accountDeleteSuccess": "Account deleted"
+  "accountDeleteSuccess": "Account deleted",
+  "checkUpdate": "Check for Updates",
+  "alreadyLatestVersion": "You're on the latest version",
+  "newVersionFound": "New Version Available",
+  "updateNow": "Update Now",
+  "updateLater": "Not Now",
+  "forceUpdateNotice": "This version is too old. Please update to continue.",
+  "updateDownloading": "Downloading update…",
+  "updateDownloadFailed": "Download failed. Please try again later.",
+  "updateCheckFailed": "Update check failed. Please try again later."
 }

@@ -772,4 +772,31 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get accountDeleteSuccess => 'アカウントを削除しました';
+
+  @override
+  String get checkUpdate => 'アップデートを確認';
+
+  @override
+  String get alreadyLatestVersion => 'すでに最新バージョンです';
+
+  @override
+  String get newVersionFound => '新しいバージョンがあります';
+
+  @override
+  String get updateNow => '今すぐ更新';
+
+  @override
+  String get updateLater => 'あとで';
+
+  @override
+  String get forceUpdateNotice => 'このバージョンは古いため、更新しないとご利用いただけません';
+
+  @override
+  String get updateDownloading => '更新をダウンロード中…';
+
+  @override
+  String get updateDownloadFailed => 'ダウンロードに失敗しました。後でもう一度お試しください';
+
+  @override
+  String get updateCheckFailed => '更新の確認に失敗しました。後でもう一度お試しください';
 }

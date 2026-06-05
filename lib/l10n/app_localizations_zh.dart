@@ -768,6 +768,33 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get accountDeleteSuccess => '账号已删除';
+
+  @override
+  String get checkUpdate => '检查更新';
+
+  @override
+  String get alreadyLatestVersion => '已是最新版本';
+
+  @override
+  String get newVersionFound => '发现新版本';
+
+  @override
+  String get updateNow => '立即更新';
+
+  @override
+  String get updateLater => '暂不更新';
+
+  @override
+  String get forceUpdateNotice => '当前版本过旧，需更新后才能继续使用';
+
+  @override
+  String get updateDownloading => '正在下载更新…';
+
+  @override
+  String get updateDownloadFailed => '下载失败，请稍后再试';
+
+  @override
+  String get updateCheckFailed => '检查更新失败，请稍后再试';
 }
 
 /// The translations for Chinese, as used in China (`zh_CN`).
@@ -1534,6 +1561,33 @@ class AppLocalizationsZhCn extends AppLocalizationsZh {
 
   @override
   String get accountDeleteSuccess => '账号已删除';
+
+  @override
+  String get checkUpdate => '检查更新';
+
+  @override
+  String get alreadyLatestVersion => '已是最新版本';
+
+  @override
+  String get newVersionFound => '发现新版本';
+
+  @override
+  String get updateNow => '立即更新';
+
+  @override
+  String get updateLater => '暂不更新';
+
+  @override
+  String get forceUpdateNotice => '当前版本过旧，需更新后才能继续使用';
+
+  @override
+  String get updateDownloading => '正在下载更新…';
+
+  @override
+  String get updateDownloadFailed => '下载失败，请稍后再试';
+
+  @override
+  String get updateCheckFailed => '检查更新失败，请稍后再试';
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
@@ -2300,4 +2354,31 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get accountDeleteSuccess => '帳號已刪除';
+
+  @override
+  String get checkUpdate => '檢查更新';
+
+  @override
+  String get alreadyLatestVersion => '已是最新版本';
+
+  @override
+  String get newVersionFound => '發現新版本';
+
+  @override
+  String get updateNow => '立即更新';
+
+  @override
+  String get updateLater => '暫不更新';
+
+  @override
+  String get forceUpdateNotice => '當前版本過舊，需更新後才能繼續使用';
+
+  @override
+  String get updateDownloading => '正在下載更新…';
+
+  @override
+  String get updateDownloadFailed => '下載失敗，請稍後再試';
+
+  @override
+  String get updateCheckFailed => '檢查更新失敗，請稍後再試';
 }

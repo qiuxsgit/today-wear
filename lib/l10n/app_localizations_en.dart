@@ -785,4 +785,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accountDeleteSuccess => 'Account deleted';
+
+  @override
+  String get checkUpdate => 'Check for Updates';
+
+  @override
+  String get alreadyLatestVersion => 'You\'re on the latest version';
+
+  @override
+  String get newVersionFound => 'New Version Available';
+
+  @override
+  String get updateNow => 'Update Now';
+
+  @override
+  String get updateLater => 'Not Now';
+
+  @override
+  String get forceUpdateNotice =>
+      'This version is too old. Please update to continue.';
+
+  @override
+  String get updateDownloading => 'Downloading update…';
+
+  @override
+  String get updateDownloadFailed => 'Download failed. Please try again later.';
+
+  @override
+  String get updateCheckFailed =>
+      'Update check failed. Please try again later.';
 }

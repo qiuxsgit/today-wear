@@ -1471,6 +1471,60 @@ abstract class AppLocalizations {
   /// In zh_CN, this message translates to:
   /// **'账号已删除'**
   String get accountDeleteSuccess;
+
+  /// No description provided for @checkUpdate.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'检查更新'**
+  String get checkUpdate;
+
+  /// No description provided for @alreadyLatestVersion.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'已是最新版本'**
+  String get alreadyLatestVersion;
+
+  /// No description provided for @newVersionFound.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'发现新版本'**
+  String get newVersionFound;
+
+  /// No description provided for @updateNow.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'立即更新'**
+  String get updateNow;
+
+  /// No description provided for @updateLater.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'暂不更新'**
+  String get updateLater;
+
+  /// No description provided for @forceUpdateNotice.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'当前版本过旧，需更新后才能继续使用'**
+  String get forceUpdateNotice;
+
+  /// No description provided for @updateDownloading.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'正在下载更新…'**
+  String get updateDownloading;
+
+  /// No description provided for @updateDownloadFailed.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'下载失败，请稍后再试'**
+  String get updateDownloadFailed;
+
+  /// No description provided for @updateCheckFailed.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'检查更新失败，请稍后再试'**
+  String get updateCheckFailed;
 }
 
 class _AppLocalizationsDelegate

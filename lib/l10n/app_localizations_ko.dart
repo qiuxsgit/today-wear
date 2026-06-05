@@ -772,4 +772,31 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get accountDeleteSuccess => '계정이 삭제되었습니다';
+
+  @override
+  String get checkUpdate => '업데이트 확인';
+
+  @override
+  String get alreadyLatestVersion => '이미 최신 버전입니다';
+
+  @override
+  String get newVersionFound => '새 버전이 있습니다';
+
+  @override
+  String get updateNow => '지금 업데이트';
+
+  @override
+  String get updateLater => '나중에';
+
+  @override
+  String get forceUpdateNotice => '현재 버전이 너무 오래되어 업데이트해야 계속 사용할 수 있습니다';
+
+  @override
+  String get updateDownloading => '업데이트 다운로드 중…';
+
+  @override
+  String get updateDownloadFailed => '다운로드에 실패했습니다. 나중에 다시 시도해 주세요';
+
+  @override
+  String get updateCheckFailed => '업데이트 확인에 실패했습니다. 나중에 다시 시도해 주세요';
 }
