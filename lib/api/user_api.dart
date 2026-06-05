@@ -112,4 +112,9 @@ class UserApi {
   /// 修改语言偏好（服务端即时刷新所有在线会话）
   Future<void> updateLanguage(String language) =>
       _client.put('/users/me/language', body: {'language': language});
+
+  /// 永久删除账号（服务端单事务清数据并吊销全部会话）。
+  /// 密码错误抛 UnauthorizedException(code: invalid_credentials)。
+  Future<void> deleteAccount(String password) =>
+      _client.delete('/users/me', body: {'password': password});
 }

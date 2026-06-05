@@ -16,10 +16,15 @@ import 'api_exception.dart';
 /// - 解析 `{ data, error }` 信封，2xx 返回 `data`，否则按状态码抛 [ApiException]
 /// - 401 时回调 [onUnauthorized]（用于清理本地会话）
 class ApiClient {
-  ApiClient._();
+  ApiClient._() : _http = http.Client();
+
+  /// 测试用构造：注入自定义 [http.Client]（如 MockClient），不影响单例语义。
+  @visibleForTesting
+  ApiClient.forTesting(http.Client httpClient) : _http = httpClient;
+
   static final ApiClient instance = ApiClient._();
 
-  final http.Client _http = http.Client();
+  final http.Client _http;
 
   /// 返回当前会话 token（未登录返回 null）。由 SessionService 注入。
   String? Function()? tokenProvider;
@@ -68,8 +73,15 @@ class ApiClient {
             body: body == null ? null : jsonEncode(body),
           ));
 
-  Future<dynamic> delete(String path) => _send('DELETE', path,
-      () => _http.delete(_uri(path), headers: _headers(json: false)));
+  Future<dynamic> delete(String path, {Object? body}) => _send(
+        'DELETE',
+        path,
+        () => _http.delete(
+          _uri(path),
+          headers: _headers(json: body != null),
+          body: body == null ? null : jsonEncode(body),
+        ),
+      );
 
   /// 执行请求并解析信封，统一异常处理。
   /// 每次请求记录 method + path + 状态码 + 耗时（不记录 header 与请求/响应体）。
@@ -127,7 +139,11 @@ class ApiClient {
 
     switch (res.statusCode) {
       case 401:
-        onUnauthorized?.call();
+        // 401 仅在会话失效时清本地会话；invalid_credentials 是业务校验失败
+        //（登录密码错 / 删除账号二次确认密码错），不得登出当前用户。
+        if (code != 'invalid_credentials') {
+          onUnauthorized?.call();
+        }
         throw UnauthorizedException(code: code, message: message);
       case 402:
         throw PremiumRequiredException(code: code, message: message);
