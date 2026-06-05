@@ -7,6 +7,9 @@ import '../widgets/home_topbar.dart';
 import '../theme/app_theme_tokens.dart';
 import '../database/database.dart';
 import '../repositories/outfit_repository.dart';
+import '../services/sync_service.dart';
+import '../widgets/app_toast.dart';
+import '../widgets/sync_error_text.dart';
 import 'outfit_detail_page.dart';
 
 const double _listCardSpacing = 20.0;
@@ -32,6 +35,9 @@ class HomePageState extends State<HomePage> {
   /// 当前标签筛选（null 表示"全部"）
   String? _activeTag;
 
+  /// 递增令牌驱动 HomeFilterChips 重载标签
+  int _chipsReloadToken = 0;
+
   @override
   void initState() {
     super.initState();
@@ -51,8 +57,22 @@ class HomePageState extends State<HomePage> {
       _loadedOutfits.clear();
       _hasMore = true;
       _isLoading = false;
+      _chipsReloadToken++;
     });
     _loadMoreData();
+  }
+
+  /// 下拉刷新：先完整同步（未登录/未开同步/同步中时 syncNow 直接返回），再重载本地数据。
+  /// 同步失败用 toast 提示（下拉是显式动作，静默收起会显得"假成功"）。
+  Future<void> _onRefresh() async {
+    final sync = SyncService.instance;
+    await sync.syncNow();
+    if (!mounted) return;
+    if (sync.status == SyncStatus.error) {
+      final l10n = AppLocalizations.of(context)!;
+      AppToast.warning(syncErrorText(sync.lastError, sync.lastErrorMessage, l10n));
+    }
+    refreshData();
   }
 
   void _onFilterChanged(String? tagName) {
@@ -152,32 +172,47 @@ class HomePageState extends State<HomePage> {
           children: [
             HomeTopBar(onAdd: widget.onAddFirstOutfit),
             _WeatherCard(tt: tt),
-            HomeFilterChips(activeTag: _activeTag, onFilterChanged: _onFilterChanged),
+            HomeFilterChips(
+              activeTag: _activeTag,
+              onFilterChanged: _onFilterChanged,
+              reloadToken: _chipsReloadToken,
+            ),
             Expanded(
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 32),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.checkroom_outlined, size: 64,
-                          color: tt.muted.withValues(alpha: 0.5)),
-                      const SizedBox(height: 24),
-                      Text(l10n.homeEmptyMessage,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 16, color: tt.muted, height: 1.5)),
-                      const SizedBox(height: 32),
-                      FilledButton.icon(
-                        onPressed: widget.onAddFirstOutfit,
-                        icon: const Icon(Icons.add, size: 20),
-                        label: Text(l10n.homeAddFirstOutfit),
-                        style: FilledButton.styleFrom(
-                          backgroundColor: tt.ink,
-                          foregroundColor: tt.surface,
-                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              child: RefreshIndicator(
+                onRefresh: _onRefresh,
+                child: LayoutBuilder(
+                  builder: (context, constraints) => SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 32),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.checkroom_outlined, size: 64,
+                                  color: tt.muted.withValues(alpha: 0.5)),
+                              const SizedBox(height: 24),
+                              Text(l10n.homeEmptyMessage,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 16, color: tt.muted, height: 1.5)),
+                              const SizedBox(height: 32),
+                              FilledButton.icon(
+                                onPressed: widget.onAddFirstOutfit,
+                                icon: const Icon(Icons.add, size: 20),
+                                label: Text(l10n.homeAddFirstOutfit),
+                                style: FilledButton.styleFrom(
+                                  backgroundColor: tt.ink,
+                                  foregroundColor: tt.surface,
+                                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),
@@ -201,7 +236,11 @@ class HomePageState extends State<HomePage> {
             children: [
               HomeTopBar(onAdd: widget.onAddFirstOutfit),
               _WeatherCard(tt: tt),
-              HomeFilterChips(activeTag: _activeTag, onFilterChanged: _onFilterChanged),
+              HomeFilterChips(
+                activeTag: _activeTag,
+                onFilterChanged: _onFilterChanged,
+                reloadToken: _chipsReloadToken,
+              ),
               const Expanded(child: Center(child: CircularProgressIndicator())),
             ],
           ),
@@ -220,26 +259,34 @@ class HomePageState extends State<HomePage> {
           children: [
             HomeTopBar(onAdd: widget.onAddFirstOutfit),
             _WeatherCard(tt: tt),
-            HomeFilterChips(activeTag: _activeTag, onFilterChanged: _onFilterChanged),
+            HomeFilterChips(
+              activeTag: _activeTag,
+              onFilterChanged: _onFilterChanged,
+              reloadToken: _chipsReloadToken,
+            ),
             Expanded(
-              child: SingleChildScrollView(
-                controller: _scrollController,
-                padding: const EdgeInsets.only(
-                  left: AppSpacing.md,
-                  right: AppSpacing.md,
-                  top: 4,
-                  bottom: 96,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    ...content,
-                    if (_isLoading)
-                      const Padding(
-                        padding: EdgeInsets.all(AppSpacing.md),
-                        child: Center(child: CircularProgressIndicator()),
-                      ),
-                  ],
+              child: RefreshIndicator(
+                onRefresh: _onRefresh,
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.only(
+                    left: AppSpacing.md,
+                    right: AppSpacing.md,
+                    top: 4,
+                    bottom: 96,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      ...content,
+                      if (_isLoading)
+                        const Padding(
+                          padding: EdgeInsets.all(AppSpacing.md),
+                          child: Center(child: CircularProgressIndicator()),
+                        ),
+                    ],
+                  ),
                 ),
               ),
             ),
