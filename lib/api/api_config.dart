@@ -16,9 +16,16 @@ class ApiConfig {
 
   /// 服务端托管静态页 URL（隐私政策/用户协议等）。
   /// baseUrl 含 /api/v1 前缀，静态页挂在站点根，故取 origin 拼接。
-  static String staticPageUrl(String group, String key, {String? lang}) {
+  /// bg/fg 为 6 位 hex（不带 #）的主题色参数，服务端据此定制页面配色。
+  static String staticPageUrl(String group, String key,
+      {String? lang, String? bg, String? fg}) {
     final origin = Uri.parse(baseUrl).origin;
-    final suffix = lang == null ? '' : '?lang=$lang';
+    final params = [
+      if (lang != null) 'lang=$lang',
+      if (bg != null) 'bg=$bg',
+      if (fg != null) 'fg=$fg',
+    ];
+    final suffix = params.isEmpty ? '' : '?${params.join('&')}';
     return '$origin/static/$group/$key.html$suffix';
   }
 }
