@@ -22,6 +22,10 @@ import 'tag_management_page.dart';
 import 'web_view_page.dart';
 import '../api/api_config.dart';
 import '../repositories/reminder_repository.dart';
+import '../services/dist_channel.dart';
+import '../services/update_service.dart';
+import '../widgets/app_toast.dart';
+import '../widgets/update_dialog.dart';
 
 /// 个人/设置页面
 ///
@@ -394,6 +398,8 @@ class _ProfilePageState extends State<ProfilePage> {
       )))),
       (l10n.contact, null, true, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ContactPage()))),
       (l10n.logUpload, null, true, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const LogUploadPage()))),
+      if (DistChannel.resolve() != null)
+        (l10n.checkUpdate, null as String?, true, () => _onCheckUpdate(context, l10n)),
       (l10n.version, version ?? l10n.appVersion, false, null as VoidCallback?),
     ];
 
@@ -440,6 +446,21 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
   
+  /// 手动检查更新：无更新 toast，有更新弹窗，失败 toast 报错
+  Future<void> _onCheckUpdate(BuildContext context, AppLocalizations l10n) async {
+    try {
+      final res = await UpdateService.instance.checkManually();
+      if (!context.mounted) return;
+      if (res == null || !res.hasUpdate) {
+        AppToast.info(l10n.alreadyLatestVersion);
+        return;
+      }
+      await showUpdateDialog(context, res);
+    } catch (_) {
+      AppToast.error(l10n.updateCheckFailed);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;

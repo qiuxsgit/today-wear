@@ -22,6 +22,8 @@ import 'services/image_service.dart';
 import 'services/purchase_service.dart';
 import 'services/session_service.dart';
 import 'services/sync_service.dart';
+import 'services/update_service.dart';
+import 'widgets/update_dialog.dart';
 
 // 导出 LocaleServiceProvider 以便其他文件使用
 export 'services/locale_service.dart';
@@ -305,6 +307,18 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   /// 0: 首页 / 1: 日历 / 2: 新增 / 3: 统计 / 4: 个人
   int _selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    // 主页加载完成后静默检查版本（失败完全静默；强更/新版弹窗）
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final result = await UpdateService.instance.checkOnLaunch();
+      if (result != null && mounted) {
+        await showUpdateDialog(context, result);
+      }
+    });
+  }
 
   /// 标记是否需要刷新首页数据
   bool _needsRefresh = false;
