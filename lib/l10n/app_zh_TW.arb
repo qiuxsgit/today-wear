@@ -39,6 +39,7 @@
   "tagName": "標籤名稱",
   "tagColor": "標籤顏色",
   "tagEdit": "編輯標籤",
+  "tagAdd": "新增標籤",
   "tagDeleteConfirm": "確定要刪除該標籤嗎？",
   "tagDeleteConfirmInUse": "該標籤已被 {count} 條穿搭使用，刪除將從這些穿搭中移除該標籤。確定刪除嗎？",
   "@tagDeleteConfirmInUse": {

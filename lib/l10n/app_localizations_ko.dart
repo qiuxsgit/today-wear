@@ -98,6 +98,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get tagEdit => '태그 편집';
 
   @override
+  String get tagAdd => '태그 추가';
+
+  @override
   String get tagDeleteConfirm => '이 태그를 삭제하시겠습니까?';
 
   @override

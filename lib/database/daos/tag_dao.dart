@@ -51,6 +51,19 @@ class TagDao extends DatabaseAccessor<AppDatabase> with _$TagDaoMixin {
     return result > 0;
   }
 
+  /// 新建 tag（名称不能与已有 tag 重复），成功返回 true
+  Future<bool> createTag(String name, String color) async {
+    final trimmed = name.trim();
+    if (trimmed.isEmpty) return false;
+    final existing = await getTagByName(trimmed);
+    if (existing != null) return false;
+    await into(tags).insert(TagsCompanion.insert(
+      name: trimmed,
+      color: Value(color),
+    ));
+    return true;
+  }
+
   /// 删除 tag：先从所有穿搭中移除该标签，再删除 tag
   Future<void> deleteTagAndRemoveFromAllOutfits(int tagId) async {
     await (delete(outfitTags)..where((tbl) => tbl.tagId.equals(tagId))).go();

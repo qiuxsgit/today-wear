@@ -98,6 +98,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get tagEdit => 'タグを編集';
 
   @override
+  String get tagAdd => 'タグを追加';
+
+  @override
   String get tagDeleteConfirm => 'このタグを削除しますか？';
 
   @override

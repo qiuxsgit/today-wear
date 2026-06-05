@@ -99,6 +99,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tagEdit => 'Edit Tag';
 
   @override
+  String get tagAdd => 'Add Tag';
+
+  @override
   String get tagDeleteConfirm => 'Are you sure you want to delete this tag?';
 
   @override

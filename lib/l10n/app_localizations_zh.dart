@@ -98,6 +98,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get tagEdit => '编辑标签';
 
   @override
+  String get tagAdd => '新增标签';
+
+  @override
   String get tagDeleteConfirm => '确定要删除该标签吗？';
 
   @override
@@ -888,6 +891,9 @@ class AppLocalizationsZhCn extends AppLocalizationsZh {
   String get tagEdit => '编辑标签';
 
   @override
+  String get tagAdd => '新增标签';
+
+  @override
   String get tagDeleteConfirm => '确定要删除该标签吗？';
 
   @override
@@ -1676,6 +1682,9 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get tagEdit => '編輯標籤';
+
+  @override
+  String get tagAdd => '新增標籤';
 
   @override
   String get tagDeleteConfirm => '確定要刪除該標籤嗎？';

@@ -278,6 +278,12 @@ abstract class AppLocalizations {
   /// **'编辑标签'**
   String get tagEdit;
 
+  /// No description provided for @tagAdd.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'新增标签'**
+  String get tagAdd;
+
   /// No description provided for @tagDeleteConfirm.
   ///
   /// In zh_CN, this message translates to:

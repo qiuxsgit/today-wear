@@ -39,6 +39,7 @@
   "tagName": "タグ名",
   "tagColor": "タグの色",
   "tagEdit": "タグを編集",
+  "tagAdd": "タグを追加",
   "tagDeleteConfirm": "このタグを削除しますか？",
   "tagDeleteConfirmInUse": "このタグは {count} 件のコーデで使用されています。削除するとそれらから外れます。削除しますか？",
   "@tagDeleteConfirmInUse": {

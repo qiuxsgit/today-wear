@@ -4,12 +4,14 @@ import 'package:today_wear/database/database.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_text_style.dart';
 import '../theme/app_spacing.dart';
+import '../theme/app_theme_tokens.dart';
 import '../theme/tag_colors.dart';
 import '../widgets/tag_edit_modal.dart';
 
 /// 标签管理页面
 ///
-/// 小卡片平铺展示标签列表，点击打开编辑 Modal（修改名称或删除）
+/// 小卡片平铺展示标签列表，点击打开编辑 Modal（修改名称或删除）；
+/// 导航栏右侧圆形按钮可弹窗新增标签
 class TagManagementPage extends StatefulWidget {
   const TagManagementPage({super.key});
 
@@ -46,22 +48,40 @@ class _TagManagementPageState extends State<TagManagementPage> {
     }
   }
 
+  Future<void> _openCreateModal() async {
+    final refresh = await TagEditModal.show(context);
+    if (refresh == true && mounted) {
+      _loadTags();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final tt = context.tt;
 
     return Scaffold(
-      backgroundColor: AppColors.warmPage,
+      backgroundColor: tt.page,
       appBar: AppBar(
+        backgroundColor: tt.page,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        leading: _RoundBtn(
+          icon: Icons.arrow_back_ios_new,
+          onTap: () => Navigator.of(context).pop(),
+        ),
         title: Text(
           _loading ? l10n.tagManagement : l10n.tagManagementWithCount(_tags.length),
-          style: AppTextStyle.title.copyWith(color: AppColors.warmInk),
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: tt.ink),
         ),
-        backgroundColor: AppColors.warmSurface,
-        foregroundColor: AppColors.warmInk,
-        surfaceTintColor: Colors.transparent,
-        elevation: 2,
-        scrolledUnderElevation: 2,
+        centerTitle: true,
+        actions: [
+          _RoundBtn(
+            icon: Icons.add,
+            onTap: _openCreateModal,
+          ),
+          const SizedBox(width: 16),
+        ],
       ),
       body: _loading
           ? const Center(child: CircularProgressIndicator())
@@ -70,7 +90,7 @@ class _TagManagementPageState extends State<TagManagementPage> {
                   child: Text(
                     l10n.tagNoTags,
                     style: AppTextStyle.body.copyWith(
-                      color: AppColors.warmMuted,
+                      color: tt.muted,
                     ),
                   ),
                 )
@@ -93,6 +113,7 @@ class _TagManagementPageState extends State<TagManagementPage> {
                             color: tagColor,
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(
+                              // 标签底色恒为浅色粉彩，描边/文字固定深浅保证对比度，不随主题切换
                               color: AppColors.bgTertiary,
                               width: 1,
                             ),
@@ -109,6 +130,40 @@ class _TagManagementPageState extends State<TagManagementPage> {
                     }).toList(),
                   ),
                 ),
+    );
+  }
+}
+
+class _RoundBtn extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onTap;
+  const _RoundBtn({required this.icon, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final tt = context.tt;
+    // AppBar 的 leading/actions 会施加紧约束把子组件撑满，
+    // 外层包 Center 释放约束，保证 42×42 尺寸生效（与提醒列表页 _RoundBtn 一致）
+    return Center(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          width: 42,
+          height: 42,
+          decoration: BoxDecoration(
+            color: tt.surface,
+            shape: BoxShape.circle,
+            border: Border.all(color: tt.line),
+            boxShadow: const [
+              BoxShadow(
+                  color: Color(0x14554230),
+                  blurRadius: 18,
+                  offset: Offset(0, 8)),
+            ],
+          ),
+          child: Icon(icon, size: 18, color: tt.ink),
+        ),
+      ),
     );
   }
 }
