@@ -89,8 +89,7 @@ class _UpdateDialogState extends State<UpdateDialog> {
         final fresh = await UpdateService.instance.checkManually();
         final freshUrl = fresh?.downloadUrl;
         if (freshUrl == null) {
-          if (mounted) AppToast.error(l10n.updateDownloadFailed);
-          return;
+          rethrow;
         }
         apk = await ApkInstaller.instance
             .download(freshUrl, onProgress: _onProgress);
