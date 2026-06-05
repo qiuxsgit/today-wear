@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:today_wear/l10n/app_localizations.dart';
 
+import '../api/api_exception.dart';
+import '../database/database.dart';
+import '../l10n/api_error_l10n.dart';
 import '../services/profile_sync.dart';
 import '../services/purchase_service.dart';
 import '../services/session_service.dart';
 import '../services/sync_service.dart';
+import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_theme_tokens.dart';
 import '../widgets/app_toast.dart';
@@ -78,6 +82,62 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
     if (confirmed != true) return;
     await _session.logout();
     if (mounted) AppToast.success(l10n.accountLoggedOutToast);
+  }
+
+  Future<void> _deleteAccount() async {
+    final l10n = AppLocalizations.of(context)!;
+    final controller = TextEditingController();
+    final password = await showDialog<String>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n.accountDeleteDialogTitle),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(l10n.accountDeleteDialogContent),
+              const SizedBox(height: 16),
+              TextField(
+                controller: controller,
+                obscureText: true,
+                autofocus: true,
+                decoration: InputDecoration(hintText: l10n.accountDeletePasswordHint),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(l10n.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, controller.text),
+            style: TextButton.styleFrom(foregroundColor: AppColors.error),
+            child: Text(l10n.accountDeleteConfirm),
+          ),
+        ],
+      ),
+    );
+    if (password == null || !mounted) return;
+    if (password.isEmpty) {
+      AppToast.warning(AppLocalizations.of(context)!.accountDeletePasswordRequired);
+      return;
+    }
+    try {
+      await SessionService.instance.deleteAccount(password);
+      final db = AppDatabase();
+      await db.outfitDao.resetSyncMetadata();
+      await db.tagDao.resetSyncMetadata();
+      await db.imageDao.resetServerImageIds();
+      if (!mounted) return;
+      AppToast.success(AppLocalizations.of(context)!.accountDeleteSuccess);
+      setState(() {});
+    } on ApiException catch (e) {
+      if (!mounted) return;
+      AppToast.warning(localizedApiError(AppLocalizations.of(context)!, e));
+    }
   }
 
   String _syncErrorText(AppLocalizations l10n) {
@@ -213,6 +273,8 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
         }),
         Divider(height: 1, color: tt.line),
         _navRow(tt, l10n.accountLogout, _logout, danger: true),
+        Divider(height: 1, color: tt.line),
+        _navRow(tt, l10n.accountDelete, _deleteAccount, danger: true),
       ], crossAxisAlignment: CrossAxisAlignment.start),
       const SizedBox(height: AppSpacing.lg),
       // Pro 卡

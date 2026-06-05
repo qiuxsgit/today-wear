@@ -1429,6 +1429,48 @@ abstract class AppLocalizations {
   /// In zh_CN, this message translates to:
   /// **'请先登录后再上传日志'**
   String get logUploadLoginRequired;
+
+  /// No description provided for @accountDelete.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'删除账号'**
+  String get accountDelete;
+
+  /// No description provided for @accountDeleteDialogTitle.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'永久删除账号？'**
+  String get accountDeleteDialogTitle;
+
+  /// No description provided for @accountDeleteDialogContent.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'云端数据（穿搭、标签、资料、图片）将被永久删除。本机的本地数据会保留，App 仍可完整使用。订阅不会自动取消，请前往 App Store / Google Play 自行管理。此操作不可恢复。'**
+  String get accountDeleteDialogContent;
+
+  /// No description provided for @accountDeletePasswordHint.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'输入密码以确认'**
+  String get accountDeletePasswordHint;
+
+  /// No description provided for @accountDeletePasswordRequired.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'请输入密码'**
+  String get accountDeletePasswordRequired;
+
+  /// No description provided for @accountDeleteConfirm.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'永久删除'**
+  String get accountDeleteConfirm;
+
+  /// No description provided for @accountDeleteSuccess.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'账号已删除'**
+  String get accountDeleteSuccess;
 }
 
 class _AppLocalizationsDelegate

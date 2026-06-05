@@ -763,4 +763,26 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get logUploadLoginRequired => 'Please sign in before uploading logs';
+
+  @override
+  String get accountDelete => 'Delete Account';
+
+  @override
+  String get accountDeleteDialogTitle => 'Delete account permanently?';
+
+  @override
+  String get accountDeleteDialogContent =>
+      'All cloud data (outfits, tags, profile, images) will be permanently deleted. Local data on this device is kept and the app remains fully usable. Subscriptions are not cancelled automatically — manage them in the App Store / Google Play. This cannot be undone.';
+
+  @override
+  String get accountDeletePasswordHint => 'Enter password to confirm';
+
+  @override
+  String get accountDeletePasswordRequired => 'Please enter your password';
+
+  @override
+  String get accountDeleteConfirm => 'Delete Permanently';
+
+  @override
+  String get accountDeleteSuccess => 'Account deleted';
 }

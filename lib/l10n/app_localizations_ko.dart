@@ -750,4 +750,26 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get logUploadLoginRequired => '로그를 업로드하려면 먼저 로그인하세요';
+
+  @override
+  String get accountDelete => '계정 삭제';
+
+  @override
+  String get accountDeleteDialogTitle => '계정을 영구 삭제할까요?';
+
+  @override
+  String get accountDeleteDialogContent =>
+      '클라우드 데이터(코디, 태그, 프로필, 이미지)가 영구 삭제됩니다. 이 기기의 로컬 데이터는 유지되며 앱은 계속 사용할 수 있습니다. 구독은 자동으로 해지되지 않으니 App Store / Google Play에서 관리해 주세요. 이 작업은 되돌릴 수 없습니다.';
+
+  @override
+  String get accountDeletePasswordHint => '확인을 위해 비밀번호 입력';
+
+  @override
+  String get accountDeletePasswordRequired => '비밀번호를 입력해 주세요';
+
+  @override
+  String get accountDeleteConfirm => '영구 삭제';
+
+  @override
+  String get accountDeleteSuccess => '계정이 삭제되었습니다';
 }

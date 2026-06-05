@@ -263,5 +263,12 @@
   "logUploadAction": "Upload",
   "logUploadSuccess": "Log uploaded",
   "logUploadFailed": "Log upload failed",
-  "logUploadLoginRequired": "Please sign in before uploading logs"
+  "logUploadLoginRequired": "Please sign in before uploading logs",
+  "accountDelete": "Delete Account",
+  "accountDeleteDialogTitle": "Delete account permanently?",
+  "accountDeleteDialogContent": "All cloud data (outfits, tags, profile, images) will be permanently deleted. Local data on this device is kept and the app remains fully usable. Subscriptions are not cancelled automatically — manage them in the App Store / Google Play. This cannot be undone.",
+  "accountDeletePasswordHint": "Enter password to confirm",
+  "accountDeletePasswordRequired": "Please enter your password",
+  "accountDeleteConfirm": "Delete Permanently",
+  "accountDeleteSuccess": "Account deleted"
 }

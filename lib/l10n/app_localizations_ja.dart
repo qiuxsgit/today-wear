@@ -750,4 +750,26 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get logUploadLoginRequired => 'ログをアップロードするにはログインしてください';
+
+  @override
+  String get accountDelete => 'アカウント削除';
+
+  @override
+  String get accountDeleteDialogTitle => 'アカウントを完全に削除しますか？';
+
+  @override
+  String get accountDeleteDialogContent =>
+      'クラウド上のデータ（コーデ、タグ、プロフィール、画像）は完全に削除されます。この端末のローカルデータは保持され、アプリは引き続き利用できます。サブスクリプションは自動では解約されません。App Store / Google Play で管理してください。この操作は取り消せません。';
+
+  @override
+  String get accountDeletePasswordHint => '確認のためパスワードを入力';
+
+  @override
+  String get accountDeletePasswordRequired => 'パスワードを入力してください';
+
+  @override
+  String get accountDeleteConfirm => '完全に削除';
+
+  @override
+  String get accountDeleteSuccess => 'アカウントを削除しました';
 }

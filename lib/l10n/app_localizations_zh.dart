@@ -746,6 +746,28 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get logUploadLoginRequired => '請先登入後再上傳日誌';
+
+  @override
+  String get accountDelete => '删除账号';
+
+  @override
+  String get accountDeleteDialogTitle => '永久删除账号？';
+
+  @override
+  String get accountDeleteDialogContent =>
+      '云端数据（穿搭、标签、资料、图片）将被永久删除。本机的本地数据会保留，App 仍可完整使用。订阅不会自动取消，请前往 App Store / Google Play 自行管理。此操作不可恢复。';
+
+  @override
+  String get accountDeletePasswordHint => '输入密码以确认';
+
+  @override
+  String get accountDeletePasswordRequired => '请输入密码';
+
+  @override
+  String get accountDeleteConfirm => '永久删除';
+
+  @override
+  String get accountDeleteSuccess => '账号已删除';
 }
 
 /// The translations for Chinese, as used in China (`zh_CN`).
@@ -1490,6 +1512,28 @@ class AppLocalizationsZhCn extends AppLocalizationsZh {
 
   @override
   String get logUploadLoginRequired => '请先登录后再上传日志';
+
+  @override
+  String get accountDelete => '删除账号';
+
+  @override
+  String get accountDeleteDialogTitle => '永久删除账号？';
+
+  @override
+  String get accountDeleteDialogContent =>
+      '云端数据（穿搭、标签、资料、图片）将被永久删除。本机的本地数据会保留，App 仍可完整使用。订阅不会自动取消，请前往 App Store / Google Play 自行管理。此操作不可恢复。';
+
+  @override
+  String get accountDeletePasswordHint => '输入密码以确认';
+
+  @override
+  String get accountDeletePasswordRequired => '请输入密码';
+
+  @override
+  String get accountDeleteConfirm => '永久删除';
+
+  @override
+  String get accountDeleteSuccess => '账号已删除';
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
@@ -2234,4 +2278,26 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get logUploadLoginRequired => '請先登入後再上傳日誌';
+
+  @override
+  String get accountDelete => '刪除帳號';
+
+  @override
+  String get accountDeleteDialogTitle => '永久刪除帳號？';
+
+  @override
+  String get accountDeleteDialogContent =>
+      '雲端資料（穿搭、標籤、個人資料、圖片）將被永久刪除。本機的本地資料會保留，App 仍可完整使用。訂閱不會自動取消，請前往 App Store / Google Play 自行管理。此操作無法復原。';
+
+  @override
+  String get accountDeletePasswordHint => '輸入密碼以確認';
+
+  @override
+  String get accountDeletePasswordRequired => '請輸入密碼';
+
+  @override
+  String get accountDeleteConfirm => '永久刪除';
+
+  @override
+  String get accountDeleteSuccess => '帳號已刪除';
 }

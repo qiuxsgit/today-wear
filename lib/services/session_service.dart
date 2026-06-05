@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/api_client.dart';
 import '../api/auth_api.dart';
+import '../api/user_api.dart';
 import 'log_service.dart';
 
 /// 会话/账号状态服务
@@ -20,6 +21,7 @@ class SessionService extends ChangeNotifier {
   static const String _kSyncEnabled = 'sync_enabled';
 
   final AuthApi _authApi = AuthApi();
+  final UserApi _userApi = UserApi();
 
   String? _sessionId;
   int? _userId;
@@ -77,6 +79,16 @@ class SessionService extends ChangeNotifier {
     } catch (_) {}
     await _clear();
     LogService.instance.info('Session', 'logout all');
+  }
+
+  /// 永久删除账号：服务端确认密码并清数据，成功后清本地会话。
+  /// 本地穿搭数据保留（离线优先）；同步元数据重置由调用方（页面）负责，
+  /// 因为 SessionService 不持有数据库依赖。
+  /// 密码错误时抛 UnauthorizedException(invalid_credentials)，会话保持。
+  Future<void> deleteAccount(String password) async {
+    await _userApi.deleteAccount(password);
+    await _clear();
+    debugPrint('SessionService: account deleted');
   }
 
   Future<void> changePassword(String oldPassword, String newPassword) async {

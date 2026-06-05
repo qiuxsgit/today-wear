@@ -263,5 +263,12 @@
   "logUploadAction": "上傳",
   "logUploadSuccess": "日誌上傳成功",
   "logUploadFailed": "日誌上傳失敗",
-  "logUploadLoginRequired": "請先登入後再上傳日誌"
+  "logUploadLoginRequired": "請先登入後再上傳日誌",
+  "accountDelete": "删除账号",
+  "accountDeleteDialogTitle": "永久删除账号？",
+  "accountDeleteDialogContent": "云端数据（穿搭、标签、资料、图片）将被永久删除。本机的本地数据会保留，App 仍可完整使用。订阅不会自动取消，请前往 App Store / Google Play 自行管理。此操作不可恢复。",
+  "accountDeletePasswordHint": "输入密码以确认",
+  "accountDeletePasswordRequired": "请输入密码",
+  "accountDeleteConfirm": "永久删除",
+  "accountDeleteSuccess": "账号已删除"
 }
