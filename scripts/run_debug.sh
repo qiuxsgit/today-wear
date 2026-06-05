@@ -48,5 +48,37 @@ done
 
 echo "🚀 平台：${PLATFORM}（debug 模式）"
 
-# TEMP: 任务 2 会替换为设备发现逻辑
-echo "（参数解析完成，透传参数 ${#PASSTHROUGH[@]} 个）"
+# ====== 设备发现 ======
+
+# 输出该平台候选设备（模拟器+真机），每行：id<TAB>名称<TAB>类型（模拟器/真机）
+list_devices() {
+  flutter devices --machine | python3 -c '
+import json, sys
+
+platform = sys.argv[1]
+prefix = "ios" if platform == "ios" else "android-"
+text = sys.stdin.read()
+devices = json.loads(text[text.find("["):])
+for d in devices:
+    tp = d.get("targetPlatform", "")
+    if not tp.startswith(prefix):
+        continue
+    kind = "模拟器" if d.get("emulator") else "真机"
+    print(d["id"] + "\t" + d["name"] + "\t" + kind)
+' "$PLATFORM"
+}
+
+# 把候选设备收集到数组 DEVICE_LINES（兼容 bash 3.2，不用 mapfile）
+collect_devices() {
+  DEVICE_LINES=()
+  while IFS= read -r line; do
+    [ -n "$line" ] && DEVICE_LINES+=("$line")
+  done < <(list_devices)
+}
+
+echo "🔍 检查 $PLATFORM 可用设备..."
+collect_devices
+
+# TEMP: 任务 3 会替换为设备决策+运行逻辑
+printf '%s\n' "${DEVICE_LINES[@]}"
+echo "（共 ${#DEVICE_LINES[@]} 台）"
