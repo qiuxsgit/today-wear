@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:today_wear/l10n/app_localizations.dart';
 
 import '../api/api_exception.dart';
 import '../database/database.dart';
 import '../l10n/api_error_l10n.dart';
+import '../services/image_service.dart';
+import '../services/profile_service.dart';
 import '../services/profile_sync.dart';
 import '../services/purchase_service.dart';
 import '../services/session_service.dart';
@@ -30,6 +34,7 @@ class AccountSyncPage extends StatefulWidget {
 class _AccountSyncPageState extends State<AccountSyncPage> {
   final _session = SessionService.instance;
   final _sync = SyncService.instance;
+  File? _avatarFile;
 
   @override
   void initState() {
@@ -37,8 +42,19 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
     _session.addListener(_onChanged);
     _sync.addListener(_onChanged);
     _sync.loadMeta();
+    _loadAvatar();
     // 进入页面时按服务端真相刷新 Pro 状态（未登录内部直接跳过）
     PurchaseService.instance.refreshServerStatus();
+  }
+
+  /// 加载本地资料中的头像文件，没有头像时保持 null（显示占位图标）
+  Future<void> _loadAvatar() async {
+    final profile = await ProfileService.load();
+    final path = profile.avatarPath;
+    final file = (path == null || path.isEmpty)
+        ? null
+        : await ImageService.instance.getImageFile(path);
+    if (mounted) setState(() => _avatarFile = file);
   }
 
   @override
@@ -50,6 +66,8 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
 
   void _onChanged() {
     if (mounted) setState(() {});
+    // 登录后资料调和可能拉下头像，顺带刷新
+    _loadAvatar();
   }
 
   Future<void> _openAuth({bool register = false}) async {
@@ -150,7 +168,11 @@ class _AccountSyncPageState extends State<AccountSyncPage> {
       _card(tt, [
         Row(
           children: [
-            Icon(Icons.account_circle_outlined, size: 34, color: tt.ink),
+            _avatarFile != null
+                ? ClipOval(
+                    child: Image.file(_avatarFile!, width: 34, height: 34, fit: BoxFit.cover),
+                  )
+                : Icon(Icons.account_circle_outlined, size: 34, color: tt.ink),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
