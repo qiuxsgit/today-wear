@@ -390,11 +390,13 @@ class _ProfilePageState extends State<ProfilePage> {
     final items = [
       (l10n.privacyPolicy, null as String?, true, () => Navigator.push(context, MaterialPageRoute(builder: (_) => WebViewPage(
         title: l10n.privacyPolicy,
-        url: ApiConfig.staticPageUrl('legal', 'privacy-policy', lang: lang),
+        url: ApiConfig.staticPageUrl('legal', 'privacy-policy',
+            lang: lang, bg: _hex6(tt.page), fg: _hex6(tt.ink)),
       )))),
       (l10n.termsOfService, null, true, () => Navigator.push(context, MaterialPageRoute(builder: (_) => WebViewPage(
         title: l10n.termsOfService,
-        url: ApiConfig.staticPageUrl('legal', 'terms-of-service', lang: lang),
+        url: ApiConfig.staticPageUrl('legal', 'terms-of-service',
+            lang: lang, bg: _hex6(tt.page), fg: _hex6(tt.ink)),
       )))),
       (l10n.contact, null, true, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ContactPage()))),
       (l10n.logUpload, null, true, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const LogUploadPage()))),
@@ -539,3 +541,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
+
+/// Color → 6 位 hex（不带 #），用于静态页 bg/fg 主题色参数。
+String _hex6(Color c) =>
+    (c.toARGB32() & 0xFFFFFF).toRadixString(16).padLeft(6, '0');
