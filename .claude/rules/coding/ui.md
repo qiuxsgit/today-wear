@@ -39,3 +39,26 @@ SizedBox(height: 72 + MediaQuery.of(context).padding.bottom)
 ❌ 不得省略底部间距，否则最后一项内容被 Tab 遮挡。
 
 计算依据：Tab 容器高 58px + 底部 padding 14px = 72px。
+
+## [重要] 主题色 Token（context.tt）
+
+颜色一律通过 `context.tt`（`app_theme_tokens.dart` 中的 BuildContext 扩展）获取：
+
+✅ 正确：
+```dart
+final tt = context.tt;
+color: tt.ink       // 主文本 / 按钮
+color: tt.page      // 页面背景
+color: tt.surface   // 卡片背景
+color: tt.accent    // 高亮 / 日期块
+color: tt.mist      // chip / 标签背景
+color: tt.muted     // 次要文本
+color: tt.line      // 分割线 / 边框
+```
+
+❌ 禁止：widget 内硬编码 hex 色值、纯黑 `#000000`、纯白 `#FFFFFF`、
+霓虹/渐变色、阴影透明度 > 12%。
+
+`AppThemeTokens` 是经 `ThemeData.extensions` 注入的 `ThemeExtension`，
+共 5 预设 × 2 模式 = 10 套 token（如 `AppThemeTokens.softWardrobeLight`）；
+`ThemeService`（单例）将当前预设与模式持久化到 SharedPreferences。

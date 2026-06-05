@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Today Wear (今日穿什麼)** - A private outfit diary app built with Flutter. No account, no cloud, no tracking. Designed for users who want to record daily outfits without social features or data collection.
+**Today Wear (今日穿什麼)** - A private outfit diary app built with Flutter. Offline-first: all data lives on-device (SQLite); an **optional** account enables cloud sync against `today-wear-server`. No social features, no tracking.
 
 **Target Users**: Taiwan region, 16-30 years old, female-focused design.
 
@@ -17,8 +17,11 @@ flutter pub get
 # Run the app
 flutter run
 
-# Run on Android (requires JDK 17/21, not Java 25)
-export JAVA_HOME=$(/usr/libexec/java_home -v 17)
+# Debug run with device picker (default iOS; -- passes extra args to flutter run)
+./scripts/run_debug.sh [--platform={ios,android}] [-- --dart-define=FOO=bar]
+
+# Run on Android (requires JDK 21, not the system-default Java 25)
+export JAVA_HOME=$(/usr/libexec/java_home -v 21)
 flutter run
 
 # macOS debug window is pre-configured to 390×844 (iPhone proportions) via window_manager
@@ -85,18 +88,8 @@ lib/
 - No magic numbers — use `AppSpacing`
 - Use `debugPrint()` not `print()`
 
-### Bottom Navigation Padding (critical)
-The root `Scaffold` uses `extendBody: true` so content flows behind the floating tab bar. All pages must reserve space at the bottom:
+<!-- 浮动 Tab 底部安全间距规范详见 .claude/rules/coding/ui.md -->
 
-```dart
-// Scrollable (ListView / CustomScrollView / SingleChildScrollView):
-padding: EdgeInsets.only(bottom: 72 + MediaQuery.of(context).padding.bottom)
-
-// Non-scrollable (Column etc.) — add at the very end:
-SizedBox(height: 72 + MediaQuery.of(context).padding.bottom)
-```
-
-Tab bar = 58px container + 14px bottom padding = 72px total.
 
 ### State Management
 - MVP stage: `StatefulWidget` + `ValueNotifier`/`ChangeNotifier`
@@ -110,24 +103,7 @@ Tab bar = 58px container + 14px bottom padding = 72px total.
 ### Navigation
 All routes are pushed via `Navigator.push`/`Navigator.pop` — no named routes yet. Do not add string-based routing without discussion.
 
-## Theme Token System
-
-Colors are **not** hardcoded — access them via `context.tt` (a `BuildContext` extension defined in `app_theme_tokens.dart`):
-
-```dart
-final tt = context.tt;
-color: tt.ink       // primary text / buttons
-color: tt.page      // page background
-color: tt.surface   // card background
-color: tt.accent    // highlights / date boxes
-color: tt.mist      // chip / tag backgrounds
-color: tt.muted     // secondary text
-color: tt.line      // dividers / borders
-```
-
-`AppThemeTokens` is a `ThemeExtension` injected via `ThemeData.extensions`. There are **5 presets × 2 modes = 10 token sets** (e.g. `AppThemeTokens.softWardrobeLight`). `ThemeService` (singleton) persists the active preset and mode to `SharedPreferences`.
-
-**Forbidden**: hardcoded hex values in widgets, pure black `#000000`, pure white `#FFFFFF`, neon/gradient colors, shadow opacity > 12%.
+<!-- 主题色 Token（context.tt）使用规范详见 .claude/rules/coding/ui.md -->
 
 ## Key Dependencies
 
