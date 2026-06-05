@@ -76,9 +76,60 @@ collect_devices() {
   done < <(list_devices)
 }
 
+# 从候选行中选一行（单行直接选中，多行编号选择），结果写入 SELECTED_LINE
+select_line() {
+  local prompt="$1"
+  shift
+  local lines=("$@")
+  local count=${#lines[@]}
+
+  if [ "$count" -eq 1 ]; then
+    SELECTED_LINE="${lines[0]}"
+    return
+  fi
+
+  echo "$prompt"
+  local i=1
+  local line name kind
+  for line in "${lines[@]}"; do
+    name=$(printf '%s' "$line" | cut -f2)
+    kind=$(printf '%s' "$line" | cut -f3)
+    if [ -n "$kind" ]; then
+      echo "  $i) $name [$kind]"
+    else
+      echo "  $i) $name"
+    fi
+    i=$((i + 1))
+  done
+
+  local choice
+  while true; do
+    printf '请输入编号 (1-%s)：' "$count"
+    read -r choice || { echo ""; echo "❌ 已取消（输入结束）"; exit 1; }
+    if printf '%s' "$choice" | grep -qE '^[0-9]+$' \
+       && [ "$choice" -ge 1 ] && [ "$choice" -le "$count" ]; then
+      SELECTED_LINE="${lines[$((choice - 1))]}"
+      return
+    fi
+    echo "❌ 无效输入，请重新输入"
+  done
+}
+
 echo "🔍 检查 $PLATFORM 可用设备..."
 collect_devices
 
-# TEMP: 任务 3 会替换为设备决策+运行逻辑
-printf '%s\n' "${DEVICE_LINES[@]}"
-echo "（共 ${#DEVICE_LINES[@]} 台）"
+# ====== 设备决策 + 运行 ======
+
+if [ ${#DEVICE_LINES[@]} -eq 0 ]; then
+  # TEMP: 任务 4 会替换为模拟器启动流程
+  echo "❌ 没有检测到 $PLATFORM 可用设备"
+  exit 1
+fi
+
+select_line "🔢 检测到 ${#DEVICE_LINES[@]} 台 $PLATFORM 设备，请选择：" "${DEVICE_LINES[@]}"
+DEVICE_ID=$(printf '%s' "$SELECTED_LINE" | cut -f1)
+DEVICE_NAME=$(printf '%s' "$SELECTED_LINE" | cut -f2)
+DEVICE_KIND=$(printf '%s' "$SELECTED_LINE" | cut -f3)
+
+echo "📱 启动 flutter run --debug（$DEVICE_NAME [$DEVICE_KIND]）..."
+exec flutter run --debug -d "$DEVICE_ID" "${PASSTHROUGH[@]}"
