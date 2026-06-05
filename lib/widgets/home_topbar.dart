@@ -63,11 +63,22 @@ class HomeTopBar extends StatelessWidget {
 ///
 /// 受控组件：选中状态由 [activeTag] 决定（null 表示"全部"），
 /// 点击时通过 [onFilterChanged] 通知父级。
+///
+/// [reloadToken] 用于触发标签重载：父级递增该令牌即触发 _loadTags()
+/// （例如下拉同步后）。
 class HomeFilterChips extends StatefulWidget {
   final String? activeTag;
   final ValueChanged<String?>? onFilterChanged;
 
-  const HomeFilterChips({super.key, this.activeTag, this.onFilterChanged});
+  /// 父级递增该令牌即触发标签重载（如下拉同步后）
+  final int reloadToken;
+
+  const HomeFilterChips({
+    super.key,
+    this.activeTag,
+    this.onFilterChanged,
+    this.reloadToken = 0,
+  });
 
   @override
   State<HomeFilterChips> createState() => _HomeFilterChipsState();
@@ -82,6 +93,12 @@ class _HomeFilterChipsState extends State<HomeFilterChips> {
     _loadTags();
   }
 
+  @override
+  void didUpdateWidget(covariant HomeFilterChips oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.reloadToken != oldWidget.reloadToken) _loadTags();
+  }
+
   Future<void> _loadTags() async {
     final db = AppDatabase();
     final tags = await db.tagDao.getAllTags();
@@ -89,6 +106,11 @@ class _HomeFilterChipsState extends State<HomeFilterChips> {
     setState(() {
       _tagNames = tags.map((t) => t.name).toList();
     });
+    // 选中的标签已不存在（如远端删除后同步落库）→ 回退"全部"
+    final active = widget.activeTag;
+    if (active != null && !_tagNames.contains(active)) {
+      widget.onFilterChanged?.call(null);
+    }
   }
 
   @override
