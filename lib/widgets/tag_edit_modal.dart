@@ -3,6 +3,7 @@ import 'package:today_wear/l10n/app_localizations.dart';
 import 'package:today_wear/database/database.dart';
 import '../api/tag_api.dart';
 import '../services/session_service.dart';
+import '../services/sync_service.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_text_style.dart';
@@ -85,6 +86,8 @@ class _TagEditModalState extends State<TagEditModal> {
         : await _tagDao.updateTag(widget.tag!.id, name, _selectedColorHex);
     if (!mounted) return;
     if (ok) {
+      // 机会性立即推送（updateTag/createTag 已标 dirty，_pushTags 带 ver 走写校验）
+      SyncService.instance.syncInBackground();
       AppToast.success(l10n.tagSaved);
       Navigator.pop(context, true);
     } else {

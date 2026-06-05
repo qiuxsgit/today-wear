@@ -5,8 +5,10 @@ import '../theme/app_colors.dart';
 import '../theme/app_text_style.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_theme_tokens.dart';
+import '../services/ver_check_service.dart';
 import '../theme/tag_colors.dart';
 import '../widgets/tag_edit_modal.dart';
+import '../widgets/ver_conflict_dialogs.dart';
 
 /// 标签管理页面
 ///
@@ -42,7 +44,34 @@ class _TagManagementPageState extends State<TagManagementPage> {
   }
 
   Future<void> _openEditModal(TagData tag) async {
-    final refresh = await TagEditModal.show(context, tag);
+    // 编辑前记录级 ver 读校验（1.5s 超时降级），避免基于旧标签数据编辑
+    final result = await VerCheckService.instance.checkTag(tag.id);
+    if (!mounted) return;
+    var current = tag;
+    switch (result.status) {
+      case VerCheckStatus.refreshed:
+        current = (await _tagDao.getTagById(tag.id)) ?? tag;
+        if (!mounted) return;
+      case VerCheckStatus.conflict:
+        final keepLocal = await showVerConflictDialog(context);
+        if (!mounted) return;
+        if (keepLocal == true) {
+          await VerCheckService.instance.keepLocalTag(tag.id, result.remote!);
+        } else if (keepLocal == false) {
+          await VerCheckService.instance.useCloudTag(result.remote!);
+          current = (await _tagDao.getTagById(tag.id)) ?? tag;
+          if (!mounted) return;
+          _loadTags();
+        } else {
+          return; // 外部关闭：不进入编辑
+        }
+      case VerCheckStatus.skipped:
+      case VerCheckStatus.upToDate:
+      case VerCheckStatus.remoteDeleted: // 标签硬删走 404→skipped，理论不达，降级进入编辑
+        break;
+    }
+    if (!mounted) return;
+    final refresh = await TagEditModal.show(context, current);
     if (refresh == true && mounted) {
       _loadTags();
     }
