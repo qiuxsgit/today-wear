@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import '../theme/app_colors.dart';
 import '../theme/app_text_style.dart';
+import '../theme/app_theme_tokens.dart';
 
 /// 通用应用内网页页：AppBar 标题 + WebView + 加载指示。
 /// 用于打开服务端托管的静态文案页（隐私政策/用户协议等）。
@@ -34,12 +34,13 @@ class _WebViewPageState extends State<WebViewPage> {
 
   @override
   Widget build(BuildContext context) {
+    final tt = context.tt;
     return Scaffold(
-      backgroundColor: AppColors.warmPage,
+      backgroundColor: tt.page,
       appBar: AppBar(
-        title: Text(widget.title, style: AppTextStyle.title),
-        backgroundColor: AppColors.warmSurface,
-        foregroundColor: AppColors.warmInk,
+        title: Text(widget.title, style: AppTextStyle.title.copyWith(color: tt.ink)),
+        backgroundColor: tt.surface,
+        foregroundColor: tt.ink,
         surfaceTintColor: Colors.transparent,
         elevation: 2,
         scrolledUnderElevation: 2,

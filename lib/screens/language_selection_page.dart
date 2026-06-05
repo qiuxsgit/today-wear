@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:today_wear/l10n/app_localizations.dart';
 import '../api/user_api.dart';
 import '../services/session_service.dart';
-import '../theme/app_colors.dart';
 import '../theme/app_text_style.dart';
 import '../theme/app_spacing.dart';
+import '../theme/app_theme_tokens.dart';
 import '../services/locale_service.dart';
 
 /// 语言选择页面
@@ -16,6 +16,7 @@ class LanguageSelectionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final tt = context.tt;
     final localeService = LocaleServiceProvider.of(context);
     // 若用户尚未手动选择语言，回退到系统语言，确保列表中有勾选项
     final currentLocale = localeService?.currentLocale ??
@@ -24,11 +25,11 @@ class LanguageSelectionPage extends StatelessWidget {
         );
 
     return Scaffold(
-      backgroundColor: AppColors.warmPage,
+      backgroundColor: tt.page,
       appBar: AppBar(
-        title: Text(l10n.language, style: AppTextStyle.title),
-        backgroundColor: AppColors.warmSurface,
-        foregroundColor: AppColors.warmInk,
+        title: Text(l10n.language, style: AppTextStyle.title.copyWith(color: tt.ink)),
+        backgroundColor: tt.surface,
+        foregroundColor: tt.ink,
         surfaceTintColor: Colors.transparent,
         elevation: 2,
         scrolledUnderElevation: 2,
@@ -79,7 +80,7 @@ class LanguageSelectionPage extends StatelessWidget {
 
             return Container(
               decoration: BoxDecoration(
-                color: AppColors.warmSurface,
+                color: tt.surface,
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 8, offset: Offset(0, 2))],
               ),
@@ -89,6 +90,7 @@ class LanguageSelectionPage extends StatelessWidget {
                   style: AppTextStyle.body.copyWith(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
+                    color: tt.ink,
                   ),
                 ),
                 value: locale,

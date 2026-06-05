@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:today_wear/l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../theme/app_colors.dart';
 import '../theme/app_text_style.dart';
 import '../theme/app_spacing.dart';
+import '../theme/app_theme_tokens.dart';
 import '../widgets/app_toast.dart';
 
 /// 联系方式页面
@@ -38,13 +38,14 @@ class ContactPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final tt = context.tt;
 
     return Scaffold(
-      backgroundColor: AppColors.warmPage,
+      backgroundColor: tt.page,
       appBar: AppBar(
-        title: Text(l10n.contact, style: AppTextStyle.title),
-        backgroundColor: AppColors.warmSurface,
-        foregroundColor: AppColors.warmInk,
+        title: Text(l10n.contact, style: AppTextStyle.title.copyWith(color: tt.ink)),
+        backgroundColor: tt.surface,
+        foregroundColor: tt.ink,
         surfaceTintColor: Colors.transparent,
         elevation: 2,
         scrolledUnderElevation: 2,
@@ -71,7 +72,7 @@ class ContactPage extends StatelessWidget {
               trailingAction: IconButton(
                 icon: const Icon(Icons.open_in_new, size: 20),
                 onPressed: () => _openEmail(context),
-                color: AppColors.warmInk,
+                color: tt.ink,
                 style: IconButton.styleFrom(
                   padding: const EdgeInsets.all(8),
                   minimumSize: const Size(36, 36),
@@ -92,16 +93,17 @@ class ContactPage extends StatelessWidget {
     VoidCallback? onTap,
     Widget? trailingAction,
   }) {
+    final tt = context.tt;
     final content = Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: AppColors.warmSurface,
+        color: tt.surface,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 12, offset: Offset(0, 4))],
       ),
       child: Row(
         children: [
-          Icon(icon, color: AppColors.warmInk, size: 24),
+          Icon(icon, color: tt.ink, size: 24),
           const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Column(
@@ -110,14 +112,14 @@ class ContactPage extends StatelessWidget {
                 Text(
                   label,
                   style: AppTextStyle.body.copyWith(
-                    color: AppColors.warmMuted,
+                    color: tt.muted,
                     fontSize: 12,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   value,
-                  style: AppTextStyle.title.copyWith(fontSize: 16),
+                  style: AppTextStyle.title.copyWith(fontSize: 16, color: tt.ink),
                 ),
               ],
             ),
