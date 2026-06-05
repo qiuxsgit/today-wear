@@ -48,6 +48,16 @@ done
 
 echo "🚀 平台：${PLATFORM}（debug 模式）"
 
+# Android 构建需要 JDK 17/21（系统默认 Java 25 会失败，与 build_android.sh 保持一致）
+if [ "$PLATFORM" = "android" ]; then
+  if JAVA_HOME=$(/usr/libexec/java_home -v 21 2> /dev/null); then
+    export JAVA_HOME
+    echo "☕ 使用 JDK 21：$JAVA_HOME"
+  else
+    echo "⚠️ 未找到 JDK 21，继续使用默认 Java（Gradle 构建可能失败）"
+  fi
+fi
+
 # ====== 设备发现 ======
 
 # 输出该平台候选设备（模拟器+真机），每行：id<TAB>名称<TAB>类型（模拟器/真机）
@@ -115,15 +125,74 @@ select_line() {
   done
 }
 
+# 输出该平台可启动的模拟器，每行：id<TAB>名称（第三列留空）
+# 注：flutter emulators 不支持 --machine，解析「Id • Name • Manufacturer • Platform」表格
+list_emulators() {
+  flutter emulators 2> /dev/null | python3 -c '
+import sys
+
+platform = sys.argv[1]
+for line in sys.stdin:
+    parts = [p.strip() for p in line.split("•")]
+    if len(parts) < 4 or parts[0] == "Id":
+        continue
+    if parts[-1] != platform:
+        continue
+    print(parts[0] + "\t" + parts[1])
+' "$PLATFORM"
+}
+
+# 无在线设备时：选择并启动模拟器，轮询等待其在 flutter devices 中出现
+boot_emulator_and_wait() {
+  EMULATOR_LINES=()
+  while IFS= read -r line; do
+    [ -n "$line" ] && EMULATOR_LINES+=("$line")
+  done < <(list_emulators)
+
+  if [ ${#EMULATOR_LINES[@]} -eq 0 ]; then
+    echo "❌ 没有检测到 $PLATFORM 在线设备，也没有可启动的模拟器"
+    if [ "$PLATFORM" = "ios" ]; then
+      echo "   提示：打开 Xcode → Settings → Platforms 安装 iOS Simulator 运行时"
+    else
+      echo "   提示：打开 Android Studio → Device Manager 创建一个 AVD"
+    fi
+    exit 1
+  fi
+
+  select_line "🔢 没有在线设备，发现 ${#EMULATOR_LINES[@]} 个可启动模拟器，请选择：" "${EMULATOR_LINES[@]}"
+  local emulator_id emulator_name
+  emulator_id=$(printf '%s' "$SELECTED_LINE" | cut -f1)
+  emulator_name=$(printf '%s' "$SELECTED_LINE" | cut -f2)
+
+  echo "📱 启动模拟器：$emulator_name ..."
+  flutter emulators --launch "$emulator_id" || {
+    echo "❌ 模拟器启动命令失败"
+    exit 1
+  }
+
+  echo "⏳ 等待设备就绪（最长 60s）..."
+  local waited=0
+  while [ "$waited" -lt 60 ]; do
+    sleep 3
+    waited=$((waited + 3))
+    collect_devices
+    if [ ${#DEVICE_LINES[@]} -gt 0 ]; then
+      echo "✅ 设备已就绪（等待 ${waited}s）"
+      return
+    fi
+  done
+
+  echo "❌ 等待模拟器就绪超时（60s），请手动确认模拟器已启动后重试"
+  exit 1
+}
+
 echo "🔍 检查 $PLATFORM 可用设备..."
 collect_devices
 
 # ====== 设备决策 + 运行 ======
 
 if [ ${#DEVICE_LINES[@]} -eq 0 ]; then
-  # TEMP: 任务 4 会替换为模拟器启动流程
-  echo "❌ 没有检测到 $PLATFORM 可用设备"
-  exit 1
+  boot_emulator_and_wait
 fi
 
 select_line "🔢 检测到 ${#DEVICE_LINES[@]} 台 $PLATFORM 设备，请选择：" "${DEVICE_LINES[@]}"
