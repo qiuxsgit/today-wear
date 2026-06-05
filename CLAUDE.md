@@ -24,6 +24,16 @@ flutter run
 export JAVA_HOME=$(/usr/libexec/java_home -v 21)
 flutter run
 
+# Android 现在分两个 flavor（channel 维度）：
+#   play = Google Play（AAB，不带安装权限）
+#   apk  = 直发 APK（应用内更新）
+# Android 设备上 flutter run 必须指定 flavor；macOS/iOS 不受影响：
+flutter run --flavor play --dart-define=DIST_CHANNEL=play
+
+# 出包：
+flutter build appbundle --release --flavor play --dart-define=DIST_CHANNEL=play
+flutter build apk      --release --flavor apk  --dart-define=DIST_CHANNEL=apk
+
 # macOS debug window is pre-configured to 390×844 (iPhone proportions) via window_manager
 
 # Generate Drift database code (after modifying tables.dart or daos)

@@ -31,6 +31,13 @@ android {
         versionName = flutter.versionName
     }
 
+    // 分发渠道：play = Google Play（AAB，禁带安装权限）；apk = 直发 APK（应用内更新）
+    flavorDimensions += "channel"
+    productFlavors {
+        create("play") { dimension = "channel" }
+        create("apk") { dimension = "channel" }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.

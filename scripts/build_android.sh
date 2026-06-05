@@ -24,11 +24,11 @@ echo "🚀 构建模式: $BUILD_MODE"
 BUILD_NUMBER=$(date +%m%d%H%M)
 
 if [ "$BUILD_MODE" == "release" ]; then
-flutter build apk --release --build-number="$BUILD_NUMBER"
-APK_PATH="build/app/outputs/flutter-apk/app-release.apk"
+flutter build apk --release --build-number="$BUILD_NUMBER" --flavor apk --dart-define=DIST_CHANNEL=apk
+APK_PATH="build/app/outputs/flutter-apk/app-apk-release.apk"
 else
-flutter build apk --debug --build-number="$BUILD_NUMBER"
-APK_PATH="build/app/outputs/flutter-apk/app-debug.apk"
+flutter build apk --debug --build-number="$BUILD_NUMBER" --flavor apk --dart-define=DIST_CHANNEL=apk
+APK_PATH="build/app/outputs/flutter-apk/app-apk-debug.apk"
 fi
 
 # 检查结果
