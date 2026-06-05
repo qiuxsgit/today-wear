@@ -8,7 +8,10 @@ import '../theme/tag_colors.dart';
 import '../database/database.dart';
 import '../repositories/outfit_repository.dart';
 import '../services/image_download_service.dart';
+import '../services/sync_service.dart';
+import '../services/ver_check_service.dart';
 import '../widgets/outfit_image.dart';
+import '../widgets/ver_conflict_dialogs.dart';
 import 'add_outfit_page.dart';
 
 /// 穿搭详情页
@@ -32,14 +35,79 @@ class OutfitDetailPage extends StatefulWidget {
 }
 
 class _OutfitDetailPageState extends State<OutfitDetailPage> {
-  Outfit get outfit => widget.outfit;
+  late Outfit _outfit;
+
+  /// 渲染 gate：进入详情先做记录级 ver 读校验（1.5s 超时降级），避免编辑旧数据
+  bool _checking = true;
+
+  Outfit get outfit => _outfit;
 
   @override
   void initState() {
     super.initState();
+    _outfit = widget.outfit;
+    _runVerCheck();
+  }
+
+  @override
+  void dispose() {
+    _pushIfDirty(_outfit.id);
+    super.dispose();
+  }
+
+  /// 离开详情页：该条有未推送修改则机会性触发同步（fire-and-forget，不依赖 context）
+  static void _pushIfDirty(int outfitId) {
+    Future(() async {
+      final row = await AppDatabase().outfitDao.getOutfitByIdRaw(outfitId);
+      if (row != null && row.dirty == 1) {
+        SyncService.instance.syncInBackground();
+      }
+    });
+  }
+
+  Future<void> _runVerCheck() async {
+    final result = await VerCheckService.instance.checkOutfit(_outfit.id);
+    if (!mounted) return;
+    switch (result.status) {
+      case VerCheckStatus.refreshed:
+        await _reloadOutfit();
+      case VerCheckStatus.conflict:
+        final keepLocal = await showVerConflictDialog(context);
+        if (!mounted) return;
+        if (keepLocal == true) {
+          await VerCheckService.instance.keepLocalOutfit(_outfit.id, result.remote!);
+        } else if (keepLocal == false) {
+          await VerCheckService.instance.useCloudOutfit(result.remote!);
+          await _reloadOutfit();
+          widget.onOutfitChanged?.call();
+        }
+      case VerCheckStatus.remoteDeleted:
+        final restore = await showRemoteDeletedDialog(context);
+        if (!mounted) return;
+        if (restore == true) {
+          await VerCheckService.instance.restoreOutfit(_outfit.id, result.remote!);
+        } else {
+          await VerCheckService.instance.acceptOutfitDeleted(result.remote!);
+          widget.onOutfitChanged?.call();
+          if (mounted) Navigator.pop(context);
+          return;
+        }
+      case VerCheckStatus.skipped:
+      case VerCheckStatus.upToDate:
+        break;
+    }
+    if (!mounted) return;
+    setState(() => _checking = false);
     // 进入详情即预下载整条穿搭的全部图片（PageView 只构建可见页，
-    // 不预下载的话后面几张要等翻页才开始下，编辑页也拿不到文件）
-    ImageDownloadService.instance.ensureAllDownloaded(outfit.photos);
+    // 不预下载的话后面几张要等翻页才开始下，编辑页也拿不到文件）。
+    // 放在校验完成后执行，确保下载的是最新图片集合。
+    ImageDownloadService.instance.ensureAllDownloaded(_outfit.photos);
+  }
+
+  /// 按本地 id 重查并替换展示数据（ver 校验拉到新版本后）
+  Future<void> _reloadOutfit() async {
+    final fresh = await OutfitRepository(AppDatabase()).getOutfitById(_outfit.id);
+    if (fresh != null && mounted) setState(() => _outfit = fresh);
   }
 
   /// 格式化日期显示
@@ -110,6 +178,14 @@ class _OutfitDetailPageState extends State<OutfitDetailPage> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final tt = context.tt;
+
+    if (_checking) {
+      return Scaffold(
+        backgroundColor: tt.page,
+        body: const SafeArea(child: Center(child: CircularProgressIndicator())),
+      );
+    }
+
     final dateText = _formatDate(context, outfit.date);
 
     return Scaffold(
