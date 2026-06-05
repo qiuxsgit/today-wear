@@ -16,11 +16,11 @@ import 'appearance_theme_page.dart';
 import 'contact_page.dart';
 import 'language_selection_page.dart';
 import 'log_upload_page.dart';
-import 'privacy_policy_page.dart';
 import 'profile_edit_page.dart';
 import 'reminder_list_page.dart';
 import 'tag_management_page.dart';
-import 'terms_of_service_page.dart';
+import 'web_view_page.dart';
+import '../api/api_config.dart';
 import '../repositories/reminder_repository.dart';
 
 /// 个人/设置页面
@@ -382,9 +382,16 @@ class _ProfilePageState extends State<ProfilePage> {
     String? version,
   ) {
     final tt = context.tt;
+    final lang = Localizations.localeOf(context).toLanguageTag();
     final items = [
-      (l10n.privacyPolicy, null as String?, true, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PrivacyPolicyPage()))),
-      (l10n.termsOfService, null, true, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TermsOfServicePage()))),
+      (l10n.privacyPolicy, null as String?, true, () => Navigator.push(context, MaterialPageRoute(builder: (_) => WebViewPage(
+        title: l10n.privacyPolicy,
+        url: ApiConfig.staticPageUrl('legal', 'privacy-policy', lang: lang),
+      )))),
+      (l10n.termsOfService, null, true, () => Navigator.push(context, MaterialPageRoute(builder: (_) => WebViewPage(
+        title: l10n.termsOfService,
+        url: ApiConfig.staticPageUrl('legal', 'terms-of-service', lang: lang),
+      )))),
       (l10n.contact, null, true, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ContactPage()))),
       (l10n.logUpload, null, true, () => Navigator.push(context, MaterialPageRoute(builder: (_) => const LogUploadPage()))),
       (l10n.version, version ?? l10n.appVersion, false, null as VoidCallback?),

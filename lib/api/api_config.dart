@@ -13,4 +13,12 @@ class ApiConfig {
 
   /// 单次请求超时
   static const Duration timeout = Duration(seconds: 20);
+
+  /// 服务端托管静态页 URL（隐私政策/用户协议等）。
+  /// baseUrl 含 /api/v1 前缀，静态页挂在站点根，故取 origin 拼接。
+  static String staticPageUrl(String group, String key, {String? lang}) {
+    final origin = Uri.parse(baseUrl).origin;
+    final suffix = lang == null ? '' : '?lang=$lang';
+    return '$origin/static/$group/$key.html$suffix';
+  }
 }
