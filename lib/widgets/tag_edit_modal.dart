@@ -124,9 +124,11 @@ class _TagEditModalState extends State<TagEditModal> {
     if (confirmed != true || !mounted) return;
     final serverId = tag.serverId;
     await _tagDao.deleteTagAndRemoveFromAllOutfits(tag.id);
-    // 已登录且该标签已上云时，同步删除服务端标签（避免下次拉取又复活）
+    // 已登录且该标签已上云时，同步删除服务端标签（避免下次拉取又复活）。
+    // 带 ver 写校验：409（远端已变更）时本地已删、远端保留最新版，下轮 pull
+    // 会把远端标签拉回——后台冲突不弹框，与 spec 一致。
     if (serverId != null && SessionService.instance.isLoggedIn) {
-      TagApi().delete(serverId).catchError((e) {
+      TagApi().delete(serverId, ver: tag.ver).catchError((e) {
         debugPrint('Tag delete sync failed: $e');
       });
     }

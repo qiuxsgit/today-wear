@@ -100,12 +100,13 @@ class OutfitDao extends DatabaseAccessor<AppDatabase> with _$OutfitDaoMixin {
         .getSingleOrNull();
   }
 
-  /// 标记 outfit 已同步：清 dirty，可选回填 serverId
-  Future<void> markOutfitSynced(int id, {int? serverId}) async {
+  /// 标记 outfit 已同步：清 dirty，可选回填 serverId 与服务端 ver
+  Future<void> markOutfitSynced(int id, {int? serverId, int? ver}) async {
     await (update(outfits)..where((tbl) => tbl.id.equals(id))).write(
       OutfitsCompanion(
         dirty: const Value(0),
         serverId: serverId != null ? Value(serverId) : const Value.absent(),
+        ver: ver != null ? Value(ver) : const Value.absent(),
       ),
     );
   }
@@ -118,6 +119,7 @@ class OutfitDao extends DatabaseAccessor<AppDatabase> with _$OutfitDaoMixin {
     required int createdAtMs,
     required int updatedAtMs,
     required bool isDeleted,
+    required int ver,
   }) async {
     return await into(outfits).insert(OutfitsCompanion.insert(
       date: dateMs,
@@ -127,6 +129,7 @@ class OutfitDao extends DatabaseAccessor<AppDatabase> with _$OutfitDaoMixin {
       isDeleted: Value(isDeleted ? 1 : 0),
       serverId: Value(serverId),
       dirty: const Value(0),
+      ver: Value(ver),
     ));
   }
 
@@ -137,6 +140,7 @@ class OutfitDao extends DatabaseAccessor<AppDatabase> with _$OutfitDaoMixin {
     required String description,
     required int updatedAtMs,
     required bool isDeleted,
+    required int ver,
   }) async {
     await (update(outfits)..where((tbl) => tbl.id.equals(localId))).write(
       OutfitsCompanion(
@@ -145,8 +149,15 @@ class OutfitDao extends DatabaseAccessor<AppDatabase> with _$OutfitDaoMixin {
         updatedAt: Value(updatedAtMs),
         isDeleted: Value(isDeleted ? 1 : 0),
         dirty: const Value(0),
+        ver: Value(ver),
       ),
     );
+  }
+
+  /// 仅更新乐观锁版本号（冲突裁决"保留本机"时把 base 提到服务端最新，不影响 dirty）
+  Future<void> setOutfitVer(int id, int ver) async {
+    await (update(outfits)..where((tbl) => tbl.id.equals(id)))
+        .write(OutfitsCompanion(ver: Value(ver)));
   }
 
   /// 永久删除 outfit（物理删除）

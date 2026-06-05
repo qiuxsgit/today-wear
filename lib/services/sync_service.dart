@@ -139,21 +139,31 @@ class SyncService extends ChangeNotifier {
         if (tag.serverId == null) {
           final existing = byName[tag.name];
           if (existing != null) {
-            await _tagApi.update(existing, tag.name, color);
-            await _db.tagDao.markTagSynced(tag.id, serverId: existing);
+            // 认领远端同名标签：base 传 0 不校验，直接覆盖颜色
+            final newVer = await _tagApi.update(existing, tag.name, color, ver: 0);
+            await _db.tagDao.markTagSynced(tag.id, serverId: existing, ver: newVer);
           } else {
             final id = await _tagApi.create(tag.name, color);
-            await _db.tagDao.markTagSynced(tag.id, serverId: id);
+            await _db.tagDao.markTagSynced(tag.id, serverId: id, ver: 1);
           }
         } else {
-          await _tagApi.update(tag.serverId!, tag.name, color);
-          await _db.tagDao.markTagSynced(tag.id);
+          final newVer =
+              await _tagApi.update(tag.serverId!, tag.name, color, ver: tag.ver);
+          await _db.tagDao.markTagSynced(tag.id, ver: newVer);
         }
-      } on ConflictException {
+      } on ConflictException catch (e) {
+        if (e.code == 'version_conflict') {
+          // 远端已变更：保持 dirty 跳过，留待标签编辑入口读校验时弹框裁决
+          LogService.instance.warn('Sync', 'tag ${tag.id} push ver conflict, skip');
+          continue;
+        }
         // 并发重名：拉一次最新映射回填
         final latest = await _tagApi.list();
-        final id = {for (final t in latest) t.name: t.id}[tag.name];
-        if (id != null) await _db.tagDao.markTagSynced(tag.id, serverId: id);
+        final remoteTag = {for (final t in latest) t.name: t}[tag.name];
+        if (remoteTag != null) {
+          await _db.tagDao
+              .markTagSynced(tag.id, serverId: remoteTag.id, ver: remoteTag.ver);
+        }
       }
     }
   }
@@ -164,7 +174,15 @@ class SyncService extends ChangeNotifier {
       if (o.isDeleted == 1) {
         if (o.serverId != null) {
           try {
-            await _outfitApi.delete(o.serverId!);
+            await _outfitApi.delete(o.serverId!, ver: o.ver);
+          } on ConflictException catch (e) {
+            if (e.code == 'version_conflict') {
+              // 远端已变更：保持 dirty 跳过，留待详情页入口读校验时弹框裁决
+              LogService.instance
+                  .warn('Sync', 'outfit ${o.id} delete ver conflict, skip');
+              continue;
+            }
+            rethrow;
           } on ApiException catch (e) {
             if (e.status != 404) rethrow;
           }
@@ -189,18 +207,29 @@ class SyncService extends ChangeNotifier {
           createdAt: o.createdAt,
           updatedAt: o.updatedAt,
         );
-        await _db.outfitDao.markOutfitSynced(o.id, serverId: res.id);
+        await _db.outfitDao.markOutfitSynced(o.id, serverId: res.id, ver: res.ver);
       } else {
-        res = await _outfitApi.update(
-          o.serverId!,
-          date: o.date,
-          description: o.description,
-          tags: tags,
-          imageIds: imageIds,
-          createdAt: o.createdAt,
-          updatedAt: o.updatedAt,
-        );
-        await _db.outfitDao.markOutfitSynced(o.id);
+        try {
+          res = await _outfitApi.update(
+            o.serverId!,
+            date: o.date,
+            description: o.description,
+            tags: tags,
+            imageIds: imageIds,
+            createdAt: o.createdAt,
+            updatedAt: o.updatedAt,
+            ver: o.ver,
+          );
+        } on ConflictException catch (e) {
+          if (e.code == 'version_conflict') {
+            // 远端已变更：保持 dirty 跳过，留待详情页入口读校验时弹框裁决
+            LogService.instance
+                .warn('Sync', 'outfit ${o.id} push ver conflict, skip');
+            continue;
+          }
+          rethrow;
+        }
+        await _db.outfitDao.markOutfitSynced(o.id, ver: res.ver);
       }
 
       // 回填标签 serverId（服务端按 name 去重后返回 name→id）
@@ -239,7 +268,8 @@ class SyncService extends ChangeNotifier {
   Future<void> _pullTags() async {
     final remote = await _tagApi.list();
     for (final t in remote) {
-      await _db.tagDao.upsertRemoteTag(serverId: t.id, name: t.name, color: t.color);
+      await _db.tagDao
+          .upsertRemoteTag(serverId: t.id, name: t.name, color: t.color, ver: t.ver);
     }
   }
 
@@ -253,7 +283,7 @@ class SyncService extends ChangeNotifier {
       final page = await _outfitApi.list(since: since, cursor: cursor);
       for (final ro in page.items) {
         if (ro.updatedAt > maxUpdated) maxUpdated = ro.updatedAt;
-        await _applyRemoteOutfit(ro);
+        await applyRemoteOutfit(ro);
       }
       if (!page.hasMore || page.nextCursor.isEmpty) break;
       cursor = page.nextCursor;
@@ -262,7 +292,9 @@ class SyncService extends ChangeNotifier {
     await prefs.setInt(_kLastPulledMs, maxUpdated);
   }
 
-  Future<void> _applyRemoteOutfit(RemoteOutfit ro) async {
+  /// 把一条远端 outfit 应用到本地库。常规拉取时本地 dirty 优先、按 updatedAt
+  /// 跳过旧数据；[force] = true 时无条件覆盖（详情页冲突裁决"用云端"/接受删除）。
+  Future<void> applyRemoteOutfit(RemoteOutfit ro, {bool force = false}) async {
     final local = await _db.outfitDao.getOutfitByServerId(ro.id);
 
     if (local == null) {
@@ -274,16 +306,19 @@ class SyncService extends ChangeNotifier {
         createdAtMs: ro.createdAt,
         updatedAtMs: ro.updatedAt,
         isDeleted: false,
+        ver: ro.ver,
       );
       await _applyRemoteTags(newId, ro.tags);
       await _applyRemoteImages(newId, ro.imageIds);
       return;
     }
 
-    // 本地有未推送改动 → 本地优先，等下一轮推送解决
-    if (local.dirty == 1) return;
-    // 远端不更新 → 跳过
-    if (ro.updatedAt <= local.updatedAt) return;
+    if (!force) {
+      // 本地有未推送改动 → 本地优先，等下一轮推送解决
+      if (local.dirty == 1) return;
+      // 远端不更新 → 跳过
+      if (ro.updatedAt <= local.updatedAt) return;
+    }
 
     await _db.outfitDao.updateOutfitFromRemote(
       local.id,
@@ -291,6 +326,7 @@ class SyncService extends ChangeNotifier {
       description: ro.description,
       updatedAtMs: ro.updatedAt,
       isDeleted: ro.isDeleted,
+      ver: ro.ver,
     );
     await _applyRemoteTags(local.id, ro.tags);
 

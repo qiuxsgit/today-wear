@@ -104,14 +104,27 @@ class TagDao extends DatabaseAccessor<AppDatabase> with _$TagDaoMixin {
         .getSingleOrNull();
   }
 
-  /// 标记标签已同步：清 dirty，可选回填 serverId
-  Future<void> markTagSynced(int id, {int? serverId}) async {
+  /// 标记标签已同步：清 dirty，可选回填 serverId 与服务端 ver
+  Future<void> markTagSynced(int id, {int? serverId, int? ver}) async {
     await (update(tags)..where((tbl) => tbl.id.equals(id))).write(
       TagsCompanion(
         dirty: const Value(0),
         serverId: serverId != null ? Value(serverId) : const Value.absent(),
+        ver: ver != null ? Value(ver) : const Value.absent(),
       ),
     );
+  }
+
+  /// 按本地 id 查找标签
+  Future<TagData?> getTagById(int id) async {
+    return await (select(tags)..where((tbl) => tbl.id.equals(id)))
+        .getSingleOrNull();
+  }
+
+  /// 仅更新乐观锁版本号（冲突裁决"保留本机"时把 base 提到服务端最新，不影响 dirty）
+  Future<void> setTagVer(int id, int ver) async {
+    await (update(tags)..where((tbl) => tbl.id.equals(id)))
+        .write(TagsCompanion(ver: Value(ver)));
   }
 
   /// 回填某标签的 serverId（按本地 id）
@@ -120,11 +133,14 @@ class TagDao extends DatabaseAccessor<AppDatabase> with _$TagDaoMixin {
         .write(TagsCompanion(serverId: Value(serverId)));
   }
 
-  /// 从远端插入或更新标签（按 name 匹配，dirty=0）
+  /// 从远端插入或更新标签（按 name 匹配，dirty=0）。
+  /// [ver] 为 null 时不覆盖既有 ver（如 outfit 内嵌标签无 ver 信息，
+  /// 由每轮同步的 /tags 拉取兜底回填）。
   Future<void> upsertRemoteTag({
     required int serverId,
     required String name,
     required String color,
+    int? ver,
   }) async {
     final existing = await getTagByName(name);
     if (existing != null) {
@@ -133,6 +149,7 @@ class TagDao extends DatabaseAccessor<AppDatabase> with _$TagDaoMixin {
           color: Value(color),
           serverId: Value(serverId),
           dirty: const Value(0),
+          ver: ver != null ? Value(ver) : const Value.absent(),
         ),
       );
     } else {
@@ -141,6 +158,7 @@ class TagDao extends DatabaseAccessor<AppDatabase> with _$TagDaoMixin {
         color: Value(color),
         serverId: Value(serverId),
         dirty: const Value(0),
+        ver: Value(ver ?? 0),
       ));
     }
   }

@@ -25,6 +25,7 @@ class RemoteOutfit {
   final bool isDeleted;
   final int createdAt;
   final int updatedAt;
+  final int ver; // 服务端乐观锁版本号
 
   const RemoteOutfit({
     required this.id,
@@ -36,6 +37,7 @@ class RemoteOutfit {
     required this.isDeleted,
     required this.createdAt,
     required this.updatedAt,
+    required this.ver,
   });
 
   factory RemoteOutfit.fromJson(Map<String, dynamic> j) => RemoteOutfit(
@@ -54,6 +56,7 @@ class RemoteOutfit {
         isDeleted: (j['is_deleted'] as bool?) ?? false,
         createdAt: (j['created_at'] as num?)?.toInt() ?? 0,
         updatedAt: (j['updated_at'] as num?)?.toInt() ?? 0,
+        ver: (j['ver'] as num?)?.toInt() ?? 0,
       );
 }
 
@@ -70,7 +73,13 @@ class OutfitWriteResult {
   final int id;
   final Map<String, int> tagIds; // 标签名 → 服务端 id
   final List<int> imageIds;
-  const OutfitWriteResult({required this.id, required this.tagIds, required this.imageIds});
+  final int ver; // 写入后的新版本（创建 = 1）
+  const OutfitWriteResult({
+    required this.id,
+    required this.tagIds,
+    required this.imageIds,
+    required this.ver,
+  });
 
   factory OutfitWriteResult.fromJson(Map<String, dynamic> j) {
     final raw = (j['tag_ids'] as Map?)?.cast<String, dynamic>() ?? const {};
@@ -80,6 +89,7 @@ class OutfitWriteResult {
       imageIds: ((j['image_ids'] as List?) ?? const [])
           .map((e) => (e as num).toInt())
           .toList(),
+      ver: (j['ver'] as num?)?.toInt() ?? 0,
     );
   }
 }
@@ -142,6 +152,8 @@ class OutfitApi {
     return OutfitWriteResult.fromJson((data as Map).cast<String, dynamic>());
   }
 
+  /// 更新（整体替换）。[ver] 为本地持有的 base 版本，服务端不一致时抛
+  /// ConflictException(code=version_conflict)。
   Future<OutfitWriteResult> update(
     int serverId, {
     required int date,
@@ -150,6 +162,7 @@ class OutfitApi {
     required List<int> imageIds,
     required int createdAt,
     required int updatedAt,
+    required int ver,
   }) async {
     final data = await _client.put('/outfits/$serverId',
         body: _body(
@@ -159,9 +172,18 @@ class OutfitApi {
           imageIds: imageIds,
           createdAt: createdAt,
           updatedAt: updatedAt,
-        ));
+        )..['ver'] = ver);
     return OutfitWriteResult.fromJson((data as Map).cast<String, dynamic>());
   }
 
-  Future<void> delete(int serverId) => _client.delete('/outfits/$serverId');
+  /// 软删除。[ver] 为 base 版本，写校验同 update。
+  Future<void> delete(int serverId, {required int ver}) =>
+      _client.delete('/outfits/$serverId?ver=$ver');
+
+  /// 记录级读校验：服务端 ver > [ver] 时返回完整最新数据，否则 null。
+  Future<RemoteOutfit?> checkVer(int serverId, int ver) async {
+    final data = await _client.get('/outfits/$serverId/ver', query: {'ver': ver});
+    if (data == null) return null;
+    return RemoteOutfit.fromJson((data as Map).cast<String, dynamic>());
+  }
 }
