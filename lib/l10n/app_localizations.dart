@@ -878,6 +878,18 @@ abstract class AppLocalizations {
   /// **'薄外套刚刚好'**
   String get weatherPlaceholderAdvice;
 
+  /// No description provided for @weatherPermissionDenied.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'开启定位查看天气'**
+  String get weatherPermissionDenied;
+
+  /// No description provided for @weatherFetchFailed.
+  ///
+  /// In zh_CN, this message translates to:
+  /// **'获取天气失败，点击重试'**
+  String get weatherFetchFailed;
+
   /// No description provided for @reminderTitle.
   ///
   /// In zh_CN, this message translates to:

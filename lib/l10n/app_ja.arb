@@ -153,6 +153,8 @@
   "themeModeDark": "ダーク",
   "weatherPlaceholderLocation": "東京 · 晴れ",
   "weatherPlaceholderAdvice": "薄手のジャケットがちょうどいい",
+  "weatherPermissionDenied": "位置情報をオンにして天気を表示",
+  "weatherFetchFailed": "天気の取得に失敗しました。タップで再試行",
   "reminderTitle": "毎日リマインダー",
   "reminderEnabledCount": "{count} 件オン",
   "@reminderEnabledCount": {

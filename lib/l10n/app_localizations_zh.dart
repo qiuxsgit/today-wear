@@ -466,6 +466,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get weatherPlaceholderAdvice => '薄外套刚刚好';
 
   @override
+  String get weatherPermissionDenied => '开启定位查看天气';
+
+  @override
+  String get weatherFetchFailed => '获取天气失败，点击重试';
+
+  @override
   String get reminderTitle => '每日提醒';
 
   @override
@@ -1283,6 +1289,12 @@ class AppLocalizationsZhCn extends AppLocalizationsZh {
   String get weatherPlaceholderAdvice => '薄外套刚刚好';
 
   @override
+  String get weatherPermissionDenied => '开启定位查看天气';
+
+  @override
+  String get weatherFetchFailed => '获取天气失败，点击重试';
+
+  @override
   String get reminderTitle => '每日提醒';
 
   @override
@@ -2098,6 +2110,12 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get weatherPlaceholderAdvice => '薄外套剛剛好';
+
+  @override
+  String get weatherPermissionDenied => '開啟定位查看天氣';
+
+  @override
+  String get weatherFetchFailed => '取得天氣失敗，點擊重試';
 
   @override
   String get reminderTitle => '每日提醒';

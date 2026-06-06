@@ -467,6 +467,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get weatherPlaceholderAdvice => '薄手のジャケットがちょうどいい';
 
   @override
+  String get weatherPermissionDenied => '位置情報をオンにして天気を表示';
+
+  @override
+  String get weatherFetchFailed => '天気の取得に失敗しました。タップで再試行';
+
+  @override
   String get reminderTitle => '毎日リマインダー';
 
   @override

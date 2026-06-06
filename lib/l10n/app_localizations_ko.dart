@@ -467,6 +467,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get weatherPlaceholderAdvice => '가벼운 재킷이 딱 좋아요';
 
   @override
+  String get weatherPermissionDenied => '위치 서비스를 켜고 날씨를 확인하세요';
+
+  @override
+  String get weatherFetchFailed => '날씨를 가져오지 못했습니다. 탭하여 다시 시도';
+
+  @override
   String get reminderTitle => '매일 알림';
 
   @override

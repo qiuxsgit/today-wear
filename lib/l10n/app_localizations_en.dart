@@ -471,6 +471,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get weatherPlaceholderAdvice => 'A light jacket works great';
 
   @override
+  String get weatherPermissionDenied => 'Enable location to see weather';
+
+  @override
+  String get weatherFetchFailed => 'Failed to load weather. Tap to retry';
+
+  @override
   String get reminderTitle => 'Daily Reminder';
 
   @override

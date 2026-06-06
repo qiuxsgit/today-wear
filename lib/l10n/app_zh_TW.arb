@@ -153,6 +153,8 @@
   "themeModeDark": "深色",
   "weatherPlaceholderLocation": "台北 · 晴天",
   "weatherPlaceholderAdvice": "薄外套剛剛好",
+  "weatherPermissionDenied": "開啟定位查看天氣",
+  "weatherFetchFailed": "取得天氣失敗，點擊重試",
   "reminderTitle": "每日提醒",
   "reminderEnabledCount": "已開啟 {count} 個",
   "@reminderEnabledCount": {
