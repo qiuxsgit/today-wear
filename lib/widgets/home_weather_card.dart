@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:today_wear/l10n/app_localizations.dart';
 import '../models/weather.dart';
 import '../services/weather_service.dart';
+import '../services/weather_tip_service.dart';
 import '../theme/app_theme_tokens.dart';
 
 /// 天气卡片（首页）— 四状态机：loading / success / permissionDenied / failed
@@ -14,6 +15,10 @@ class HomeWeatherCard extends StatefulWidget {
 }
 
 class _HomeWeatherCardState extends State<HomeWeatherCard> {
+  /// tip 服务需在天气首次 success 通知前完成单例初始化（挂监听）。
+  // ignore: unused_field
+  final WeatherTipService _tipService = WeatherTipService.instance;
+
   @override
   void initState() {
     super.initState();
@@ -26,7 +31,8 @@ class _HomeWeatherCardState extends State<HomeWeatherCard> {
     final tt = widget.tt;
     final l10n = AppLocalizations.of(context)!;
     return ListenableBuilder(
-      listenable: WeatherService.instance,
+      listenable: Listenable.merge(
+          [WeatherService.instance, WeatherTipService.instance]),
       builder: (context, _) {
         final svc = WeatherService.instance;
         final Weather? w = svc.weather;
@@ -82,7 +88,8 @@ class _HomeWeatherCardState extends State<HomeWeatherCard> {
                         ),
                         const SizedBox(height: 3),
                         Text(
-                          l10n.weatherPlaceholderAdvice,
+                          WeatherTipService.instance.tip ??
+                              l10n.weatherPlaceholderAdvice,
                           style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: tt.page),
                         ),
                       ],
