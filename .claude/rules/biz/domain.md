@@ -1,3 +1,10 @@
+---
+paths:
+  - "**/lib/screens/web_view_page.dart"
+  - "**/lib/screens/profile_page.dart"
+  - "**/lib/api/api_config.dart"
+---
+
 # 业务规则
 
 ## 静态页（隐私政策/用户协议）

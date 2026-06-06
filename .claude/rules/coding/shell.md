@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/scripts/**"
+---
+
 # Shell 脚本规范（scripts/）
 
 ## [重要] bash 3.2 兼容（macOS 自带 bash）
