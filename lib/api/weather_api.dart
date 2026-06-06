@@ -16,4 +16,15 @@ class WeatherApi {
     });
     return Weather.fromJson((data as Map).cast<String, dynamic>());
   }
+
+  /// 按当前观测取穿衣文案（服务端 30 分钟缓存；失败由调用方静默降级）。
+  Future<String> fetchTip(Weather w) async {
+    final data = await _client.get('/weather/tip', query: {
+      'city': w.city,
+      'text': w.text,
+      'temp': w.temp.toString(),
+      'lang': LocaleService.apiLanguageTag,
+    });
+    return ((data as Map)['tip'] as String?) ?? '';
+  }
 }
