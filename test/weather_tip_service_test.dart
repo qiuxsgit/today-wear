@@ -27,6 +27,7 @@ WeatherApi buildApi({
   required void Function() onTip,
   int tipStatus = 200,
   String Function()? obsTime,
+  String tipText = '薄外套刚刚好',
 }) {
   final mock = MockClient((req) async {
     if (req.url.path.endsWith('/weather/now')) {
@@ -52,7 +53,7 @@ WeatherApi buildApi({
           }),
           tipStatus);
     }
-    return http.Response(jsonEncode({'data': {'tip': '薄外套刚刚好'}}), 200,
+    return http.Response(jsonEncode({'data': {'tip': tipText}}), 200,
         headers: {'content-type': 'application/json'});
   });
   return WeatherApi(ApiClient.forTesting(mock));
@@ -124,5 +125,19 @@ void main() {
     await svc.inflight;
     expect(svc.tip, isNull);
     expect(tipCalls, 0);
+  });
+
+  test('200 但 tip 为空 → 保持 null，同一观测不重试', () async {
+    var tipCalls = 0;
+    final api = buildApi(onTip: () => tipCalls++, tipText: '');
+    final weather =
+        WeatherService.forTesting(api, () async => pos(25.03, 121.56));
+    final svc = WeatherTipService.forTesting(api, weather);
+    await weather.load();
+    await svc.inflight;
+    expect(svc.tip, isNull);
+    await weather.load(force: true); // 同 obsTime → 不重试
+    await svc.inflight;
+    expect(tipCalls, 1);
   });
 }
