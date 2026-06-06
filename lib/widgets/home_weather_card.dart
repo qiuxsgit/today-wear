@@ -15,14 +15,12 @@ class HomeWeatherCard extends StatefulWidget {
 }
 
 class _HomeWeatherCardState extends State<HomeWeatherCard> {
-  /// tip 服务需在天气首次 success 通知前完成单例初始化（挂监听）。
-  // ignore: unused_field
-  final WeatherTipService _tipService = WeatherTipService.instance;
-
   @override
   void initState() {
     super.initState();
-    // 幂等：service 内部有 _loading 与 30 分钟缓存去重
+    // 先触发 tip 服务单例初始化（挂 WeatherService 监听），再加载天气，
+    // 保证首次 success 通知能被收到。幂等：service 内部有去重。
+    WeatherTipService.instance;
     WeatherService.instance.load();
   }
 
