@@ -230,7 +230,7 @@ class TagDao extends DatabaseAccessor<AppDatabase> with _$TagDaoMixin {
     // 删除旧的关联
     await (delete(outfitTags)..where((tbl) => tbl.outfitId.equals(outfitId)))
         .go();
-    
+
     // 添加新的关联
     for (final tagId in tagIds) {
       final companion = OutfitTagsCompanion.insert(
@@ -238,6 +238,33 @@ class TagDao extends DatabaseAccessor<AppDatabase> with _$TagDaoMixin {
         tagId: tagId,
       );
       await into(outfitTags).insert(companion);
+    }
+  }
+
+  /// 服务端写入成功后同步更新本地记录，清 dirty
+  Future<void> updateTagFromServer(
+      int id, String name, String color, int ver) async {
+    await (update(tags)..where((tbl) => tbl.id.equals(id))).write(
+      TagsCompanion(
+        name: Value(name),
+        color: Value(color),
+        ver: Value(ver),
+        dirty: const Value(0),
+      ),
+    );
+  }
+
+  /// 删除已同步（dirty=0）但服务端已不存在的本地标签及其穿搭关联
+  Future<void> deleteRemoteDeletedTags(List<int> serverIds) async {
+    final synced = await (select(tags)
+          ..where((tbl) => tbl.serverId.isNotNull() & tbl.dirty.equals(0)))
+        .get();
+    for (final tag in synced) {
+      if (!serverIds.contains(tag.serverId)) {
+        await (delete(outfitTags)..where((tbl) => tbl.tagId.equals(tag.id)))
+            .go();
+        await (delete(tags)..where((tbl) => tbl.id.equals(tag.id))).go();
+      }
     }
   }
 }

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:today_wear/l10n/app_localizations.dart';
 import 'package:today_wear/database/database.dart';
-import '../theme/app_colors.dart';
-import '../theme/app_text_style.dart';
-import '../theme/app_spacing.dart';
-import '../theme/app_theme_tokens.dart';
+import '../api/tag_api.dart';
+import '../services/session_service.dart';
 import '../services/ver_check_service.dart';
+import '../theme/app_colors.dart';
+import '../theme/app_spacing.dart';
+import '../theme/app_text_style.dart';
+import '../theme/app_theme_tokens.dart';
 import '../theme/tag_colors.dart';
 import '../widgets/tag_edit_modal.dart';
 import '../widgets/ver_conflict_dialogs.dart';
@@ -34,12 +36,33 @@ class _TagManagementPageState extends State<TagManagementPage> {
 
   Future<void> _loadTags() async {
     setState(() => _loading = true);
+    final session = SessionService.instance;
+    if (session.isLoggedIn && session.syncEnabled) {
+      await _refreshFromServer();
+    }
     final list = await _tagDao.getAllTags();
     if (mounted) {
       setState(() {
         _tags = list;
         _loading = false;
       });
+    }
+  }
+
+  /// 从服务端拉取最新标签列表并更新本地缓存。
+  /// 同时删除已同步但服务端已不存在的标签（以服务端为准）。
+  /// 失败时静默降级——仍展示本地缓存。
+  Future<void> _refreshFromServer() async {
+    try {
+      final remote = await TagApi().list();
+      for (final t in remote) {
+        await _tagDao.upsertRemoteTag(
+            serverId: t.id, name: t.name, color: t.color, ver: t.ver);
+      }
+      final serverIds = remote.map((t) => t.id).toList();
+      await _tagDao.deleteRemoteDeletedTags(serverIds);
+    } catch (e) {
+      debugPrint('TagManagementPage: refresh from server failed: $e');
     }
   }
 

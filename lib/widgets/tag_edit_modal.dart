@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:today_wear/l10n/app_localizations.dart';
 import 'package:today_wear/database/database.dart';
+import '../api/api_exception.dart';
 import '../api/tag_api.dart';
+import '../l10n/api_error_l10n.dart';
 import '../services/session_service.dart';
 import '../services/sync_service.dart';
 import '../theme/app_colors.dart';
@@ -54,6 +56,7 @@ class _TagEditModalState extends State<TagEditModal> {
   late final TextEditingController _nameController;
   late final _tagDao = AppDatabase().tagDao;
   late String _selectedColorHex;
+  bool _submitting = false;
 
   /// 是否为新增模式（未传入 tag）
   bool get _isCreate => widget.tag == null;
@@ -75,18 +78,66 @@ class _TagEditModalState extends State<TagEditModal> {
   }
 
   Future<void> _onSave() async {
+    if (_submitting) return;
     final l10n = AppLocalizations.of(context)!;
     final name = _nameController.text.trim();
     if (name.isEmpty) {
       AppToast.warning(l10n.tagNameEmpty);
       return;
     }
+    setState(() => _submitting = true);
+    try {
+      final session = SessionService.instance;
+      if (session.isLoggedIn && session.syncEnabled) {
+        await _saveServerFirst(name, l10n);
+      } else {
+        await _saveLocal(name, l10n);
+      }
+    } finally {
+      if (mounted) setState(() => _submitting = false);
+    }
+  }
+
+  /// 服务端优先写入：先调 API，成功后回写本地缓存（dirty=0）。
+  /// 未获得 serverId 的本地标签（尚未同步）降级为本地写入。
+  Future<void> _saveServerFirst(String name, AppLocalizations l10n) async {
+    try {
+      if (_isCreate) {
+        final serverId = await TagApi().create(name, _selectedColorHex);
+        await _tagDao.upsertRemoteTag(
+            serverId: serverId, name: name, color: _selectedColorHex, ver: 1);
+      } else {
+        final tag = widget.tag!;
+        if (tag.serverId != null) {
+          final newVer = await TagApi()
+              .update(tag.serverId!, name, _selectedColorHex, ver: tag.ver);
+          await _tagDao.updateTagFromServer(tag.id, name, _selectedColorHex, newVer);
+        } else {
+          // 本地尚未推送的标签，降级为本地写入
+          await _saveLocal(name, l10n);
+          return;
+        }
+      }
+      if (!mounted) return;
+      AppToast.success(l10n.tagSaved);
+      Navigator.pop(context, true);
+    } on ConflictException catch (e) {
+      if (!mounted) return;
+      AppToast.warning(
+          e.code == 'tag_exists' ? l10n.tagNameDuplicate : localizedApiError(l10n, e));
+    } on ApiException catch (e) {
+      if (!mounted) return;
+      AppToast.warning(localizedApiError(l10n, e));
+    }
+  }
+
+  /// 本地优先写入：写 SQLite（dirty=1），触发后台同步。
+  Future<void> _saveLocal(String name, AppLocalizations l10n) async {
     final ok = _isCreate
         ? await _tagDao.createTag(name, _selectedColorHex)
         : await _tagDao.updateTag(widget.tag!.id, name, _selectedColorHex);
     if (!mounted) return;
     if (ok) {
-      // 机会性立即推送（updateTag/createTag 已标 dirty，_pushTags 带 ver 走写校验）
       SyncService.instance.syncInBackground();
       AppToast.success(l10n.tagSaved);
       Navigator.pop(context, true);
@@ -96,6 +147,7 @@ class _TagEditModalState extends State<TagEditModal> {
   }
 
   Future<void> _onDelete() async {
+    if (_submitting) return;
     // 删除按钮仅在编辑模式渲染，此处 tag 必非空
     final tag = widget.tag!;
     final l10n = AppLocalizations.of(context)!;
@@ -123,20 +175,38 @@ class _TagEditModalState extends State<TagEditModal> {
         ],
       ),
     );
-
     if (confirmed != true || !mounted) return;
-    final serverId = tag.serverId;
-    await _tagDao.deleteTagAndRemoveFromAllOutfits(tag.id);
-    // 已登录且该标签已上云时，同步删除服务端标签（避免下次拉取又复活）。
-    // 带 ver 写校验：409（远端已变更）时本地已删、远端保留最新版，下轮 pull
-    // 会把远端标签拉回——后台冲突不弹框，与 spec 一致。
-    if (serverId != null && SessionService.instance.isLoggedIn) {
-      TagApi().delete(serverId, ver: tag.ver).catchError((e) {
-        debugPrint('Tag delete sync failed: $e');
-      });
+
+    setState(() => _submitting = true);
+    try {
+      final session = SessionService.instance;
+      final serverId = tag.serverId;
+      if (session.isLoggedIn && session.syncEnabled && serverId != null) {
+        // 服务端优先：先删服务端，成功后删本地
+        await _deleteFromServer(serverId, tag.ver);
+      }
+      await _tagDao.deleteTagAndRemoveFromAllOutfits(tag.id);
+      if (!mounted) return;
+      Navigator.pop(context, true);
+    } on ApiException catch (e) {
+      if (!mounted) return;
+      AppToast.warning(localizedApiError(l10n, e));
+    } finally {
+      if (mounted) setState(() => _submitting = false);
     }
-    if (!mounted) return;
-    Navigator.pop(context, true);
+  }
+
+  /// 带版本冲突自动重试（ver=0 跳过校验）的服务端删除。
+  Future<void> _deleteFromServer(int serverId, int ver) async {
+    try {
+      await TagApi().delete(serverId, ver: ver);
+    } on ConflictException catch (e) {
+      if (e.code == 'version_conflict') {
+        await TagApi().delete(serverId, ver: 0);
+      } else {
+        rethrow;
+      }
+    }
   }
 
   @override
@@ -212,7 +282,7 @@ class _TagEditModalState extends State<TagEditModal> {
               // 新增模式无可删对象，左侧按钮换为取消
               child: _isCreate
                   ? OutlinedButton(
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: _submitting ? null : () => Navigator.pop(context),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: tt.muted,
                         side: BorderSide(color: tt.line),
@@ -220,7 +290,7 @@ class _TagEditModalState extends State<TagEditModal> {
                       child: Text(l10n.cancel),
                     )
                   : OutlinedButton(
-                      onPressed: _onDelete,
+                      onPressed: _submitting ? null : _onDelete,
                       style: OutlinedButton.styleFrom(
                         foregroundColor: AppColors.error,
                         side: const BorderSide(color: AppColors.error),
@@ -231,7 +301,7 @@ class _TagEditModalState extends State<TagEditModal> {
             const SizedBox(width: AppSpacing.sm),
             Expanded(
               child: FilledButton(
-                onPressed: _onSave,
+                onPressed: _submitting ? null : _onSave,
                 style: FilledButton.styleFrom(
                   backgroundColor: tt.ink,
                   foregroundColor: tt.page,
