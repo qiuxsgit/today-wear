@@ -125,4 +125,37 @@ void main() {
     expect(svc.weather!.city, '台北');
     expect(calls, 2);
   });
+
+  test('已有数据后权限被收回 → 保留旧数据不改状态', () async {
+    var calls = 0;
+    var denied = false;
+    final svc = WeatherService.forTesting(
+        apiReturning(() => calls++),
+        () async => denied
+            ? throw PermissionDeniedException('denied')
+            : pos(25.03, 121.56));
+    svc.now = () => DateTime(2026, 6, 6, 10, 0);
+    await svc.load();
+    denied = true;
+    svc.now = () => DateTime(2026, 6, 6, 11, 0);
+    await svc.load();
+    expect(svc.status, WeatherStatus.success); // 静默保留旧数据
+    expect(svc.weather!.city, '台北');
+  });
+
+  test('onTapDenied 非永久拒绝 → 强制重新加载', () async {
+    var calls = 0;
+    var denied = true;
+    final svc = WeatherService.forTesting(
+        apiReturning(() => calls++),
+        () async => denied
+            ? throw PermissionDeniedException('denied')
+            : pos(25.03, 121.56));
+    await svc.load();
+    expect(svc.status, WeatherStatus.permissionDenied);
+    denied = false; // 用户在弹窗里允许了
+    await svc.onTapDenied();
+    expect(svc.status, WeatherStatus.success);
+    expect(calls, 1);
+  });
 }

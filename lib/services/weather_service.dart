@@ -69,7 +69,7 @@ class WeatherService extends ChangeNotifier {
 
   /// 加载/刷新天气。[force] 为 true 时忽略 30 分钟缓存（手动重试、语言切换）。
   Future<void> load({bool force = false}) async {
-    if (_loading) return;
+    if (_loading) return; // 进行中的加载优先，force 在重入时有意丢弃
     // macOS 仅调试用，不接定位；但 flutter test 运行时 FLUTTER_TEST 环境变量存在，
     // 需跳过此分支，否则所有测试用例在 macOS 主机上均走 failed 态。
     if (!kIsWeb &&
