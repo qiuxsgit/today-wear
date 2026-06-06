@@ -461,9 +461,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get themeModeDark => '다크';
 
   @override
-  String get weatherPlaceholderLocation => '서울 · 맑음';
-
-  @override
   String get weatherPlaceholderAdvice => '가벼운 재킷이 딱 좋아요';
 
   @override

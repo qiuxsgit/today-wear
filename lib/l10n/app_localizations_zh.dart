@@ -460,9 +460,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get themeModeDark => '深色';
 
   @override
-  String get weatherPlaceholderLocation => '北京 · 晴天';
-
-  @override
   String get weatherPlaceholderAdvice => '薄外套刚刚好';
 
   @override
@@ -1283,9 +1280,6 @@ class AppLocalizationsZhCn extends AppLocalizationsZh {
   String get themeModeDark => '深色';
 
   @override
-  String get weatherPlaceholderLocation => '北京 · 晴天';
-
-  @override
   String get weatherPlaceholderAdvice => '薄外套刚刚好';
 
   @override
@@ -2104,9 +2098,6 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get themeModeDark => '深色';
-
-  @override
-  String get weatherPlaceholderLocation => '台北 · 晴天';
 
   @override
   String get weatherPlaceholderAdvice => '薄外套剛剛好';

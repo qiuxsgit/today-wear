@@ -151,7 +151,6 @@
   "themeModeLight": "Light",
   "themeModeAuto": "Auto",
   "themeModeDark": "Dark",
-  "weatherPlaceholderLocation": "City · Sunny",
   "weatherPlaceholderAdvice": "A light jacket works great",
   "weatherPermissionDenied": "Enable location to see weather",
   "weatherFetchFailed": "Failed to load weather. Tap to retry",

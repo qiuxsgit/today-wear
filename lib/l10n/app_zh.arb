@@ -151,7 +151,6 @@
   "themeModeLight": "浅色",
   "themeModeAuto": "跟随系统",
   "themeModeDark": "深色",
-  "weatherPlaceholderLocation": "北京 · 晴天",
   "weatherPlaceholderAdvice": "薄外套刚刚好",
   "weatherPermissionDenied": "开启定位查看天气",
   "weatherFetchFailed": "获取天气失败，点击重试",

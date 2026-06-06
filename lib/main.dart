@@ -23,6 +23,7 @@ import 'services/purchase_service.dart';
 import 'services/session_service.dart';
 import 'services/sync_service.dart';
 import 'services/update_service.dart';
+import 'services/weather_service.dart';
 import 'widgets/update_dialog.dart';
 
 // 导出 LocaleServiceProvider 以便其他文件使用
@@ -187,11 +188,16 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     // 回到前台时机会性触发云同步（未登录/未开启时内部直接跳过）
     if (state == AppLifecycleState.resumed) {
       SyncService.instance.syncInBackground();
+      // 回前台静默刷新天气（service 内部 30 分钟缓存去重，已有数据不闪 loading；
+      // 也覆盖"从系统设置开权限返回"的场景）
+      WeatherService.instance.load();
     }
   }
   
   void _onLocaleChanged() {
     setState(() {});
+    // 天气状况文字由服务端按 lang 本地化，语言切换后强刷
+    WeatherService.instance.load(force: true);
   }
   
   void _onThemeChanged() {

@@ -465,9 +465,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get themeModeDark => 'Dark';
 
   @override
-  String get weatherPlaceholderLocation => 'City · Sunny';
-
-  @override
   String get weatherPlaceholderAdvice => 'A light jacket works great';
 
   @override
