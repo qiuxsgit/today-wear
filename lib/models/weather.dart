@@ -6,7 +6,7 @@ class Weather {
   final String text; // 天气状况文字，服务端按 lang 本地化
   final int temp; // 摄氏度
   final String icon; // 和风图标码，本期未使用，预留
-  final String obsTime;
+  final String obsTime; // ISO8601 观测时间，如 2026-06-06T10:00+08:00
 
   const Weather({
     required this.city,
