@@ -1,136 +1,116 @@
-# today-wear
+# 今日穿什麼
 
-A private outfit diary app built with Flutter.  
-No account. No cloud. No tracking.
+> [English](README.en.md)
 
-「今日穿什麼」是一款专注于**个人穿搭记录**的轻量 App，
-不做社交、不做推荐、不收集数据，只帮你记住每天穿了什么。
+一款专注于**个人穿搭记录**的轻量 App。不做社交、不做推荐、不收集数据，只帮你记住每天穿了什么。
 
----
-
-## Screenshots
-
-> Coming soon
+支持可选账号登录，登录后开启多设备云同步；不登录同样完全可用，数据本地离线保存。
 
 ---
 
-## Features
+## 下载
 
-- 📸 Record daily outfits with photos
-- 🗓 View outfit history by date
-- 📝 Add simple notes for each outfit
-- 🔒 Fully offline, data stays on your device
-- 🌸 Designed for simplicity and privacy
-
----
-
-## Why Today Wear?
-
-Many outfit or fashion apps focus on social feeds, recommendations,
-or require user accounts and cloud sync.
-
-Today Wear is different.
-
-It is designed as a **personal outfit diary**,
-especially for users who simply want to remember their daily outfits
-without pressure, algorithms, or data collection.
+| 平台 | 链接 |
+|------|------|
+| iOS (App Store) | Coming Soon |
+| Android (Google Play) | Coming Soon |
 
 ---
 
-## Tech Stack
+## 功能
 
-- Flutter
-- Dart
-- Material 3
-- Local storage only (no backend, no analytics)
-
----
-
-## Project Structure
-
-```
-lib/
-├── main.dart
-├── screens/
-│   └── outfit_list.dart
-├── models/
-│   └── outfit.dart
-├── widgets/
-│   └── outfit_card.dart
-```
+- 用照片记录每日穿搭
+- 按日期查看穿搭历史
+- 为穿搭添加标签与备注
+- 数据离线存储，完全不依赖网络
+- 可选账号登录，开启多设备同步
+- 穿搭提醒通知
+- 统计视图（日历 / 图表）
+- 支持中文、English、日本語、한국어
 
 ---
 
-## Getting Started
+## 技术栈
 
-### Requirements
+| 层级 | 技术 |
+|------|------|
+| UI 框架 | Flutter 3.x / Dart 3.x · Material 3 |
+| 本地存储 | Drift ORM (SQLite) |
+| 云同步 | REST API（today-wear-server） |
+| 图片 | GFS 直传，本地缓存渲染 |
+| 通知 | flutter\_local\_notifications |
+| 国际化 | flutter\_localizations (zh / en / ja / ko) |
+
+---
+
+## 平台支持
+
+| 平台 | 说明 |
+|------|------|
+| iOS | 对外正式发布 |
+| Android | 对外正式发布（Google Play / 直发 APK 双渠道） |
+| macOS | 仅调试构建，不对外发布 |
+
+---
+
+## 本地开发
+
+### 环境要求
 
 - Flutter 3.x
 - Dart 3.x
-- macOS / iOS / Android environment
+- Xcode（iOS 构建）
+- Android Studio + JDK 21（Android 构建）
 
-### Run locally
+### 安装依赖
 
 ```bash
 flutter pub get
-flutter run
 ```
 
-**Android 构建说明**：若本机默认是 Java 25，Gradle 的 Kotlin 脚本会报错（如 `IllegalArgumentException: 25.0.1`）。请先切到 JDK 17 或 21 再运行：
+### 运行
 
 ```bash
-# 方式一：临时指定 JDK 17 再运行
-export JAVA_HOME=$(/usr/libexec/java_home -v 17)
+# iOS / macOS（默认）
 flutter run
 
-# 方式二：直接使用脚本（自动选 JDK 17/21）
-./flutter_run_android.sh
+# Android（需指定 flavor）
+export JAVA_HOME=$(/usr/libexec/java_home -v 21)
+flutter run --flavor play --dart-define=DIST_CHANNEL=play
+```
+
+### 构建发布包
+
+```bash
+# Android AAB（Google Play）
+flutter build appbundle --release --flavor play --dart-define=DIST_CHANNEL=play
+
+# Android APK（直发）
+flutter build apk --release --flavor apk --dart-define=DIST_CHANNEL=apk
+```
+
+### 代码生成（修改数据库 schema 后执行）
+
+```bash
+flutter pub run build_runner build --delete-conflicting-outputs
 ```
 
 ---
 
-## Roadmap
+## 许可证
 
-- [ ] Outfit detail page
-- [ ] Add & edit outfit
-- [ ] Photo picker (camera & gallery)
-- [ ] Local data persistence
-- [ ] Dark mode
+本项目采用 **Today Wear Personal & Commercial License**。
 
----
+- 个人及非商业用途免费
+- 商业用途需购买授权
 
-## License
-
-This project is licensed under the **Today Wear Personal & Commercial License**.
-
-- ✅ Free for personal and non-commercial use
-- ❌ Commercial use requires a paid license
-
-See the [LICENSE](LICENSE) file for full details.
+详见 [LICENSE](LICENSE) 文件。如需商业授权，请联系：qiuxs@qiuxs.com
 
 ---
 
-## Commercial Use
+## 维护者
 
-If you want to use this project in a commercial product,
-offer it as a paid service, or redistribute modified versions for profit,
-please contact the author to obtain a commercial license.
+**qiuxs** — 独立开发者
 
-📧 Contact: your-email@example.com
-
----
-
-## Contributing
-
-Issues and pull requests are welcome.
-
-Please ensure that contributions do not introduce
-commercial usage or tracking behavior.
-
----
-
-## Author
-
-qiuxs
-
-Built with ❤️ as an indie developer.
+- 邮箱：qiuxs@qiuxs.com
+- 问题反馈：[GitHub Issues](../../issues)
